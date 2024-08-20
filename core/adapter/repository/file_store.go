@@ -19,8 +19,8 @@ func NewConllectionFileStore(fileStore *adapter.PostGresql) domain.RepositoryFil
 }
 
 func (c *CollectionFileStore) AddInformationFileStorages(ctx context.Context, tx *gorm.DB, req *domain.FileStorages) error {
-	result := tx.AutoMigrate(req)
-	return result
+	result := tx.Create(&req)
+	return result.Error
 }
 func (c *CollectionFileStore) DeleteFileById(ctx context.Context, tx *gorm.DB, id int64) error {
 	result := tx.Where("id=?", id).Delete(&domain.FileStorages{}) //

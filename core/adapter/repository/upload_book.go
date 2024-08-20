@@ -20,9 +20,9 @@ func NewCollectionBook(book *adapter.PostGresql) domain.RepositoryBook {
 
 // Create implements domain.RepositoryBook.
 func (c *CollectionBook) Create(ctx context.Context, tx *gorm.DB, book *domain.Book) error {
-	result := tx.AutoMigrate(&book)
+	result := tx.Create(&book)
 
-	return result
+	return result.Error
 }
 
 // Delete implements domain.RepositoryBook.
