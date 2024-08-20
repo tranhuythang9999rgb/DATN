@@ -8,6 +8,7 @@ import (
 	"shoe_shop_server/common/utils"
 	"shoe_shop_server/core/domain"
 	"shoe_shop_server/core/entities"
+	"strconv"
 )
 
 type UploadBookUseCase struct {
@@ -103,4 +104,13 @@ func (u *UploadBookUseCase) GetListBook(ctx context.Context, req *entities.BookR
 		return nil, errors.NewCustomHttpErrorWithCode(enums.DB_ERR_CODE, enums.DB_ERR_MESS, "500")
 	}
 	return listBooks, nil
+}
+
+func (u *UploadBookUseCase) DeleteBookById(ctx context.Context, id string) errors.Error {
+	idNumber, _ := strconv.ParseInt(id, 10, 64)
+	err := u.books.Delete(ctx, idNumber)
+	if err != nil {
+		return errors.NewCustomHttpErrorWithCode(enums.DB_ERR_CODE, enums.DB_ERR_MESS, "500")
+	}
+	return nil
 }

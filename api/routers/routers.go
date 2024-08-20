@@ -43,6 +43,7 @@ func NewApiRouter(
 	{
 		bookGroup.POST("/upload", book.AddBook)
 		bookGroup.GET("/list", book.ListBooks)
+		bookGroup.PATCH("delete", book.DeleteBookById)
 	}
 	// address public
 	r.GET("/public/customer/cities", addresPublic.GetAllCity)
