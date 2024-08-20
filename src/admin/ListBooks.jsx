@@ -199,6 +199,12 @@ function ListBooks() {
                 columns={columns}
                 dataSource={books}
                 loading={loading}
+                pagination={{
+                    pageSize: 50,
+                  }}
+                  scroll={{
+                    y: 500,
+                  }}
                 rowKey="id"
             />
             <Drawer
