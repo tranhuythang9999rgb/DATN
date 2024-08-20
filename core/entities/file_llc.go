@@ -27,8 +27,8 @@ type ResponseGetListFileByObjetId struct {
 	Files  []*domain.FileStorages `json:"files"`
 }
 type UpSertFileDescriptReq struct {
-	TicketId int64                   `form:"ticket_id"`
-	File     []*multipart.FileHeader `form:"file"`
+	AnyId int64                   `form:"any_id"`
+	File  []*multipart.FileHeader `form:"file"`
 }
 type UpSertFileDescriptResp struct {
 	Result Result `json:"result"`

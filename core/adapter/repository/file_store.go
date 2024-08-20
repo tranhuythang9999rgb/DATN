@@ -46,6 +46,6 @@ func (c *CollectionFileStore) AddListInformationFileStorages(ctx context.Context
 	return result.Error
 }
 func (c *CollectionFileStore) DeleteFileByIdNotTransaction(ctx context.Context, fileId int64) error {
-	result := c.fs.Where("id=?", fileId).Delete(&domain.FileStorages{}) //
+	result := c.fs.Where("id = ?", fileId).Delete(&domain.FileStorages{}) //
 	return result.Error
 }

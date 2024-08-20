@@ -49,6 +49,8 @@ func NewApiRouter(
 	fileGroup := r.Group("/file")
 	{
 		fileGroup.GET("/list", file_lc.GetListFileById)
+		fileGroup.POST("/upload", file_lc.UpSertFileDescriptByAnyId)
+		fileGroup.DELETE("/delete", file_lc.DeleteFileById)
 	}
 	// address public
 	r.GET("/public/customer/cities", addresPublic.GetAllCity)

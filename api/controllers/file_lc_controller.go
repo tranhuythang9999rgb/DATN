@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"net/http"
+	"shoe_shop_server/core/entities"
 	"shoe_shop_server/core/usecase"
 
 	"github.com/gin-gonic/gin"
@@ -33,25 +35,32 @@ func (u *ControllerFileLc) GetListFileById(ctx *gin.Context) {
 
 }
 
-// func (lc *ControllerFileLc) UpSertFileDescriptByTicketId(ctx *gin.Context) {
+func (u *ControllerFileLc) UpSertFileDescriptByAnyId(ctx *gin.Context) {
 
-// 	var req entities.UpSertFileDescriptReq
+	var req entities.UpSertFileDescriptReq
 
-// 	if err := ctx.ShouldBind(&req); err != nil {
-// 		ctx.JSON(http.StatusBadRequest, err)
-// 		return
-// 	}
-// 	files, err := lc.baseController.GetUploadedFiles(ctx)
-// 	if err != nil {
-// 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		return
-// 	}
-// 	req.File = files
-// 	resp, err := lc.file.UploadFileByTicketId(ctx, &req)
-// 	lc.baseController.Response(ctx, resp, err)
-// }
-// func (lc *ControllerFileLc) DeleteFileById(ctx *gin.Context) {
-// 	id := ctx.Param("id")
-// 	resp, err := lc.file.DeleteFileById(ctx, id)
-// 	lc.baseController.Response(ctx, resp, err)
-// }
+	if err := ctx.ShouldBind(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, err)
+		return
+	}
+	files, err := u.baseController.GetUploadedFiles(ctx)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	req.File = files
+	if err := u.file.UpSertFileDescript(ctx, &req); err != nil {
+		u.baseController.ErrorData(ctx, err)
+
+	}
+	u.baseController.Success(ctx, nil)
+}
+func (u *ControllerFileLc) DeleteFileById(ctx *gin.Context) {
+	id := ctx.Query("id")
+	err := u.file.DeleteFileById(ctx, id)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, nil)
+}
