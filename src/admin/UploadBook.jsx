@@ -1,4 +1,4 @@
-import { Form, Input, InputNumber, Upload, Button, message, DatePicker } from "antd";
+import { Form, Input, InputNumber, Upload, Button, message, DatePicker, Select } from "antd";
 import axios from "axios";
 import { useState } from "react";
 import './admin_index.css';
@@ -32,7 +32,7 @@ function UploadBook() {
             formData.append('condition', values.condition);
             formData.append('stock', values.stock);
             formData.append('notes', values.notes);
-            formData.append('opening_status', values.opening_status);
+            formData.append('opening_status', values.opening_status ? values.opening_status.value : ''); // Handle Select value
 
             fileList.forEach((file) => {
                 formData.append('file', file.originFileObj);
@@ -116,7 +116,7 @@ function UploadBook() {
                 <Form.Item name="purchase_price" label="Giá mua" rules={[{ required: true }]}>
                     <InputNumber />
                 </Form.Item>
-              
+
                 <Form.Item name="stock" label="Số lượng sách" rules={[{ required: true }]}>
                     <InputNumber />
                 </Form.Item>
@@ -125,7 +125,24 @@ function UploadBook() {
                 </Form.Item>
 
                 <Form.Item name="opening_status" label="Tình trạng mở" rules={[{ required: true }]}>
-                    <Input />
+                    <Select
+                        labelInValue
+
+                        style={{
+                            width: 120,
+                            height: 42,
+                        }}
+                        options={[
+                            {
+                                value: 15,
+                                label: 'Mở bán',
+                            },
+                            {
+                                value: 17,
+                                label: 'Đóng bán',
+                            },
+                        ]}
+                    />
                 </Form.Item>
                 <Form.Item name="file" label="Tập tin" valuePropName="fileList" getValueFromEvent={onChange}>
                     <Upload
