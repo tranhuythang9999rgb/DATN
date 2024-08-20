@@ -8,6 +8,8 @@ import { IoMdCloudUpload } from 'react-icons/io';
 import { FcBarChart } from 'react-icons/fc';
 import { LuClipboardList, LuFileBarChart } from 'react-icons/lu';
 import { TbUsersGroup } from 'react-icons/tb';
+import UploadBook from './UploadBook';
+import ListBooks from './ListBooks';
 
 const { Header, Content, Sider } = Layout;
 
@@ -33,7 +35,9 @@ const tabsContent = [
                 <IoMdCloudUpload className="icon" /> Tải thông tin sách
             </span>
         ),
-        content: <div>Content of Tab 1</div>,
+        content: <div>
+            <UploadBook/>
+        </div>,
     },
     {
         key: '2',
@@ -60,7 +64,9 @@ const tabsContent = [
                 <LuClipboardList className="icon-quan-ly-sach" />Quản lý sách
                 </span>
         ),
-        content: <div>sách đã tải lên</div>,
+        content: <div>
+            <ListBooks/>
+        </div>,
     },
     {
         key: '5',
@@ -97,7 +103,7 @@ function Dashboard() {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
 
-    const [activeMenuItem, setActiveMenuItem] = useState('1');
+    const [activeMenuItem, setActiveMenuItem] = useState('4');
 
     const handleMenuClick = ({ key }) => {
         setActiveMenuItem(key);

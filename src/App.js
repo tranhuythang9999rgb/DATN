@@ -7,9 +7,9 @@ import UploadBook from "./admin/UploadBook";
 function App() {
   return (
     <div>
-      {/* <Dashboard /> */}
+      <Dashboard />
       {/* <UploadBook/> */}
-      <ListBooks/>
+      {/* <ListBooks/> */}
     </div>
   );
 }
