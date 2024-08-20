@@ -1,0 +1,11 @@
+OrderID,CustomerName,OrderDate,TotalAmount,ProductID,ProductName,Price,Category
+1,Nguyễn Văn A,2024-08-07 22:25:28,150000.00,1,Áo thun,150000.00,Quần áo
+2,Trần Thị B,2024-08-06 22:25:28,450000.00,2,Quần jeans,450000.00,Quần áo
+3,Lê Văn C,2024-08-05 22:25:28,800000.00,3,Giày thể thao,800000.00,Giày dép
+4,Phạm Thị D,2024-08-04 22:25:28,600000.00,4,Túi xách,600000.00,Phụ kiện
+5,Hoàng Văn E,2024-08-03 22:25:28,1200000.00,5,Đồng hồ,1200000.00,Phụ kiện
+6,Đỗ Thị F,2024-08-02 22:25:28,15000000.00,6,Laptop,15000000.00,Điện tử
+7,Ngô Văn G,2024-08-01 22:25:28,8000000.00,7,Smartphone,8000000.00,Điện tử
+8,Vũ Thị H,2024-07-31 22:25:28,2500000.00,8,Bàn làm việc,2500000.00,Nội thất
+9,Đặng Văn I,2024-07-30 22:25:28,1800000.00,9,Ghế văn phòng,1800000.00,Nội thất
+10,Mai Thị K,2024-07-29 22:25:28,500000.00,10,Tai nghe,500000.00,Phụ kiện

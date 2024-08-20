@@ -1,0 +1,11 @@
+ProductID,ProductName,Price,Category,TotalAmount
+1,Áo thun,150000.00,Quần áo,150000.00
+2,Quần jeans,450000.00,Quần áo,450000.00
+3,Giày thể thao,800000.00,Giày dép,800000.00
+4,Túi xách,600000.00,Phụ kiện,600000.00
+5,Đồng hồ,1200000.00,Phụ kiện,1200000.00
+6,Laptop,15000000.00,Điện tử,15000000.00
+7,Smartphone,8000000.00,Điện tử,8000000.00
+8,Bàn làm việc,2500000.00,Nội thất,2500000.00
+9,Ghế văn phòng,1800000.00,Nội thất,1800000.00
+10,Tai nghe,500000.00,Phụ kiện,500000.00
