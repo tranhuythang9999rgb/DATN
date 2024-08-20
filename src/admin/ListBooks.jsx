@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Table, Tag, Button, Drawer, message, Tooltip } from 'antd';
+import { Table, Tag, Button, Drawer, message, Tooltip, Modal } from 'antd';
 import { TiDocumentDelete } from 'react-icons/ti';
 import { TbListDetails } from 'react-icons/tb';
 import { render } from '@testing-library/react';
+import UpSertFileByBookId from './UpSertFileByBookId';
+import { HiOutlineFolderPlus } from 'react-icons/hi2';
 
 function ListBooks() {
     const [books, setBooks] = useState([]);
@@ -11,7 +13,12 @@ function ListBooks() {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [selectedBook, setSelectedBook] = useState(null);
     const [images, setImages] = useState([]);
+    const [showAddFileModal, setShowAddFileModal] = useState(false);
 
+
+    const toggleAddFileModal = () => {
+        setShowAddFileModal(!showAddFileModal);
+    };
     // Fetch books data
     const fetchBooks = async () => {
         try {
@@ -169,24 +176,24 @@ function ListBooks() {
             ),
         },
     ];
-// Handle delete action for an image
-const handleDeleteImage = async (id) => {
-    try {
-        const response = await axios.delete('http://127.0.0.1:8080/manager/file/delete', {
-            params: { id }
-        });
-        if (response.data.code === 0) {
-            // Re-fetch the images after deletion
-            const updatedImages = images.filter(image => image.id !== id);
-            setImages(updatedImages);
-            message.success('Image deleted successfully');
-        } else {
-            message.error('Failed to delete image');
+    // Handle delete action for an image
+    const handleDeleteImage = async (id) => {
+        try {
+            const response = await axios.delete('http://127.0.0.1:8080/manager/file/delete', {
+                params: { id }
+            });
+            if (response.data.code === 0) {
+                // Re-fetch the images after deletion
+                const updatedImages = images.filter(image => image.id !== id);
+                setImages(updatedImages);
+                message.success('Image deleted successfully');
+            } else {
+                message.error('Failed to delete image');
+            }
+        } catch (error) {
+            message.error('An error occurred while deleting the image');
         }
-    } catch (error) {
-        message.error('An error occurred while deleting the image');
-    }
-};
+    };
     // Columns for images table
     const imageColumns = [
         {
@@ -232,10 +239,10 @@ const handleDeleteImage = async (id) => {
                 loading={loading}
                 pagination={{
                     pageSize: 50,
-                  }}
-                  scroll={{
+                }}
+                scroll={{
                     y: 500,
-                  }}
+                }}
                 rowKey="id"
             />
             <Drawer
@@ -244,6 +251,20 @@ const handleDeleteImage = async (id) => {
                 open={drawerOpen}
                 title={selectedBook ? `Chi tiết sách: ${selectedBook.title}` : ''}
             >
+                <Button type="primary" onClick={toggleAddFileModal}>
+                    <HiOutlineFolderPlus />
+                </Button>
+                <Modal
+                    width={800}
+                    visible={showAddFileModal}
+                    onCancel={toggleAddFileModal}
+                    footer={null}
+                >
+                    {selectedBook && (
+                        <UpSertFileByBookId anyId={selectedBook.id} />
+                    )}
+                </Modal>
+
                 <Table
                     columns={imageColumns}
                     dataSource={images}

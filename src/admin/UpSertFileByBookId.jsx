@@ -28,7 +28,7 @@ export default function UpSertFileByBookId({anyId }) {
           'Content-Type': 'multipart/form-data',
         },
       })
-      if (response.data.result.code === 0) {
+      if (response.data.code === 0) {
         message.success('Upload ảnh thành công');
         return;
       } else {
