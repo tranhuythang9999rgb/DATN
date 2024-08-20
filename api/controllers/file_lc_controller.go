@@ -1,27 +1,38 @@
 package controllers
 
-// type ControllerFileLc struct {
-// 	file *usecase.UseCaseFileStore
-// 	*baseController
-// }
+import (
+	"shoe_shop_server/core/usecase"
 
-// func NewControllerFileLc(
-// 	file *usecase.UseCaseFileStore,
-// 	baseController *baseController,
-// ) *ControllerFileLc {
-// 	return &ControllerFileLc{
-// 		file:           file,
-// 		baseController: baseController,
-// 	}
-// }
-// func (lc *ControllerFileLc) GetListFileById(ctx *gin.Context) {
+	"github.com/gin-gonic/gin"
+)
 
-// 	id := ctx.Query("id")
+type ControllerFileLc struct {
+	file *usecase.FileStoragesUseCase
+	*baseController
+}
 
-// 	resp, err := lc.file.GetListFileByObjectId(ctx, id)
-// 	lc.baseController.Success(ctx, resp, err)
+func NewControllerFileLc(
+	file *usecase.FileStoragesUseCase,
+	baseController *baseController,
+) *ControllerFileLc {
+	return &ControllerFileLc{
+		file:           file,
+		baseController: baseController,
+	}
+}
+func (u *ControllerFileLc) GetListFileById(ctx *gin.Context) {
 
-// }
+	id := ctx.Query("id")
+
+	resp, err := u.file.GetListFileById(ctx, id)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, resp)
+
+}
+
 // func (lc *ControllerFileLc) UpSertFileDescriptByTicketId(ctx *gin.Context) {
 
 // 	var req entities.UpSertFileDescriptReq
