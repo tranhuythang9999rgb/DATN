@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, Tag, Space, message, Button } from 'antd';
+import { TiDocumentDelete } from 'react-icons/ti';
 
 function ListBooks() {
     const [books, setBooks] = useState([]);
@@ -102,11 +103,12 @@ function ListBooks() {
             ),
         },
         {
-            title: 'Hành động',
+            title: (<span>
+            </span>),
             key: 'action',
             render: (_, record) => (
                 <Button type="link" onClick={() => handleDelete(record.id)}>
-                    Xóa
+                    <TiDocumentDelete style={{fontSize:'30px'}} />
                 </Button>
             ),
         },
