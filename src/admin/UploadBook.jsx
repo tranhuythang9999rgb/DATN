@@ -74,75 +74,73 @@ function UploadBook() {
     return (
         <div>
             <Form {...layout} form={form} className="form-container-upload-book" onFinish={handleFormSubmit}>
-                <Form.Item name="title" label="Title" rules={[{ required: true }]}>
+                <Form.Item name="title" label="Tiêu đề" rules={[{ required: true }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="author_name" label="Author Name" rules={[{ required: true }]}>
+                <Form.Item name="author_name" label="Tên tác giả" rules={[{ required: true }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="publisher" label="Publisher" rules={[{ required: true }]}>
+                <Form.Item name="publisher" label="Nhà xuất bản" rules={[{ required: true }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="published_date" label="Published Date" rules={[{ required: true }]}>
+                <Form.Item name="published_date" label="Ngày xuất bản" rules={[{ required: true }]}>
                     <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
                 </Form.Item>
                 <Form.Item name="isbn" label="ISBN" rules={[{ required: true }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="genre" label="Genre" rules={[{ required: true }]}>
+                <Form.Item name="genre" label="Thể loại" rules={[{ required: true }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="description" label="Description" rules={[{ required: true }]}>
+                <Form.Item name="description" label="Mô tả" rules={[{ required: true }]}>
                     <Input.TextArea />
                 </Form.Item>
-                <Form.Item name="language" label="Language" rules={[{ required: true }]}>
+                <Form.Item name="language" label="Ngôn ngữ" rules={[{ required: true }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="page_count" label="Page Count" rules={[{ required: true }]}>
+                <Form.Item name="page_count" label="Số trang" rules={[{ required: true }]}>
                     <InputNumber />
                 </Form.Item>
-                <Form.Item name="dimensions" label="Dimensions" rules={[{ required: true }]}>
+                <Form.Item name="dimensions" label="Kích thước" rules={[{ required: true }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="weight" label="Weight" rules={[{ required: true }]}>
+                <Form.Item name="weight" label="Trọng lượng" rules={[{ required: true }]}>
                     <InputNumber />
                 </Form.Item>
-                <Form.Item name="price" label="Price" rules={[{ required: true }]}>
+                <Form.Item name="price" label="Giá" rules={[{ required: true }]}>
                     <InputNumber />
                 </Form.Item>
-                <Form.Item name="discount_price" label="Discount Price" rules={[{ required: true }]}>
+                <Form.Item name="discount_price" label="Giá giảm" rules={[{ required: true }]}>
                     <InputNumber />
                 </Form.Item>
-                <Form.Item name="purchase_price" label="Purchase Price" rules={[{ required: true }]}>
+                <Form.Item name="purchase_price" label="Giá mua" rules={[{ required: true }]}>
                     <InputNumber />
-                </Form.Item>
-                <Form.Item name="condition" label="Condition" rules={[{ required: true }]}>
-                    <Input />
-                </Form.Item>
-                <Form.Item name="stock" label="Stock" rules={[{ required: true }]}>
-                    <InputNumber />
-                </Form.Item>
-                <Form.Item name="notes" label="Notes">
-                    <Input.TextArea />
                 </Form.Item>
               
-                <Form.Item name="opening_status" label="Opening Status" rules={[{ required: true }]}>
+                <Form.Item name="stock" label="Số lượng sách" rules={[{ required: true }]}>
+                    <InputNumber />
+                </Form.Item>
+                <Form.Item name="notes" label="Ghi chú">
+                    <Input.TextArea />
+                </Form.Item>
+
+                <Form.Item name="opening_status" label="Tình trạng mở" rules={[{ required: true }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="file" label="File" valuePropName="fileList" getValueFromEvent={onChange}>
-                <Upload
+                <Form.Item name="file" label="Tập tin" valuePropName="fileList" getValueFromEvent={onChange}>
+                    <Upload
                         fileList={fileList}
                         listType="picture-card"
                         accept="image/jpeg,image/png"
                         onChange={onChange}
                         beforeUpload={() => false} // Prevent auto-upload
                     >
-                        {'+ Upload'}
+                        {'+ Tải lên'}
                     </Upload>
                 </Form.Item>
                 <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                     <Button type="primary" htmlType="submit">
-                        Submit
+                        Gửi
                     </Button>
                 </Form.Item>
             </Form>
