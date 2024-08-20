@@ -1,0 +1,46 @@
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-menu-dark.ant-menu-horizontal>.ant-menu-item-selected,
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-menu-dark>.ant-menu.ant-menu-horizontal>.ant-menu-item-selected,
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-menu-dark.ant-menu-horizontal>.ant-menu-submenu-selected,
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-menu-dark>.ant-menu.ant-menu-horizontal>.ant-menu-submenu-selected {
+    background-image: linear-gradient(to bottom right, #704f30f1, #f08f11e1);
+    display: flex;
+    border-radius: 10px;
+}
+.tab-label {
+    display: flex;
+    align-items: center;
+    font-size: 18px; /* Điều chỉnh kích thước chữ */
+}
+
+.tab-label .icon {
+    font-size: 40px; /* Điều chỉnh kích thước icon */
+    margin-right: 8px; /* Khoảng cách giữa icon và text */
+    color: #4a4a4a; /* Màu của icon */
+}
+
+.tab-label{
+    border-radius: 10px;
+}
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-menu-light.ant-menu-inline .ant-menu-item, :where(.css-dev-only-do-not-override-1gwfwyx).ant-menu-light>.ant-menu.ant-menu-inline .ant-menu-item{
+    border-radius: 10px;
+    border: 1px solid #d9d9d9; /* Màu viền */
+
+}
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-menu-light .ant-menu-submenu-selected >.ant-menu-submenu-title, :where(.css-dev-only-do-not-override-1gwfwyx).ant-menu-light>.ant-menu .ant-menu-submenu-selected >.ant-menu-submenu-title{
+    border: 1px solid #d9d9d9; /* Màu viền */
+}
+.icon-quan-ly-sach{
+    font-size: 20px; /* Điều chỉnh kích thước icon */
+    color: #4a4a4a; /* Màu của icon */
+    font-size: 18px; /* Điều chỉnh kích thước chữ */
+    margin-right: 8px; /* Khoảng cách giữa icon và text */
+}
+.form-container-upload-book{
+    background-color: white;
+    padding: 10px;
+    border-radius: 0;
+    max-width: 400px;
+    /* height: 550px; */
+    margin: 50px auto;
+    /* Cách top 50px */
+}
