@@ -144,7 +144,7 @@ function UploadBook() {
                         ]}
                     />
                 </Form.Item>
-                <Form.Item name="file" label="Tập tin" valuePropName="fileList" getValueFromEvent={onChange}>
+                <Form.Item name="file" label="Ảnh mô tả" valuePropName="fileList" getValueFromEvent={onChange}>
                     <Upload
                         fileList={fileList}
                         listType="picture-card"

@@ -35,6 +35,7 @@
     font-size: 18px; /* Điều chỉnh kích thước chữ */
     margin-right: 8px; /* Khoảng cách giữa icon và text */
 }
+/*///////////////*/
 .form-container-upload-book{
     background-color: white;
     padding: 10px;
@@ -43,4 +44,76 @@
     /* height: 550px; */
     margin: 50px auto;
     /* Cách top 50px */
+}
+
+/* Đảm bảo rằng container của form có padding và margin */
+.form-container-upload-book {
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 800px; /* Điều chỉnh để phù hợp với bố cục của bạn */
+}
+
+/* Kiểu dáng cho các mục form bao gồm các trường nhập liệu và vùng văn bản */
+.ant-form-item {
+    margin-bottom: 16px; /* Khoảng cách giữa các mục form */
+}
+
+/* Kiểu dáng cho các trường nhập liệu */
+.ant-input,
+.ant-input-number,
+.ant-select-selector,
+.ant-input-textarea {
+    border: 1px solid #d9d9d9; /* Viền màu xám nhạt */
+    border-radius: 4px; /* Góc bo tròn */
+    font-size: 14px; /* Điều chỉnh kích thước chữ */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Thay đổi kiểu chữ */
+    color: #333; /* Màu chữ xám đậm */
+    padding: 8px; /* Khoảng cách bên trong các trường nhập liệu */
+}
+
+/* Kiểu dáng cho dropdown select */
+.ant-select-selector {
+    display: flex;
+    align-items: center;
+    border: 1px solid #d9d9d9; /* Viền màu xám nhạt */
+    border-radius: 4px; /* Góc bo tròn */
+    font-size: 14px; /* Điều chỉnh kích thước chữ */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Thay đổi kiểu chữ */
+    color: #333; /* Màu chữ xám đậm */
+    padding: 8px; /* Khoảng cách bên trong dropdown */
+}
+
+/* Kiểu dáng cho thành phần upload */
+.ant-upload {
+    border: 1px solid #d9d9d9; /* Viền màu xám nhạt */
+    border-radius: 4px; /* Góc bo tròn */
+    padding: 8px;
+    background: #fafafa; /* Nền màu sáng */
+}
+
+/* Kiểu dáng cho nút upload */
+.ant-upload-select {
+    color: #1890ff; /* Màu chữ xanh dương cho nút */
+}
+
+/* Kiểu dáng cho các nút của form */
+.ant-btn-primary {
+    background-color: #1890ff; /* Nền màu xanh dương */
+    border-color: #1890ff; /* Viền màu xanh dương */
+    color: #fff; /* Màu chữ trắng */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Thay đổi kiểu chữ */
+    font-weight: 600; /* Chữ hơi đậm */
+}
+
+/* Kiểu dáng khi hover và focus cho các trường nhập liệu và nút */
+.ant-input:hover,
+.ant-input:focus,
+.ant-input-number:hover,
+.ant-input-number:focus,
+.ant-select-selector:hover,
+.ant-select-selector:focus,
+.ant-btn-primary:hover,
+.ant-btn-primary:focus {
+    border-color: #40a9ff; /* Viền màu xanh dương khi hover/focus */
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2); /* Hiệu ứng bóng */
 }
