@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Table, Tag, Button, Drawer, message } from 'antd';
+import { Table, Tag, Button, Drawer, message, Tooltip } from 'antd';
 import { TiDocumentDelete } from 'react-icons/ti';
 import { TbListDetails } from 'react-icons/tb';
+import { render } from '@testing-library/react';
 
 function ListBooks() {
     const [books, setBooks] = useState([]);
@@ -140,16 +141,31 @@ function ListBooks() {
         },
         {
             title: 'Hành động',
-            key: 'action',
+            key: 'delete',
             render: (_, record) => (
-                <div>
-                    <Button type="link" onClick={() => handleDelete(record.id)}>
+                <Tooltip title="Xóa sách">
+                    <Button
+                        type="link"
+                        onClick={() => handleDelete(record.id)}
+                        style={{ display: 'block', marginBottom: 8 }}
+                    >
                         <TiDocumentDelete style={{ fontSize: '30px' }} />
                     </Button>
-                    <Button type="link" onClick={() => handleViewDetails(record)}>
+                </Tooltip>
+            ),
+        },
+        {
+            title: '',
+            key: 'details',
+            render: (_, record) => (
+                <Tooltip title="Xem chi tiết">
+                    <Button
+                        type="link"
+                        onClick={() => handleViewDetails(record)}
+                    >
                         <TbListDetails style={{ fontSize: '30px' }} />
                     </Button>
-                </div>
+                </Tooltip>
             ),
         },
     ];
