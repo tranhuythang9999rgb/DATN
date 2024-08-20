@@ -169,7 +169,24 @@ function ListBooks() {
             ),
         },
     ];
-
+// Handle delete action for an image
+const handleDeleteImage = async (id) => {
+    try {
+        const response = await axios.delete('http://127.0.0.1:8080/manager/file/delete', {
+            params: { id }
+        });
+        if (response.data.code === 0) {
+            // Re-fetch the images after deletion
+            const updatedImages = images.filter(image => image.id !== id);
+            setImages(updatedImages);
+            message.success('Image deleted successfully');
+        } else {
+            message.error('Failed to delete image');
+        }
+    } catch (error) {
+        message.error('An error occurred while deleting the image');
+    }
+};
     // Columns for images table
     const imageColumns = [
         {
@@ -190,6 +207,20 @@ function ListBooks() {
             dataIndex: 'created_at',
             key: 'created_at',
             render: createdAt => new Date(createdAt * 1000).toLocaleDateString()
+        },
+        {
+            title: 'Hành động',
+            key: 'delete',
+            render: (_, record) => (
+                <Tooltip title="Xóa ảnh">
+                    <Button
+                        type="link"
+                        onClick={() => handleDeleteImage(record.id)}
+                    >
+                        <TiDocumentDelete style={{ fontSize: '24px' }} />
+                    </Button>
+                </Tooltip>
+            ),
         },
     ];
 
