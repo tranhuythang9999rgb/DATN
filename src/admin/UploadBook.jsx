@@ -5,7 +5,6 @@ import './admin_index.css';
 import ListBooksCopy from "./ListBooksCopy";
 
 function UploadBook() {
-
     const [form] = Form.useForm();
     const [fileList, setFileList] = useState([]);
 
@@ -74,8 +73,8 @@ function UploadBook() {
 
     return (
         <div>
-            <Row>
-                <Col flex={2}>
+            <Row gutter={16}>
+                <Col span={12}>
                     <Form {...layout} form={form} className="form-container-upload-book" onFinish={handleFormSubmit}>
                         <Form.Item name="title" label="Tiêu đề" rules={[{ required: true }]}>
                             <Input />
@@ -119,21 +118,17 @@ function UploadBook() {
                         <Form.Item name="purchase_price" label="Giá mua" rules={[{ required: true }]}>
                             <InputNumber />
                         </Form.Item>
-
                         <Form.Item name="stock" label="Số lượng sách" rules={[{ required: true }]}>
                             <InputNumber />
                         </Form.Item>
                         <Form.Item name="notes" label="Ghi chú">
                             <Input.TextArea />
                         </Form.Item>
-
                         <Form.Item name="opening_status" label="Tình trạng mở" rules={[{ required: true }]}>
                             <Select
                                 labelInValue
-
                                 style={{
-                                    width: 120,
-                                    height: 42,
+                                    width: '100%',
                                 }}
                                 options={[
                                     {
@@ -165,11 +160,10 @@ function UploadBook() {
                         </Form.Item>
                     </Form>
                 </Col>
-                <Col flex={3}>
-                <ListBooksCopy/>
+                <Col span={12}>
+                    <ListBooksCopy />
                 </Col>
             </Row>
-
         </div>
     );
 }

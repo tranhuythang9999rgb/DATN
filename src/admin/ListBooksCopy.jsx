@@ -64,36 +64,36 @@ function ListBooksCopy() {
             dataIndex: 'publisher',
             key: 'publisher',
         },
-        {
-            title: 'Ngày xuất bản',
-            dataIndex: 'published_date',
-            key: 'published_date',
-        },
-        {
-            title: 'Thể loại',
-            dataIndex: 'genre',
-            key: 'genre',
-        },
-        {
-            title: 'Ngôn ngữ',
-            dataIndex: 'language',
-            key: 'language',
-        },
-        {
-            title: 'Số trang',
-            dataIndex: 'page_count',
-            key: 'page_count',
-        },
+        // {
+        //     title: 'Ngày xuất bản',
+        //     dataIndex: 'published_date',
+        //     key: 'published_date',
+        // },
+        // {
+        //     title: 'Thể loại',
+        //     dataIndex: 'genre',
+        //     key: 'genre',
+        // },
+        // {
+        //     title: 'Ngôn ngữ',
+        //     dataIndex: 'language',
+        //     key: 'language',
+        // },
+        // {
+        //     title: 'Số trang',
+        //     dataIndex: 'page_count',
+        //     key: 'page_count',
+        // },
         {
             title: 'Giá',
             dataIndex: 'price',
             key: 'price',
         },
-        {
-            title: 'Giá giảm',
-            dataIndex: 'discount_price',
-            key: 'discount_price',
-        },
+        // {
+        //     title: 'Giá giảm',
+        //     dataIndex: 'discount_price',
+        //     key: 'discount_price',
+        // },
         {
             title: 'Giá mua',
             dataIndex: 'purchase_price',
@@ -104,11 +104,11 @@ function ListBooksCopy() {
             dataIndex: 'stock',
             key: 'stock',
         },
-        {
-            title: 'Ghi chú',
-            dataIndex: 'notes',
-            key: 'notes',
-        },
+        // {
+        //     title: 'Ghi chú',
+        //     dataIndex: 'notes',
+        //     key: 'notes',
+        // },
         {
             title: 'Tình trạng mở',
             dataIndex: 'opening_status',
