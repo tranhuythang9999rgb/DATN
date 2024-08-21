@@ -261,7 +261,7 @@ function ListBooks() {
                     footer={null}
                 >
                     {selectedBook && (
-                        <UpSertFileByBookId anyId={selectedBook.id} />
+                        <UpSertFileByBookId anyId={selectedBook.id} load={()=>handleViewDetails(selectedBook)}/>
                     )}
                 </Modal>
 

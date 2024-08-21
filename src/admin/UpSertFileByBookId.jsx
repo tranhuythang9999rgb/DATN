@@ -2,7 +2,7 @@ import { Button, Form, message, Upload } from 'antd';
 import axios from 'axios';
 import React, { useState } from 'react'
 
-export default function UpSertFileByBookId({anyId }) {
+export default function UpSertFileByBookId({anyId,load }) {
 
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
@@ -24,11 +24,11 @@ export default function UpSertFileByBookId({anyId }) {
       });
       const response = await axios.post('http://127.0.0.1:8080/manager/file/upload', formData, {
         headers: {
-          // Authorization: token,
           'Content-Type': 'multipart/form-data',
         },
       })
       if (response.data.code === 0) {
+        load();
         message.success('Upload ảnh thành công');
         return;
       } else {
@@ -47,10 +47,10 @@ export default function UpSertFileByBookId({anyId }) {
       <Form {...layout} form={form} className="form-container-upsert-with-file" onFinish={handlerSubmitUpsertFile}>
 
         <Form.Item
-          label="Nhập ảnh mô tả vé"
+          label="Nhập ảnh mô tả"
           className="form-row"
           name="file"
-          rules={[{ required: true, message: 'Vui lòng chọn ảnh mô tả vé!' }]}
+          rules={[{ required: true, message: 'Vui lòng chọn ảnh mô tả!' }]}
         >
           <Upload
             fileList={fileList}
