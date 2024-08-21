@@ -78,3 +78,9 @@ func (c *CollectionBook) Update(ctx context.Context, book *domain.Book) error {
 	result := c.book.Save(&book)
 	return result.Error
 }
+
+func (c *CollectionBook) GetBookById(ctx context.Context, id int64) (*domain.Book, error) {
+	var book *domain.Book
+	result := c.book.Where("id = ?", id).First(&book)
+	return book, result.Error
+}

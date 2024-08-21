@@ -63,6 +63,7 @@ func (u *ControllersUploadBooks) ListBooks(ctx *gin.Context) {
 	u.baseController.Success(ctx, resp)
 
 }
+
 func (u *ControllersUploadBooks) DeleteBookById(ctx *gin.Context) {
 	id := ctx.Query("id")
 	err := u.books.DeleteBookById(ctx, id)
@@ -71,4 +72,14 @@ func (u *ControllersUploadBooks) DeleteBookById(ctx *gin.Context) {
 		return
 	}
 	u.baseController.Success(ctx, nil)
+}
+
+func (u *ControllersUploadBooks) GetBookById(ctx *gin.Context) {
+	id := ctx.Query("id")
+	book, err := u.books.GetBookById(ctx, id)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, book)
 }

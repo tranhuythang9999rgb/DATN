@@ -58,4 +58,5 @@ type RepositoryBook interface {
 	Update(ctx context.Context, book *Book) error                                   // Cập nhật thông tin một cuốn sách
 	Delete(ctx context.Context, id int64) error                                     // Xóa một cuốn sách theo ID
 	List(ctx context.Context, req *BookReqForm, limit, offset int) ([]*Book, error) // Liệt kê sách với phân trang
+	GetBookById(ctx context.Context, id int64) (*Book, error)
 }

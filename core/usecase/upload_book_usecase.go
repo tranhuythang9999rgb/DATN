@@ -114,3 +114,12 @@ func (u *UploadBookUseCase) DeleteBookById(ctx context.Context, id string) error
 	}
 	return nil
 }
+
+func (u *UploadBookUseCase) GetBookById(ctx context.Context, id string) (*domain.Book, errors.Error) {
+	idNumber, _ := strconv.ParseInt(id, 10, 64)
+	book, err := u.books.GetBookById(ctx, idNumber)
+	if err != nil {
+		return nil, errors.NewCustomHttpErrorWithCode(enums.DB_ERR_CODE, enums.DB_ERR_MESS, "500")
+	}
+	return book, nil
+}
