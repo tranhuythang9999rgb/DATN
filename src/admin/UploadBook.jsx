@@ -1,8 +1,9 @@
-import { Form, Input, InputNumber, Upload, Button, message, DatePicker, Select, Col, Row } from "antd";
+import { Form, Input, InputNumber, Upload, Button, message, DatePicker, Select, Col, Row, Tag, Tooltip, Table } from "antd";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import './admin_index.css';
-import ListBooksCopy from "./ListBooksCopy";
+import { TiDocumentDelete } from "react-icons/ti";
+import DetailBook from "./DetailBook";
 
 function UploadBook() {
     const [form] = Form.useForm();
@@ -11,6 +12,49 @@ function UploadBook() {
     const onChange = ({ fileList }) => {
         setFileList(fileList);
     };
+
+    const [books, setBooks] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    // Fetch books data
+    const fetchBooks = async () => {
+        try {
+            const response = await axios.get('http://127.0.0.1:8080/manager/book/list');
+            if (response.data.code === 0) {
+                setBooks(response.data.body);
+            } else {
+                message.error('Failed to fetch books');
+            }
+        } catch (error) {
+            message.error('An error occurred while fetching books');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchBooks();
+    }, []);
+
+    // Handle delete action
+    const handleDelete = async (id) => {
+        try {
+            const response = await axios.patch('http://127.0.0.1:8080/manager/book/delete', null, {
+                params: { id }
+            });
+            if (response.data.code === 0) {
+                fetchBooks();
+                message.success('Book deleted successfully');
+            } else {
+                message.error('Failed to delete book');
+            }
+        } catch (error) {
+            message.error('An error occurred while deleting the book');
+        }
+    };
+
+
+
 
     const handleFormSubmit = async (values) => {
         try {
@@ -49,6 +93,7 @@ function UploadBook() {
             );
             console.log(response);
             if (response.data.code === 0) {
+                fetchBooks();
                 message.success('Book uploaded successfully');
                 return;
             } else {
@@ -70,7 +115,78 @@ function UploadBook() {
             span: 16,
         },
     };
+    const columns = [
+        {
+            title: 'Tên sách',
+            dataIndex: 'title',
+            key: 'title',
+        },
+        {
+            title: 'Tên tác giả',
+            dataIndex: 'author_name',
+            key: 'author_name',
+        },
+        {
+            title: 'Nhà xuất bản',
+            dataIndex: 'publisher',
+            key: 'publisher',
+        },
 
+        {
+            title: 'Giá',
+            dataIndex: 'price',
+            key: 'price',
+        },
+
+        {
+            title: 'Giá mua',
+            dataIndex: 'purchase_price',
+            key: 'purchase_price',
+        },
+        {
+            title: 'Số lượng sách',
+            dataIndex: 'stock',
+            key: 'stock',
+        },
+
+        {
+            title: 'Tình trạng mở',
+            dataIndex: 'opening_status',
+            key: 'opening_status',
+            render: (status) => (
+                <Tag color={status === 15 ? 'green' : 'red'}>
+                    {status === 15 ? 'Mở bán' : 'Đóng bán'}
+                </Tag>
+            ),
+        },
+        {
+            title: '',
+            key: 'action',
+            render: (_, record) => (
+                <div>
+                    <Tooltip title="Xóa sách">
+                        <Button
+                            type="link"
+                            onClick={() => handleDelete(record.id)}
+                            style={{ display: 'block', marginBottom: 8 }}
+                        >
+                            <TiDocumentDelete style={{ fontSize: '30px' }} />
+                        </Button>
+                    </Tooltip>
+
+                </div>
+            ),
+        },
+        {
+            title: '',
+            key: 'action2',
+            render: (_, record) => (
+                <div>
+                    <DetailBook book={record} />
+                </div>
+            ),
+        }
+    ];
     return (
         <div>
             <Row gutter={16}>
@@ -161,7 +277,18 @@ function UploadBook() {
                     </Form>
                 </Col>
                 <Col span={12}>
-                    <ListBooksCopy />
+                    <Table
+                        columns={columns}
+                        dataSource={books}
+                        loading={loading}
+                        pagination={{
+                            pageSize: 50,
+                        }}
+                        scroll={{
+                            y: 500,
+                        }}
+                        rowKey="id"
+                    />
                 </Col>
             </Row>
         </div>
