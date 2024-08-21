@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { Form, Input, Button, message, Checkbox, Select } from 'antd';
+import { Form, Input, Button, message, Checkbox, Select, DatePicker } from 'antd';
 import axios from 'axios';
-import { RiFacebookBoxFill } from "react-icons/ri";
+import moment from 'moment';
 
 const { Option } = Select;
 
@@ -17,7 +17,10 @@ function GetBookById({ book }) {
                 });
                 if (response.data.code === 0) {
                     // Set form fields with the API response
-                    form.setFieldsValue(response.data.body);
+                    const bookData = response.data.body;
+                    // Convert date string to moment object
+                    bookData.published_date = bookData.published_date ? moment(bookData.published_date) : null;
+                    form.setFieldsValue(bookData);
                 } else {
                     message.error('Không thể lấy dữ liệu sách');
                 }
@@ -38,18 +41,57 @@ function GetBookById({ book }) {
         },
     };
 
-    const onFinish = (values) => {
-        console.log('Giá trị form:', values);
-    };
-
     // Map status code to label
     const statusOptions = [
         { value: 15, label: 'Mở bán' },
         { value: 0, label: 'Đóng bán' }
     ];
 
+    const handleFormSubmitUpdate = async (values) => {
+        try {
+            const formData = new FormData();
+            formData.append('title', values.title);
+            formData.append('author_name', values.author_name);
+            formData.append('publisher', values.publisher);
+            formData.append('published_date', values.published_date ? values.published_date.format('YYYY-MM-DD') : ''); // Use moment's format method
+            formData.append('isbn', values.isbn);
+            formData.append('genre', values.genre);
+            formData.append('description', values.description);
+            formData.append('language', values.language);
+            formData.append('page_count', values.page_count);
+            formData.append('dimensions', values.dimensions);
+            formData.append('weight', values.weight);
+            formData.append('price', values.price);
+            formData.append('discount_price', values.discount_price);
+            formData.append('purchase_price', values.purchase_price);
+            formData.append('condition', values.condition);
+            formData.append('stock', values.stock);
+            formData.append('notes', values.notes);
+            formData.append('opening_status', values.opening_status ? values.opening_status : ''); // Handle Select value correctly
+            formData.append('id', book.id);
+
+            const response = await axios.put(
+                'http://127.0.0.1:8080/manager/book/update',
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }
+            );
+
+            if (response.data.code === 0) {
+                message.success('Cập nhật sách thành công');
+            } else {
+                message.error('Lỗi server, vui lòng thử lại');
+            }
+        } catch (error) {
+            message.error('Lỗi server, vui lòng thử lại');
+        }
+    };
+
     return (
-        <Form {...layout} form={form} onFinish={onFinish}>
+        <Form {...layout} form={form} onFinish={handleFormSubmitUpdate}>
             <Form.Item label="Tiêu đề" name="title">
                 <Input />
             </Form.Item>
@@ -60,7 +102,7 @@ function GetBookById({ book }) {
                 <Input />
             </Form.Item>
             <Form.Item label="Ngày xuất bản" name="published_date">
-                <Input />
+                <DatePicker format="YYYY-MM-DD" />
             </Form.Item>
             <Form.Item label="ISBN" name="isbn">
                 <Input />
@@ -102,7 +144,7 @@ function GetBookById({ book }) {
                 <Checkbox />
             </Form.Item>
             <Form.Item label="Trạng thái mở bán" name="opening_status">
-                <Select>
+                <Select placeholder="Chọn trạng thái mở bán">
                     {statusOptions.map(option => (
                         <Option key={option.value} value={option.value}>
                             {option.label}
@@ -112,7 +154,7 @@ function GetBookById({ book }) {
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                 <Button type="primary" htmlType="submit">
-                Chỉnh sửa
+                    Chỉnh sửa
                 </Button>
             </Form.Item>
         </Form>
