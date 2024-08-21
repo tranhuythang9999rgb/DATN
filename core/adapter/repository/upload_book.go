@@ -75,6 +75,6 @@ func (c *CollectionBook) List(ctx context.Context, req *domain.BookReqForm, limi
 
 // Update implements domain.RepositoryBook.
 func (c *CollectionBook) Update(ctx context.Context, book *domain.Book) error {
-	result := c.book.WithContext(ctx).Save(book)
+	result := c.book.Save(&book)
 	return result.Error
 }
