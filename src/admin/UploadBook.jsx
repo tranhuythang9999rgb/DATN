@@ -1,7 +1,8 @@
-import { Form, Input, InputNumber, Upload, Button, message, DatePicker, Select } from "antd";
+import { Form, Input, InputNumber, Upload, Button, message, DatePicker, Select, Col, Row } from "antd";
 import axios from "axios";
 import { useState } from "react";
 import './admin_index.css';
+import ListBooksCopy from "./ListBooksCopy";
 
 function UploadBook() {
 
@@ -73,94 +74,102 @@ function UploadBook() {
 
     return (
         <div>
-            <Form {...layout} form={form} className="form-container-upload-book" onFinish={handleFormSubmit}>
-                <Form.Item name="title" label="Tiêu đề" rules={[{ required: true }]}>
-                    <Input />
-                </Form.Item>
-                <Form.Item name="author_name" label="Tên tác giả" rules={[{ required: true }]}>
-                    <Input />
-                </Form.Item>
-                <Form.Item name="publisher" label="Nhà xuất bản" rules={[{ required: true }]}>
-                    <Input />
-                </Form.Item>
-                <Form.Item name="published_date" label="Ngày xuất bản" rules={[{ required: true }]}>
-                    <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
-                </Form.Item>
-                <Form.Item name="isbn" label="ISBN" rules={[{ required: true }]}>
-                    <Input />
-                </Form.Item>
-                <Form.Item name="genre" label="Thể loại" rules={[{ required: true }]}>
-                    <Input />
-                </Form.Item>
-                <Form.Item name="description" label="Mô tả" rules={[{ required: true }]}>
-                    <Input.TextArea />
-                </Form.Item>
-                <Form.Item name="language" label="Ngôn ngữ" rules={[{ required: true }]}>
-                    <Input />
-                </Form.Item>
-                <Form.Item name="page_count" label="Số trang" rules={[{ required: true }]}>
-                    <InputNumber />
-                </Form.Item>
-                <Form.Item name="dimensions" label="Kích thước" rules={[{ required: true }]}>
-                    <Input />
-                </Form.Item>
-                <Form.Item name="weight" label="Trọng lượng" rules={[{ required: true }]}>
-                    <InputNumber />
-                </Form.Item>
-                <Form.Item name="price" label="Giá" rules={[{ required: true }]}>
-                    <InputNumber />
-                </Form.Item>
-                <Form.Item name="discount_price" label="Giá giảm" rules={[{ required: true }]}>
-                    <InputNumber />
-                </Form.Item>
-                <Form.Item name="purchase_price" label="Giá mua" rules={[{ required: true }]}>
-                    <InputNumber />
-                </Form.Item>
+            <Row>
+                <Col flex={2}>
+                    <Form {...layout} form={form} className="form-container-upload-book" onFinish={handleFormSubmit}>
+                        <Form.Item name="title" label="Tiêu đề" rules={[{ required: true }]}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item name="author_name" label="Tên tác giả" rules={[{ required: true }]}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item name="publisher" label="Nhà xuất bản" rules={[{ required: true }]}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item name="published_date" label="Ngày xuất bản" rules={[{ required: true }]}>
+                            <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
+                        </Form.Item>
+                        <Form.Item name="isbn" label="ISBN" rules={[{ required: true }]}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item name="genre" label="Thể loại" rules={[{ required: true }]}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item name="description" label="Mô tả" rules={[{ required: true }]}>
+                            <Input.TextArea />
+                        </Form.Item>
+                        <Form.Item name="language" label="Ngôn ngữ" rules={[{ required: true }]}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item name="page_count" label="Số trang" rules={[{ required: true }]}>
+                            <InputNumber />
+                        </Form.Item>
+                        <Form.Item name="dimensions" label="Kích thước" rules={[{ required: true }]}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item name="weight" label="Trọng lượng" rules={[{ required: true }]}>
+                            <InputNumber />
+                        </Form.Item>
+                        <Form.Item name="price" label="Giá" rules={[{ required: true }]}>
+                            <InputNumber />
+                        </Form.Item>
+                        <Form.Item name="discount_price" label="Giá giảm" rules={[{ required: true }]}>
+                            <InputNumber />
+                        </Form.Item>
+                        <Form.Item name="purchase_price" label="Giá mua" rules={[{ required: true }]}>
+                            <InputNumber />
+                        </Form.Item>
 
-                <Form.Item name="stock" label="Số lượng sách" rules={[{ required: true }]}>
-                    <InputNumber />
-                </Form.Item>
-                <Form.Item name="notes" label="Ghi chú">
-                    <Input.TextArea />
-                </Form.Item>
+                        <Form.Item name="stock" label="Số lượng sách" rules={[{ required: true }]}>
+                            <InputNumber />
+                        </Form.Item>
+                        <Form.Item name="notes" label="Ghi chú">
+                            <Input.TextArea />
+                        </Form.Item>
 
-                <Form.Item name="opening_status" label="Tình trạng mở" rules={[{ required: true }]}>
-                    <Select
-                        labelInValue
+                        <Form.Item name="opening_status" label="Tình trạng mở" rules={[{ required: true }]}>
+                            <Select
+                                labelInValue
 
-                        style={{
-                            width: 120,
-                            height: 42,
-                        }}
-                        options={[
-                            {
-                                value: 15,
-                                label: 'Mở bán',
-                            },
-                            {
-                                value: 17,
-                                label: 'Đóng bán',
-                            },
-                        ]}
-                    />
-                </Form.Item>
-                <Form.Item name="file" label="Ảnh mô tả" valuePropName="fileList" getValueFromEvent={onChange}>
-                    <Upload
-                        fileList={fileList}
-                        listType="picture-card"
-                        accept="image/jpeg,image/png"
-                        onChange={onChange}
-                        beforeUpload={() => false} // Prevent auto-upload
-                    >
-                        {'+ Tải lên'}
-                    </Upload>
-                </Form.Item>
-                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                    <Button type="primary" htmlType="submit">
-                        Gửi
-                    </Button>
-                </Form.Item>
-            </Form>
+                                style={{
+                                    width: 120,
+                                    height: 42,
+                                }}
+                                options={[
+                                    {
+                                        value: 15,
+                                        label: 'Mở bán',
+                                    },
+                                    {
+                                        value: 17,
+                                        label: 'Đóng bán',
+                                    },
+                                ]}
+                            />
+                        </Form.Item>
+                        <Form.Item name="file" label="Ảnh mô tả" valuePropName="fileList" getValueFromEvent={onChange}>
+                            <Upload
+                                fileList={fileList}
+                                listType="picture-card"
+                                accept="image/jpeg,image/png"
+                                onChange={onChange}
+                                beforeUpload={() => false} // Prevent auto-upload
+                            >
+                                {'+ Tải lên'}
+                            </Upload>
+                        </Form.Item>
+                        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                            <Button type="primary" htmlType="submit">
+                                Gửi
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                </Col>
+                <Col flex={3}>
+                <ListBooksCopy/>
+                </Col>
+            </Row>
+
         </div>
     );
 }
