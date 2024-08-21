@@ -83,3 +83,18 @@ func (u *ControllersUploadBooks) GetBookById(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, book)
 }
+
+func (u *ControllersUploadBooks) UpdateBookById(ctx *gin.Context) {
+	var req entities.BookReqUpdate
+
+	if err := ctx.ShouldBind(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, err)
+		return
+	}
+	err := u.books.UpdateBookById(ctx, &req)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, nil)
+}

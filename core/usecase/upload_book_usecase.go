@@ -5,6 +5,7 @@ import (
 	"math"
 	"shoe_shop_server/common/enums"
 	errors "shoe_shop_server/common/error"
+	"shoe_shop_server/common/log"
 	"shoe_shop_server/common/utils"
 	"shoe_shop_server/core/domain"
 	"shoe_shop_server/core/entities"
@@ -122,4 +123,33 @@ func (u *UploadBookUseCase) GetBookById(ctx context.Context, id string) (*domain
 		return nil, errors.NewCustomHttpErrorWithCode(enums.DB_ERR_CODE, enums.DB_ERR_MESS, "500")
 	}
 	return book, nil
+}
+
+func (u *UploadBookUseCase) UpdateBookById(ctx context.Context, req *entities.BookReqUpdate) errors.Error {
+	err := u.books.Update(ctx, &domain.Book{
+		ID:            req.ID,
+		Title:         req.Title,
+		AuthorName:    req.AuthorName,
+		Publisher:     req.Publisher,
+		PublishedDate: req.PublishedDate,
+		ISBN:          req.ISBN,
+		Genre:         req.Genre,
+		Description:   req.Description,
+		Language:      req.Language,
+		PageCount:     req.PageCount,
+		Dimensions:    req.Dimensions,
+		Weight:        req.Weight,
+		Price:         req.Price,
+		DiscountPrice: req.DiscountPrice,
+		PurchasePrice: req.PurchasePrice,
+		Stock:         req.Stock,
+		Notes:         req.Notes,
+		IsActive:      true,
+		OpeningStatus: req.OpeningStatus,
+	})
+	log.Infof("req : ", req)
+	if err != nil {
+		return errors.NewCustomHttpErrorWithCode(enums.DB_ERR_CODE, enums.DB_ERR_MESS, "500")
+	}
+	return nil
 }
