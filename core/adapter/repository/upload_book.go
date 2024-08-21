@@ -81,6 +81,6 @@ func (c *CollectionBook) Update(ctx context.Context, book *domain.Book) error {
 
 func (c *CollectionBook) GetBookById(ctx context.Context, id int64) (*domain.Book, error) {
 	var book *domain.Book
-	result := c.book.Where("id = ?", id).First(&book)
+	result := c.book.Where("id = ? and is_active = true", id).First(&book)
 	return book, result.Error
 }
