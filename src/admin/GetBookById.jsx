@@ -19,10 +19,10 @@ function GetBookById({ book }) {
                     // Set form fields with the API response
                     form.setFieldsValue(response.data.body);
                 } else {
-                    message.error('Failed to fetch book data');
+                    message.error('Không thể lấy dữ liệu sách');
                 }
             } catch (error) {
-                message.error('An error occurred while fetching the book data');
+                message.error('Đã xảy ra lỗi khi lấy dữ liệu sách');
             }
         };
 
@@ -39,7 +39,7 @@ function GetBookById({ book }) {
     };
 
     const onFinish = (values) => {
-        console.log('Form values:', values);
+        console.log('Giá trị form:', values);
     };
 
     // Map status code to label
@@ -50,58 +50,58 @@ function GetBookById({ book }) {
 
     return (
         <Form {...layout} form={form} onFinish={onFinish}>
-            <Form.Item label="Title" name="title">
+            <Form.Item label="Tiêu đề" name="title">
                 <Input />
             </Form.Item>
-            <Form.Item label="Author Name" name="author_name">
+            <Form.Item label="Tên tác giả" name="author_name">
                 <Input />
             </Form.Item>
-            <Form.Item label="Publisher" name="publisher">
+            <Form.Item label="Nhà xuất bản" name="publisher">
                 <Input />
             </Form.Item>
-            <Form.Item label="Published Date" name="published_date">
+            <Form.Item label="Ngày xuất bản" name="published_date">
                 <Input />
             </Form.Item>
             <Form.Item label="ISBN" name="isbn">
                 <Input />
             </Form.Item>
-            <Form.Item label="Genre" name="genre">
+            <Form.Item label="Thể loại" name="genre">
                 <Input />
             </Form.Item>
-            <Form.Item label="Description" name="description">
+            <Form.Item label="Mô tả" name="description">
                 <Input.TextArea />
             </Form.Item>
-            <Form.Item label="Language" name="language">
+            <Form.Item label="Ngôn ngữ" name="language">
                 <Input />
             </Form.Item>
-            <Form.Item label="Page Count" name="page_count">
+            <Form.Item label="Số trang" name="page_count">
                 <Input />
             </Form.Item>
-            <Form.Item label="Dimensions" name="dimensions">
+            <Form.Item label="Kích thước" name="dimensions">
                 <Input />
             </Form.Item>
-            <Form.Item label="Weight" name="weight">
+            <Form.Item label="Cân nặng" name="weight">
                 <Input />
             </Form.Item>
-            <Form.Item label="Price" name="price">
+            <Form.Item label="Giá" name="price">
                 <Input />
             </Form.Item>
-            <Form.Item label="Discount Price" name="discount_price">
+            <Form.Item label="Giá giảm" name="discount_price">
                 <Input />
             </Form.Item>
-            <Form.Item label="Purchase Price" name="purchase_price">
+            <Form.Item label="Giá mua" name="purchase_price">
                 <Input />
             </Form.Item>
-            <Form.Item label="Stock" name="stock">
+            <Form.Item label="Số lượng" name="stock">
                 <Input />
             </Form.Item>
-            <Form.Item label="Notes" name="notes">
+            <Form.Item label="Ghi chú" name="notes">
                 <Input.TextArea />
             </Form.Item>
-            <Form.Item label="Is Active" name="is_active" valuePropName="checked">
+            <Form.Item label="Đang hoạt động" name="is_active" valuePropName="checked">
                 <Checkbox />
             </Form.Item>
-            <Form.Item label="Opening Status" name="opening_status">
+            <Form.Item label="Trạng thái mở bán" name="opening_status">
                 <Select>
                     {statusOptions.map(option => (
                         <Option key={option.value} value={option.value}>
@@ -112,7 +112,7 @@ function GetBookById({ book }) {
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                 <Button type="primary" htmlType="submit">
-                    Submit
+                Chỉnh sửa
                 </Button>
             </Form.Item>
         </Form>
