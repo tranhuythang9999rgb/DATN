@@ -1,24 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Table, Tag, Button, Drawer, message, Tooltip, Modal } from 'antd';
+import { Table, Tag, Button, message, Tooltip } from 'antd';
 import { TiDocumentDelete } from 'react-icons/ti';
-import { TbListDetails } from 'react-icons/tb';
-import { render } from '@testing-library/react';
-import UpSertFileByBookId from './UpSertFileByBookId';
-import { HiOutlineFolderPlus } from 'react-icons/hi2';
+import DetailBook from './DetailBook';
 
 function ListBooks() {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [drawerOpen, setDrawerOpen] = useState(false);
-    const [selectedBook, setSelectedBook] = useState(null);
-    const [images, setImages] = useState([]);
-    const [showAddFileModal, setShowAddFileModal] = useState(false);
 
-
-    const toggleAddFileModal = () => {
-        setShowAddFileModal(!showAddFileModal);
-    };
     // Fetch books data
     const fetchBooks = async () => {
         try {
@@ -56,23 +45,7 @@ function ListBooks() {
         }
     };
 
-    // Handle view details action
-    const handleViewDetails = async (book) => {
-        try {
-            setSelectedBook(book);
-            const response = await axios.get('http://127.0.0.1:8080/manager/file/list', {
-                params: { id: book.id }
-            });
-            if (response.data.code === 0) {
-                setImages(response.data.body);
-                setDrawerOpen(true);
-            } else {
-                message.error('Failed to fetch images');
-            }
-        } catch (error) {
-            message.error('An error occurred while fetching images');
-        }
-    };
+
 
     // Columns for books table
     const columns = [
@@ -147,88 +120,32 @@ function ListBooks() {
             ),
         },
         {
-            title: 'Hành động',
-            key: 'delete',
+            title: '',
+            key: 'action',
             render: (_, record) => (
-                <Tooltip title="Xóa sách">
-                    <Button
-                        type="link"
-                        onClick={() => handleDelete(record.id)}
-                        style={{ display: 'block', marginBottom: 8 }}
-                    >
-                        <TiDocumentDelete style={{ fontSize: '30px' }} />
-                    </Button>
-                </Tooltip>
+                <div>
+                    <Tooltip title="Xóa sách">
+                        <Button
+                            type="link"
+                            onClick={() => handleDelete(record.id)}
+                            style={{ display: 'block', marginBottom: 8 }}
+                        >
+                            <TiDocumentDelete style={{ fontSize: '30px' }} />
+                        </Button>
+                    </Tooltip>
+                   
+                </div>
             ),
         },
         {
             title: '',
-            key: 'details',
+            key: 'action2', 
             render: (_, record) => (
-                <Tooltip title="Xem chi tiết">
-                    <Button
-                        type="link"
-                        onClick={() => handleViewDetails(record)}
-                    >
-                        <TbListDetails style={{ fontSize: '30px' }} />
-                    </Button>
-                </Tooltip>
+                <div>
+                    <DetailBook book={record}/>
+                </div>
             ),
-        },
-    ];
-    // Handle delete action for an image
-    const handleDeleteImage = async (id) => {
-        try {
-            const response = await axios.delete('http://127.0.0.1:8080/manager/file/delete', {
-                params: { id }
-            });
-            if (response.data.code === 0) {
-                // Re-fetch the images after deletion
-                const updatedImages = images.filter(image => image.id !== id);
-                setImages(updatedImages);
-                message.success('Image deleted successfully');
-            } else {
-                message.error('Failed to delete image');
-            }
-        } catch (error) {
-            message.error('An error occurred while deleting the image');
         }
-    };
-    // Columns for images table
-    const imageColumns = [
-        {
-            title: 'Ảnh',
-            dataIndex: 'url',
-            key: 'url',
-            render: url => (
-                <img src={url} alt="Book" style={{ width: 100, height: 100, objectFit: 'cover' }} />
-            ),
-        },
-        {
-            title: 'ID',
-            dataIndex: 'id',
-            key: 'id',
-        },
-        {
-            title: 'Ngày tạo',
-            dataIndex: 'created_at',
-            key: 'created_at',
-            render: createdAt => new Date(createdAt * 1000).toLocaleDateString()
-        },
-        {
-            title: 'Hành động',
-            key: 'delete',
-            render: (_, record) => (
-                <Tooltip title="Xóa ảnh">
-                    <Button
-                        type="link"
-                        onClick={() => handleDeleteImage(record.id)}
-                    >
-                        <TiDocumentDelete style={{ fontSize: '24px' }} />
-                    </Button>
-                </Tooltip>
-            ),
-        },
     ];
 
     return (
@@ -245,32 +162,7 @@ function ListBooks() {
                 }}
                 rowKey="id"
             />
-            <Drawer
-                width={720}
-                onClose={() => setDrawerOpen(false)}
-                open={drawerOpen}
-                title={selectedBook ? `Chi tiết sách: ${selectedBook.title}` : ''}
-            >
-                <Button type="primary" onClick={toggleAddFileModal}>
-                    <HiOutlineFolderPlus />
-                </Button>
-                <Modal
-                    width={800}
-                    visible={showAddFileModal}
-                    onCancel={toggleAddFileModal}
-                    footer={null}
-                >
-                    {selectedBook && (
-                        <UpSertFileByBookId anyId={selectedBook.id} load={()=>handleViewDetails(selectedBook)}/>
-                    )}
-                </Modal>
-
-                <Table
-                    columns={imageColumns}
-                    dataSource={images}
-                    rowKey="id"
-                />
-            </Drawer>
+         
         </div>
     );
 }
