@@ -36,13 +36,13 @@ const tabsContent = [
             </span>
         ),
         content: <div>
-            <UploadBook/>
+            <UploadBook />
         </div>,
     },
     {
         key: '2',
         label: (
-            <span className="tab-label" style={{fontSize:'17px'}}>
+            <span className="tab-label" style={{ fontSize: '17px' }}>
                 <FcBarChart className="icon" /> Thống kê doanh thu
             </span>
         ),
@@ -51,7 +51,7 @@ const tabsContent = [
     {
         key: '3',
         label: (
-            <span className="tab-label" style={{fontSize:'17px'}}>
+            <span className="tab-label" style={{ fontSize: '17px' }}>
                 <LuFileBarChart className="icon" /> Thống kê đơn hàng
             </span>
         ),
@@ -60,12 +60,12 @@ const tabsContent = [
     {
         key: '4',
         label: (
-            <span className="tab-label" style={{fontSize:'17px',color:'#4a4a4a'}}>
+            <span className="tab-label" style={{ fontSize: '17px', color: '#4a4a4a' }}>
                 <LuClipboardList className="icon-quan-ly-sach" />Quản lý sách
-                </span>
+            </span>
         ),
         content: <div>
-            <ListBooks/>
+            <ListBooks />
         </div>,
     },
     {
@@ -77,7 +77,25 @@ const tabsContent = [
         ),
         content: <div>Tài khoản khách hàng đã được quản lý</div>,
     },
-    
+    {
+        key: '6',
+        label: (
+            <span className="tab-label" style={{ fontSize: '17px', color: '#4a4a4a' }}>
+                <TbUsersGroup className="icon-quan-ly-khach-hang" /> Quản lý tác giả
+            </span>
+        ),
+        content: <div>Tài khoản khách hàng đã được quản lý</div>,
+    },
+    {
+        key: '7',
+        label: (
+            <span className="tab-label" style={{ fontSize: '17px', color: '#4a4a4a' }}>
+                <TbUsersGroup className="icon-quan-ly-khach-hang" /> Quản lý nhà xuất bản
+            </span>
+        ),
+        content: <div>Tài khoản khách hàng đã được quản lý</div>,
+    },
+
 ];
 
 const items2 = [
@@ -85,7 +103,7 @@ const items2 = [
         key: 'sub1',
         icon: <GrUserAdmin />,
         label: (<span style={{
-            fontSize:'18px',
+            fontSize: '18px',
 
         }}>
             Quản lý
