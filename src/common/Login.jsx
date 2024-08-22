@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Checkbox } from 'antd';
 import axios from 'axios';
 import Dashboard from '../admin/Dashboard';
 
@@ -23,7 +23,6 @@ const Login = () => {
 
                 if (response.data.body.role === 1) {
                     setIsCheckAdmin(true);
-                    return <Dashboard />;  // Trả về Dashboard nếu role là 1
                 } else {
                     alert('Bạn không có quyền truy cập Dashboard.');
                 }
@@ -68,7 +67,9 @@ const Login = () => {
                     >
                         <Input.Password placeholder="Password" />
                     </Form.Item>
-
+                    <Form.Item name="isAdmin" valuePropName="checked">
+                        <Checkbox>Admin</Checkbox>
+                    </Form.Item>
                     <Form.Item>
                         <Button type="primary" htmlType="submit" loading={loading}>
                             Log in
