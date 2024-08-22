@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import axios from 'axios';
-import Dashboard from '../admin/Dashboard';
+import './index_login.css';
 
 const Login = () => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
-    const [isCheckAdmin, setIsCheckAdmin] = useState(false);
 
     const handleFormSubmit = async (values) => {
         setLoading(true);
@@ -18,14 +17,13 @@ const Login = () => {
 
             const response = await axios.post('http://127.0.0.1:8080/manager/user/login', formData);
 
+            console.log('API Response:', response.data); // Debug: Check response structure
+            
             if (response.data.code === 0) {
-                localStorage.setItem('username', response.data.body.user_name);
-
-                if (response.data.body.role === 1) {
-                    setIsCheckAdmin(true);
-                } else {
-                    alert('Bạn không có quyền truy cập Dashboard.');
-                }
+                // Save entire response body as JSON
+                const userData = response.data.body;
+                localStorage.setItem('userData', JSON.stringify(userData));
+                window.location.reload();
             } else {
                 alert('Thông tin tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại.');
             }
@@ -37,12 +35,6 @@ const Login = () => {
         }
     };
 
-    // Nếu isCheckAdmin là true, hiển thị Dashboard
-    if (isCheckAdmin) {
-        return <Dashboard />;
-    }
-
-    // Nếu chưa đăng nhập, hiển thị form đăng nhập
     return (
         <div className="container-login-user">
             <div className='form-login'>
@@ -56,6 +48,7 @@ const Login = () => {
                 >
                     <Form.Item
                         name="username"
+                        className='form-login-input'
                         rules={[{ required: true, message: 'Please input your username!' }]}
                     >
                         <Input placeholder="Username" />
@@ -63,6 +56,7 @@ const Login = () => {
 
                     <Form.Item
                         name="password"
+                        className='form-login-input'
                         rules={[{ required: true, message: 'Please input your password!' }]}
                     >
                         <Input.Password placeholder="Password" />
@@ -70,9 +64,9 @@ const Login = () => {
                     <Form.Item name="isAdmin" valuePropName="checked">
                         <Checkbox>Admin</Checkbox>
                     </Form.Item>
-                    <Form.Item>
+                    <Form.Item style={{display:'flex', justifyContent:'center'}}>
                         <Button type="primary" htmlType="submit" loading={loading}>
-                            Log in
+                            Đăng nhập
                         </Button>
                     </Form.Item>
                 </Form>
