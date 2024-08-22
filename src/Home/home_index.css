@@ -1,0 +1,25 @@
+body {
+    background-color: blanchedalmond;
+}
+
+
+.layout-header-center ul {
+    display: flex;
+    list-style: none;
+}
+
+.layout-header-center ul li {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 18px;
+    padding-right: 18px;
+}
+
+.layout-header {
+    padding: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    /* Hiệu ứng bóng đổ cho form */
+    margin-top: 0;
+    display: flex;
+    justify-content: center;
+}
