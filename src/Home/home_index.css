@@ -23,27 +23,33 @@ body {
     display: flex;
     justify-content: center;
 }
-.layout-content-image{
+
+.layout-content-image {
     display: flex;
     justify-content: center;
     margin-top: 20px;
 }
+
 .layout-footer {
     display: flex;
-    flex-direction: column; /* Arrange sections in a column */
-    background-color: #f8f9fa; /* Light background color */
+    flex-direction: column;
+    /* Arrange sections in a column */
+    background-color: #f8f9fa;
+    /* Light background color */
     padding: 20px;
-    border-top: 1px solid #dee2e6; /* Optional border on top */
+    border-top: 1px solid #dee2e6;
+    /* Optional border on top */
 }
 
-.layout-footer > div {
+.layout-footer>div {
     padding: 10px 0;
 }
 
 .layout-footer h3 {
     font-size: 18px;
     margin-bottom: 10px;
-    color: #343a40; /* Darker heading color */
+    color: #343a40;
+    /* Darker heading color */
 }
 
 .layout-footer ul {
@@ -54,46 +60,75 @@ body {
 
 .layout-footer li {
     margin-bottom: 5px;
-    color: #6c757d; /* Medium gray text color */
+    color: #6c757d;
+    /* Medium gray text color */
 }
 
 .layout-footer p {
     margin: 5px 0;
-    color: #6c757d; /* Medium gray text color */
+    color: #6c757d;
+    /* Medium gray text color */
 }
 
-.layout-footer-tac-gia, .layout-footer-nhaf-xuatban, .layout-footer-lien-he {
-    border-bottom: 1px solid #dee2e6; /* Optional border between rows */
+.layout-footer-tac-gia,
+.layout-footer-nhaf-xuatban,
+.layout-footer-lien-he {
+    border-bottom: 1px solid #dee2e6;
+    /* Optional border between rows */
     padding-bottom: 15px;
 }
 
-.layout-footer-tac-gia ul li, .layout-footer-nhaf-xuatban ul li {
+.layout-footer-tac-gia ul li,
+.layout-footer-nhaf-xuatban ul li {
     cursor: pointer;
     transition: color 0.3s ease;
 }
 
-.layout-footer-tac-gia ul li:hover, .layout-footer-nhaf-xuatban ul li:hover {
-    color: #007bff; /* Blue color on hover */
+.layout-footer-tac-gia ul li:hover,
+.layout-footer-nhaf-xuatban ul li:hover {
+    color: #007bff;
+    /* Blue color on hover */
 }
 
 .layout-footer-lien-he {
-    border-bottom: none; /* No border on the last row */
+    border-bottom: none;
+    /* No border on the last row */
 }
 
 .layout-footer ul {
     display: flex;
-    justify-content: space-between; /* Distribute items evenly with space between them */
+    justify-content: space-between;
+    /* Distribute items evenly with space between them */
     padding: 0;
     margin: 0;
-    list-style-type: none; /* Remove default bullets */
-    width: 100%; /* Ensure the UL takes up full width of the container */
+    list-style-type: none;
+    /* Remove default bullets */
+    width: 100%;
+    /* Ensure the UL takes up full width of the container */
 }
 
 .layout-footer li {
-    flex: 1; /* Distribute items equally */
-    text-align: center; /* Center the text in each item */
+    flex: 1;
+    /* Distribute items equally */
+    text-align: center;
+    /* Center the text in each item */
 }
 
-.layout-footer-tac-gia ul, .layout-footer-nhaf-xuatban ul {
-    margin-bottom: 15px; /* Optional: Add space between the UL and the following content */
+.layout-footer-tac-gia ul,
+.layout-footer-nhaf-xuatban ul {
+    margin-bottom: 15px;
+    /* Optional: Add space between the UL and the following content */
+}
+
+.layout-header {
+    position: fixed; /* Fixes the header to the top of the page */
+    top: 0;
+    left: 0;
+    width: 100%; /* Ensures the header spans the entire width */
+    z-index: 1000; /* Keeps the header above other content */
+    background-color: #fff; /* Optional: Set a background color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Adds a shadow for better visibility */
+}
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-image .ant-image-img {
+    margin-top: 90px;
 }
