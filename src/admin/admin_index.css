@@ -117,3 +117,14 @@
     border-color: #40a9ff; /* Viền màu xanh dương khi hover/focus */
     box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2); /* Hiệu ứng bóng */
 }
+
+
+.form-container-upload-book-2 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.ant-form-item {
+    margin-bottom: 24px; /* Adjust spacing between form items */
+}
