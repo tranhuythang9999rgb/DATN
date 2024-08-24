@@ -121,7 +121,7 @@ function Dashboard() {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
 
-    const [activeMenuItem, setActiveMenuItem] = useState('4');
+    const [activeMenuItem, setActiveMenuItem] = useState('1');
 
     const handleMenuClick = ({ key }) => {
         setActiveMenuItem(key);

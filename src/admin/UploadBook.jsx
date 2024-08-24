@@ -189,9 +189,9 @@ function UploadBook() {
     ];
     return (
         <div>
-            <Row gutter={16}>
-                <Col span={12}>
-                    <Form {...layout} form={form} className="form-container-upload-book" onFinish={handleFormSubmit}>
+            <Row >
+                <Col>
+                    <Form {...layout} form={form} className="form-container-upload-book-2" onFinish={handleFormSubmit}>
                         <Form.Item name="title" label="Tiêu đề" rules={[{ required: true }]}>
                             <Input />
                         </Form.Item>
