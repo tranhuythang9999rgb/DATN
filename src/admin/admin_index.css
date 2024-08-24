@@ -128,3 +128,17 @@
 .ant-form-item {
     margin-bottom: 24px; /* Adjust spacing between form items */
 }
+
+.form-container-upload-book-2 .ant-form-item {
+    flex: 1 1 300px; /* mỗi ô input sẽ có độ rộng tối thiểu là 300px */
+    min-width: 300px; /* độ rộng tối thiểu là 300px */
+}
+
+.form-container-upload-book-2 .ant-input,
+.form-container-upload-book-2 .ant-select,
+.form-container-upload-book-2 .ant-picker,
+.form-container-upload-book-2 .ant-input-number,
+.form-container-upload-book-2 .ant-upload {
+    width: 100%; /* mỗi input sẽ chiếm toàn bộ chiều rộng của container */
+    height: 50px;
+}
