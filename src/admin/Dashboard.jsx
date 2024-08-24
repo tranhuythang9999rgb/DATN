@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Breadcrumb, Layout, Menu, theme, Tabs } from 'antd';
+import { Breadcrumb, Layout, Menu, theme, Tabs, Button } from 'antd';
 import { GiAbstract078 } from 'react-icons/gi';
 import { GrUserAdmin } from 'react-icons/gr';
 
@@ -7,13 +7,33 @@ import './admin_index.css';
 import { IoMdCloudUpload } from 'react-icons/io';
 import { FcBarChart } from 'react-icons/fc';
 import { LuClipboardList, LuFileBarChart } from 'react-icons/lu';
-import { TbUsersGroup } from 'react-icons/tb';
+import { TbLogout2, TbUsersGroup } from 'react-icons/tb';
 import UploadBook from './UploadBook';
 import ListBooks from './ListBooks';
 
 const { Header, Content, Sider } = Layout;
+const clearLocalStorageAndReload = () => {
+    localStorage.clear(); // Xóa hết dữ liệu trong localStorage
+    window.location.reload(); // Reload lại trang
+};
 
 const items1 = [
+    {
+        key: 'logout',
+        icon: (
+            <Button
+                onClick={clearLocalStorageAndReload}
+
+                style={{
+                    backgroundColor: 'gray'
+                }}
+            >
+                <TbLogout2
+
+                />
+            </Button>
+        ),
+    },
     {
         key: 'abstract',
         icon: (
@@ -26,6 +46,7 @@ const items1 = [
         ),
     },
 ];
+
 
 const tabsContent = [
     {

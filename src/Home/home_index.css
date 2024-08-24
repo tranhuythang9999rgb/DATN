@@ -23,3 +23,77 @@ body {
     display: flex;
     justify-content: center;
 }
+.layout-content-image{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.layout-footer {
+    display: flex;
+    flex-direction: column; /* Arrange sections in a column */
+    background-color: #f8f9fa; /* Light background color */
+    padding: 20px;
+    border-top: 1px solid #dee2e6; /* Optional border on top */
+}
+
+.layout-footer > div {
+    padding: 10px 0;
+}
+
+.layout-footer h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #343a40; /* Darker heading color */
+}
+
+.layout-footer ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.layout-footer li {
+    margin-bottom: 5px;
+    color: #6c757d; /* Medium gray text color */
+}
+
+.layout-footer p {
+    margin: 5px 0;
+    color: #6c757d; /* Medium gray text color */
+}
+
+.layout-footer-tac-gia, .layout-footer-nhaf-xuatban, .layout-footer-lien-he {
+    border-bottom: 1px solid #dee2e6; /* Optional border between rows */
+    padding-bottom: 15px;
+}
+
+.layout-footer-tac-gia ul li, .layout-footer-nhaf-xuatban ul li {
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.layout-footer-tac-gia ul li:hover, .layout-footer-nhaf-xuatban ul li:hover {
+    color: #007bff; /* Blue color on hover */
+}
+
+.layout-footer-lien-he {
+    border-bottom: none; /* No border on the last row */
+}
+
+.layout-footer ul {
+    display: flex;
+    justify-content: space-between; /* Distribute items evenly with space between them */
+    padding: 0;
+    margin: 0;
+    list-style-type: none; /* Remove default bullets */
+    width: 100%; /* Ensure the UL takes up full width of the container */
+}
+
+.layout-footer li {
+    flex: 1; /* Distribute items equally */
+    text-align: center; /* Center the text in each item */
+}
+
+.layout-footer-tac-gia ul, .layout-footer-nhaf-xuatban ul {
+    margin-bottom: 15px; /* Optional: Add space between the UL and the following content */
+}
