@@ -1,9 +1,8 @@
 package controllers
 
 import (
-	"shoe_shop_server/assets/services"
-
 	"github.com/gin-gonic/gin"
+	"shoe_shop_server/assets/services"
 )
 
 type ControllerAddress struct {
