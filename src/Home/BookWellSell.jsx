@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card, Col, Image, Row, Typography } from 'antd';
 import axios from 'axios';
 import { MdSell } from 'react-icons/md';
+import { FaShoppingCart } from 'react-icons/fa';
 
 const { Meta } = Card;
 const { Title } = Typography;
 
-const BookWellSell = () => {
+const BookWellSell = ({title}) => {
     const [books, setBooks] = useState([]);
 
     useEffect(() => {
@@ -24,7 +25,7 @@ const BookWellSell = () => {
 
     return (
         <div style={{ padding: '20px' }}>
-            <Title level={2}>5 Sản phẩm bán chạy <MdSell /></Title> {/* Tiêu đề tiếng Việt */}
+            <Title level={2}>{title}<MdSell /></Title> {/* Tiêu đề tiếng Việt */}
             <Row gutter={16} justify="space-between">
                 {books.map(book => (
                     <Col span={4} key={book.id} style={{ display: 'flex', justifyContent: 'center' }}>
@@ -38,11 +39,10 @@ const BookWellSell = () => {
                                 />
                             }
                             style={{
-                                width: '250px',
+                                width: '300px',
                                 height: 'auto',
                                 display: 'flex',
                                 flexDirection: 'column',
-                                border: '2px solid green'  // Thêm viền màu xanh lá cây
                             }}
                         >
                             <Meta
@@ -55,7 +55,12 @@ const BookWellSell = () => {
                                 <p><strong>Giá:</strong> ${book.price}</p>
                                 <p><strong>Số lượng:</strong> {book.stock}</p>
                             </div>
-                            <Button type="primary" style={{ marginTop: '20px' }}>Xem chi tiết</Button>
+                           <span style={{display:'flex',marginLeft:'10px'}}>
+                           <div >
+                                <Button type="primary" style={{ marginTop: '20px',marginLeft:'25px' }}>Xem chi tiết</Button>
+                                <Button style={{marginTop:'20px',backgroundColor:'red',color:'white',marginLeft:'10px'}}>Thêm vào  giỏ hàng</Button>
+                            </div>
+                           </span>
                         </Card>
                     </Col>
                 ))}

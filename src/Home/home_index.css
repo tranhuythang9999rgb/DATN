@@ -133,3 +133,7 @@ body {
     margin-top: 90px;
 }
 /* home_index.css */
+
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-image .ant-image-img{
+    margin-top: 10px;
+}

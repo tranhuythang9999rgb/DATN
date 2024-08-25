@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './home_index.css';
 import { FcHome } from 'react-icons/fc';
-import { Avatar, Button, Image, Modal, Tooltip } from 'antd';
+import { Avatar, Button, Image, Input, Modal, Tooltip } from 'antd';
 import Login from '../common/Login';
-import { CiLogin } from 'react-icons/ci';
+import { CiLogin, CiSearch } from 'react-icons/ci';
 import { GiArmoredBoomerang } from 'react-icons/gi';
 import BookWellSell from './BookWellSell';
+import { AiOutlineShoppingCart } from 'react-icons/ai';
+const { Search } = Input;
 
 function HomePage() {
     const [username, setUsername] = useState(null);
@@ -39,7 +41,7 @@ function HomePage() {
                 <div className='layout-header-start'>
                     <div style={{ position: 'relative', display: 'inline-block' }}>
                         <GiArmoredBoomerang
-                            style={{ display: 'flex', marginLeft: '10px', color: 'green', fontSize: '50px' }}
+                            style={{ display: 'flex', marginLeft: '10px', color: 'green', fontSize: '100px' }}
                         />
                         <span
                             style={{
@@ -63,7 +65,14 @@ function HomePage() {
                         <li>Thư viện sách</li>
                         <li>Tác giả</li>
                         <li>Cuộc thi</li>
-                        <li>Kiểm tra đơn hàng</li>
+                        <li>Thông tin cửa hàng</li>
+                        <li>
+                            <div style={{ display: 'flex' }}>
+                                <Input placeholder='Tìm kiếm ...' style={{ height: '30px' }} />
+                                <Button style={{ height: '30px' }}><CiSearch />
+                                </Button>
+                            </div>
+                        </li>
                         <li>
                             {username ? (
                                 <Button onClick={handleLogoutClick}>Đăng xuất</Button>
@@ -85,8 +94,14 @@ function HomePage() {
                                 </>
                             )}
                         </li>
+                        <li>
+                            <Tooltip title="Giỏ hàng">
+                                <AiOutlineShoppingCart style={{ fontSize: '20px' }} />
+                            </Tooltip>
+                        </li>
                     </ul>
                 </div>
+
                 <div className='layout-header-end'></div>
             </div>
             <div className='layout-content'>
@@ -102,47 +117,85 @@ function HomePage() {
 
 
             <div className="layout-footer">
-                <div className='layout-footer-list-bool-well-sell'>
-                    <BookWellSell />
-                </div>
+
                 <div className='layout-footer-tac-gia'>
-                    <h3>Tác giả sách mới</h3>
+                    <h1>Tác giả</h1>
                     {/* List of new book authors */}
                     <ul style={{ display: 'flex' }}>
                         <li>
-                            <Avatar size={64} src='https://bizweb.dktcdn.net/100/363/455/articles/ta-c-gia-3.png?v=1724228914707'>
-                            </Avatar>
+                            <div style={{ display: 'block' }}>
+                                <Avatar size={160} src='https://ndu.khanhhoa.edu.vn/upload/104934/fck/files/download.png'>
+                                </Avatar>
+                                <div style={{ marginTop: '5px', color: 'black', fontSize: '20px' }}>Nguyễn Du </div>
+                            </div>
+
                         </li>
                         <li>
-                            <Avatar size={64} src='https://bizweb.dktcdn.net/100/363/455/articles/ta-c-gia-3.png?v=1724228914707'>
-                            </Avatar>
+                            <div style={{ display: 'block' }}>
+                                <Avatar size={160} src='https://baotangvanhoc.vn/wp-content/uploads/2021/12/Nha-van-Nam-Cao.jpg'>
+                                </Avatar>
+                                <div style={{ marginTop: '5px', color: 'black', fontSize: '20px' }}>Nam Cao</div>
+                            </div>
                         </li>
                         <li>
-                            <Avatar size={64} src='https://bizweb.dktcdn.net/100/363/455/articles/ta-c-gia-3.png?v=1724228914707'>
-                            </Avatar>
+                            <div style={{ display: 'block' }}>
+                                <Avatar size={160} src='https://www.nxbtre.com.vn/Images/Writer/nxbtre_thumb_30552016_085555.jpg'>
+                                </Avatar>
+                                <div style={{ marginTop: '5px', color: 'black', fontSize: '20px' }}>Nguyễn Nhật Ánh</div>
+                            </div>
                         </li>
-                        {/* Add more authors as needed */}
+                        <li>
+                            <div style={{ display: 'block' }}>
+                                <Avatar size={160} src='https://www.thivien.net/attachment/vnduJD_TYrIrUDl9fyOqRw.1503720312.jpg'>
+                                </Avatar>
+                                <div style={{ marginTop: '5px', color: 'black', fontSize: '20px' }}>Xuân Diệu</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div style={{ display: 'block' }}>
+                                <Avatar size={160} src='https://imagev3.vietnamplus.vn/w1000/Uploaded/2024/hotnnz/2024_05_30/huy-can4-9561.jpg.webp'>
+                                </Avatar>
+                                <div style={{ marginTop: '5px', color: 'black', fontSize: '20px' }}>Huy Cận </div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
-
+                <div className='layout-footer-list-bool-well-sell'>
+                    <BookWellSell title={'Top Sản phẩm bán chạy '} />
+                </div>
+                <div className='layout-footer-list-bool-well-sell'>
+                    <BookWellSell title={'Sắp xuất bản'} />
+                </div>
                 <div className='layout-footer-nhaf-xuatban'>
-                    <h3>Các đối tác</h3>
+                    <h3>Nhà xuất bản</h3>
                     {/* List of publishers */}
                     <ul style={{ display: 'flex' }}>
                         <li>
-                            <Avatar></Avatar>
+                            <div style={{ display: 'block' }}>
+                                <Avatar size={160} src='https://www.thivien.net/attachment/vnduJD_TYrIrUDl9fyOqRw.1503720312.jpg'>
+                                </Avatar>
+                                <div style={{ marginTop: '5px', color: 'black', fontSize: '20px' }}>Kim Đồng</div>
+                            </div>
                         </li>
                         <li>
-                            <Avatar></Avatar>
-
+                            <div style={{ display: 'block' }}>
+                                <Avatar size={160} src='https://www.thivien.net/attachment/vnduJD_TYrIrUDl9fyOqRw.1503720312.jpg'>
+                                </Avatar>
+                                <div style={{ marginTop: '5px', color: 'black', fontSize: '20px' }}>Xuân Diệu</div>
+                            </div>
                         </li>
                         <li>
-                            <Avatar></Avatar>
-
+                            <div style={{ display: 'block' }}>
+                                <Avatar size={160} src='https://www.thivien.net/attachment/vnduJD_TYrIrUDl9fyOqRw.1503720312.jpg'>
+                                </Avatar>
+                                <div style={{ marginTop: '5px', color: 'black', fontSize: '20px' }}>Xuân Diệu</div>
+                            </div>
                         </li>
                         {/* Add more publishers as needed */}
                     </ul>
                 </div>
+
+
                 <div className='layout-footer-lien-he'>
                     <h3>Liên hệ</h3>
                     {/* Contact information or other footer content */}
