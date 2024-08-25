@@ -15,15 +15,15 @@ function App() {
   return (
     <div>
       {/* <Dashboard /> */}
-      {/* <UploadBook/> */}
+      <UploadBook/>
       {/* <ListBooks/> */}
       {/* <HomePage/> */}
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
       {/* <CheckLogin/> */}
       {/* <TypeBook/> */}
-      <Publishers/>
-      <AuthorBook/>
+      {/* <Publishers/> */}
+      {/* <AuthorBook/> */}
     </div>
   );
 }
