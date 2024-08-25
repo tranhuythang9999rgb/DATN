@@ -239,12 +239,16 @@ function UploadBook() {
                     </Form.Item>
                     <Form.Item name="author_name" label="Tên tác giả" rules={[{ required: true }]}>
                         <Select
+                            mode="tags"
+                            maxCount={1}
                             options={authors.map(author => ({ value: author.name, label: author.name }))}
                             style={{ width: '100%' }}
                         />
                     </Form.Item>
                     <Form.Item name="publisher" label="Nhà xuất bản" rules={[{ required: true }]}>
                         <Select
+                            mode="tags"
+                            maxCount={1}
                             options={publishers.map(publisher => ({ value: publisher.name, label: publisher.name }))}
                             style={{ width: '100%' }}
                         />
@@ -257,6 +261,8 @@ function UploadBook() {
                     </Form.Item>
                     <Form.Item name="genre" label="Thể loại" rules={[{ required: true }]}>
                         <Select
+                            mode="tags"
+                            maxCount={1}
                             options={typeBooks.map(typeBook => ({ value: typeBook.name, label: typeBook.name }))}
                             style={{ width: '100%' }}
                         />
@@ -280,9 +286,9 @@ function UploadBook() {
                         <InputNumber min={0} />
                     </Form.Item>
                     <Form.Item name="discount_price" label="Giá giảm" rules={[{ required: true }]}>
-                        <InputNumber min={0} max={99}/>
+                        <InputNumber min={0} max={99} />
                     </Form.Item>
-                
+
                     <Form.Item name="condition" label="Tình trạng" rules={[{ required: true }]}>
                         <Input />
                     </Form.Item>
