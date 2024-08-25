@@ -96,6 +96,9 @@ function Publishers() {
                 <Form.Item
                     name="name"
                     rules={[{ required: true, message: 'Vui lòng nhập tên nhà xuất bản' }]}
+                    style={{
+                        marginBottom:'10px'
+                    }}
                 >
                     <Input className="custom-input" placeholder="Tên nhà xuất bản" />
                 </Form.Item>
@@ -121,6 +124,10 @@ function Publishers() {
                         type="primary"
                         htmlType="submit"
                         className="custom-button"
+                        style={{
+                            padding:'20px',
+                            width:'200px'
+                        }}
                     >
                         Thêm Nhà Xuất Bản
                     </Button>
