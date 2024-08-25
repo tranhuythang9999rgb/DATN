@@ -98,3 +98,11 @@ func (u *ControllersUploadBooks) UpdateBookById(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, nil)
 }
+func (u *ControllersUploadBooks) GetListBookSellWell(ctx *gin.Context) {
+	books, err := u.books.GetListBookSellWell(ctx)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, books)
+}

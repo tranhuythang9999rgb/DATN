@@ -71,3 +71,28 @@ type BookReqUpdate struct {
 	Notes         string  `form:"notes"`          // Các ghi chú bổ sung về cuốn sách
 	OpeningStatus int     `form:"opening_status"` // Trạng thái mở bán (0: Chưa mở bán, 1: Đang mở bán, 2: Đã đóng bán)
 }
+type BookSellWells struct {
+	Books []*BookRespSellWell `json:"books"`
+}
+type BookRespSellWell struct {
+	ID            int64   `json:"id"`             // Mã định danh duy nhất của cuốn sách
+	Title         string  `json:"title"`          // Tiêu đề của cuốn sách
+	AuthorName    string  `json:"author_name"`    // Tên của tác giả
+	Publisher     string  `json:"publisher"`      // Nhà xuất bản của cuốn sách
+	PublishedDate string  `json:"published_date"` // Ngày xuất bản của cuốn sách
+	ISBN          string  `json:"isbn"`           // Mã số quốc tế của cuốn sách (International Standard Book Number)
+	Genre         string  `json:"genre"`          // Thể loại hoặc danh mục của cuốn sách
+	Description   string  `json:"description"`    // Mô tả nội dung của cuốn sách
+	Language      string  `json:"language"`       // Ngôn ngữ của cuốn sách
+	PageCount     int     `json:"page_count"`     // Số trang của cuốn sách
+	Dimensions    string  `json:"dimensions"`     // Kích thước vật lý của cuốn sách
+	Weight        float64 `json:"weight"`         // Trọng lượng của cuốn sách
+	Price         float64 `json:"price"`          // Giá bán của cuốn sách
+	DiscountPrice float64 `json:"discount_price"` // Giá khuyến mãi của cuốn sách (nếu có)
+	// PurchasePrice float64 `json:"purchase_price"` // Giá nhập của cuốn sách để quản lý tồn kho
+	Stock         int    `json:"stock"`          // Số lượng cuốn sách còn trong kho
+	Notes         string `json:"notes"`          // Các ghi chú bổ sung về cuốn sách
+	IsActive      bool   `json:"is_active"`      // Xác định cuốn sách có đang được hiển thị hay không
+	OpeningStatus int    `json:"opening_status"` // Trạng thái mở bán (0: Chưa mở bán, 1: Đang mở bán, 2: Đã đóng bán)
+	FileDescFirst string `json:"file_desc_first"`
+}

@@ -51,6 +51,7 @@ func NewApiRouter(
 		bookGroup.PATCH("delete", book.DeleteBookById)
 		bookGroup.GET("/id", book.GetBookById)
 		bookGroup.PUT("/update", book.UpdateBookById)
+		bookGroup.GET("/sell/well", book.GetListBookSellWell)
 	}
 	fileGroup := r.Group("/file")
 	{

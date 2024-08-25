@@ -153,3 +153,48 @@ func (u *UploadBookUseCase) UpdateBookById(ctx context.Context, req *entities.Bo
 	}
 	return nil
 }
+func (u *UploadBookUseCase) GetListBookSellWell(ctx context.Context) (*entities.BookSellWells, errors.Error) {
+	var booksResp = make([]*entities.BookRespSellWell, 0)
+	books, err := u.books.GetListBookSellWell(ctx)
+	if err != nil {
+		return nil, errors.NewCustomHttpErrorWithCode(enums.DB_ERR_CODE, enums.DB_ERR_MESS, "500")
+	}
+	for _, v := range books {
+		var fileURL string
+		listFile, _ := u.fie_lc.GetListFileById(ctx, v.ID)
+
+		if listFile != nil && len(listFile) > 0 {
+			// Nếu listFile có giá trị và không rỗng, gán URL của file đầu tiên
+			fileURL = listFile[0].URL
+		} else {
+			// Nếu listFile là nil hoặc rỗng, gán URL là chuỗi rỗng
+			fileURL = ""
+		}
+
+		booksResp = append(booksResp, &entities.BookRespSellWell{
+			ID:            v.ID,
+			Title:         v.Title,
+			AuthorName:    v.AuthorName,
+			Publisher:     v.Publisher,
+			PublishedDate: v.PublishedDate,
+			ISBN:          v.ISBN,
+			Genre:         v.Genre,
+			Description:   v.Description,
+			Language:      v.Language,
+			PageCount:     v.PageCount,
+			Dimensions:    v.Dimensions,
+			Weight:        v.Weight,
+			Price:         v.Price,
+			DiscountPrice: v.DiscountPrice,
+			Stock:         v.Stock,
+			Notes:         v.Notes,
+			IsActive:      v.IsActive,
+			OpeningStatus: v.OpeningStatus,
+			FileDescFirst: fileURL,
+		})
+
+	}
+	return &entities.BookSellWells{
+		Books: booksResp,
+	}, nil
+}

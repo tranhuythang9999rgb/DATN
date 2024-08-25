@@ -107,3 +107,25 @@ CREATE TABLE IF NOT EXISTS type_books
 
 ALTER TABLE type_books
     OWNER TO postgres;
+
+CREATE TABLE IF NOT EXISTS orders (
+    id BIGSERIAL PRIMARY KEY, -- Tự động tăng số ID
+    customer_name VARCHAR(255), -- Tên khách hàng
+    order_date VARCHAR(255), -- Ngày đặt hàng
+    book_id BIGINT, -- ID sách (tham chiếu đến bảng sách)
+    book_title VARCHAR(255), -- Tiêu đề sách
+    book_author VARCHAR(255), -- Tên tác giả
+    book_publisher VARCHAR(255), -- Nhà xuất bản
+    book_published_date VARCHAR(255), -- Ngày xuất bản
+    book_isbn VARCHAR(20), -- ISBN
+    book_genre VARCHAR(50), -- Thể loại
+    book_description TEXT, -- Mô tả
+    book_language VARCHAR(50), -- Ngôn ngữ
+    book_page_count INTEGER, -- Số trang
+    book_dimensions VARCHAR(50), -- Kích thước
+    book_weight DECIMAL(10, 2), -- Trọng lượng
+    book_price DECIMAL(10, 2), -- Giá sách
+    quantity INTEGER, -- Số lượng sách trong đơn hàng
+    total_amount DECIMAL(10, 2), -- Tổng số tiền
+    status INTEGER -- Trạng thái đơn hàng
+);
