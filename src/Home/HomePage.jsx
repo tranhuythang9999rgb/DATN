@@ -98,11 +98,12 @@ function HomePage() {
 
                 </div>
             </div>
+
+
+
             <div className="layout-footer">
                 <div className='layout-footer-list-bool-well-sell'>
-                    <div>
-                        <BookWellSell/>
-                    </div>
+                    <BookWellSell />
                 </div>
                 <div className='layout-footer-tac-gia'>
                     <h3>Tác giả sách mới</h3>

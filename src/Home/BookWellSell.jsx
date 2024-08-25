@@ -39,7 +39,7 @@ const BookWellSell = () => {
                             }
                             style={{
                                 width: '250px',
-                                height: '400px',
+                                height: 'auto',
                                 display: 'flex',
                                 flexDirection: 'column',
                                 border: '2px solid green'  // Thêm viền màu xanh lá cây
@@ -47,20 +47,20 @@ const BookWellSell = () => {
                         >
                             <Meta
                                 title={book.title}
-                                description={(
-                                    <div >
-                                        <p><strong>Tác giả:</strong> {book.author_name}</p>
-                                        <p><strong>Nhà xuất bản:</strong> {book.publisher}</p>
-                                        <p><strong>Giá:</strong> {book.price}</p>
-                                        <p><strong>Số lượng:</strong> {book.stock}</p>
-                                        <Button>Cho tiet</Button>
-                                    </div>
-                                )}
                             />
+                            {/* Đặt phần mô tả bên ngoài Meta */}
+                            <div style={{ marginTop: '10px' }}>
+                                <p><strong>Tác giả:</strong> {book.author_name}</p>
+                                <p><strong>Nhà xuất bản:</strong> {book.publisher}</p>
+                                <p><strong>Giá:</strong> ${book.price}</p>
+                                <p><strong>Số lượng:</strong> {book.stock}</p>
+                            </div>
+                            <Button type="primary" style={{ marginTop: '20px' }}>Xem chi tiết</Button>
                         </Card>
                     </Col>
                 ))}
             </Row>
+
         </div>
     );
 };
