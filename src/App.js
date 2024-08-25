@@ -15,12 +15,12 @@ function App() {
   return (
     <div>
       {/* <Dashboard /> */}
-      <UploadBook/>
+      {/* <UploadBook/> */}
       {/* <ListBooks/> */}
       {/* <HomePage/> */}
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
-      {/* <CheckLogin/> */}
+      <CheckLogin/>
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}

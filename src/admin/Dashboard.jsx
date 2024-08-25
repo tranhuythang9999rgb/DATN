@@ -10,6 +10,9 @@ import { LuClipboardList, LuFileBarChart } from 'react-icons/lu';
 import { TbLogout2, TbUsersGroup } from 'react-icons/tb';
 import UploadBook from './UploadBook';
 import ListBooks from './ListBooks';
+import AuthorBook from './AuthorBook';
+import Publishers from './Publishers';
+import TypeBook from './TypeBook';
 
 const { Header, Content, Sider } = Layout;
 const clearLocalStorageAndReload = () => {
@@ -105,7 +108,9 @@ const tabsContent = [
                 <TbUsersGroup className="icon-quan-ly-khach-hang" /> Quản lý tác giả
             </span>
         ),
-        content: <div>Tài khoản khách hàng đã được quản lý</div>,
+        content: <div>
+            <AuthorBook/>
+        </div>,
     },
     {
         key: '7',
@@ -114,7 +119,9 @@ const tabsContent = [
                 <TbUsersGroup className="icon-quan-ly-khach-hang" /> Quản lý nhà xuất bản
             </span>
         ),
-        content: <div>Tài khoản khách hàng đã được quản lý</div>,
+        content: <div>
+            <Publishers/>
+        </div>,
     },
     {
         key: '8',
@@ -123,7 +130,9 @@ const tabsContent = [
                 <TbUsersGroup className="icon-quan-ly-khach-hang" /> Quản lý danh mục
             </span>
         ),
-        content: <div>Quản lý danh mục</div>,
+        content: <div>
+            <TypeBook/>
+        </div>,
     },
 
 ];
