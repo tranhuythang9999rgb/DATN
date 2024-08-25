@@ -22,11 +22,11 @@ type Book struct {
 	Weight        float64 `json:"weight"`         // Trọng lượng của cuốn sách
 	Price         float64 `json:"price"`          // Giá bán của cuốn sách
 	DiscountPrice float64 `json:"discount_price"` // Giá khuyến mãi của cuốn sách (nếu có)
-	PurchasePrice float64 `json:"purchase_price"` // Giá nhập của cuốn sách để quản lý tồn kho
-	Stock         int     `json:"stock"`          // Số lượng cuốn sách còn trong kho
-	Notes         string  `json:"notes"`          // Các ghi chú bổ sung về cuốn sách
-	IsActive      bool    `json:"is_active"`      // Xác định cuốn sách có đang được hiển thị hay không
-	OpeningStatus int     `json:"opening_status"` // Trạng thái mở bán (0: Chưa mở bán, 1: Đang mở bán, 2: Đã đóng bán)
+	// PurchasePrice float64 `json:"purchase_price"` // Giá nhập của cuốn sách để quản lý tồn kho
+	Stock         int    `json:"stock"`          // Số lượng cuốn sách còn trong kho
+	Notes         string `json:"notes"`          // Các ghi chú bổ sung về cuốn sách
+	IsActive      bool   `json:"is_active"`      // Xác định cuốn sách có đang được hiển thị hay không
+	OpeningStatus int    `json:"opening_status"` // Trạng thái mở bán (0: Chưa mở bán, 1: Đang mở bán, 2: Đã đóng bán)
 }
 
 type BookReqForm struct {

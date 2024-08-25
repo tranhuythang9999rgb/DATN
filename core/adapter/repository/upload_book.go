@@ -61,7 +61,7 @@ func (c *CollectionBook) List(ctx context.Context, req *domain.BookReqForm, limi
 		Weight:        req.Weight,
 		Price:         req.Price,
 		DiscountPrice: req.DiscountPrice,
-		PurchasePrice: req.PurchasePrice,
+		// PurchasePrice: req.PurchasePrice,
 		Stock:         req.Stock,
 		Notes:         req.Notes,
 		IsActive:      req.IsActive,
