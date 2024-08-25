@@ -20,6 +20,10 @@ function GetBookById({ book }) {
                     const bookData = response.data.body;
                     // Convert date string to moment object
                     bookData.published_date = bookData.published_date ? moment(bookData.published_date) : null;
+                    // Ensure opening_status is in the correct format for labelInValue
+                    bookData.opening_status = bookData.opening_status 
+                        ? { value: bookData.opening_status, label: bookData.opening_status === 15 ? 'Mở bán' : 'Đóng bán' }
+                        : null;
                     form.setFieldsValue(bookData);
                 } else {
                     message.error('Không thể lấy dữ liệu sách');
@@ -40,12 +44,6 @@ function GetBookById({ book }) {
             span: 16,
         },
     };
-
-    // Map status code to label
-    const statusOptions = [
-        { value: 15, label: 'Mở bán' },
-        { value: 0, label: 'Đóng bán' }
-    ];
 
     const handleFormSubmitUpdate = async (values) => {
         try {
