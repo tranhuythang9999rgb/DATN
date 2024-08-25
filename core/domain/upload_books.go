@@ -19,7 +19,7 @@ type Book struct {
 	Language      string  `json:"language"`       // Ngôn ngữ của cuốn sách
 	PageCount     int     `json:"page_count"`     // Số trang của cuốn sách
 	Dimensions    string  `json:"dimensions"`     // Kích thước vật lý của cuốn sách
-	Weight        float64 `json:"weight"`         // Trọng lượng của cuốn sách
+	Weight        string  `json:"weight"`         // Trọng lượng của cuốn sách
 	Price         float64 `json:"price"`          // Giá bán của cuốn sách
 	DiscountPrice float64 `json:"discount_price"` // Giá khuyến mãi của cuốn sách (nếu có)
 	// PurchasePrice float64 `json:"purchase_price"` // Giá nhập của cuốn sách để quản lý tồn kho
@@ -41,7 +41,7 @@ type BookReqForm struct {
 	Language      string  `form:"language"`       // Ngôn ngữ của cuốn sách
 	PageCount     int     `form:"page_count"`     // Số trang của cuốn sách
 	Dimensions    string  `form:"dimensions"`     // Kích thước vật lý của cuốn sách
-	Weight        float64 `form:"weight"`         // Trọng lượng của cuốn sách
+	Weight        string  `form:"weight"`         // Trọng lượng của cuốn sách
 	Price         float64 `form:"price"`          // Giá bán của cuốn sách
 	DiscountPrice float64 `form:"discount_price"` // Giá khuyến mãi của cuốn sách (nếu có)
 	PurchasePrice float64 `form:"purchase_price"` // Giá nhập của cuốn sách để quản lý tồn kho

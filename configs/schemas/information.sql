@@ -133,3 +133,8 @@ create table if not exists orders
 
 alter table orders
     owner to postgres;
+
+ALTER TABLE books 
+    ALTER COLUMN weight TYPE VARCHAR(255);
+
+ALTER TABLE books ALTER COLUMN price TYPE DECIMAL USING price::DECIMAL;
