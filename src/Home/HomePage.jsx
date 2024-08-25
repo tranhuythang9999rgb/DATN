@@ -5,6 +5,7 @@ import { Avatar, Button, Image, Modal, Tooltip } from 'antd';
 import Login from '../common/Login';
 import { CiLogin } from 'react-icons/ci';
 import { GiArmoredBoomerang } from 'react-icons/gi';
+import BookWellSell from './BookWellSell';
 
 function HomePage() {
     const [username, setUsername] = useState(null);
@@ -51,7 +52,7 @@ function HomePage() {
                                 fontSize: '18px',
                             }}
                         >
-                          TS Shop
+                            TS Shop
                         </span>
                     </div>
                 </div>
@@ -98,6 +99,11 @@ function HomePage() {
                 </div>
             </div>
             <div className="layout-footer">
+                <div className='layout-footer-list-bool-well-sell'>
+                    <div>
+                        <BookWellSell/>
+                    </div>
+                </div>
                 <div className='layout-footer-tac-gia'>
                     <h3>Tác giả sách mới</h3>
                     {/* List of new book authors */}
@@ -117,6 +123,7 @@ function HomePage() {
                         {/* Add more authors as needed */}
                     </ul>
                 </div>
+
                 <div className='layout-footer-nhaf-xuatban'>
                     <h3>Các đối tác</h3>
                     {/* List of publishers */}
