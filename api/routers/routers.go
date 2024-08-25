@@ -21,6 +21,8 @@ func NewApiRouter(
 	file_lc *controllers.ControllerFileLc,
 	typeBook *controllers.ControllersTypeBook,
 	publicer *controllers.ControllersPublisher,
+	authorBook *controllers.ControllersAuthorBook,
+
 ) *ApiRouter {
 	engine := gin.New()
 	gin.DisableConsoleColor()
@@ -60,6 +62,11 @@ func NewApiRouter(
 	{
 		typeBookGroup.POST("/add", typeBook.AddTypeBook)
 		typeBookGroup.GET("/list", typeBook.GetListTypeBook)
+	}
+	authorBookGroup := r.Group("/author_book")
+	{
+		authorBookGroup.POST("/add", authorBook.AddAuthorBook)
+		authorBookGroup.GET("/list", authorBook.GetAllAuthorBook)
 	}
 	publisherGroup := r.Group("/publisher")
 	{

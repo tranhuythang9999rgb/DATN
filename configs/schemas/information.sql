@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS authors
         PRIMARY KEY,
     name        varchar(255) NOT NULL,
     biography   text,
-    birth_date  date,
+    birth_date  VARCHAR(1024),
     nationality varchar(100)
 );
 
