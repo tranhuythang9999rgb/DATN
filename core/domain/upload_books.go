@@ -60,5 +60,5 @@ type RepositoryBook interface {
 	List(ctx context.Context, req *BookReqForm, limit, offset int) ([]*Book, error) // Liệt kê sách với phân trang
 	GetBookById(ctx context.Context, id int64) (*Book, error)
 	GetListBookSellWell(ctx context.Context) ([]*Book, error)
-	GetFourBook(ctx context.Context) ([]*Book, error) //lấy sách bán chạy
+	GetBookByIdTopSell(ctx context.Context, id int64) (*Book, error)
 }

@@ -122,39 +122,8 @@ func (c *CollectionBook) GetListBookSellWell(ctx context.Context) ([]*domain.Boo
 }
 
 // GetFourBook lấy 4 sản phẩm bán chạy nhất dựa trên bảng orders, nếu bảng orders chưa có dữ liệu thì lấy 4 bản sách đầu tiên
-func (c *CollectionBook) GetFourBook(ctx context.Context) ([]*domain.Book, error) {
-	// var books []*domain.Book
-	// var ordersCount int64
-
-	// // Kiểm tra số lượng đơn hàng
-	// if err := c.book.WithContext(ctx).
-	// 	Model(&domain.Order{}).
-	// 	Count(&ordersCount).Error; err != nil {
-	// 	return nil, fmt.Errorf("failed to count orders: %w", err)
-	// }
-
-	// if ordersCount > 0 {
-	// 	// Lấy 4 sản phẩm bán chạy nhất từ bảng orders
-	// 	if err := c.book.WithContext(ctx).
-	// 		Model(&domain.Order{}).
-	// 		Select("book_id, book_title, SUM(quantity) AS quantity").
-	// 		Group("book_id, book_title").
-	// 		Order("quantity DESC").
-	// 		Limit(4).
-	// 		Find(&books).Error; err != nil {
-	// 		return nil, fmt.Errorf("failed to get top selling books: %w", err)
-	// 	}
-	// } else {
-	// 	// Nếu không có đơn hàng, lấy 4 sách đầu tiên theo thứ tự giảm dần của ID
-	// 	if err := c.book.WithContext(ctx).
-	// 		Model(&domain.Book{}).
-	// 		Order("id DESC").
-	// 		Limit(4).
-	// 		Find(&books).Error; err != nil {
-	// 		return nil, fmt.Errorf("failed to get books: %w", err)
-	// 	}
-	// }
-
-	// return books, nil
-	panic("")
+func (c *CollectionBook) GetBookByIdTopSell(ctx context.Context, id int64) (*domain.Book, error) {
+	var book *domain.Book
+	result := c.book.Where("id = ? and is_active = true", id).First(&book)
+	return book, result.Error
 }
