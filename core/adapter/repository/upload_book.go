@@ -112,7 +112,7 @@ func (c *CollectionBook) GetListBookSellWell(ctx context.Context) ([]*domain.Boo
 		if err := c.book.WithContext(ctx).
 			Model(&domain.Book{}).
 			Order("id DESC").
-			Limit(4).
+			Limit(5).
 			Find(&books).Error; err != nil {
 			return nil, fmt.Errorf("failed to get books: %w", err)
 		}
