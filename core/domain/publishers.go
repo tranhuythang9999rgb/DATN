@@ -4,7 +4,7 @@ import "context"
 
 // Publisher đại diện cho một nhà xuất bản trong hệ thống
 type Publisher struct {
-	ID            int    `json:"id"`             // Mã định danh duy nhất cho nhà xuất bản
+	ID            int64  `json:"id"`             // Mã định danh duy nhất cho nhà xuất bản
 	Name          string `json:"name"`           // Tên của nhà xuất bản
 	Address       string `json:"address"`        // Địa chỉ của nhà xuất bản
 	ContactNumber string `json:"contact_number"` // Số điện thoại liên hệ
@@ -15,7 +15,7 @@ type Publisher struct {
 // RepositoryPublisher định nghĩa các phương thức cho các thao tác trên bảng publishers
 type RepositoryPublisher interface {
 	// Create thêm một nhà xuất bản mới vào cơ sở dữ liệu
-	Create(ctx context.Context, publisher *Publisher) (int64, error)
+	Create(ctx context.Context, publisher *Publisher) error
 
 	// Delete thay đổi trạng thái is_active của nhà xuất bản thành false
 	Delete(ctx context.Context, id int64) error
@@ -24,8 +24,10 @@ type RepositoryPublisher interface {
 	GetByID(ctx context.Context, id int64) (*Publisher, error)
 
 	// List lấy danh sách các nhà xuất bản với trạng thái is_active = true, có thể phân trang
-	List(ctx context.Context, limit int, offset int) ([]*Publisher, error)
+	List(ctx context.Context) ([]*Publisher, error)
 
 	// Update cập nhật thông tin của một nhà xuất bản
 	Update(ctx context.Context, publisher *Publisher) error
+	//
+	GetName(ctx context.Context, name string) (*Publisher, error)
 }

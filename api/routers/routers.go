@@ -19,6 +19,8 @@ func NewApiRouter(
 	addresPublic *controllers.ControllerAddress,
 	book *controllers.ControllersUploadBooks,
 	file_lc *controllers.ControllerFileLc,
+	typeBook *controllers.ControllersTypeBook,
+	publicer *controllers.ControllersPublisher,
 ) *ApiRouter {
 	engine := gin.New()
 	gin.DisableConsoleColor()
@@ -53,6 +55,16 @@ func NewApiRouter(
 		fileGroup.GET("/list", file_lc.GetListFileById)
 		fileGroup.POST("/upload", file_lc.UpSertFileDescriptByAnyId)
 		fileGroup.DELETE("/delete", file_lc.DeleteFileById)
+	}
+	typeBookGroup := r.Group("/type_book")
+	{
+		typeBookGroup.POST("/add", typeBook.AddTypeBook)
+		typeBookGroup.GET("/list", typeBook.GetListTypeBook)
+	}
+	publisherGroup := r.Group("/publisher")
+	{
+		publisherGroup.POST("/add", publicer.AddPublisher)
+		publisherGroup.GET("/list", publicer.ListPublisher)
 	}
 	// address public
 	r.GET("/public/customer/cities", addresPublic.GetAllCity)

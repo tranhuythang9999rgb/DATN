@@ -84,3 +84,6 @@ func (c *CollectionBook) GetBookById(ctx context.Context, id int64) (*domain.Boo
 	result := c.book.Where("id = ? and is_active = true", id).First(&book)
 	return book, result.Error
 }
+func (u *CollectionBook) GetListBookSellWell(ctx context.Context) ([]*domain.Book, error) {
+	return nil, nil
+}

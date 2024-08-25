@@ -30,6 +30,8 @@ func loadUseCase() []fx.Option {
 		fx.Provide(cache.NewCache),
 		fx.Provide(usecase.NewUploadBookUseCase),
 		fx.Provide(usecase.NewFileStoragesUseCase),
+		fx.Provide(usecase.NewTypeBookUseCase),
+		fx.Provide(usecase.NewPublisherUseCase),
 	}
 }
 
@@ -46,6 +48,8 @@ func loadEngine() []fx.Option {
 		fx.Provide(controllers.NewControllerAddress),
 		fx.Provide(controllers.NewControllersUploadBooks),
 		fx.Provide(controllers.NewControllerFileLc),
+		fx.Provide(controllers.NewControllersTypeBook),
+		fx.Provide(controllers.NewControllersPublisher),
 	}
 }
 func loadAdapter() []fx.Option {
@@ -57,5 +61,7 @@ func loadAdapter() []fx.Option {
 		fx.Provide(repository.NewCollectionBook),
 		fx.Provide(repository.NewConllectionFileStore),
 		fx.Provide(repository.NewTransaction),
+		fx.Provide(repository.NewCollectionGenre),
+		fx.Provide(repository.NewCollectionPublisher),
 	}
 }
