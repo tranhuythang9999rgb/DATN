@@ -280,11 +280,9 @@ function UploadBook() {
                         <InputNumber min={0} />
                     </Form.Item>
                     <Form.Item name="discount_price" label="Giá giảm" rules={[{ required: true }]}>
-                        <InputNumber min={0} />
+                        <InputNumber min={0} max={99}/>
                     </Form.Item>
-                    <Form.Item name="purchase_price" label="Giá mua" rules={[{ required: true }]}>
-                        <InputNumber min={0} />
-                    </Form.Item>
+                
                     <Form.Item name="condition" label="Tình trạng" rules={[{ required: true }]}>
                         <Input />
                     </Form.Item>
