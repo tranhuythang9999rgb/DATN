@@ -116,6 +116,15 @@ const tabsContent = [
         ),
         content: <div>Tài khoản khách hàng đã được quản lý</div>,
     },
+    {
+        key: '8',
+        label: (
+            <span className="tab-label" style={{ fontSize: '17px', color: '#4a4a4a' }}>
+                <TbUsersGroup className="icon-quan-ly-khach-hang" /> Quản lý danh mục
+            </span>
+        ),
+        content: <div>Quản lý danh mục</div>,
+    },
 
 ];
 

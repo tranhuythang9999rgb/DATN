@@ -1,5 +1,7 @@
 import Dashboard from "./admin/Dashboard";
 import ListBooks from "./admin/ListBooks";
+import Publishers from "./admin/Publishers";
+import TypeBook from "./admin/TypeBook";
 import UploadBook from "./admin/UploadBook";
 import CheckLogin from "./common/CheckLogin";
 import CheckQrCode from "./common/CheckQrCode";
@@ -17,7 +19,9 @@ function App() {
       {/* <HomePage/> */}
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
-      <CheckLogin/>
+      {/* <CheckLogin/> */}
+      {/* <TypeBook/> */}
+      <Publishers/>
     </div>
   );
 }

@@ -36,10 +36,24 @@ function HomePage() {
         <div className='layout-home'>
             <div className='layout-header'>
                 <div className='layout-header-start'>
-                    <span>
-                    <GiArmoredBoomerang style={{ display: 'flex', marginLeft: '10px', color: 'green', fontSize: '50px' }} />
-
-                    </span>
+                    <div style={{ position: 'relative', display: 'inline-block' }}>
+                        <GiArmoredBoomerang
+                            style={{ display: 'flex', marginLeft: '10px', color: 'green', fontSize: '50px' }}
+                        />
+                        <span
+                            style={{
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                                color: 'orange',
+                                fontWeight: 'bold',
+                                fontSize: '18px',
+                            }}
+                        >
+                          TS Shop
+                        </span>
+                    </div>
                 </div>
                 <div className='layout-header-center'>
                     <ul>
@@ -108,14 +122,14 @@ function HomePage() {
                     {/* List of publishers */}
                     <ul style={{ display: 'flex' }}>
                         <li>
-                         <Avatar></Avatar>
+                            <Avatar></Avatar>
                         </li>
                         <li>
-                        <Avatar></Avatar>
+                            <Avatar></Avatar>
 
                         </li>
                         <li>
-                        <Avatar></Avatar>
+                            <Avatar></Avatar>
 
                         </li>
                         {/* Add more publishers as needed */}
