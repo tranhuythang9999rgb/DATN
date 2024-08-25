@@ -22,7 +22,7 @@ function App() {
       {/* <Login/> */}
       {/* <CheckLogin/> */}
       {/* <TypeBook/> */}
-      {/* <Publishers/> */}
+      <Publishers/>
       <AuthorBook/>
     </div>
   );

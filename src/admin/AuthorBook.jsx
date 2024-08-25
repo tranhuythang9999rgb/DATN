@@ -80,7 +80,7 @@ function AuthorBook() {
     ];
 
     return (
-        <div style={{ padding: 10 }}>
+        <div style={{ padding: '10px' }}>
             <h1>Quản Lý Tác Giả</h1>
             <Form
                 layout="inline"
@@ -90,6 +90,9 @@ function AuthorBook() {
                 <Form.Item
                     name="name"
                     rules={[{ required: true, message: 'Vui lòng nhập tên tác giả' }]}
+                    style={{
+                        marginBottom:'10px'
+                    }}
                 >
                     <Input placeholder="Tên Tác Giả" style={{ height: '40px' }} />
                 </Form.Item>
@@ -118,7 +121,8 @@ function AuthorBook() {
                         style={{
                             height: '40px',
                             marginLeft: 8,
-                            width: '195px'
+                            width: '195px',
+                            paddingTop:'10px'
                         }}
                     >
                         Thêm Tác Giả
