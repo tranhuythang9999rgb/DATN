@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Table, Input, Button, message, Form } from 'antd';
 import axios from 'axios';
 import './admin_index.css'; // Import your custom CSS
-
+//Nhà Xuất Bản
 function Publishers() {
     const [publishers, setPublishers] = useState([]);
     const [loading, setLoading] = useState(false);

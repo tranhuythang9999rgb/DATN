@@ -1,3 +1,4 @@
+import AuthorBook from "./admin/AuthorBook";
 import Dashboard from "./admin/Dashboard";
 import ListBooks from "./admin/ListBooks";
 import Publishers from "./admin/Publishers";
@@ -21,7 +22,8 @@ function App() {
       {/* <Login/> */}
       {/* <CheckLogin/> */}
       {/* <TypeBook/> */}
-      <Publishers/>
+      {/* <Publishers/> */}
+      <AuthorBook/>
     </div>
   );
 }
