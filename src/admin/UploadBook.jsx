@@ -125,8 +125,6 @@ function UploadBook() {
             formData.append('weight', values.weight);
             formData.append('price', values.price);
             formData.append('discount_price', values.discount_price);
-            formData.append('purchase_price', values.purchase_price);
-            formData.append('condition', values.condition);
             formData.append('stock', values.stock);
             formData.append('notes', values.notes);
             formData.append('opening_status', values.opening_status ? values.opening_status.value : ''); // Handle Select value
@@ -289,9 +287,6 @@ function UploadBook() {
                         <InputNumber min={0} max={99} />
                     </Form.Item>
 
-                    <Form.Item name="condition" label="Tình trạng" rules={[{ required: true }]}>
-                        <Input />
-                    </Form.Item>
                     <Form.Item name="stock" label="Số lượng" rules={[{ required: true }]}>
                         <InputNumber min={0} />
                     </Form.Item>
@@ -320,7 +315,6 @@ function UploadBook() {
                         <Upload
                             fileList={fileList}
                             listType="picture-card"
-                            accept="image/jpeg,image/png"
                             onChange={onChange}
                             beforeUpload={() => false} // Prevent auto-upload
                         >

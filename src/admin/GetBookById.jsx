@@ -63,11 +63,9 @@ function GetBookById({ book }) {
             formData.append('weight', values.weight);
             formData.append('price', values.price);
             formData.append('discount_price', values.discount_price);
-            formData.append('purchase_price', values.purchase_price);
-            formData.append('condition', values.condition);
             formData.append('stock', values.stock);
             formData.append('notes', values.notes);
-            formData.append('opening_status', values.opening_status ? values.opening_status : ''); // Handle Select value correctly
+            formData.append('opening_status', values.opening_status ? values.opening_status.value : ''); // Handle Select value
             formData.append('id', book.id);
 
             const response = await axios.put(
@@ -131,9 +129,7 @@ function GetBookById({ book }) {
             <Form.Item label="Giá giảm" name="discount_price">
                 <Input />
             </Form.Item>
-            <Form.Item label="Giá mua" name="purchase_price">
-                <Input />
-            </Form.Item>
+
             <Form.Item label="Số lượng" name="stock">
                 <Input />
             </Form.Item>
@@ -144,13 +140,22 @@ function GetBookById({ book }) {
                 <Checkbox />
             </Form.Item>
             <Form.Item label="Trạng thái mở bán" name="opening_status">
-                <Select placeholder="Chọn trạng thái mở bán">
-                    {statusOptions.map(option => (
-                        <Option key={option.value} value={option.value}>
-                            {option.label}
-                        </Option>
-                    ))}
-                </Select>
+                <Select
+                    labelInValue
+                    style={{
+                        width: '100%',
+                    }}
+                    options={[
+                        {
+                            value: 15,
+                            label: 'Mở bán',
+                        },
+                        {
+                            value: 17,
+                            label: 'Đóng bán',
+                        },
+                    ]}
+                />
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                 <Button type="primary" htmlType="submit">
