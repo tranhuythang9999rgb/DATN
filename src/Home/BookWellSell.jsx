@@ -35,12 +35,12 @@ const BookWellSell = ({title}) => {
                                 <Image
                                     alt={book.title}
                                     src={book.file_desc_first || 'http://placehold.it/300x400'}
-                                    style={{ height: '200px', objectFit: 'cover' }}
+                                    style={{ height: '200px', objectFit: 'cover',width:'220px' }}
                                 />
                             }
                             style={{
                                 width: '300px',
-                                height: 'auto',
+                                height: '450px',
                                 display: 'flex',
                                 flexDirection: 'column',
                             }}
@@ -48,7 +48,6 @@ const BookWellSell = ({title}) => {
                             <Meta
                                 title={book.title}
                             />
-                            {/* Đặt phần mô tả bên ngoài Meta */}
                             <div style={{ marginTop: '10px' }}>
                                 <p><strong>Tác giả:</strong> {book.author_name}</p>
                                 <p><strong>Nhà xuất bản:</strong> {book.publisher}</p>
@@ -57,8 +56,8 @@ const BookWellSell = ({title}) => {
                             </div>
                            <span style={{display:'flex',marginLeft:'10px'}}>
                            <div >
-                                <Button type="primary" style={{ marginTop: '20px',marginLeft:'25px' }}>Xem chi tiết</Button>
-                                <Button style={{marginTop:'20px',backgroundColor:'red',color:'white',marginLeft:'10px'}}>Thêm vào  giỏ hàng</Button>
+                                <Button type="primary" style={{ marginTop: '10px',marginLeft:'25px' }}>Xem chi tiết</Button>
+                                <Button style={{marginTop:'10px',backgroundColor:'red',color:'white',marginLeft:'10px'}}>Thêm vào  giỏ hàng</Button>
                             </div>
                            </span>
                         </Card>

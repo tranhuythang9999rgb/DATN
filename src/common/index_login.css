@@ -1,6 +1,6 @@
 .login-form {
-    background-color: white;
-    padding: 30px;
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+  padding: 30px;
     border-radius: 10px;
     max-width: 350px;
     margin: 50px auto;
@@ -19,3 +19,4 @@
     border-radius: 6px;
     transition: all 0.2s;
 }
+

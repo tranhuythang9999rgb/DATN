@@ -136,4 +136,10 @@ body {
 
 :where(.css-dev-only-do-not-override-1gwfwyx).ant-image .ant-image-img{
     margin-top: 10px;
+    padding-top: 30px;
+}
+
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-card .ant-card-cover >*{
+    display: flex;
+    justify-content: center;
 }

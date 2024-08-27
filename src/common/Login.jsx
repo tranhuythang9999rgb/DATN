@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import axios from 'axios';
 import './index_login.css';
+import { MdAdminPanelSettings } from 'react-icons/md';
+import { RiAdminLine, RiLockPasswordFill } from 'react-icons/ri';
 
 const Login = () => {
     const [form] = Form.useForm();
@@ -18,7 +20,7 @@ const Login = () => {
             const response = await axios.post('http://127.0.0.1:8080/manager/user/login', formData);
 
             console.log('API Response:', response.data); // Debug: Check response structure
-            
+
             if (response.data.code === 0) {
                 // Save entire response body as JSON
                 const userData = response.data.body;
@@ -49,22 +51,33 @@ const Login = () => {
                     <Form.Item
                         name="username"
                         className='form-login-input'
-                        rules={[{ required: true, message: 'Please input your username!' }]}
+                        rules={[{ required: true, message: 'Vui lòng nhập tên tài khoản!' }]}
                     >
-                        <Input placeholder="Username" />
+                        <Input
+                            placeholder="Username"
+                            prefix={<RiLockPasswordFill style={{ color: 'rgba(0,0,0,.45)' }} />}
+                        />
                     </Form.Item>
 
                     <Form.Item
                         name="password"
                         className='form-login-input'
-                        rules={[{ required: true, message: 'Please input your password!' }]}
+                        rules={[{ required: true, message: 'Vui lòng nhập mật khảu!' }]}
                     >
-                        <Input.Password placeholder="Password" />
+                        <Input.Password
+                            placeholder="Password"
+                            prefix={<RiAdminLine style={{ color: 'rgba(0,0,0,.45)' }} />}
+
+                        />
                     </Form.Item>
                     <Form.Item name="isAdmin" valuePropName="checked">
-                        <Checkbox>Admin</Checkbox>
+                        <Checkbox>
+                            <span style={{ color: 'white' }}>
+                                admin <MdAdminPanelSettings />
+                            </span>
+                        </Checkbox>
                     </Form.Item>
-                    <Form.Item style={{display:'flex', justifyContent:'center'}}>
+                    <Form.Item style={{ display: 'flex', justifyContent: 'center' }}>
                         <Button type="primary" htmlType="submit" loading={loading}>
                             Đăng nhập
                         </Button>
