@@ -5,7 +5,7 @@ import moment from 'moment';
 
 const { Option } = Select;
 
-function GetBookById({ book }) {
+function UpdateBook({ book }) {
     const [form] = Form.useForm();
 
     useEffect(() => {
@@ -164,4 +164,4 @@ function GetBookById({ book }) {
     );
 }
 
-export default GetBookById;
+export default UpdateBook;

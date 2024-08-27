@@ -5,7 +5,7 @@ import { TiDocumentDelete } from 'react-icons/ti';
 import { HiOutlineFolderPlus } from 'react-icons/hi2';
 import UpSertFileByBookId from './UpSertFileByBookId';
 import { TbListDetails } from 'react-icons/tb';
-import GetBookById from './GetBookById';
+import UpdateBook from './UpdateBook';
 
 function DetailBook({ book }) {  // Destructuring book prop
     const [images, setImages] = useState([]);
@@ -106,7 +106,7 @@ function DetailBook({ book }) {  // Destructuring book prop
                 <Button type="primary" onClick={toggleAddFileModal} style={{ marginBottom: 16 }}>
                     <HiOutlineFolderPlus /> Thêm tệp
                 </Button>
-                <GetBookById book={book}/>
+                <UpdateBook book={book}/>
 
                 <Modal
                     width={800}
