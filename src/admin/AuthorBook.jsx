@@ -134,7 +134,7 @@ function AuthorBook() {
                 dataSource={authors}
                 rowKey="id"
                 loading={loading}
-                pagination={false}
+                pagination={{ pageSize: 10 }}
             />
         </div>
     );

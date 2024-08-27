@@ -97,7 +97,7 @@ function TypeBook() {
                 dataSource={typeBooks}
                 rowKey="id"
                 loading={loading}
-                pagination={false}
+                pagination={{ pageSize: 10 }}
             />
         </div>
     );

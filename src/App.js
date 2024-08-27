@@ -19,8 +19,8 @@ function App() {
       {/* <ListBooks/> */}
       {/* <HomePage/> */}
       {/* <CheckQrCode/> */}
-      {/* <Login/> */}
-      <CheckLogin/>
+      <Login/>
+      {/* <CheckLogin/> */}
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
