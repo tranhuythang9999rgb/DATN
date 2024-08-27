@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Card, Col, Image, Row, Typography } from 'antd';
+import { Button, Card, Col, Image, Row, Tooltip, Typography } from 'antd';
 import axios from 'axios';
 import { MdSell } from 'react-icons/md';
-import { FaShoppingCart } from 'react-icons/fa';
+import { FaRegHeart } from 'react-icons/fa';
+import { IoCartOutline } from 'react-icons/io5';
 
 const { Meta } = Card;
 const { Title } = Typography;
 
-const BookWellSell = ({title}) => {
+const BookWellSell = ({ title }) => {
     const [books, setBooks] = useState([]);
 
     useEffect(() => {
@@ -25,46 +26,61 @@ const BookWellSell = ({title}) => {
 
     return (
         <div style={{ padding: '20px' }}>
-            <Title level={2}>{title}<MdSell /></Title> {/* Tiêu đề tiếng Việt */}
+            <Title level={2}>{title}<MdSell /></Title>
             <Row gutter={16} justify="space-between">
                 {books.map(book => (
                     <Col span={4} key={book.id} style={{ display: 'flex', justifyContent: 'center' }}>
                         <Card
-                            hoverable
                             cover={
-                                <Image
-                                    alt={book.title}
-                                    src={book.file_desc_first || 'http://placehold.it/300x400'}
-                                    style={{ height: '200px', objectFit: 'cover',width:'220px' }}
-                                />
+                                <div style={{ position: 'relative' }}>
+                                    <FaRegHeart className='icon-trai-tim' style={{
+                                        position: 'absolute',
+                                        top: '3px',
+                                        right: '35px',
+                                        fontSize: '25px',
+                                        color: 'pink',
+                                        cursor: 'pointer'
+                                    }} />
+                                    <Image
+                                        alt={book.title}
+                                        src={book.file_desc_first || 'http://placehold.it/300x400'}
+                                        style={{
+                                            height: '200px',
+                                            objectFit: 'cover',
+                                            width: '220px',
+                                            display: 'flex',
+                                            margin: '0 auto',
+                                        }}
+                                    />
+                                </div>
                             }
                             style={{
                                 width: '300px',
                                 height: '450px',
                                 display: 'flex',
                                 flexDirection: 'column',
+                                justifyContent: 'space-between',
                             }}
                         >
-                            <Meta
-                                title={book.title}
-                            />
+                            <Meta title={book.title} />
                             <div style={{ marginTop: '10px' }}>
                                 <p><strong>Tác giả:</strong> {book.author_name}</p>
                                 <p><strong>Nhà xuất bản:</strong> {book.publisher}</p>
-                                <p><strong>Giá:</strong> ${book.price}</p>
+                                <p><strong>Giá:</strong> {book.price} VND</p>
                                 <p><strong>Số lượng:</strong> {book.stock}</p>
                             </div>
-                           <span style={{display:'flex',marginLeft:'10px'}}>
-                           <div >
-                                <Button type="primary" style={{ marginTop: '10px',marginLeft:'25px' }}>Xem chi tiết</Button>
-                                <Button style={{marginTop:'10px',backgroundColor:'red',color:'white',marginLeft:'10px'}}>Thêm vào  giỏ hàng</Button>
-                            </div>
-                           </span>
+                            <span style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px' }}>
+                                <Button style={{ background: 'red', color: 'white', fontSize: '17px' }}>
+                                    Mua ngay
+                                </Button>
+                                <Tooltip title="Thêm vào giỏ hàng">
+                                    <IoCartOutline style={{ fontSize: '25px', color: 'orangered', cursor: 'pointer' }} />
+                                </Tooltip>
+                            </span>
                         </Card>
                     </Col>
                 ))}
             </Row>
-
         </div>
     );
 };
