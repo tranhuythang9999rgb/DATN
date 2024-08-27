@@ -7,6 +7,7 @@ import UploadBook from "./admin/UploadBook";
 import CheckLogin from "./common/CheckLogin";
 import CheckQrCode from "./common/CheckQrCode";
 import Login from "./common/Login";
+import DetailBuy from "./Home/DetailBuy";
 import HomePage from "./Home/HomePage";
 
 
@@ -20,10 +21,11 @@ function App() {
       {/* <HomePage/> */}
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
-      <CheckLogin/>
+      {/* <CheckLogin/> */}
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
+      <DetailBuy book_id={5356985} />
     </div>
   );
 }

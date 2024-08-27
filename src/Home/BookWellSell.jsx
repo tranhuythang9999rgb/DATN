@@ -4,6 +4,7 @@ import axios from 'axios';
 import { MdSell } from 'react-icons/md';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';  // Import FaHeart for the filled heart icon
 import { IoCartOutline } from 'react-icons/io5';
+import Cookies from 'js-cookie';  // Import js-cookie
 
 const { Meta } = Card;
 const { Title } = Typography;
@@ -11,13 +12,15 @@ const { Title } = Typography;
 const BookWellSell = ({ title }) => {
     const [books, setBooks] = useState([]);
     const [likedBooks, setLikedBooks] = useState({});  // State to store liked status for each book
-
+    const [isNextBuy,setIsnexBuy] = useState(false);
+    
     useEffect(() => {
-        // Fetch data từ API
+        // Fetch data from API
         axios.get('http://localhost:8080/manager/book/sell/well')
             .then(response => {
                 if (response.data && response.data.body && response.data.body.books) {
                     setBooks(response.data.body.books);
+                    loadLikedBooks();
                 }
             })
             .catch(error => {
@@ -25,11 +28,26 @@ const BookWellSell = ({ title }) => {
             });
     }, []);
 
+    // Load liked books from cookies
+    const loadLikedBooks = () => {
+        const liked = Cookies.get('likedBooks');
+        if (liked) {
+            setLikedBooks(JSON.parse(liked));
+        }
+    };
+
+    // Save liked books to cookies
+    const saveLikedBooks = (liked) => {
+        Cookies.set('likedBooks', JSON.stringify(liked), { expires: 365 });  // Cookie expires in 365 days
+    };
+
     const toggleLike = (bookId) => {
-        setLikedBooks(prevLikedBooks => ({
-            ...prevLikedBooks,
-            [bookId]: !prevLikedBooks[bookId]
-        }));
+        const updatedLikedBooks = {
+            ...likedBooks,
+            [bookId]: !likedBooks[bookId]
+        };
+        setLikedBooks(updatedLikedBooks);
+        saveLikedBooks(updatedLikedBooks);
     };
 
     return (
