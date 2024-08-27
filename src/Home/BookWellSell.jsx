@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card, Col, Image, Row, Tooltip, Typography } from 'antd';
 import axios from 'axios';
 import { MdSell } from 'react-icons/md';
-import { FaRegHeart } from 'react-icons/fa';
+import { FaRegHeart, FaHeart } from 'react-icons/fa';  // Import FaHeart for the filled heart icon
 import { IoCartOutline } from 'react-icons/io5';
 
 const { Meta } = Card;
@@ -10,6 +10,7 @@ const { Title } = Typography;
 
 const BookWellSell = ({ title }) => {
     const [books, setBooks] = useState([]);
+    const [likedBooks, setLikedBooks] = useState({});  // State to store liked status for each book
 
     useEffect(() => {
         // Fetch data từ API
@@ -24,6 +25,13 @@ const BookWellSell = ({ title }) => {
             });
     }, []);
 
+    const toggleLike = (bookId) => {
+        setLikedBooks(prevLikedBooks => ({
+            ...prevLikedBooks,
+            [bookId]: !prevLikedBooks[bookId]
+        }));
+    };
+
     return (
         <div style={{ padding: '20px' }}>
             <Title level={2}>{title}<MdSell /></Title>
@@ -33,14 +41,21 @@ const BookWellSell = ({ title }) => {
                         <Card
                             cover={
                                 <div style={{ position: 'relative' }}>
-                                    <FaRegHeart className='icon-trai-tim' style={{
-                                        position: 'absolute',
-                                        top: '3px',
-                                        right: '35px',
-                                        fontSize: '25px',
-                                        color: 'pink',
-                                        cursor: 'pointer'
-                                    }} />
+                                    <div
+                                        className='icon-trai-tim'
+                                        onClick={() => toggleLike(book.id)}  // Toggle like status on click
+                                        style={{
+                                            position: 'absolute',
+                                            top: '3px',
+                                            right: '35px',
+                                            fontSize: '25px',
+                                            color: likedBooks[book.id] ? 'red' : 'pink',  // Change color if liked
+                                            cursor: 'pointer',
+                                            borderRadius: '90%',
+                                        }}
+                                    >
+                                        {likedBooks[book.id] ? <FaHeart /> : <FaRegHeart />}
+                                    </div>
                                     <Image
                                         alt={book.title}
                                         src={book.file_desc_first || 'http://placehold.it/300x400'}
