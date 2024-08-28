@@ -33,16 +33,6 @@ func (c *CollectionBook) Delete(ctx context.Context, id int64) error {
 	return result.Error
 }
 
-// GetByID implements domain.RepositoryBook.
-func (c *CollectionBook) GetByID(ctx context.Context, id int64) (*domain.Book, error) {
-	var book domain.Book
-	result := c.book.WithContext(ctx).Where("id = ? AND is_active = true", id).First(&book)
-	if result.Error != nil {
-		return nil, result.Error
-	}
-	return &book, nil
-}
-
 // List implements domain.RepositoryBook.
 // Chỉ lấy các cuốn sách có is_active = true
 func (c *CollectionBook) List(ctx context.Context, req *domain.BookReqForm, limit int, offset int) ([]*domain.Book, error) {
@@ -97,13 +87,13 @@ func (c *CollectionBook) GetListBookSellWell(ctx context.Context) ([]*domain.Boo
 	}
 
 	if ordersCount > 0 {
-		// Lấy 4 sản phẩm bán chạy nhất từ bảng orders
+		// Lấy 5 sản phẩm bán chạy nhất từ bảng orders
 		if err := c.book.WithContext(ctx).
 			Model(&domain.Order{}).
 			Select("book_id, book_title, SUM(quantity) AS quantity").
 			Group("book_id, book_title").
 			Order("quantity DESC").
-			Limit(4).
+			Limit(5).
 			Find(&books).Error; err != nil {
 			return nil, fmt.Errorf("failed to get top selling books: %w", err)
 		}
@@ -121,6 +111,7 @@ func (c *CollectionBook) GetListBookSellWell(ctx context.Context) ([]*domain.Boo
 	return books, nil
 }
 
+// todo
 // GetFourBook lấy 4 sản phẩm bán chạy nhất dựa trên bảng orders, nếu bảng orders chưa có dữ liệu thì lấy 4 bản sách đầu tiên
 func (c *CollectionBook) GetBookByIdTopSell(ctx context.Context, id int64) (*domain.Book, error) {
 	var book *domain.Book

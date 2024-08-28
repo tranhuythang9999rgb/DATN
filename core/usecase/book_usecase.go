@@ -198,3 +198,39 @@ func (u *UploadBookUseCase) GetListBookSellWell(ctx context.Context) (*entities.
 		Books: booksResp,
 	}, nil
 }
+func (u *UploadBookUseCase) GetdetailBookByid(ctx context.Context, id string) (*entities.BookRespDetail, errors.Error) {
+	id_number, _ := strconv.ParseInt(id, 10, 64)
+	var listUrl = make([]string, 0)
+	book, err := u.books.GetBookById(ctx, id_number)
+	if err != nil {
+		return nil, errors.NewCustomHttpErrorWithCode(enums.DB_ERR_CODE, enums.DB_ERR_MESS, "500")
+	}
+	listImage, err := u.fie_lc.GetListFileById(ctx, book.ID)
+	if err != nil {
+		return nil, errors.NewCustomHttpErrorWithCode(enums.DB_ERR_CODE, enums.DB_ERR_MESS, "500")
+	}
+	for _, v := range listImage {
+		listUrl = append(listUrl, v.URL)
+	}
+	return &entities.BookRespDetail{
+		ID:            id_number,
+		Title:         book.Title,
+		AuthorName:    book.AuthorName,
+		Publisher:     book.Publisher,
+		PublishedDate: book.PublishedDate,
+		ISBN:          book.ISBN,
+		Genre:         book.Genre,
+		Description:   book.Description,
+		Language:      book.Language,
+		PageCount:     book.PageCount,
+		Dimensions:    book.Dimensions,
+		Weight:        book.Weight,
+		Price:         book.Price,
+		DiscountPrice: book.DiscountPrice,
+		Stock:         book.Stock,
+		Notes:         book.Notes,
+		IsActive:      book.IsActive,
+		OpeningStatus: book.OpeningStatus,
+		Files:         listUrl,
+	}, nil
+}

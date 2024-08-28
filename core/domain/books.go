@@ -54,7 +54,6 @@ type BookReqForm struct {
 // BookRepository định nghĩa các phương thức cho các hoạt động CRUD đối với sách
 type RepositoryBook interface {
 	Create(ctx context.Context, tx *gorm.DB, book *Book) error                      // Tạo một cuốn sách mới
-	GetByID(ctx context.Context, id int64) (*Book, error)                           // Lấy một cuốn sách theo ID
 	Update(ctx context.Context, book *Book) error                                   // Cập nhật thông tin một cuốn sách
 	Delete(ctx context.Context, id int64) error                                     // Xóa một cuốn sách theo ID
 	List(ctx context.Context, req *BookReqForm, limit, offset int) ([]*Book, error) // Liệt kê sách với phân trang
