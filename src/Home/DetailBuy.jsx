@@ -55,12 +55,22 @@ const DetailBuy = ({ book_id }) => {
                     <Image
                         alt={book.title}
                         src={book.files[0] || 'http://placehold.it/300x400'}
-                        style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
+                        style={{ width: '100%', height: 'auto', borderRadius: '8px', marginBottom: '20px' }}
                     />
-                    <Card style={{ marginTop: '20px', borderRadius: '8px' }}>
+                    <Card style={{ marginBottom: '20px', borderRadius: '8px' }}>
                         <h2>Mô tả</h2>
                         <p>{book.description}</p>
                     </Card>
+                    <div style={{ maxHeight: '500px', overflowY: 'auto', padding: '10px' }}>
+                        {book.files.slice(1).map((file, index) => (
+                            <Image
+                                key={index}
+                                alt={`Hình ảnh sách ${index + 2}`}
+                                src={file}
+                                style={{ width: '100%', height: 'auto', borderRadius: '8px', marginBottom: '16px' }}
+                            />
+                        ))}
+                    </div>
                 </Col>
                 <Col span={16}>
                     <Card
@@ -98,17 +108,6 @@ const DetailBuy = ({ book_id }) => {
                             </Button>
                         </div>
                     </Card>
-                    <Row gutter={16} style={{ marginTop: '20px' }}>
-                        {book.files.slice(1).map((file, index) => (
-                            <Col span={8} key={index}>
-                                <Image
-                                    alt={`Hình ảnh sách ${index + 2}`}
-                                    src={file}
-                                    style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
-                                />
-                            </Col>
-                        ))}
-                    </Row>
                 </Col>
             </Row>
         </div>
