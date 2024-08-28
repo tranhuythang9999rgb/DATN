@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Card, Col, Image, Row, Typography, Button } from 'antd';
+import { Card, Col, Image, Row, Typography, Button, Tooltip } from 'antd';
+import { GrNext } from 'react-icons/gr';
+import { IoReturnUpBackOutline } from 'react-icons/io5';
 
 const { Title, Text } = Typography;
 
@@ -42,6 +44,11 @@ const DetailBuy = ({ book_id }) => {
 
     return (
         <div style={{ padding: '20px', backgroundColor: '#f9f9f9' }}>
+            <div>
+                <Tooltip title="Quay lại">
+                    <IoReturnUpBackOutline onClick={()=>{window.location.reload()}} style={{ fontSize: '25px', cursor: 'pointer' }} />
+                </Tooltip>
+            </div>
             <Title level={2}>{book.title}</Title>
             <Row gutter={16}>
                 <Col span={8}>
