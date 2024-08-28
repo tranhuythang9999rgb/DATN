@@ -9,6 +9,7 @@ import CheckQrCode from "./common/CheckQrCode";
 import Login from "./common/Login";
 import DetailBuy from "./Home/DetailBuy";
 import HomePage from "./Home/HomePage";
+import AppRouter from "./Test/Routers/routers";
 
 
 
@@ -25,7 +26,8 @@ function App() {
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
-      <DetailBuy book_id={5356985} />
+      {/* <DetailBuy book_id={5356985} /> */}
+      {/* <AppRouter/> */}
     </div>
   );
 }
