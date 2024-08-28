@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, Col, Image, Row, Typography, Button, Tooltip } from 'antd';
-import { GrNext } from 'react-icons/gr';
 import { IoReturnUpBackOutline } from 'react-icons/io5';
+import { FaUser, FaBookOpen, FaCalendarAlt, FaBarcode, FaLanguage, FaFileAlt, FaRulerCombined, FaWeightHanging, FaDollarSign, FaPercent, FaBoxes, FaStickyNote } from 'react-icons/fa';
+import { BiBookAlt } from 'react-icons/bi';
 
 const { Title, Text } = Typography;
 
@@ -30,23 +31,23 @@ const DetailBuy = ({ book_id }) => {
         fetchBookDetails();
     }, [book_id]);
 
-    if (loading) {
-        return <div>Đang tải...</div>;
-    }
+    if (loading) return <div>Đang tải...</div>;
+    if (error) return <div>{error}</div>;
+    if (!book) return <div>Không có thông tin sách.</div>;
 
-    if (error) {
-        return <div>{error}</div>;
-    }
-
-    if (!book) {
-        return <div>Không có thông tin sách.</div>;
-    }
+    const DetailItem = ({ icon, label, value }) => (
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+            {icon}
+            <Text strong style={{ marginLeft: '10px', marginRight: '5px' }}>{label}:</Text>
+            <Text>{value}</Text>
+        </div>
+    );
 
     return (
         <div style={{ padding: '20px', backgroundColor: '#f9f9f9' }}>
             <div>
                 <Tooltip title="Quay lại">
-                    <IoReturnUpBackOutline onClick={()=>{window.location.reload()}} style={{ fontSize: '25px', cursor: 'pointer' }} />
+                    <IoReturnUpBackOutline onClick={() => { window.location.reload() }} style={{ fontSize: '25px', cursor: 'pointer' }} />
                 </Tooltip>
             </div>
             <Title level={2}>{book.title}</Title>
@@ -64,20 +65,26 @@ const DetailBuy = ({ book_id }) => {
                         bodyStyle={{ padding: '0' }}
                     >
                         <Title level={4}>Chi tiết</Title>
-                        <p><strong>Tác giả:</strong> <Text>{book.author_name}</Text></p>
-                        <p><strong>Nhà xuất bản:</strong> <Text>{book.publisher}</Text></p>
-                        <p><strong>Ngày xuất bản:</strong> <Text>{book.published_date}</Text></p>
-                        <p><strong>ISBN:</strong> <Text>{book.isbn}</Text></p>
-                        <p><strong>Thể loại:</strong> <Text>{book.genre}</Text></p>
-                        <p><strong>Mô tả:</strong> <Text>{book.description}</Text></p>
-                        <p><strong>Ngôn ngữ:</strong> <Text>{book.language}</Text></p>
-                        <p><strong>Số trang:</strong> <Text>{book.page_count}</Text></p>
-                        <p><strong>Kích thước:</strong> <Text>{book.dimensions}</Text></p>
-                        <p><strong>Cân nặng:</strong> <Text>{book.weight} kg</Text></p>
-                        <p><strong>Giá:</strong> <Text>{book.price} VND</Text></p>
-                        <p><strong>Giá giảm:</strong> <Text>{book.discount_price} VND</Text></p>
-                        <p><strong>Tồn kho:</strong> <Text>{book.stock}</Text></p>
-                        <p><strong>Ghi chú:</strong> <Text>{book.notes}</Text></p>
+                        <Row gutter={[16, 16]}>
+                            <Col span={12}>
+                                <DetailItem icon={<FaUser />} label="Tác giả" value={book.author_name} />
+                                <DetailItem icon={<FaBookOpen />} label="Nhà xuất bản" value={book.publisher} />
+                                <DetailItem icon={<FaCalendarAlt />} label="Ngày xuất bản" value={book.published_date} />
+                                <DetailItem icon={<FaBarcode />} label="ISBN" value={book.isbn} />
+                                <DetailItem icon={<BiBookAlt />} label="Thể loại" value={book.genre} />
+                                <DetailItem icon={<FaLanguage />} label="Ngôn ngữ" value={book.language} />
+                            </Col>
+                            <Col span={12}>
+                                <DetailItem icon={<FaFileAlt />} label="Số trang" value={book.page_count} />
+                                <DetailItem icon={<FaRulerCombined />} label="Kích thước" value={book.dimensions} />
+                                <DetailItem icon={<FaWeightHanging />} label="Cân nặng" value={`${book.weight} kg`} />
+                                <DetailItem icon={<FaDollarSign />} label="Giá" value={`${book.price} VND`} />
+                                <DetailItem icon={<FaPercent />} label="Giá giảm" value={`${book.discount_price} VND`} />
+                                <DetailItem icon={<FaBoxes />} label="Tồn kho" value={book.stock} />
+                            </Col>
+                        </Row>
+                        <DetailItem icon={<FaStickyNote />} label="Mô tả" value={book.description} />
+                        <DetailItem icon={<FaStickyNote />} label="Ghi chú" value={book.notes} />
                         <div style={{ marginTop: '20px', textAlign: 'center' }}>
                             <Button
                                 type="primary"
