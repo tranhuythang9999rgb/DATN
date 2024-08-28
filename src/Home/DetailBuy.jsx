@@ -4,6 +4,7 @@ import { Card, Col, Image, Row, Typography, Button, Tooltip, Layout, Menu, Rate 
 import { IoReturnUpBackOutline } from 'react-icons/io5';
 import { FaUser, FaBookOpen, FaCalendarAlt, FaBarcode, FaLanguage, FaFileAlt, FaRulerCombined, FaWeightHanging, FaDollarSign, FaPercent, FaBoxes, FaStickyNote, FaHome, FaShoppingCart } from 'react-icons/fa';
 import { BiBookAlt } from 'react-icons/bi';
+import './home_index.css';
 
 const { Title, Text, Paragraph } = Typography;
 const { Header, Content, Footer } = Layout;
@@ -165,7 +166,7 @@ const DetailBuy = ({ book_id }) => {
                                     boxShadow: bookThemeStyles.boxShadow,
                                     backgroundColor: bookThemeStyles.cardBackground
                                 }}
-                                bodyStyle={{ padding: '24px' }}
+                                bodyStyle={{ padding: '24px'}}
                             >
                                 <Title level={3} style={{ color: bookThemeStyles.primaryColor, marginBottom: '24px' }}>{book.title}</Title>
                                 <Row gutter={[24, 16]}>
