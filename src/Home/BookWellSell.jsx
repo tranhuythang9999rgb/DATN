@@ -12,7 +12,6 @@ const { Title } = Typography;
 const BookWellSell = ({ title }) => {
     const [books, setBooks] = useState([]);
     const [likedBooks, setLikedBooks] = useState({});  // State to store liked status for each book
-    const [isNextBuy,setIsnexBuy] = useState(false);
     
     useEffect(() => {
         // Fetch data from API
