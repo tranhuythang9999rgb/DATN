@@ -50,7 +50,6 @@ const DetailBuy = ({ book_id }) => {
                     <IoReturnUpBackOutline onClick={() => { window.location.reload() }} style={{ fontSize: '25px', cursor: 'pointer' }} />
                 </Tooltip>
             </div>
-            <Title level={2}>{book.title}</Title>
             <Row gutter={16}>
                 <Col span={8}>
                     <Image
@@ -58,13 +57,17 @@ const DetailBuy = ({ book_id }) => {
                         src={book.files[0] || 'http://placehold.it/300x400'}
                         style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
                     />
+                    <Card style={{ marginTop: '20px', borderRadius: '8px' }}>
+                        <h2>Mô tả</h2>
+                        <p>{book.description}</p>
+                    </Card>
                 </Col>
                 <Col span={16}>
                     <Card
                         style={{ padding: '20px', borderRadius: '8px' }}
                         bodyStyle={{ padding: '0' }}
                     >
-                        <Title level={4}>Chi tiết</Title>
+                        <Title level={4}>{book.title}</Title>
                         <Row gutter={[16, 16]}>
                             <Col span={12}>
                                 <DetailItem icon={<FaUser />} label="Tác giả" value={book.author_name} />
@@ -83,7 +86,6 @@ const DetailBuy = ({ book_id }) => {
                                 <DetailItem icon={<FaBoxes />} label="Tồn kho" value={book.stock} />
                             </Col>
                         </Row>
-                        <DetailItem icon={<FaStickyNote />} label="Mô tả" value={book.description} />
                         <DetailItem icon={<FaStickyNote />} label="Ghi chú" value={book.notes} />
                         <div style={{ marginTop: '20px', textAlign: 'center' }}>
                             <Button
