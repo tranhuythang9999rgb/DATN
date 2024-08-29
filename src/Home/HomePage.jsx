@@ -255,7 +255,7 @@ function HomePage() {
                                         }
                                         style={{
                                             width: '300px',
-                                            height: '450px',
+                                            height: '380px',
                                             display: 'flex',
                                             flexDirection: 'column',
                                             justifyContent: 'space-between',
@@ -263,18 +263,13 @@ function HomePage() {
                                     >
                                         <Meta title={book.title} />
                                         <div style={{ marginTop: '10px' }}>
-                                            <p><strong>Tác giả:</strong> {book.author_name}</p>
-                                            <p><strong>Nhà xuất bản:</strong> {book.publisher}</p>
-                                            <p><strong>Giá:</strong> {book.price} VND</p>
-                                            <p><strong>Số lượng:</strong> {book.stock}</p>
+                                        <p><strong>Giá:</strong> {book.price} VND</p>
                                         </div>
-                                        <span style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px' }}>
+                                        <span style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px' }}>
                                             <Button onClick={() => handleBuyNow(book.id)} style={{ background: 'red', color: 'white', fontSize: '17px' }}>
                                                 Mua ngay
                                             </Button>
-                                            <Tooltip title="Thêm vào giỏ hàng">
-                                                <IoCartOutline style={{ fontSize: '25px', color: 'orangered', cursor: 'pointer' }} />
-                                            </Tooltip>
+                                          
                                         </span>
                                     </Card>
                                 </Col>

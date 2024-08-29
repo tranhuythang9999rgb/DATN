@@ -159,7 +159,10 @@ const DetailBuy = ({ book_id }) => {
                                 ))}
                             </div>
                         </Col>
+
                         <Col span={10}>
+                        <Title level={3} style={{ color: bookThemeStyles.primaryColor, marginBottom: '24px' }}>{book.title}</Title>
+                        <Title level={3} style={{ color: bookThemeStyles.primaryColor, marginBottom: '24px' }}>Giá tiền {book.price}</Title>
                             <Card
                                 style={{
                                     borderRadius: bookThemeStyles.borderRadius,
@@ -168,7 +171,6 @@ const DetailBuy = ({ book_id }) => {
                                 }}
                                 bodyStyle={{ padding: '24px'}}
                             >
-                                <Title level={3} style={{ color: bookThemeStyles.primaryColor, marginBottom: '24px' }}>{book.title}</Title>
                                 <Row gutter={[24, 16]}>
                                     <Col span={12}>
                                         <DetailItem icon={<FaUser />} label="Tác giả" value={book.author_name} />
@@ -217,7 +219,7 @@ const DetailBuy = ({ book_id }) => {
                                 }}
                                 bodyStyle={{ padding: '16px' }}
                             >
-                                <Title level={4} style={{ color: bookThemeStyles.primaryColor, marginBottom: '16px' }}>Recommended Books</Title>
+                                <Title level={4} style={{ color: bookThemeStyles.primaryColor, marginBottom: '16px' }}>Sách được đề xuất</Title>
                                 {recommendedBooks.map(book => (
                                     <RecommendedBook key={book.id} {...book} />
                                 ))}
