@@ -157,3 +157,6 @@ body {
     text-align: center;
     width: 1350px;
 }
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-card-bordered{
+    height: 330px;
+}

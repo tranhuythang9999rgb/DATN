@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Card, Col, Image, Row, Typography, Rate, Button, Input, Tooltip, Modal } from 'antd';
+import { Card, Col, Image, Row, Typography, Rate, Button, Input, Tooltip, Modal, Carousel } from 'antd';
 import { FaUser, FaBookOpen, FaCalendarAlt, FaBarcode, FaLanguage, FaFileAlt, FaRulerCombined, FaWeightHanging, FaDollarSign, FaPercent, FaBoxes, FaStickyNote, FaStar, FaShoppingCart } from 'react-icons/fa';
 import './home_index.css';
 import { CgAdd } from 'react-icons/cg';
@@ -11,7 +11,14 @@ import Login from '../common/Login';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 
 const { Title, Text, Paragraph } = Typography;
-
+const contentStyle = {
+    margin: 0,
+    height: '160px',
+    color: '#fff',
+    lineHeight: '160px',
+    textAlign: 'center',
+    background: '#364d79',
+};
 const DetailBuy = ({ book_id }) => {
     const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -37,8 +44,7 @@ const DetailBuy = ({ book_id }) => {
     }, [book_id]);
     const [username, setUsername] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [isNextBuy, setIsNextBuy] = useState(false);
-    const [selectedBookId, setSelectedBookId] = useState(null);  // Add state to manage selected book ID
+
 
     useEffect(() => {
         // Check for the username in local storage
@@ -60,6 +66,9 @@ const DetailBuy = ({ book_id }) => {
 
     const handleModalClose = () => {
         setIsModalVisible(false);
+    };
+    const onChange = (currentSlide) => {
+        console.log('Current slide:', currentSlide);
     };
     if (loading) return <div>Đang tải...</div>;
     if (error) return <div>{error}</div>;
@@ -181,15 +190,22 @@ const DetailBuy = ({ book_id }) => {
 
                 <div className='layout-header-end'></div>
             </div>
-            <Row gutter={[16, 16]}>
+            <Row style={{ display: 'flex', marginTop: '100px' }} gutter={[16, 16]}>
                 <Col span={8}>
-                    <Image
-                        src={book.files && book.files[0]}
-                        alt={book.title}
-                        style={{ width: '100%', borderRadius: bookThemeStyles.borderRadius }}
-                    />
+                   
+                    <Carousel afterChange={onChange} style={{ marginBottom: '20px' }}>
+                        {book.files && book.files.map((item, index) => (
+                            <div key={index}>
+                                <Image
+                                    src={item}
+                                    alt={`Book Image ${index}`}
+                                    style={{ width: '100%', borderRadius: bookThemeStyles.borderRadius }}
+                                />
+                            </div>
+                        ))}
+                    </Carousel>
 
-                    <Row style={{ display:'flex',marginTop: '300px' }}>
+                    <Row style={{ display: 'flex', marginTop: '50px' }}>
                         <Col span={24}>
                             <Paragraph>
                                 <Card
@@ -230,17 +246,18 @@ const DetailBuy = ({ book_id }) => {
 
                 </Col>
 
-                <Col span={10}>
+                <Col className='details-book' style={{ display: 'flex', marginTop: '40px'}} span={10}>
                     <Card
                         style={{
                             backgroundColor: bookThemeStyles.cardBackground,
                             borderRadius: bookThemeStyles.borderRadius,
                             boxShadow: bookThemeStyles.boxShadow,
-                            padding: '16px'
+                            padding: '16px',
+                            width:'750px'
                         }}
                     >
                         <div style={{ display: 'flex', justifyContent: 'start', fontSize: '30px', fontWeight: 'bold', marginBottom: '16px' }}>
-                            <div>{book.title}</div>
+                            <div style={{display:'flex',marginTop:'-25px'}}>{book.title}</div>
                             <div style={{ display: 'flex', marginLeft: '400px' }}>
                                 <Rate disabled defaultValue={5} />
                             </div>
@@ -260,7 +277,7 @@ const DetailBuy = ({ book_id }) => {
                 </Col>
 
                 <Col span={6}>
-                    <Card title="Sách đề xuất" style={{ borderRadius: bookThemeStyles.borderRadius }}>
+                    <Card title="Sách đề xuất" style={{ borderRadius: bookThemeStyles.borderRadius,backgroundColor:'white',height:'auto' }}>
                         {recommendedBooks.map(book => (
                             <RecommendedBook key={book.id} title={book.title} author={book.author} rating={book.rating} />
                         ))}
