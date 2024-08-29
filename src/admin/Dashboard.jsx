@@ -67,56 +67,29 @@ const tabsContent = [
         key: '2',
         label: (
             <span className="tab-label" style={{ fontSize: '17px' }}>
-                <FcBarChart className="icon" /> Thống kê doanh thu
+                <FcBarChart className="icon" /> Quản lý danh mục
             </span>
         ),
-        content: <div>Content of Tab 2</div>,
+        content: <div>
+            <TypeBook />
+        </div>,
     },
     {
         key: '3',
         label: (
             <span className="tab-label" style={{ fontSize: '17px' }}>
-                <LuFileBarChart className="icon" /> Thống kê đơn hàng
+                <LuFileBarChart style={{ fontSize: '25px' }} className="icon" /> Quản lý tác giả
             </span>
         ),
-        content: <div>Content of Tab 3</div>,
+        content: <div>
+            <AuthorBook />
+        </div>,
     },
     {
         key: '4',
         label: (
             <span className="tab-label" style={{ fontSize: '17px', color: '#4a4a4a' }}>
-                <LuClipboardList className="icon-quan-ly-sach" />Quản lý sách
-            </span>
-        ),
-        content: <div>
-            <ListBooks />
-        </div>,
-    },
-    {
-        key: '5',
-        label: (
-            <span className="tab-label" style={{ fontSize: '17px', color: '#4a4a4a' }}>
-                <TbUsersGroup className="icon-quan-ly-khach-hang" /> Quản lý khách hàng
-            </span>
-        ),
-        content: <div>Tài khoản khách hàng đã được quản lý</div>,
-    },
-    {
-        key: '6',
-        label: (
-            <span className="tab-label" style={{ fontSize: '17px', color: '#4a4a4a' }}>
-                <TbUsersGroup className="icon-quan-ly-khach-hang" /> Quản lý tác giả
-            </span>
-        ),
-        content: <div>
-            <AuthorBook/>
-        </div>,
-    },
-    {
-        key: '7',
-        label: (
-            <span className="tab-label" style={{ fontSize: '17px', color: '#4a4a4a' }}>
-                <TbUsersGroup className="icon-quan-ly-khach-hang" /> Quản lý nhà xuất bản
+                <LuClipboardList style={{ fontSize: '40px' }} className="icon-quan-ly-sach9" />Quản lý nhà xuất bản
             </span>
         ),
         content: <div>
@@ -124,14 +97,57 @@ const tabsContent = [
         </div>,
     },
     {
-        key: '8',
+        key: '5',
         label: (
             <span className="tab-label" style={{ fontSize: '17px', color: '#4a4a4a' }}>
-                <TbUsersGroup className="icon-quan-ly-khach-hang" /> Quản lý danh mục
+                <TbUsersGroup style={{ fontSize: '25px' }} className="icon-quan-ly-khach-hang" /> Quản lý sách
             </span>
         ),
         content: <div>
-            <TypeBook/>
+            <ListBooks />
+        </div>,
+    },
+    {
+        key: '6',
+        label: (
+            <span className="tab-label" style={{ fontSize: '17px', color: '#4a4a4a' }}>
+                <TbUsersGroup style={{ fontSize: '25px' }} className="icon-quan-ly-khach-hang" /> Quản lý điểm
+            </span>
+        ),
+        content: <div>
+
+        </div>,
+    },
+    {
+        key: '7',
+        label: (
+            <span className="tab-label" style={{ fontSize: '17px', color: '#4a4a4a' }}>
+                <TbUsersGroup style={{ fontSize: '25px' }} className="icon-quan-ly-khach-hang" /> Quản lý khách hàng
+            </span>
+        ),
+        content: <div>
+            <AuthorBook />
+        </div>,
+    },
+    {
+        key: '8',
+        label: (
+            <span className="tab-label" style={{ fontSize: '17px', color: '#4a4a4a' }}>
+                <TbUsersGroup style={{ fontSize: '25px' }} className="icon-quan-ly-khach-hang" /> Thống kê đơn hàng
+            </span>
+        ),
+        content: <div>
+        </div>,
+    },
+    {
+        key: '9',
+        label: (
+            <span className="tab-label" style={{ fontSize: '17px', color: '#4a4a4a' }}>
+                <TbUsersGroup style={{ fontSize: '25px' }} className="icon-quan-ly-khach-hang" /> Thống kê doanh thu
+            </span>
+        ),
+        content: <div>
+
         </div>,
     },
 

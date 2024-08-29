@@ -77,7 +77,30 @@ function AuthorBook() {
             dataIndex: 'nationality',
             key: 'nationality',
         },
+        {
+            title: 'Hành Động',
+            key: 'action',
+            render: (text, record) => (
+                <span>
+                    <a href="#" onClick={() => handleUpdate(record)}>Sửa</a>
+                    <span> | </span>
+                    <a href="#" onClick={() => handleDelete(record)}>Xóa</a>
+                </span>
+            ),
+        },
     ];
+
+    // Function to handle update action
+    const handleUpdate = (record) => {
+        console.log('Update:', record);
+        // Add your update logic here, such as opening a modal or redirecting to an edit page
+    };
+
+    // Function to handle delete action
+    const handleDelete = (record) => {
+        console.log('Delete:', record);
+        // Add your delete logic here, such as showing a confirmation dialog and sending a delete request to your API
+    };
 
     return (
         <div style={{ padding: '10px' }}>
@@ -91,7 +114,7 @@ function AuthorBook() {
                     name="name"
                     rules={[{ required: true, message: 'Vui lòng nhập tên tác giả' }]}
                     style={{
-                        marginBottom:'10px'
+                        marginBottom: '10px'
                     }}
                 >
                     <Input placeholder="Tên Tác Giả" style={{ height: '40px' }} />
@@ -122,7 +145,7 @@ function AuthorBook() {
                             height: '40px',
                             marginLeft: 8,
                             width: '195px',
-                            paddingTop:'10px'
+                            paddingTop: '10px'
                         }}
                     >
                         Thêm Tác Giả

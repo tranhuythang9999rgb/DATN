@@ -69,7 +69,30 @@ function TypeBook() {
             key: 'is_active',
             render: (is_active) => (is_active ? 'Hoạt động' : 'Không hoạt động'),
         },
+        {
+            title: 'Hành động',
+            key: 'action',
+            render: (text, record) => (
+                <span>
+                    <a href="#" onClick={() => handleEdit(record)}>Sửa</a>
+                    <span> | </span>
+                    <a href="#" onClick={() => handleDelete(record)}>Xóa</a>
+                </span>
+            ),
+        },
     ];
+
+    // Function to handle edit action
+    const handleEdit = (record) => {
+        console.log('Edit:', record);
+        // Add your edit logic here
+    };
+
+    // Function to handle delete action
+    const handleDelete = (record) => {
+        console.log('Delete:', record);
+        // Add your delete logic here
+    };
 
     return (
         <div>
