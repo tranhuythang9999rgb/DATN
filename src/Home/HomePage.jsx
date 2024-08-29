@@ -11,7 +11,6 @@ import Cookies from 'js-cookie';  // Import js-cookie
 import axios from 'axios';
 import { MdSell } from 'react-icons/md';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';  // Import FaHeart for the filled heart icon
-import { IoCartOutline } from 'react-icons/io5';
 import DetailBuy from './DetailBuy';
 const { Meta } = Card;
 const { Title } = Typography;

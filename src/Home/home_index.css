@@ -148,3 +148,12 @@ body {
 .ant-col ant-col-10 css-dev-only-do-not-override-1gwfwyx{
     margin-top: 800px;
 }
+
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-card-bordered {
+    position: absolute;
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    border-radius: 12px;
+    text-align: center;
+    width: 1350px;
+}
