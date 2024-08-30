@@ -11,6 +11,7 @@ import Login from '../common/Login';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { BiMinusCircle } from 'react-icons/bi';
 import { FaCartShopping } from 'react-icons/fa6';
+import SubmitBuyBook from './SubmitBuyBook';
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -20,6 +21,7 @@ const DetailBuy = ({ book_id }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [items, setItems] = useState(0);
+    const [isBuy,setIsBuy] = useState(false);
 
     useEffect(() => {
         const fetchBookDetails = async () => {
@@ -27,6 +29,7 @@ const DetailBuy = ({ book_id }) => {
                 const response = await axios.get(`http://localhost:8080/manager/book/detail/page?id=${book_id}`);
                 if (response.data && response.data.body) {
                     setBook(response.data.body);
+                    localStorage.setItem('book_id',book_id);
                 } else {
                     setError('Không tìm thấy dữ liệu');
                 }
@@ -126,6 +129,15 @@ const DetailBuy = ({ book_id }) => {
         </div>
     );
 
+    const handleNextSubmitBuy = () =>{
+        setIsBuy(true);
+    }
+
+    if(isBuy) {
+        return(
+            <SubmitBuyBook/>
+        )
+    }
     return (
         <div style={{ backgroundColor: bookThemeStyles.mainBackground, padding: '20px', borderRadius: bookThemeStyles.borderRadius }}>
             <div className='layout-header'>
@@ -292,7 +304,7 @@ const DetailBuy = ({ book_id }) => {
                             </Row>
                             <Row>
                                 <Col span={12}>
-                                    <Button style={{ marginLeft: '200px', height: '40px', width: '80px' }}>Mua</Button>
+                                    <Button onClick={handleNextSubmitBuy} style={{ marginLeft: '200px', height: '40px', width: '80px' }}>Mua</Button>
                                 </Col>
                                 <Col span={12}>
                                     <FaCartShopping style={{ marginLeft: '200px', height: '40px', width: '80px' }} />
