@@ -126,7 +126,6 @@ const tabsContent = [
             </span>
         ),
         content: <div>
-            <AuthorBook />
         </div>,
     },
     {

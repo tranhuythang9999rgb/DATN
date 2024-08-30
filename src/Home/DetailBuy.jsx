@@ -212,7 +212,8 @@ const DetailBuy = ({ book_id }) => {
                                     style={{
                                         backgroundColor: bookThemeStyles.cardBackground,
                                         borderRadius: bookThemeStyles.borderRadius,
-                                        boxShadow: bookThemeStyles.boxShadow
+                                        boxShadow: bookThemeStyles.boxShadow,
+                                        height:'500px'
                                     }}
                                 >
                                     <Title level={3} style={{ color: bookThemeStyles.primaryColor, display: 'flex', justifyContent: 'start' }}>Thông tin chi tiết sản phẩm</Title>

@@ -110,47 +110,50 @@ function AuthorBook() {
                 onFinish={addAuthor}
                 style={{ marginBottom: 20, maxWidth: 800 }}
             >
-                <Form.Item
-                    name="name"
-                    rules={[{ required: true, message: 'Vui lòng nhập tên tác giả' }]}
-                    style={{
-                        marginBottom: '10px'
-                    }}
-                >
-                    <Input placeholder="Tên Tác Giả" style={{ height: '40px' }} />
-                </Form.Item>
-                <Form.Item
-                    name="biography"
-                    rules={[{ required: true, message: 'Vui lòng nhập tiểu sử' }]}
-                >
-                    <Input placeholder="Tiểu Sử" style={{ height: '40px' }} />
-                </Form.Item>
-                <Form.Item
-                    name="birth_date"
-                    rules={[{ required: true, message: 'Vui lòng chọn ngày sinh' }]}
-                >
-                    <DatePicker placeholder="Ngày Sinh" style={{ height: '40px', width: '195px' }} />
-                </Form.Item>
-                <Form.Item
-                    name="nationality"
-                    rules={[{ required: true, message: 'Vui lòng nhập quốc tịch' }]}
-                >
-                    <Input placeholder="Quốc Tịch" style={{ height: '40px' }} />
-                </Form.Item>
-                <Form.Item>
-                    <Button
-                        type="primary"
-                        htmlType="submit"
+                <div style={{ display: 'flex' }}>
+                    <Form.Item
+                        name="name"
+                        rules={[{ required: true, message: 'Vui lòng nhập tên tác giả' }]}
                         style={{
-                            height: '40px',
-                            marginLeft: 8,
-                            width: '195px',
-                            paddingTop: '10px'
+                            marginBottom: '10px'
                         }}
                     >
-                        Thêm Tác Giả
-                    </Button>
-                </Form.Item>
+                        <Input placeholder="Tên Tác Giả" style={{ height: '40px' }} />
+                    </Form.Item>
+                    <Form.Item
+                        name="biography"
+                        rules={[{ required: true, message: 'Vui lòng nhập tiểu sử' }]}
+                    >
+                        <Input placeholder="Tiểu Sử" style={{ height: '40px' }} />
+                    </Form.Item>
+                    <Form.Item
+                        name="birth_date"
+                        rules={[{ required: true, message: 'Vui lòng chọn ngày sinh' }]}
+                    >
+                        <DatePicker placeholder="Ngày Sinh" style={{ height: '40px', width: '195px' }} />
+                    </Form.Item>
+                    <Form.Item
+                        name="nationality"
+                        rules={[{ required: true, message: 'Vui lòng nhập quốc tịch' }]}
+                    >
+                        <Input placeholder="Quốc Tịch" style={{ height: '40px' }} />
+                    </Form.Item>
+                    <Form.Item>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            style={{
+                                height: '40px',
+                                marginLeft: 8,
+                                width: '195px',
+                                paddingTop: '10px'
+                            }}
+                        >
+                            Thêm Tác Giả
+                        </Button>
+                    </Form.Item>
+                </div>
+
             </Form>
             <Table
                 columns={columns}

@@ -126,7 +126,6 @@ function UploadBook() {
             formData.append('price', values.price);
             formData.append('discount_price', values.discount_price);
             formData.append('stock', values.stock);
-            formData.append('notes', values.notes);
             formData.append('opening_status', values.opening_status ? values.opening_status.value : ''); // Handle Select value
 
             fileList.forEach((file) => {
@@ -283,18 +282,17 @@ function UploadBook() {
                     <Form.Item name="price" label="Giá" rules={[{ required: true }]}>
                         <InputNumber min={0} />
                     </Form.Item>
-                    <Form.Item name="discount_price" label="Giá giảm" rules={[{ required: true }]}>
+                    <Form.Item name="discount_price" label="Giá giảm">
                         <InputNumber min={0} max={99} />
                     </Form.Item>
 
                     <Form.Item name="stock" label="Số lượng" rules={[{ required: true }]}>
                         <InputNumber min={0} />
                     </Form.Item>
-                    <Form.Item name="notes" label="Ghi chú">
-                        <Input.TextArea />
-                    </Form.Item>
+
                     <Form.Item name="opening_status" label="Tình trạng mở" rules={[{ required: true }]}>
                         <Select
+                            defaultValue={15}
                             labelInValue
                             style={{
                                 width: '100%',
