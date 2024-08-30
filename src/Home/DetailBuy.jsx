@@ -273,12 +273,12 @@ const DetailBuy = ({ book_id }) => {
                                 <div style={{ fontSize: '30px' }}>{book.price}<span style={{ fontSize: '10px' }}>VND</span></div>
                             </Row>
                             <Row style={{
-                                border: '1px solid',
+                                border: '1px solid blue',
                                 width: '120px',
-                                borderRadius: '10px'
+                                borderRadius: '10px',
                             }}>
                                 <CgAdd
-                                    onClick={increment}
+                                    onClick={items < book.stock ? increment : null} // Only call increment if items < book.stock
                                     style={{ opacity: 0.7, cursor: 'pointer', fontSize: '30px' }} // Làm mờ icon và thêm con trỏ chuột khi hover
                                 />
                                 <div style={{ paddingLeft: '20px', paddingRight: '10px' }}>
@@ -286,7 +286,7 @@ const DetailBuy = ({ book_id }) => {
                                 </div>
                                 <BiMinusCircle
                                     onClick={decrement}
-                                    style={{ opacity: 0.7, cursor: 'pointer', fontSize: '30px',marginLeft:'10px' }} // Làm mờ icon và thêm con trỏ chuột khi hover
+                                    style={{ opacity: 0.7, cursor: 'pointer', fontSize: '30px', marginLeft: '10px' }} // Làm mờ icon và thêm con trỏ chuột khi hover
                                 />
 
                             </Row>
