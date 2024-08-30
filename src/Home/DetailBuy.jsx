@@ -274,19 +274,19 @@ const DetailBuy = ({ book_id }) => {
                             </Row>
                             <Row style={{
                                 border: '1px solid',
-                                width: '90px',
+                                width: '120px',
                                 borderRadius: '10px'
                             }}>
                                 <CgAdd
                                     onClick={increment}
                                     style={{ opacity: 0.7, cursor: 'pointer', fontSize: '30px' }} // Làm mờ icon và thêm con trỏ chuột khi hover
                                 />
-                                <div style={{ paddingLeft: '10px', paddingRight: '10px' }}>
+                                <div style={{ paddingLeft: '20px', paddingRight: '10px' }}>
                                     {items}
                                 </div>
                                 <BiMinusCircle
                                     onClick={decrement}
-                                    style={{ opacity: 0.7, cursor: 'pointer', fontSize: '30px' }} // Làm mờ icon và thêm con trỏ chuột khi hover
+                                    style={{ opacity: 0.7, cursor: 'pointer', fontSize: '30px',marginLeft:'10px' }} // Làm mờ icon và thêm con trỏ chuột khi hover
                                 />
 
                             </Row>
