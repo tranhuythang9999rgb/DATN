@@ -9,20 +9,17 @@ import { GiArmoredBoomerang } from 'react-icons/gi';
 import { CiLogin, CiSearch } from 'react-icons/ci';
 import Login from '../common/Login';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
+import { BiMinusCircle } from 'react-icons/bi';
+import { FaCartShopping } from 'react-icons/fa6';
 
 const { Title, Text, Paragraph } = Typography;
-const contentStyle = {
-    margin: 0,
-    height: '160px',
-    color: '#fff',
-    lineHeight: '160px',
-    textAlign: 'center',
-    background: '#364d79',
-};
+
 const DetailBuy = ({ book_id }) => {
+
     const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [items, setItems] = useState(0);
 
     useEffect(() => {
         const fetchBookDetails = async () => {
@@ -103,6 +100,14 @@ const DetailBuy = ({ book_id }) => {
         { id: 7, title: "Mystery of the Old Manor", author: "John Smith", rating: 4.2 },
         { id: 8, title: "Cooking with Love", author: "Maria Garcia", rating: 4.8 },
     ];
+
+    const increment = () => {
+        setItems(prevItems => prevItems + 1);
+    };
+
+    const decrement = () => {
+        setItems(prevItems => Math.max(0, prevItems - 1)); // Đảm bảo items không giảm xuống dưới 0
+    };
 
     const RecommendedBook = ({ title, author, rating }) => (
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
@@ -192,7 +197,7 @@ const DetailBuy = ({ book_id }) => {
             </div>
             <Row style={{ display: 'flex', marginTop: '100px' }} gutter={[16, 16]}>
                 <Col span={8}>
-                   
+
                     <Carousel afterChange={onChange} style={{ marginBottom: '20px' }}>
                         {book.files && book.files.map((item, index) => (
                             <div key={index}>
@@ -213,7 +218,7 @@ const DetailBuy = ({ book_id }) => {
                                         backgroundColor: bookThemeStyles.cardBackground,
                                         borderRadius: bookThemeStyles.borderRadius,
                                         boxShadow: bookThemeStyles.boxShadow,
-                                        height:'500px'
+                                        height: '500px'
                                     }}
                                 >
                                     <Title level={3} style={{ color: bookThemeStyles.primaryColor, display: 'flex', justifyContent: 'start' }}>Thông tin chi tiết sản phẩm</Title>
@@ -227,8 +232,7 @@ const DetailBuy = ({ book_id }) => {
                                     <DetailItem icon={<FaWeightHanging />} label="Trọng lượng" value={book.weight} />
                                     <DetailItem icon={<FaDollarSign />} label="Giá" value={book.price} />
                                     <DetailItem icon={<FaPercent />} label="Giá giảm" value={book.discount_price} />
-                                    <DetailItem icon={<FaBoxes />} label="Tồn kho" value={book.stock} />
-                                    <DetailItem icon={<FaStickyNote />} label="Ghi chú" value={book.notes} />
+                                    <DetailItem icon={<FaBoxes />} label="Số lượng" value={book.stock} />
                                 </Card>
                             </Paragraph>
                         </Col>
@@ -247,38 +251,74 @@ const DetailBuy = ({ book_id }) => {
 
                 </Col>
 
-                <Col className='details-book' style={{ display: 'flex', marginTop: '40px'}} span={10}>
+                <Col className='details-book' style={{ display: 'flex', marginTop: '40px' }} span={10}>
                     <Card
                         style={{
                             backgroundColor: bookThemeStyles.cardBackground,
                             borderRadius: bookThemeStyles.borderRadius,
                             boxShadow: bookThemeStyles.boxShadow,
                             padding: '16px',
-                            width:'750px'
+                            width: '750px'
                         }}
                     >
                         <div style={{ display: 'flex', justifyContent: 'start', fontSize: '30px', fontWeight: 'bold', marginBottom: '16px' }}>
-                            <div style={{display:'flex',marginTop:'-25px'}}>{book.title}</div>
+                            <div style={{ display: 'flex', marginTop: '-25px' }}>{book.title}</div>
                             <div style={{ display: 'flex', marginLeft: '400px' }}>
                                 <Rate disabled defaultValue={5} />
                             </div>
                         </div>
-                        <span style={{ display: 'flex', justifyContent: 'start', fontSize: '25px' }}>
-                            <span>
-                                <div>{book.price}<span style={{ fontSize: '10px' }}>VND</span></div>
-                                <div>
-                                    <CgAdd />
+
+                        <div>
+                            <Row>
+                                <div style={{ fontSize: '30px' }}>{book.price}<span style={{ fontSize: '10px' }}>VND</span></div>
+                            </Row>
+                            <Row style={{
+                                border: '1px solid',
+                                width: '90px',
+                                borderRadius: '10px'
+                            }}>
+                                <CgAdd
+                                    onClick={increment}
+                                    style={{ opacity: 0.7, cursor: 'pointer', fontSize: '30px' }} // Làm mờ icon và thêm con trỏ chuột khi hover
+                                />
+                                <div style={{ paddingLeft: '10px', paddingRight: '10px' }}>
+                                    {items}
                                 </div>
-                                <div>
-                                    <Button>Mua</Button>
-                                </div>
-                            </span>
-                        </span>
+                                <BiMinusCircle
+                                    onClick={decrement}
+                                    style={{ opacity: 0.7, cursor: 'pointer', fontSize: '30px' }} // Làm mờ icon và thêm con trỏ chuột khi hover
+                                />
+
+                            </Row>
+                            <Row>
+                                <Col span={12}>
+                                    <Button style={{ marginLeft: '200px', height: '40px', width: '80px' }}>Mua</Button>
+                                </Col>
+                                <Col span={12}>
+                                    <FaCartShopping style={{ marginLeft: '200px', height: '40px', width: '80px' }} />
+                                </Col>
+                            </Row>
+                            <Row>
+                                <p style={{
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    display: '-webkit-box',
+                                    WebkitBoxOrient: 'vertical',
+                                    WebkitLineClamp: 3, // Số dòng tối đa bạn muốn hiển thị
+                                    lineHeight: '1.5em', // Chiều cao dòng
+                                    maxHeight: '4.5em', // Giới hạn chiều cao dựa trên số dòng
+                                }}>
+                                    {book.description}
+                                </p>
+
+                            </Row>
+
+                        </div>
                     </Card>
                 </Col>
 
                 <Col span={6}>
-                    <Card title="Sách đề xuất" style={{ borderRadius: bookThemeStyles.borderRadius,backgroundColor:'white',height:'auto' }}>
+                    <Card title="Sách đề xuất" style={{ borderRadius: bookThemeStyles.borderRadius, backgroundColor: 'white', height: 'auto' }}>
                         {recommendedBooks.map(book => (
                             <RecommendedBook key={book.id} title={book.title} author={book.author} rating={book.rating} />
                         ))}
