@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"encoding/json"
 	"math"
 	"shoe_shop_server/common/enums"
 	errors "shoe_shop_server/common/error"
@@ -210,8 +211,25 @@ func (u *UploadBookUseCase) GetdetailBookByid(ctx context.Context, id string) (*
 		return nil, errors.NewCustomHttpErrorWithCode(enums.DB_ERR_CODE, enums.DB_ERR_MESS, "500")
 	}
 	for _, v := range listImage {
-		listUrl = append(listUrl, v.URL)
+		var jsonData map[string]interface{}
+		if err := json.Unmarshal([]byte(v.URL), &jsonData); err == nil {
+			if url, ok := jsonData["t"].(string); ok {
+				// Assuming 'e' is the length of the URL in characters
+				if e, ok := jsonData["lk"].([]interface{}); ok && len(e) > 0 {
+					if lenUrl, ok := e[0].(map[string]interface{})["e"].(float64); ok {
+						// Ensure URL length matches
+						if len(url) == int(lenUrl) {
+							listUrl = append(listUrl, url)
+						}
+					}
+				}
+			}
+		} else {
+			// Fallback to raw URL if not valid JSON
+			listUrl = append(listUrl, v.URL)
+		}
 	}
+
 	return &entities.BookRespDetail{
 		ID:            id_number,
 		Title:         book.Title,
