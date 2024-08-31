@@ -190,8 +190,8 @@ const DetailBuy = ({ book_id }) => {
                 </div>
                 <div className='layout-header-center'>
                     <ul>
-                        <li><FcHome />Trang chủ</li>
-                        <li>Tin sách</li>
+                    <li style={{ cursor: 'pointer' }} onClick={() => window.location.reload()}><FcHome />Trang chủ</li>
+                    <li>Tin sách</li>
                         <li>Thư viện sách</li>
                         <li>Tác giả</li>
                         <li>Cuộc thi</li>

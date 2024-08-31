@@ -115,9 +115,9 @@ function HomePage() {
                 </div>
                 <div className='layout-header-center'>
                     <ul>
-                        <li><FcHome />Trang chủ</li>
+                        <li style={{ cursor: 'pointer' }} onClick={() => window.location.reload()}><FcHome />Trang chủ</li>
                         <li>Tin sách</li>
-                        <li>Thư viện sách</li>
+                        <li style={{cursor:'pointer'}}>Thư viện sách</li>
                         <li>Tác giả</li>
                         <li>Cuộc thi</li>
                         <li>Thông tin cửa hàng</li>
@@ -264,13 +264,13 @@ function HomePage() {
                                     >
                                         <Meta title={book.title} />
                                         <div style={{ marginTop: '10px' }}>
-                                        <p><strong>Giá:</strong> {book.price} VND</p>
+                                            <p><strong>Giá:</strong> {book.price} VND</p>
                                         </div>
                                         <span style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px' }}>
                                             <Button onClick={() => handleBuyNow(book.id)} style={{ background: 'red', color: 'white', fontSize: '17px' }}>
                                                 Mua ngay
                                             </Button>
-                                          
+
                                         </span>
                                     </Card>
                                 </Col>
@@ -281,7 +281,7 @@ function HomePage() {
                 <div className='layout-footer-list-bool-well-sell'>
                     <BookWellSell title={'Sắp xuất bản'} />
                 </div>
-                <div style={{marginTop:'370px'}} className='layout-footer-nhaf-xuatban'>
+                <div style={{ marginTop: '370px' }} className='layout-footer-nhaf-xuatban'>
                     <h3>Nhà xuất bản</h3>
                     {/* List of publishers */}
                     <ul style={{ display: 'flex' }}>
