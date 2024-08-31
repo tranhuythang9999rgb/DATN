@@ -86,7 +86,7 @@ func (c *CollectionBook) GetListBookSellWell(ctx context.Context) ([]*domain.Boo
 		return nil, fmt.Errorf("failed to count orders: %w", err)
 	}
 
-	if ordersCount > 0 {
+	if ordersCount > 100 { //todo
 		// Lấy 5 sản phẩm bán chạy nhất từ bảng orders
 		if err := c.book.WithContext(ctx).
 			Model(&domain.Order{}).
@@ -98,7 +98,7 @@ func (c *CollectionBook) GetListBookSellWell(ctx context.Context) ([]*domain.Boo
 			return nil, fmt.Errorf("failed to get top selling books: %w", err)
 		}
 	} else {
-		// Nếu không có đơn hàng, lấy 4 sách đầu tiên theo thứ tự giảm dần của ID
+		// Nếu không có đơn hàng, lấy 5 sách đầu tiên theo thứ tự giảm dần của ID
 		if err := c.book.WithContext(ctx).
 			Model(&domain.Book{}).
 			Order("id DESC").
