@@ -279,7 +279,7 @@ function HomePage() {
                 <div className='layout-footer-list-bool-well-sell'>
                     <BookWellSell title={'Sắp xuất bản'} />
                 </div>
-                <div className='layout-footer-nhaf-xuatban'>
+                <div style={{marginTop:'370px'}} className='layout-footer-nhaf-xuatban'>
                     <h3>Nhà xuất bản</h3>
                     {/* List of publishers */}
                     <ul style={{ display: 'flex' }}>

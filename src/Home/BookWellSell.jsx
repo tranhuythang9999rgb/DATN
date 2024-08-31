@@ -50,7 +50,7 @@ const BookWellSell = ({ title }) => {
     };
 
     return (
-        <div style={{ padding: '20px' }}>
+        <div style={{ padding: '20px',marginTop:'320px' }}>
             <Title level={2}>{title}<MdSell /></Title>
             <Row gutter={16} justify="space-between">
                 {books.map(book => (
