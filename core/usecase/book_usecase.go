@@ -252,3 +252,11 @@ func (u *UploadBookUseCase) GetdetailBookByid(ctx context.Context, id string) (*
 		Files:         listUrl,
 	}, nil
 }
+
+func (u *UploadBookUseCase) GetListBookByTypeBook(ctx context.Context, typeBook string) ([]*domain.Book, errors.Error) {
+	resp, err := u.books.GetListBookByTypeBook(ctx, typeBook)
+	if err != nil {
+		return nil, errors.NewSystemError("error system")
+	}
+	return resp, nil
+}

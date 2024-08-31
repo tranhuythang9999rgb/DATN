@@ -122,3 +122,9 @@ func (u *CollectionBook) UpdateQuantity(ctx context.Context, tx *gorm.DB, id int
 	result := tx.Model(&domain.Book{}).Where("id = ?", id).UpdateColumn("quantity", quantity)
 	return result.Error
 }
+
+func (u *CollectionBook) GetListBookByTypeBook(ctx context.Context, typeBook string) ([]*domain.Book, error) {
+	var books = make([]*domain.Book, 0)
+	result := u.book.Where("genre = ? ", typeBook).Find(&books)
+	return books, result.Error
+}

@@ -115,3 +115,13 @@ func (u *ControllersUploadBooks) GetdetailBookByid(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, book)
 }
+
+func (u *ControllersUploadBooks) GetListBookByTypeBook(ctx *gin.Context) {
+	name := ctx.Query("name")
+	books, err := u.books.GetListBookByTypeBook(ctx, name)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, books)
+}

@@ -162,3 +162,5 @@ ALTER TABLE books
 -- change column name
 ALTER TABLE books 
     RENAME COLUMN stock TO quantity;
+
+COMMENT ON COLUMN books.genre IS 'Loại sách';
