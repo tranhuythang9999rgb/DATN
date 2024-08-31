@@ -6,6 +6,7 @@ import (
 	"shoe_shop_server/common/utils"
 	"shoe_shop_server/core/domain"
 	"shoe_shop_server/core/entities"
+	"strconv"
 )
 
 type AuthorBookCaseUse struct {
@@ -43,4 +44,13 @@ func (u *AuthorBookCaseUse) GetListAuThorBook(ctx context.Context) ([]*domain.Au
 		return nil, errors.NewSystemError("error system")
 	}
 	return list, nil
+}
+
+func (u *AuthorBookCaseUse) DeleteAuthorBookById(ctx context.Context, id string) errors.Error {
+	number, _ := strconv.ParseInt(id, 10, 64)
+	err := u.authorBook.Delete(ctx, number)
+	if err != nil {
+		return errors.NewSystemError("error system")
+	}
+	return nil
 }

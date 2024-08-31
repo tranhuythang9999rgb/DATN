@@ -6,6 +6,7 @@ import (
 	"shoe_shop_server/common/utils"
 	"shoe_shop_server/core/domain"
 	"shoe_shop_server/core/entities"
+	"strconv"
 )
 
 type PublisherUseCase struct {
@@ -46,4 +47,13 @@ func (u *PublisherUseCase) ListPublisher(ctx context.Context) ([]*domain.Publish
 		return nil, errors.NewSystemError("error system")
 	}
 	return listPb, nil
+}
+
+func (u *PublisherUseCase) DeletePublisherById(ctx context.Context, id string) errors.Error {
+	numberId, _ := strconv.ParseInt(id, 10, 64)
+	err := u.pbs.Delete(ctx, numberId)
+	if err != nil {
+		return errors.NewSystemError("error system")
+	}
+	return nil
 }

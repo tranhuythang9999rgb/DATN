@@ -45,3 +45,14 @@ func (u *ControllersPublisher) ListPublisher(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, resp)
 }
+
+func (u *ControllersPublisher) DeletePublisher(ctx *gin.Context) {
+
+	id := ctx.Query("id")
+	err := u.publisher.DeletePublisherById(ctx, id)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, nil)
+}

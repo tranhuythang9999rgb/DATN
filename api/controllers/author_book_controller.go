@@ -43,3 +43,13 @@ func (u *ControllersAuthorBook) GetAllAuthorBook(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, resp)
 }
+
+func (u *ControllersAuthorBook) DeleteAuthorBookById(ctx *gin.Context) {
+	id := ctx.Query("id")
+	err := u.auBook.DeleteAuthorBookById(ctx, id)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, nil)
+}

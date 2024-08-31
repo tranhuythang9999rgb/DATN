@@ -44,3 +44,15 @@ func (u *ControllersTypeBook) GetListTypeBook(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, resp)
 }
+
+func (u *ControllersTypeBook) DeleteTypeBookById(ctx *gin.Context) {
+
+	id := ctx.Query("id")
+
+	err := u.typeBook.DeleteTypeBookById(ctx, id)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, nil)
+}

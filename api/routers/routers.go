@@ -64,16 +64,19 @@ func NewApiRouter(
 	{
 		typeBookGroup.POST("/add", typeBook.AddTypeBook)
 		typeBookGroup.GET("/list", typeBook.GetListTypeBook)
+		typeBookGroup.DELETE("/delete", typeBook.DeleteTypeBookById)
 	}
 	authorBookGroup := r.Group("/author_book")
 	{
 		authorBookGroup.POST("/add", authorBook.AddAuthorBook)
 		authorBookGroup.GET("/list", authorBook.GetAllAuthorBook)
+		authorBookGroup.DELETE("/delete", authorBook.DeleteAuthorBookById)
 	}
 	publisherGroup := r.Group("/publisher")
 	{
 		publisherGroup.POST("/add", publicer.AddPublisher)
 		publisherGroup.GET("/list", publicer.ListPublisher)
+		publisherGroup.DELETE("/delete", publicer.DeletePublisher)
 	}
 	// address public
 	r.GET("/public/customer/cities", addresPublic.GetAllCity)
