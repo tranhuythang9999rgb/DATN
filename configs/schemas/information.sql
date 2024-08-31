@@ -140,3 +140,21 @@ ALTER TABLE books
 ALTER TABLE books ALTER COLUMN price TYPE DECIMAL USING price::DECIMAL;
 
 
+CREATE TABLE  if not exists delivery_address
+(
+    id BIGINT PRIMARY KEY,
+    order_id BIGINT,
+    province VARCHAR(255),
+    district VARCHAR(255),
+    commune VARCHAR(255), 
+    detailed VARCHAR(255)
+);
+
+ALTER TABLE orders 
+    ALTER COLUMN book_weight TYPE VARCHAR(255);
+
+ALTER TABLE books 
+    ALTER COLUMN stock TYPE INTEGER;
+-- change column name
+ALTER TABLE books 
+    RENAME COLUMN stock TO quantity;

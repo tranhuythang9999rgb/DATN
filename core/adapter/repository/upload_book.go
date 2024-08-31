@@ -53,7 +53,7 @@ func (c *CollectionBook) List(ctx context.Context, req *domain.BookReqForm, limi
 		Price:         req.Price,
 		DiscountPrice: req.DiscountPrice,
 		// PurchasePrice: req.PurchasePrice,
-		Stock:         req.Stock,
+		Quantity:      req.Quantity,
 		Notes:         req.Notes,
 		IsActive:      req.IsActive,
 		OpeningStatus: req.OpeningStatus,
@@ -117,4 +117,8 @@ func (c *CollectionBook) GetBookByIdTopSell(ctx context.Context, id int64) (*dom
 	var book *domain.Book
 	result := c.book.Where("id = ? and is_active = true", id).First(&book)
 	return book, result.Error
+}
+func (u *CollectionBook) UpdateQuantity(ctx context.Context, tx *gorm.DB, id int64, quantity int) error {
+	result := tx.Model(&domain.Book{}).Where("id = ?", id).UpdateColumn("quantity", quantity)
+	return result.Error
 }

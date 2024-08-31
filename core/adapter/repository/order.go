@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"fmt"
+	"shoe_shop_server/core/adapter"
 	"shoe_shop_server/core/domain"
 
 	"gorm.io/gorm"
@@ -13,9 +14,15 @@ type CollectionOrder struct {
 	db *gorm.DB
 }
 
+func NewCollectionOrder(db *adapter.PostGresql) domain.RepositoryOrder {
+	return &CollectionOrder{
+		db: db.CreateCollection(),
+	}
+}
+
 // CreateOrder thêm một đơn hàng mới vào cơ sở dữ liệu
-func (c *CollectionOrder) CreateOrder(ctx context.Context, order *domain.Order) error {
-	result := c.db.Create(&order)
+func (c *CollectionOrder) CreateOrder(ctx context.Context, tx *gorm.DB, order *domain.Order) error {
+	result := tx.Create(&order)
 	return result.Error
 }
 

@@ -1,6 +1,10 @@
 package domain
 
-import "context"
+import (
+	"context"
+
+	"gorm.io/gorm"
+)
 
 // Order đại diện cho bảng orders trong cơ sở dữ liệu
 type Order struct {
@@ -18,7 +22,7 @@ type Order struct {
 	BookLanguage      string  `json:"book_language"`       // Ngôn ngữ
 	BookPageCount     int     `json:"book_page_count"`     // Số trang
 	BookDimensions    string  `json:"book_dimensions"`     // Kích thước
-	BookWeight        float64 `json:"book_weight"`         // Trọng lượng
+	BookWeight        string  `json:"book_weight"`         // Trọng lượng
 	BookPrice         float64 `json:"book_price"`          // Giá sách
 	Quantity          int     `json:"quantity"`            // Số lượng sách trong đơn hàng
 	TotalAmount       float64 `json:"total_amount"`        // Tổng số tiền
@@ -40,7 +44,7 @@ type OrderForm struct {
 	BookLanguage      string  `form:"book_language"`       // Ngôn ngữ
 	BookPageCount     int     `form:"book_page_count"`     // Số trang
 	BookDimensions    string  `form:"book_dimensions"`     // Kích thước
-	BookWeight        float64 `form:"book_weight"`         // Trọng lượng
+	BookWeight        string  `form:"book_weight"`         // Trọng lượng
 	BookPrice         float64 `form:"book_price"`          // Giá sách
 	Quantity          int     `form:"quantity"`            // Số lượng sách trong đơn hàng
 	TotalAmount       float64 `form:"total_amount"`        // Tổng số tiền
@@ -49,7 +53,7 @@ type OrderForm struct {
 
 type RepositoryOrder interface {
 	// CreateOrder thêm một đơn hàng mới vào cơ sở dữ liệu
-	CreateOrder(ctx context.Context, order *Order) error
+	CreateOrder(ctx context.Context, tx *gorm.DB, order *Order) error
 
 	// GetOrderByID lấy thông tin đơn hàng theo ID
 	GetOrderByID(ctx context.Context, id int64) (*Order, error)

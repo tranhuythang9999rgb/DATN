@@ -23,7 +23,7 @@ type Book struct {
 	Price         float64 `json:"price"`          // Giá bán của cuốn sách
 	DiscountPrice float64 `json:"discount_price"` // Giá khuyến mãi của cuốn sách (nếu có)
 	// PurchasePrice float64 `json:"purchase_price"` // Giá nhập của cuốn sách để quản lý tồn kho
-	Stock         int    `json:"stock"`          // Số lượng cuốn sách còn trong kho
+	Quantity      int    `json:"quantity"`       // Số lượng cuốn sách còn trong kho
 	Notes         string `json:"notes"`          // Các ghi chú bổ sung về cuốn sách
 	IsActive      bool   `json:"is_active"`      // Xác định cuốn sách có đang được hiển thị hay không
 	OpeningStatus int    `json:"opening_status"` // Trạng thái mở bán (0: Chưa mở bán, 1: Đang mở bán, 2: Đã đóng bán)
@@ -45,7 +45,7 @@ type BookReqForm struct {
 	Price         float64 `form:"price"`          // Giá bán của cuốn sách
 	DiscountPrice float64 `form:"discount_price"` // Giá khuyến mãi của cuốn sách (nếu có)
 	PurchasePrice float64 `form:"purchase_price"` // Giá nhập của cuốn sách để quản lý tồn kho
-	Stock         int     `form:"stock"`          // Số lượng cuốn sách còn trong kho
+	Quantity      int     `form:"quantity"`       // Số lượng cuốn sách còn trong kho
 	Notes         string  `form:"notes"`          // Các ghi chú bổ sung về cuốn sách
 	IsActive      bool    `form:"is_active"`      // Xác định cuốn sách có đang được hiển thị hay không
 	OpeningStatus int     `form:"opening_status"` // Trạng thái mở bán (0: Chưa mở bán, 1: Đang mở bán, 2: Đã đóng bán)
@@ -60,4 +60,5 @@ type RepositoryBook interface {
 	GetBookById(ctx context.Context, id int64) (*Book, error)
 	GetListBookSellWell(ctx context.Context) ([]*Book, error)
 	GetBookByIdTopSell(ctx context.Context, id int64) (*Book, error)
+	UpdateQuantity(ctx context.Context, tx *gorm.DB, id int64, quantity int) error
 }

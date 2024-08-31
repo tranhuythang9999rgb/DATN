@@ -22,6 +22,7 @@ func NewApiRouter(
 	typeBook *controllers.ControllersTypeBook,
 	publicer *controllers.ControllersPublisher,
 	authorBook *controllers.ControllersAuthorBook,
+	order *controllers.ControllerOrder,
 
 ) *ApiRouter {
 	engine := gin.New()
@@ -77,6 +78,11 @@ func NewApiRouter(
 		publisherGroup.POST("/add", publicer.AddPublisher)
 		publisherGroup.GET("/list", publicer.ListPublisher)
 		publisherGroup.DELETE("/delete", publicer.DeletePublisher)
+	}
+	orderGroup := r.Group("/order")
+	{
+		orderGroup.POST("/add", order.CreateOrder)
+		orderGroup.GET("/infor", order.GetOrderById)
 	}
 	// address public
 	r.GET("/public/customer/cities", addresPublic.GetAllCity)
