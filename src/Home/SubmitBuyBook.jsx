@@ -5,6 +5,7 @@ import './home_index.css';
 import { GrPaypal } from 'react-icons/gr';
 import { IoReturnUpBackOutline } from 'react-icons/io5';
 import GetOrderById from './GetOrderById';
+import axios from 'axios';
 
 const { Title } = Typography;
 
@@ -25,21 +26,30 @@ const SubmitBuyBook = () => {
         openNotification('Notification', 'You have returned to the previous page.');
     };
 
-    const handleFormSubmit = (values) => {
+    const handleFormSubmit = async (values) => {
         const formData = new FormData();
         Object.keys(values).forEach(key => {
             formData.append(key, values[key]);
         });
         formData.append('payment_method', paymentMethod); // Add payment method to FormData
-
-        if (paymentMethod === 1) {
-            // Call API for "Thanh toán khi giao hàng"
-            fetch('http://localhost:8080/manager/delivery_address/add', {
-                method: 'POST',
-                body: formData,
-            })
-                .then(response => response.json())
-                .then(data => {
+    
+        // Retrieve the order_id from localStorage
+        const orderId = localStorage.getItem('order_id');
+    
+        if (orderId) {
+            formData.append('order_id', orderId); // Append the order_id to the FormData
+    
+            try {
+                if (paymentMethod === 1) {
+                    // Call API for "Thanh toán khi giao hàng"
+                    const response = await axios.post('http://localhost:8080/manager/delivery_address/add', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    });
+    
+                    const data = response.data;
+    
                     if (data.code === 0) {
                         message.success('Đặt hàng thành công!');
                         openNotification('Order Success', 'Your order has been placed successfully.');
@@ -47,14 +57,16 @@ const SubmitBuyBook = () => {
                     } else {
                         message.error('Có lỗi xảy ra!');
                     }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    message.error('Có lỗi xảy ra!');
-                });
+                } else {
+                    // Handle other payment methods if needed
+                    message.warning('Chức năng thanh toán trực tuyến chưa được hỗ trợ.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                message.error('Có lỗi xảy ra!');
+            }
         } else {
-            // Handle other payment methods if needed
-            message.warning('Chức năng thanh toán trực tuyến chưa được hỗ trợ.');
+            message.error('Order ID is missing!');
         }
     };
 
