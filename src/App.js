@@ -23,11 +23,11 @@ function App() {
       {/* <HomePage/> */}
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
-      {/* <CheckLogin/> */}
+      <CheckLogin/>
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
-      <DetailBuy book_id={7861741} />
+      {/* <DetailBuy book_id={7861741} /> */}
       {/* <AppRouter/> */}
       {/* <Pages2/> */}
     </div>

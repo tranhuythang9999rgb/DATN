@@ -160,3 +160,12 @@ body {
 :where(.css-dev-only-do-not-override-1gwfwyx).ant-card-bordered{
     height: 330px;
 }
+.submit-after-buy{
+    background-color: white;
+    padding: 10px;
+    border-radius: 0;
+    max-width: 550px;
+    /* height: 550px; */
+    margin: 50px auto;
+    border-radius: 8px;
+}
