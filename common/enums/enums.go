@@ -107,6 +107,7 @@ const (
 
 	TICKET_OPEN_SALE  = 15
 	TICKET_CLOSE_SALE = 17
+	ORDER_PEND        = 19
 )
 const (
 	NoSignatureErrorMessage         = "No signature."

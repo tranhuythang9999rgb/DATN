@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"fmt"
+	"shoe_shop_server/common/enums"
 	"shoe_shop_server/core/adapter"
 	"shoe_shop_server/core/domain"
 
@@ -91,9 +92,13 @@ func (c *CollectionOrder) UpdateOrder(ctx context.Context, order *domain.Order) 
 
 func (c *CollectionOrder) GetInforMationBook(ctx context.Context, order_id, book_id int64) (*domain.Order, error) {
 	var order *domain.Order
-	result := c.db.Where("id = ? and book_id = ?", order_id, book_id).First(&order)
+	result := c.db.Where("id = ? and book_id = ? and status = ?", order_id, book_id, enums.ORDER_INIT).First(&order)
 	if result.Error == gorm.ErrRecordNotFound {
 		return nil, nil
 	}
 	return order, result.Error
+}
+func (u *CollectionOrder) UpdateStatusOrder(ctx context.Context, id int64) error {
+	result := u.db.Model(&domain.Order{}).Where("id = ? ", id).UpdateColumn("status", enums.ORDER_PEND)
+	return result.Error
 }
