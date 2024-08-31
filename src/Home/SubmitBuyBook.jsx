@@ -5,6 +5,7 @@ import OpenApiAddress from './OpenApiAddress';
 import './home_index.css';
 import { GrPaypal } from 'react-icons/gr';
 import { IoReturnUpBackOutline } from 'react-icons/io5';
+import GetOrderById from './GetOrderById';
 const { Title } = Typography;
 
 const SubmitBuyBook = () => {
@@ -101,7 +102,7 @@ const SubmitBuyBook = () => {
             </Row>
             <Row>
                 <Col span={6}>
-don hangf
+                    <GetOrderById/>
                 </Col>
                 <Col span={6}>
                     <Form>

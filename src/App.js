@@ -28,10 +28,10 @@ function App() {
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
-      {/* <DetailBuy book_id={7861741} /> */}
+      <DetailBuy book_id={7861741} />
       {/* <AppRouter/> */}
       {/* <Pages2/> */}
-      <SubmitBuyBook/>
+      {/* <SubmitBuyBook/> */}
     </div>
   );
 }

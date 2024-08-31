@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Card, Col, Image, Row, Typography, Rate, Button, Input, Tooltip, Modal, Carousel, Space } from 'antd';
+import { Card, Col, Image, Row, Typography, Rate, Button, Input, Tooltip, Modal, Carousel, Space, message } from 'antd';
 import { FaUser, FaBookOpen, FaCalendarAlt, FaBarcode, FaLanguage, FaFileAlt, FaRulerCombined, FaWeightHanging, FaDollarSign, FaPercent, FaBoxes, FaStickyNote, FaStar, FaShoppingCart } from 'react-icons/fa';
 import './home_index.css';
 import { CgAdd } from 'react-icons/cg';
@@ -10,7 +10,6 @@ import { CiLogin, CiSearch } from 'react-icons/ci';
 import Login from '../common/Login';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { BiMinusCircle } from 'react-icons/bi';
-import { FaCartShopping } from 'react-icons/fa6';
 import SubmitBuyBook from './SubmitBuyBook';
 
 const { Title, Text, Paragraph } = Typography;
@@ -20,7 +19,7 @@ const DetailBuy = ({ book_id }) => {
     const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [items, setItems] = useState(0);
+    const [items, setItems] = useState(1);
     const [isBuy, setIsBuy] = useState(false);
 
     useEffect(() => {
@@ -131,13 +130,41 @@ const DetailBuy = ({ book_id }) => {
 
     const handleNextSubmitBuy = () => {
         setIsBuy(true);
+        initOrder();
     }
+    const initOrder = async () => {
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        const customerName = userData ? userData.user_name : '';
+        const orderId = localStorage.getItem('order_id') || 0;
+
+        const formData = new FormData();
+        formData.append('customer_name', customerName);
+        formData.append('book_id', book_id); // Ensure book_id is a string
+        formData.append('quantity', items.toString()); // Ensure quantity is a string
+        formData.append('order_id',orderId);
+    
+        try {
+            const response = await axios.post('http://127.0.0.1:8080/manager/order/add', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+    
+            if (response.data.code === 0) {
+                localStorage.setItem('order_id', response.data.body);
+            }
+        } catch (error) {
+            message.error('error server');
+        }
+    }
+    
 
     if (isBuy) {
         return (
             <SubmitBuyBook />
         )
     }
+
     return (
         <div style={{ backgroundColor: bookThemeStyles.mainBackground, padding: '20px', borderRadius: bookThemeStyles.borderRadius }}>
             <div className='layout-header'>
@@ -315,7 +342,9 @@ const DetailBuy = ({ book_id }) => {
 
                             <Row>
                                 <Space>
-                                    <Button onClick={handleNextSubmitBuy} style={{ marginTop: '10px', height: '50px', width: '100px', background: 'red', color: 'white', fontSize: '20px' }}>Mua ngay</Button>
+                                    <Button onClick={handleNextSubmitBuy} style={{ marginTop: '10px', height: '50px', width: '100px', background: 'red', color: 'white', fontSize: '20px' }}>
+                                        Mua ngay
+                                    </Button>
                                     <Button style={{ marginTop: '10px', height: '50px', background: '#228b22', color: 'white', fontSize: '20px' }}>Thêm vào giỏ hàng</Button>
                                 </Space>
                             </Row>
