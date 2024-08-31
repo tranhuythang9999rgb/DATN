@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { message } from 'antd'; // Assuming you're using Ant Design for messages
+import { List, Typography, Spin, Alert } from 'antd'; // Thêm các component Ant Design cần thiết
+
+const { Title } = Typography; // Để sử dụng Title từ Ant Design
 
 const GetOrderById = () => {
     const [order, setOrder] = useState(null);
@@ -11,7 +13,7 @@ const GetOrderById = () => {
     useEffect(() => {
         const fetchOrder = async () => {
             if (!orderId || orderId === 0) {
-                setError('Invalid order ID');
+                setError('Mã đơn hàng không hợp lệ');
                 setLoading(false);
                 return;
             }
@@ -24,7 +26,7 @@ const GetOrderById = () => {
                     setError(response.data.message);
                 }
             } catch (err) {
-                setError('Error fetching order data');
+                setError('Lỗi khi lấy dữ liệu đơn hàng');
             } finally {
                 setLoading(false);
             }
@@ -33,36 +35,45 @@ const GetOrderById = () => {
         fetchOrder();
     }, [orderId]);
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
+    if (loading) return <Spin size="large" tip="Đang tải..." />;
+    if (error) return <Alert message="Lỗi" description={error} type="error" />;
 
     return (
         <div>
             {order ? (
                 <div>
-                    <h2>Order Information</h2>
-                    <p><strong>ID:</strong> {order.id}</p>
-                    <p><strong>Customer Name:</strong> {order.customer_name}</p>
-                    <p><strong>Order Date:</strong> {order.order_date}</p>
-                    <p><strong>Book ID:</strong> {order.book_id}</p>
-                    <p><strong>Book Title:</strong> {order.book_title}</p>
-                    <p><strong>Book Author:</strong> {order.book_author}</p>
-                    <p><strong>Book Publisher:</strong> {order.book_publisher}</p>
-                    <p><strong>Book Published Date:</strong> {order.book_published_date}</p>
-                    <p><strong>Book ISBN:</strong> {order.book_isbn}</p>
-                    <p><strong>Book Genre:</strong> {order.book_genre}</p>
-                    <p><strong>Book Description:</strong> {order.book_description}</p>
-                    <p><strong>Book Language:</strong> {order.book_language}</p>
-                    <p><strong>Book Page Count:</strong> {order.book_page_count}</p>
-                    <p><strong>Book Dimensions:</strong> {order.book_dimensions}</p>
-                    <p><strong>Book Weight:</strong> {order.book_weight}</p>
-                    <p><strong>Book Price:</strong> {order.book_price}</p>
-                    <p><strong>Quantity:</strong> {order.quantity}</p>
-                    <p><strong>Total Amount:</strong> {order.total_amount}</p>
-                    <p><strong>Status:</strong> {order.status}</p>
+                    <Title level={2}>Thông tin đơn hàng</Title>
+                    <div style={{ maxHeight: '1000px', overflowY: 'auto' }}>
+                        <List
+                            bordered
+                            dataSource={[
+                                { label: 'ID', value: order.id },
+                                { label: 'ID sách', value: order.book_id },
+                                { label: 'Tổng số tiền', value: order.total_amount },
+                                { label: 'Tiêu đề sách', value: order.book_title },
+                                { label: 'Tác giả sách', value: order.book_author },
+                                { label: 'Nhà xuất bản sách', value: order.book_publisher },
+                                { label: 'Ngày xuất bản sách', value: order.book_published_date },
+                                { label: 'ISBN sách', value: order.book_isbn },
+                                { label: 'Thể loại sách', value: order.book_genre },
+                                { label: 'Ngôn ngữ sách', value: order.book_language },
+                                { label: 'Số trang sách', value: order.book_page_count },
+                                { label: 'Kích thước sách', value: order.book_dimensions },
+                                { label: 'Cân nặng sách', value: order.book_weight },
+                                { label: 'Giá sách', value: order.book_price },
+                                { label: 'Số lượng', value: order.quantity },
+
+                            ]}
+                            renderItem={item => (
+                                <List.Item>
+                                    <strong>{item.label}:</strong> {item.value}
+                                </List.Item>
+                            )}
+                        />
+                    </div>
                 </div>
             ) : (
-                <p>No order information available</p>
+                <p>Không có thông tin đơn hàng</p>
             )}
         </div>
     );
