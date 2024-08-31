@@ -143,6 +143,8 @@ function HomePage() {
                                         visible={isModalVisible}
                                         onCancel={handleModalClose}
                                         footer={null}
+                                        width={400}
+                                        height={500}
                                     >
                                         <Login />
                                     </Modal>
