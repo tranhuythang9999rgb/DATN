@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Input, Radio, Row, Select, Space, Typography, message, notification } from 'antd';
 import DetailBuy from './DetailBuy';
-import OpenApiAddress from './OpenApiAddress';
 import './home_index.css';
 import { GrPaypal } from 'react-icons/gr';
 import { IoReturnUpBackOutline } from 'react-icons/io5';
@@ -10,9 +9,7 @@ const { Title } = Typography;
 
 const SubmitBuyBook = () => {
     const [isGoback, setIsGoback] = useState(false);
-    const [isFormVisible, setIsFormVisible] = useState(true);
     const [form] = Form.useForm();
-    const [address, setAddress] = useState({ city: '', district: '', commune: '' });
     const [api, contextHolder] = notification.useNotification();
     const [selectedCity, setSelectedCity] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
@@ -20,10 +17,7 @@ const SubmitBuyBook = () => {
     const [cities, setCities] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [communes, setCommunes] = useState([]);
-
-    const handleNextSubmitBuy = () => {
-        setIsFormVisible(false);
-    };
+    const [paymentMethod, setPaymentMethod] = useState(1); // Default to 1 (Thanh toán khi giao hàng)
 
     const handleGoBack = () => {
         setIsGoback(true);
@@ -32,16 +26,36 @@ const SubmitBuyBook = () => {
 
     const handleFormSubmit = (values) => {
         // Process the form data here (e.g., send it to a server)
-        console.log('Form values:', { ...values, address });
-        message.success('Đặt hàng thành công!');
-        openNotification('Order Success', 'Your order has been placed successfully.');
+        const formData = new FormData();
+        Object.keys(values).forEach(key => {
+            formData.append(key, values[key]);
+        });
+        formData.append('payment_method', paymentMethod); // Add payment method to FormData
 
-        // After successful submission, trigger handleGoBack to navigate back
-        handleGoBack();
-    };
-
-    const handleAddressChange = (address) => {
-        setAddress(address);
+        if (paymentMethod === 1) {
+            // Call API for "Thanh toán khi giao hàng"
+            fetch('http://localhost:8080/manager/delivery_address/add', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.code === 0) {
+                        message.success('Đặt hàng thành công!');
+                        openNotification('Order Success', 'Your order has been placed successfully.');
+                        handleGoBack();
+                    } else {
+                        message.error('Có lỗi xảy ra!');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    message.error('Có lỗi xảy ra!');
+                });
+        } else {
+            // Handle other payment methods if needed
+            message.warning('Chức năng thanh toán trực tuyến chưa được hỗ trợ.');
+        }
     };
 
     const openNotification = (title, description) => {
@@ -89,7 +103,9 @@ const SubmitBuyBook = () => {
             .catch(error => console.error(error));
     };
 
-
+    const handlePaymentMethodChange = (e) => {
+        setPaymentMethod(e.target.value);
+    };
 
     if (isGoback) {
         return <DetailBuy book_id={localStorage.getItem('book_id')} />;
@@ -97,108 +113,112 @@ const SubmitBuyBook = () => {
 
     return (
         <div>
+            {contextHolder}
             <Row>
-            <IoReturnUpBackOutline onClick={handleGoBack} style={{fontSize:'25px',cursor:'pointer'}} />
+                <IoReturnUpBackOutline onClick={handleGoBack} style={{ fontSize: '25px', cursor: 'pointer' }} />
             </Row>
-            <Row>
-                <Col span={6}>
-                    <GetOrderById/>
-                </Col>
-                <Col span={6}>
-                    <Form>
-                        <Title><h2>Nhập thông tin nhận hàng</h2></Title>
-                        <Form.Item>
-                            <Input placeholder='email' />
-                        </Form.Item>
-                        <Form.Item>
-                            <Input placeholder='ho ten' />
-                        </Form.Item>
-                        <Form.Item>
-                            <Input placeholder='so dien thoai' />
-                        </Form.Item>
-                        <Form.Item>
-                            <Select
-                                placeholder="Chọn thành phố"
-                                style={{ width: 460, height: 42 }}
-                                showSearch
-                                filterOption={(input, option) =>
-                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                }
-                                onChange={handleCityChange}
-                                value={selectedCity || undefined}
-
-                            >
-                                {cities.map(city => (
-                                    <Select.Option key={city} value={city}>{city}</Select.Option>
-                                ))}
-                            </Select>
-                        </Form.Item>
-                        <Form.Item>
-                            <Select
-                                style={{ width: 460, height: 42 }}
-                                showSearch
-                                filterOption={(input, option) =>
-                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                }
-                                onChange={handleDistrictChange}
-                                value={selectedDistrict || undefined}  // Update this line
-                                placeholder="Chọn quận/huyện"
-                            >
-                                {districts.map(district => (
-                                    <Select.Option key={district} value={district}>{district}</Select.Option>
-                                ))}
-                            </Select>
-
-                        </Form.Item>
-                        <Form.Item>
-                            <Select
-                                style={{ width: 460, height: 42 }}
-                                showSearch
-                                filterOption={(input, option) =>
-                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                }
-                                value={selectedCommune || undefined}
-                                placeholder="Chọn phường/xã"
-                            >
-                                {communes.map(commune => (
-                                    <Select.Option key={commune} value={commune}>{commune}</Select.Option>
-                                ))}
-                            </Select>
-                        </Form.Item>
-                        <Form.Item>
-                            <Input placeholder='Chi tiết địa chỉ' />
-                        </Form.Item>
-                        <Form.Item>
-                            <Input placeholder='ghi chu' />
-                        </Form.Item>
-                    </Form>
-                </Col>
-                <Col style={{ paddingLeft: '30px', paddingTop: '150px' }} span={6}>
-                    <Radio.Group defaultValue={1}>
-                        <Space direction='vertical'>
-                            <Space.Compact>
-                                <Button style={{ height: '50px', fontSize: '20px' }}>
-                                    <Radio value={1} /> Thanh toán khi giao hàng
-                                </Button>
-                            </Space.Compact>
-                            <Space.Compact>
-                                <Button style={{ height: '50px', fontSize: '20px', width: '290px' }}>
-                                    <Radio style={{ marginLeft: '' }} value={2} /> Thanh toán trực tuyến <GrPaypal />
-                                </Button>
-                            </Space.Compact>
-                            <Space.Compact>
-                                <Button style={{ height: '50px', fontSize: '20px' , width: '290px'}}>
-                                    Thanh toán
-                                </Button>
-                            </Space.Compact>
-                        </Space>
-                    </Radio.Group>
-                </Col>
-                <Col span={6}>
-
+            <Row justify="center">
+                <Col span={16}>
+                    <Row gutter={16}>
+                        <Col span={8}>
+                            <GetOrderById />
+                        </Col>
+                        <Col span={8}>
+                            <Form form={form} onFinish={handleFormSubmit}>
+                                <Title level={2}>Nhập thông tin nhận hàng</Title>
+                                <Form.Item name="email" rules={[{ required: true, message: 'Email is required' }]}>
+                                    <Input placeholder='Email' />
+                                </Form.Item>
+                                <Form.Item name="user_name" rules={[{ required: true, message: 'Họ tên is required' }]}>
+                                    <Input placeholder='Họ tên' />
+                                </Form.Item>
+                                <Form.Item name="phone_number" rules={[{ required: true, message: 'Số điện thoại is required' }]}>
+                                    <Input placeholder='Số điện thoại' />
+                                </Form.Item>
+                                <Form.Item name="province" rules={[{ required: true, message: 'Chọn thành phố' }]}>
+                                    <Select
+                                        placeholder="Chọn thành phố"
+                                        style={{ width: '100%', height: 42 }}
+                                        showSearch
+                                        filterOption={(input, option) =>
+                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                        onChange={handleCityChange}
+                                        value={selectedCity || undefined}
+                                    >
+                                        {cities.map(city => (
+                                            <Select.Option key={city} value={city}>{city}</Select.Option>
+                                        ))}
+                                    </Select>
+                                </Form.Item>
+                                <Form.Item name="district" rules={[{ required: true, message: 'Chọn quận/huyện' }]}>
+                                    <Select
+                                        style={{ width: '100%', height: 42 }}
+                                        showSearch
+                                        filterOption={(input, option) =>
+                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                        onChange={handleDistrictChange}
+                                        value={selectedDistrict || undefined}
+                                        placeholder="Chọn quận/huyện"
+                                    >
+                                        {districts.map(district => (
+                                            <Select.Option key={district} value={district}>{district}</Select.Option>
+                                        ))}
+                                    </Select>
+                                </Form.Item>
+                                <Form.Item name="commune" rules={[{ required: true, message: 'Chọn phường/xã' }]}>
+                                    <Select
+                                        style={{ width: '100%', height: 42 }}
+                                        showSearch
+                                        filterOption={(input, option) =>
+                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                        }
+                                        value={selectedCommune || undefined}
+                                        placeholder="Chọn phường/xã"
+                                    >
+                                        {communes.map(commune => (
+                                            <Select.Option key={commune} value={commune}>{commune}</Select.Option>
+                                        ))}
+                                    </Select>
+                                </Form.Item>
+                                <Form.Item name="detailed" rules={[{ required: true, message: 'Chi tiết địa chỉ is required' }]}>
+                                    <Input placeholder='Chi tiết địa chỉ' />
+                                </Form.Item>
+                                <Form.Item name="note">
+                                    <Input placeholder='Ghi chú' />
+                                </Form.Item>
+                                <Form.Item>
+                                    <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+                                        Đặt hàng
+                                    </Button>
+                                </Form.Item>
+                            </Form>
+                        </Col>
+                        <Col style={{ marginTop: '16px' }} span={8}>
+                            <Radio.Group onChange={handlePaymentMethodChange} value={paymentMethod}>
+                                <Space direction='vertical' style={{ width: '100%' }}>
+                                    <Space.Compact>
+                                        <Button style={{ height: '50px', fontSize: '20px', width: '100%' }}>
+                                            <Radio value={1} /> Thanh toán khi giao hàng
+                                        </Button>
+                                    </Space.Compact>
+                                    <Space.Compact>
+                                        <Button style={{ height: '50px', fontSize: '20px', width: '100%' }}>
+                                            <Radio value={2} /> Thanh toán trực tuyến <GrPaypal />
+                                        </Button>
+                                    </Space.Compact>
+                                    <Space.Compact>
+                                        <Button style={{ height: '50px', fontSize: '20px', width: '100%' }}>
+                                            Thanh toán
+                                        </Button>
+                                    </Space.Compact>
+                                </Space>
+                            </Radio.Group>
+                        </Col>
+                    </Row>
                 </Col>
             </Row>
-
         </div>
     );
 };
