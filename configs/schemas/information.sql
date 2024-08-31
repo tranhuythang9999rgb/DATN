@@ -140,14 +140,18 @@ ALTER TABLE books
 ALTER TABLE books ALTER COLUMN price TYPE DECIMAL USING price::DECIMAL;
 
 
-CREATE TABLE  if not exists delivery_address
+CREATE TABLE  if not exists delivery_addresses
 (
     id BIGINT PRIMARY KEY,
     order_id BIGINT,
+    email VARCHAR(1024),
+    user_name VARCHAR(1024),
+    phone_number VARCHAR(255),
     province VARCHAR(255),
     district VARCHAR(255),
     commune VARCHAR(255), 
-    detailed VARCHAR(255)
+    detailed VARCHAR(255),
+    otp INT
 );
 
 ALTER TABLE orders 
