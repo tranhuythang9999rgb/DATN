@@ -26,49 +26,116 @@ func NewUseCaseOrder(order domain.RepositoryOrder, book domain.RepositoryBook, t
 }
 
 func (u *UseCaseOrder) CreateOrder(ctx context.Context, req *entities.Order) (int64, errors.Error) {
-
 	orderId := utils.GenerateUniqueKey()
 	orderDate := time.Now()
-	tx, _ := u.trans.BeginTransaction(ctx)
-	// Convert time.Time to string in the desired format
 	orderDateString := orderDate.Format("2006-01-02 15:04:05")
+
+	// Start a transaction
+	tx, err := u.trans.BeginTransaction(ctx)
+	if err != nil {
+		return 0, errors.NewSystemError("error system 1")
+	}
+
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+			panic(r)
+		} else if err != nil {
+			tx.Rollback()
+		} else {
+			tx.Commit()
+		}
+	}()
+
+	// Fetch the book details
 	book, err := u.book.GetBookById(ctx, req.BookID)
 	if err != nil {
 		return 0, errors.NewSystemError("error system 1")
 	}
+
+	// Check if requested quantity is available
 	if req.Quantity > book.Quantity {
-		return 0, errors.NewCustomHttpError(200, 0, "qua so luong")
+		return 0, errors.NewCustomHttpError(200, 0, "Requested quantity exceeds available stock")
 	}
-	err = u.order.CreateOrder(ctx, tx, &domain.Order{
-		ID:                orderId,
-		CustomerName:      req.CustomerName,
-		OrderDate:         orderDateString,
-		BookID:            req.BookID,
-		BookTitle:         book.Title,
-		BookAuthor:        book.AuthorName,
-		BookPublisher:     book.Publisher,
-		BookPublishedDate: book.PublishedDate,
-		BookISBN:          book.ISBN,
-		BookGenre:         book.Genre, // Thể loại hoặc danh mục của cuốn sách
-		BookDescription:   book.Description,
-		BookLanguage:      book.Language,
-		BookPageCount:     book.PageCount,
-		BookDimensions:    book.Dimensions, // Kích thước vật lý của cuốn sách
-		BookWeight:        book.Weight,
-		BookPrice:         book.Price,
-		Quantity:          req.Quantity,
-		TotalAmount:       book.Price * float64(req.Quantity),
-		Status:            enums.ORDER_INIT,
-	})
+
+	// Check if the order already exists
+	checkorderExists, err := u.order.GetInforMationBook(ctx, req.OrderId, req.BookID)
 	if err != nil {
 		return 0, errors.NewSystemError("error system 2")
 	}
-	err = u.book.UpdateQuantity(ctx, tx, req.BookID, book.Quantity-req.Quantity)
-	if err != nil {
-		return 0, errors.NewSystemError("error system 3")
+
+	if checkorderExists != nil {
+		// Update existing order
+		err = u.order.UpdateOrder(ctx, &domain.Order{
+			ID:                req.OrderId,
+			CustomerName:      req.CustomerName,
+			OrderDate:         checkorderExists.OrderDate,
+			BookID:            req.BookID,
+			BookTitle:         checkorderExists.BookTitle,
+			BookAuthor:        checkorderExists.BookAuthor,
+			BookPublisher:     checkorderExists.BookPublisher,
+			BookPublishedDate: checkorderExists.BookPublishedDate,
+			BookISBN:          checkorderExists.BookISBN,
+			BookGenre:         checkorderExists.BookGenre,
+			BookDescription:   checkorderExists.BookDescription,
+			BookLanguage:      checkorderExists.BookLanguage,
+			BookPageCount:     checkorderExists.BookPageCount,
+			BookDimensions:    checkorderExists.BookDimensions,
+			BookWeight:        checkorderExists.BookWeight,
+			BookPrice:         checkorderExists.BookPrice,
+			Quantity:          req.Quantity,
+			TotalAmount:       checkorderExists.BookPrice * float64(req.Quantity),
+			Status:            enums.ORDER_INIT,
+		})
+		if err != nil {
+			return 0, errors.NewSystemError("error system 3")
+		}
+		var quantityUpdate int
+		if req.Quantity == checkorderExists.Quantity {
+			quantityUpdate = book.Quantity
+		} else {
+			quantityUpdate = book.Quantity - (req.Quantity - checkorderExists.Quantity)
+		}
+		// Update book quantity
+		err = u.book.UpdateQuantity(ctx, tx, req.BookID, quantityUpdate)
+		if err != nil {
+			return 0, errors.NewSystemError("error system 4")
+		}
+		return req.OrderId, nil
+	} else {
+		// Create a new order
+		err = u.order.CreateOrder(ctx, tx, &domain.Order{
+			ID:                orderId,
+			CustomerName:      req.CustomerName,
+			OrderDate:         orderDateString,
+			BookID:            req.BookID,
+			BookTitle:         book.Title,
+			BookAuthor:        book.AuthorName,
+			BookPublisher:     book.Publisher,
+			BookPublishedDate: book.PublishedDate,
+			BookISBN:          book.ISBN,
+			BookGenre:         book.Genre,
+			BookDescription:   book.Description,
+			BookLanguage:      book.Language,
+			BookPageCount:     book.PageCount,
+			BookDimensions:    book.Dimensions,
+			BookWeight:        book.Weight,
+			BookPrice:         book.Price,
+			Quantity:          req.Quantity,
+			TotalAmount:       book.Price * float64(req.Quantity),
+			Status:            enums.ORDER_INIT,
+		})
+		if err != nil {
+			return 0, errors.NewSystemError("error system 5")
+		}
+
+		// Update book quantity
+		err = u.book.UpdateQuantity(ctx, tx, req.BookID, book.Quantity-req.Quantity)
+		if err != nil {
+			return 0, errors.NewSystemError("error system 6")
+		}
+		return orderId, nil
 	}
-	tx.Commit()
-	return orderId, nil
 }
 
 func (u *UseCaseOrder) GetOrderById(ctx context.Context, id string) (*domain.Order, errors.Error) {

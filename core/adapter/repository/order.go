@@ -88,3 +88,12 @@ func (c *CollectionOrder) UpdateOrder(ctx context.Context, order *domain.Order) 
 	}
 	return nil
 }
+
+func (c *CollectionOrder) GetInforMationBook(ctx context.Context, order_id, book_id int64) (*domain.Order, error) {
+	var order *domain.Order
+	result := c.db.Where("id = ? and book_id = ?", order_id, book_id).First(&order)
+	if result.Error == gorm.ErrRecordNotFound {
+		return nil, nil
+	}
+	return order, result.Error
+}

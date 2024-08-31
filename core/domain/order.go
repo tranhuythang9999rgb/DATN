@@ -69,4 +69,6 @@ type RepositoryOrder interface {
 
 	// GetOrderCount lấy số lượng đơn hàng theo trạng thái
 	GetOrderCount(ctx context.Context, status int) (int64, error)
+
+	GetInforMationBook(ctx context.Context, order_id, book_id int64) (*Order, error)
 }
