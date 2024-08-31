@@ -61,7 +61,7 @@ function UpdateBook({ book }) {
             formData.append('weight', values.weight);
             formData.append('price', values.price);
             formData.append('discount_price', values.discount_price);
-            formData.append('stock', values.stock);
+            formData.append('quantity', values.quantity);
             formData.append('notes', values.notes);
             formData.append('opening_status', values.opening_status ? values.opening_status.value : ''); // Handle Select value
             formData.append('id', book.id);
@@ -128,7 +128,7 @@ function UpdateBook({ book }) {
                 <Input />
             </Form.Item>
 
-            <Form.Item label="Số lượng" name="stock">
+            <Form.Item label="Số lượng" name="quantity">
                 <Input />
             </Form.Item>
             <Form.Item label="Ghi chú" name="notes">

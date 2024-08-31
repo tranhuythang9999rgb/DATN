@@ -56,7 +56,7 @@ class Pages2 extends Component {
                         <span>Weight: {book.weight}</span><br />
                         <span>Price: {book.price}</span><br />
                         <span>Discount Price: {book.discount_price}</span><br />
-                        <span>Stock: {book.stock}</span><br />
+                        <span>quantity: {book.quantity}</span><br />
                         <span>Notes: {book.notes}</span><br />
                         <span>Is Active: {book.is_active ? 'Yes' : 'No'}</span><br />
                         <span>Opening Status: {book.opening_status}</span><br />

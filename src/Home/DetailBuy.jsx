@@ -205,7 +205,6 @@ const DetailBuy = ({ book_id }) => {
                     </ul>
                 </div>
 
-                <div className='layout-header-end'></div>
             </div>
             <Row style={{ display: 'flex', marginTop: '100px' }} gutter={[16, 16]}>
                 <Col span={8}>
@@ -244,7 +243,7 @@ const DetailBuy = ({ book_id }) => {
                                     <DetailItem icon={<FaWeightHanging />} label="Trọng lượng" value={book.weight} />
                                     <DetailItem icon={<FaDollarSign />} label="Giá" value={book.price} />
                                     <DetailItem icon={<FaPercent />} label="Giá giảm" value={book.discount_price} />
-                                    <DetailItem icon={<FaBoxes />} label="Số lượng" value={book.stock} />
+                                    <DetailItem icon={<FaBoxes />} label="Số lượng" value={book.quantity} />
                                 </Card>
                             </Paragraph>
                         </Col>
@@ -273,7 +272,13 @@ const DetailBuy = ({ book_id }) => {
                             width: '750px'
                         }}
                     >
-                        <div style={{ display: 'flex', justifyContent: 'start', fontSize: '30px', fontWeight: 'bold', marginBottom: '16px' }}>
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'start',
+                            fontSize: '30px',
+                            fontWeight: 'bold',
+                            marginBottom: '16px'
+                        }}>
                             <div style={{ display: 'flex', marginTop: '-25px' }}>{book.title}</div>
                             <div style={{ display: 'flex', marginLeft: '400px' }}>
                                 <Rate disabled defaultValue={5} />
@@ -297,13 +302,13 @@ const DetailBuy = ({ book_id }) => {
                                         </div>
 
                                         <CgAdd
-                                            onClick={items < book.stock ? increment : null} // Only call increment if items < book.stock
+                                            onClick={items < book.quantity ? increment : null} // Only call increment if items < book.quantity
                                             style={{ opacity: 0.7, cursor: 'pointer', fontSize: '30px' }} // Làm mờ icon và thêm con trỏ chuột khi hover
                                         />
 
                                     </div>
                                     <div>
-                                        Còn lại {book.stock} trong kho
+                                        Còn lại {book.quantity} trong kho
                                     </div>
                                 </Space>
                             </Row>
@@ -333,8 +338,8 @@ const DetailBuy = ({ book_id }) => {
                     </Card>
                 </Col>
 
-                <Col span={6}>
-                    <Card title="Sách đề xuất" style={{ borderRadius: bookThemeStyles.borderRadius, backgroundColor: 'white', height: 'auto' }}>
+                <Col span={3}>
+                    <Card title="Sách đề xuất" style={{ borderRadius: bookThemeStyles.borderRadius, backgroundColor: 'white', height: 'auto', width: '450px' }}>
                         {recommendedBooks.map(book => (
                             <RecommendedBook key={book.id} title={book.title} author={book.author} rating={book.rating} />
                         ))}

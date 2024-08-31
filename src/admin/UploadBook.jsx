@@ -125,7 +125,7 @@ function UploadBook() {
             formData.append('weight', values.weight);
             formData.append('price', values.price);
             formData.append('discount_price', values.discount_price);
-            formData.append('stock', values.stock);
+            formData.append('quantity', values.quantity);
             formData.append('opening_status', values.opening_status ? values.opening_status.value : ''); // Handle Select value
 
             fileList.forEach((file) => {
@@ -186,8 +186,8 @@ function UploadBook() {
         },
         {
             title: 'Số lượng sách',
-            dataIndex: 'stock',
-            key: 'stock',
+            dataIndex: 'quantity',
+            key: 'quantity',
         },
         {
             title: 'Tình trạng mở',
@@ -286,7 +286,7 @@ function UploadBook() {
                         <InputNumber min={0} max={99} />
                     </Form.Item>
 
-                    <Form.Item name="stock" label="Số lượng" rules={[{ required: true }]}>
+                    <Form.Item name="quantity" label="Số lượng" rules={[{ required: true }]}>
                         <InputNumber min={0} />
                     </Form.Item>
 

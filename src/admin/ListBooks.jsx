@@ -101,8 +101,8 @@ function ListBooks() {
         },
         {
             title: 'Số lượng sách',
-            dataIndex: 'stock',
-            key: 'stock',
+            dataIndex: 'quantity',
+            key: 'quantity',
         },
         {
             title: 'Ghi chú',
