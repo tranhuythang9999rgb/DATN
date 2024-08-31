@@ -5,6 +5,7 @@ import './home_index.css';
 import { GrPaypal } from 'react-icons/gr';
 import { IoReturnUpBackOutline } from 'react-icons/io5';
 import GetOrderById from './GetOrderById';
+
 const { Title } = Typography;
 
 const SubmitBuyBook = () => {
@@ -25,7 +26,6 @@ const SubmitBuyBook = () => {
     };
 
     const handleFormSubmit = (values) => {
-        // Process the form data here (e.g., send it to a server)
         const formData = new FormData();
         Object.keys(values).forEach(key => {
             formData.append(key, values[key]);
@@ -208,11 +208,13 @@ const SubmitBuyBook = () => {
                                             <Radio value={2} /> Thanh toán trực tuyến <GrPaypal />
                                         </Button>
                                     </Space.Compact>
-                                    <Space.Compact>
-                                        <Button style={{ height: '50px', fontSize: '20px', width: '100%' }}>
-                                            Thanh toán
-                                        </Button>
-                                    </Space.Compact>
+                                    {paymentMethod !== 1 && (
+                                        <Space.Compact>
+                                            <Button style={{ height: '50px', fontSize: '20px', width: '100%' }}>
+                                                Thanh toán
+                                            </Button>
+                                        </Space.Compact>
+                                    )}
                                 </Space>
                             </Radio.Group>
                         </Col>
