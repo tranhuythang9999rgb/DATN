@@ -96,8 +96,8 @@ function ListBooks() {
         },
         {
             title: 'Giá mua',
-            dataIndex: 'purchase_price',
-            key: 'purchase_price',
+            dataIndex: 'price',
+            key: 'price',
         },
         {
             title: 'Số lượng sách',
@@ -155,7 +155,7 @@ function ListBooks() {
                 dataSource={books}
                 loading={loading}
                 pagination={{
-                    pageSize: 50,
+                    pageSize: 10,
                 }}
                 scroll={{
                     y: 500,

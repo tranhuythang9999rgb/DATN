@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input, Button, message, Form } from 'antd';
+import { Table, Input, Button, message, Form, Popconfirm } from 'antd';
 import axios from 'axios';
 import './admin_index.css'; // Import your custom CSS
-//Nhà Xuất Bản
+
+// Nhà Xuất Bản
 function Publishers() {
     const [publishers, setPublishers] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -43,6 +44,28 @@ function Publishers() {
             console.error('Error adding publisher:', error);
             message.error('Unable to add publisher.');
         }
+    };
+
+    // Function to delete a publisher by ID
+    const handleDelete = async (id) => {
+        try {
+            const response = await axios.delete(`http://127.0.0.1:8080/manager/publisher/delete?id=${id}`);
+            if (response.data.code === 0) {
+                message.success('Publisher deleted successfully!');
+                fetchPublishers(); // Refresh the list
+            } else {
+                message.error('Failed to delete publisher.');
+            }
+        } catch (error) {
+            console.error('Error deleting publisher:', error);
+            message.error('Unable to delete publisher.');
+        }
+    };
+
+    // Function to handle edit action
+    const handleEdit = (record) => {
+        console.log('Edit:', record);
+        // Add your edit logic here, such as opening a modal or redirecting to an edit page
     };
 
     // Fetch publishers when the component mounts
@@ -90,24 +113,18 @@ function Publishers() {
                 <span>
                     <a href="#" onClick={() => handleEdit(record)}>Sửa</a>
                     <span> | </span>
-                    <a href="#" onClick={() => handleDelete(record)}>Xóa</a>
+                    <Popconfirm
+                        title="Bạn có chắc chắn muốn xóa nhà xuất bản này không?"
+                        onConfirm={() => handleDelete(record.id)}
+                        okText="Xóa"
+                        cancelText="Hủy"
+                    >
+                        <a href="#">Xóa</a>
+                    </Popconfirm>
                 </span>
             ),
         },
     ];
-
-    // Function to handle edit action
-    const handleEdit = (record) => {
-        console.log('Edit:', record);
-        // Add your edit logic here, such as opening a modal or redirecting to an edit page
-    };
-
-    // Function to handle delete action
-    const handleDelete = (record) => {
-        console.log('Delete:', record);
-        // Add your delete logic here, such as showing a confirmation dialog and sending a delete request to your API
-    };
-
 
     return (
         <div style={{ padding: 10 }}>
@@ -121,9 +138,7 @@ function Publishers() {
                     <Form.Item
                         name="name"
                         rules={[{ required: true, message: 'Vui lòng nhập tên nhà xuất bản' }]}
-                        style={{
-                            marginBottom: '10px'
-                        }}
+                        style={{ marginBottom: '10px' }}
                     >
                         <Input className="custom-input" placeholder="Tên nhà xuất bản" />
                     </Form.Item>
@@ -158,8 +173,6 @@ function Publishers() {
                         </Button>
                     </Form.Item>
                 </div>
-
-
             </Form>
             <Table
                 columns={columns}

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input, Button, message } from 'antd';
+import { Table, Input, Button, message, Popconfirm } from 'antd';
 import axios from 'axios';
-//Loại sách
+
+// Loại sách
 const { Search } = Input;
 
 function TypeBook() {
@@ -9,6 +10,7 @@ function TypeBook() {
     const [newTypeName, setNewTypeName] = useState('');
     const [loading, setLoading] = useState(false);
 
+    // Fetch the list of type books
     const fetchTypeBooks = async () => {
         setLoading(true);
         try {
@@ -23,6 +25,7 @@ function TypeBook() {
         }
     };
 
+    // Add a new type book
     const addTypeBook = async () => {
         if (!newTypeName.trim()) {
             message.error('Vui lòng nhập tên loại sách');
@@ -44,6 +47,23 @@ function TypeBook() {
         } catch (error) {
             console.error('Lỗi khi thêm loại sách:', error);
             message.error('Không thể thêm loại sách.');
+        }
+    };
+
+    // Function to handle delete action
+    const handleDelete = async (record) => {
+        const { id } = record;
+        try {
+            const response = await axios.delete(`http://127.0.0.1:8080/manager/type_book/delete?id=${id}`);
+            if (response.data.code === 0) {
+                message.success('Xóa loại sách thành công!');
+                fetchTypeBooks(); // Refresh the list after deletion
+            } else {
+                message.error('Không thể xóa loại sách.');
+            }
+        } catch (error) {
+            console.error('Lỗi khi xóa loại sách:', error);
+            message.error('Có lỗi xảy ra khi xóa loại sách.');
         }
     };
 
@@ -76,22 +96,23 @@ function TypeBook() {
                 <span>
                     <a href="#" onClick={() => handleEdit(record)}>Sửa</a>
                     <span> | </span>
-                    <a href="#" onClick={() => handleDelete(record)}>Xóa</a>
+                    <Popconfirm
+                        title="Bạn có chắc chắn muốn xóa loại sách này không?"
+                        onConfirm={() => handleDelete(record)}
+                        okText="Có"
+                        cancelText="Không"
+                    >
+                        <a href="#">Xóa</a>
+                    </Popconfirm>
                 </span>
             ),
         },
     ];
 
-    // Function to handle edit action
+    // Function to handle edit action (you can expand this)
     const handleEdit = (record) => {
         console.log('Edit:', record);
         // Add your edit logic here
-    };
-
-    // Function to handle delete action
-    const handleDelete = (record) => {
-        console.log('Delete:', record);
-        // Add your delete logic here
     };
 
     return (

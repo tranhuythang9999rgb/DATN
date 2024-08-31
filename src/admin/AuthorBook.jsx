@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input, Button, message, Form, DatePicker } from 'antd';
+import { Table, Input, Button, message, Form, DatePicker, Popconfirm } from 'antd';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -45,6 +45,22 @@ function AuthorBook() {
         }
     };
 
+    // Function to delete an author by ID
+    const handleDeleteBook = async (id) => {
+        try {
+            const response = await axios.delete(`http://127.0.0.1:8080/manager/author_book/delete?id=${id}`);
+            if (response.data.code === 0) {
+                message.success('Book deleted successfully!');
+                fetchAuthors(); // Refresh the list
+            } else {
+                message.error('Failed to delete the book.');
+            }
+        } catch (error) {
+            console.error('Error deleting book:', error);
+            message.error('Unable to delete book.');
+        }
+    };
+
     // Fetch authors when the component mounts
     useEffect(() => {
         fetchAuthors();
@@ -84,7 +100,14 @@ function AuthorBook() {
                 <span>
                     <a href="#" onClick={() => handleUpdate(record)}>Sửa</a>
                     <span> | </span>
-                    <a href="#" onClick={() => handleDelete(record)}>Xóa</a>
+                    <Popconfirm
+                        title="Bạn có chắc chắn muốn xóa tác giả này không?"
+                        onConfirm={() => handleDeleteBook(record.id)}
+                        okText="Xóa"
+                        cancelText="Hủy"
+                    >
+                        <a href="#">Xóa</a>
+                    </Popconfirm>
                 </span>
             ),
         },
@@ -94,12 +117,6 @@ function AuthorBook() {
     const handleUpdate = (record) => {
         console.log('Update:', record);
         // Add your update logic here, such as opening a modal or redirecting to an edit page
-    };
-
-    // Function to handle delete action
-    const handleDelete = (record) => {
-        console.log('Delete:', record);
-        // Add your delete logic here, such as showing a confirmation dialog and sending a delete request to your API
     };
 
     return (
@@ -153,7 +170,6 @@ function AuthorBook() {
                         </Button>
                     </Form.Item>
                 </div>
-
             </Form>
             <Table
                 columns={columns}

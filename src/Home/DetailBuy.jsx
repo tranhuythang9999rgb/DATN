@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Card, Col, Image, Row, Typography, Rate, Button, Input, Tooltip, Modal, Carousel } from 'antd';
+import { Card, Col, Image, Row, Typography, Rate, Button, Input, Tooltip, Modal, Carousel, Space } from 'antd';
 import { FaUser, FaBookOpen, FaCalendarAlt, FaBarcode, FaLanguage, FaFileAlt, FaRulerCombined, FaWeightHanging, FaDollarSign, FaPercent, FaBoxes, FaStickyNote, FaStar, FaShoppingCart } from 'react-icons/fa';
 import './home_index.css';
 import { CgAdd } from 'react-icons/cg';
@@ -21,7 +21,7 @@ const DetailBuy = ({ book_id }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [items, setItems] = useState(0);
-    const [isBuy,setIsBuy] = useState(false);
+    const [isBuy, setIsBuy] = useState(false);
 
     useEffect(() => {
         const fetchBookDetails = async () => {
@@ -29,7 +29,7 @@ const DetailBuy = ({ book_id }) => {
                 const response = await axios.get(`http://localhost:8080/manager/book/detail/page?id=${book_id}`);
                 if (response.data && response.data.body) {
                     setBook(response.data.body);
-                    localStorage.setItem('book_id',book_id);
+                    localStorage.setItem('book_id', book_id);
                 } else {
                     setError('Không tìm thấy dữ liệu');
                 }
@@ -129,13 +129,13 @@ const DetailBuy = ({ book_id }) => {
         </div>
     );
 
-    const handleNextSubmitBuy = () =>{
+    const handleNextSubmitBuy = () => {
         setIsBuy(true);
     }
 
-    if(isBuy) {
-        return(
-            <SubmitBuyBook/>
+    if (isBuy) {
+        return (
+            <SubmitBuyBook />
         )
     }
     return (
@@ -284,31 +284,35 @@ const DetailBuy = ({ book_id }) => {
                             <Row>
                                 <div style={{ fontSize: '30px' }}>{book.price}<span style={{ fontSize: '10px' }}>VND</span></div>
                             </Row>
-                            <Row style={{
-                                border: '1px solid blue',
-                                width: '120px',
-                                borderRadius: '10px',
-                            }}>
-                                <CgAdd
-                                    onClick={items < book.stock ? increment : null} // Only call increment if items < book.stock
-                                    style={{ opacity: 0.7, cursor: 'pointer', fontSize: '30px' }} // Làm mờ icon và thêm con trỏ chuột khi hover
-                                />
-                                <div style={{ paddingLeft: '20px', paddingRight: '10px' }}>
-                                    {items}
-                                </div>
-                                <BiMinusCircle
-                                    onClick={decrement}
-                                    style={{ opacity: 0.7, cursor: 'pointer', fontSize: '30px', marginLeft: '10px' }} // Làm mờ icon và thêm con trỏ chuột khi hover
-                                />
-
-                            </Row>
                             <Row>
-                                <Col span={12}>
-                                    <Button onClick={handleNextSubmitBuy} style={{ marginLeft: '200px', height: '40px', width: '80px' }}>Mua</Button>
-                                </Col>
-                                <Col span={12}>
-                                    <FaCartShopping style={{ marginLeft: '200px', height: '40px', width: '80px' }} />
-                                </Col>
+
+                                <Space>
+                                    <div style={{ display: 'flex', border: '1px solid gray', borderRadius: '5px' }}>
+                                        <BiMinusCircle
+                                            onClick={decrement}
+                                            style={{ opacity: 0.7, cursor: 'pointer', fontSize: '30px', marginLeft: '5px' }} // Làm mờ icon và thêm con trỏ chuột khi hover
+                                        />
+                                        <div style={{ paddingLeft: '10px', paddingRight: '10px' }}>
+                                            {items}
+                                        </div>
+
+                                        <CgAdd
+                                            onClick={items < book.stock ? increment : null} // Only call increment if items < book.stock
+                                            style={{ opacity: 0.7, cursor: 'pointer', fontSize: '30px' }} // Làm mờ icon và thêm con trỏ chuột khi hover
+                                        />
+
+                                    </div>
+                                    <div>
+                                        Còn lại {book.stock} trong kho
+                                    </div>
+                                </Space>
+                            </Row>
+
+                            <Row>
+                                <Space>
+                                    <Button onClick={handleNextSubmitBuy} style={{ marginTop: '10px', height: '50px', width: '100px', background: 'red', color: 'white', fontSize: '20px' }}>Mua ngay</Button>
+                                    <Button style={{ marginTop: '10px', height: '50px', background: '#228b22', color: 'white', fontSize: '20px' }}>Thêm vào giỏ hàng</Button>
+                                </Space>
                             </Row>
                             <Row>
                                 <p style={{
