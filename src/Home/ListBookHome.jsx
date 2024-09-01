@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Spin, Card, Typography, message, Row, Col, Button, Image, Carousel } from 'antd';
+import { Spin, Card, Typography, message, Row, Col, Image, Button, Space } from 'antd';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-
+import './index.css';
+import { MdAddShoppingCart } from 'react-icons/md';
 const { Meta } = Card;
 
 function ListBookHome({ nameTypeBook }) {
@@ -18,7 +19,8 @@ function ListBookHome({ nameTypeBook }) {
         try {
             const response = await axios.get(`http://127.0.0.1:8080/manager/book/list/type_book?name=${encodeURIComponent(nameTypeBook)}`);
             if (response.data.code === 0) {
-                setBooks(response.data.body);
+                // Access book_detail_list from response
+                setBooks(response.data.body.book_detail_list);
             } else {
                 message.error('Failed to fetch books');
             }
@@ -58,62 +60,65 @@ function ListBookHome({ nameTypeBook }) {
     }
 
     return (
-        <Row gutter={16} justify="space-between">
-            {books.map((book) => (
-                <Col span={4} key={book.book.id} style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Card
-                        cover={
-                            <div style={{ position: 'relative' }}>
-                                <div
-                                    className='icon-trai-tim'
-                                    onClick={() => toggleLike(book.book.id)}  // Toggle like status on click
-                                    style={{
-                                        position: 'absolute',
-                                        top: '3px',
-                                        right: '35px',
-                                        fontSize: '25px',
-                                        color: likedBooks[book.book.id] ? 'red' : 'pink',  // Change color if liked
-                                        cursor: 'pointer',
-                                        borderRadius: '90%',
-                                    }}
-                                >
-                                    {likedBooks[book.book.id] ? <FaHeart /> : <FaRegHeart />}
-                                </div>
+        <div className='box'>
+            {books.map((item, index) => (
+                <div className='done' key={item.book.id} style={{ marginLeft: '10px', marginRight: '10px' }}>
+                    <div>
+                        <Card
+                            hoverable
+                            style={{
+                                width: 250,
+                                height: 300,
+                                borderRadius: 10,
+                                overflow: 'hidden',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                            }}
+                            cover={
                                 <Image
-                                    alt={book.book.title}
-                                    src={book.files[0] || 'http://placehold.it/300x400'}
+                                    alt={item.book.title}
+                                    src={item.files[0] || 'http://placehold.it/300x400'}
                                     style={{
-                                        height: '200px',
-                                        objectFit: 'cover',
-                                        width: '220px',
-                                        display: 'flex',
-                                        margin: '0 auto',
+                                        marginTop: '-39px',
+                                        height: 300,
+                                        borderRadius: '10px 10px 0 0',
+                                        marginLeft: '-30px'
                                     }}
                                 />
+                            }
 
-                            </div>
-                        }
-                        style={{
-                            width: '300px',
-                            height: '380px',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'space-between',
-                        }}
-                    >
-                        <Meta title={book.book.title} />
-                        <div style={{ marginTop: '10px' }}>
-                            <p><strong>Giá:</strong> {book.book.price} VND</p>
-                        </div>
-                        <span style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px' }}>
-                            <Button onClick={() => handleBuyNow(book.book.id)} style={{ background: 'red', color: 'white', fontSize: '17px' }}>
-                                Mua ngay
-                            </Button>
-                        </span>
-                    </Card>
-                </Col>
+                        >
+                            <Meta />
+                        </Card>      <Card
+                            hoverable
+                            style={{
+                                width: 250,
+                                height: 300,
+                                borderRadius: 10,
+                                overflow: 'hidden',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                            }}
+                            cover={
+                                <Image
+                                    alt={item.book.title}
+                                    src={item.files[0] || 'http://placehold.it/300x400'}
+                                    style={{
+                                        marginTop: '-39px',
+                                        height: 300,
+                                        borderRadius: '10px 10px 0 0',
+                                        marginLeft: '-30px'
+                                    }}
+                                />
+                            }
+
+                        >
+                            <Meta />
+                        </Card>
+                        
+                    </div>
+                    <div style={{ paddingTop: '10px',background:'red' ,marginTop:'300px'}}>hi hi</div>
+                </div>
             ))}
-        </Row>
+        </div>
     );
 }
 
