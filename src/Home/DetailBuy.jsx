@@ -321,6 +321,7 @@ const DetailBuy = ({ book_id }) => {
                                 <Space>
                                     <div style={{ display: 'flex', border: '1px solid gray', borderRadius: '5px' }}>
                                         <BiMinusCircle
+                                        min={1}
                                             onClick={decrement}
                                             style={{ opacity: 0.7, cursor: 'pointer', fontSize: '30px', marginLeft: '5px' }} // Làm mờ icon và thêm con trỏ chuột khi hover
                                         />

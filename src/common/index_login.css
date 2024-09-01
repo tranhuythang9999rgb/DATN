@@ -1,22 +1,29 @@
 .login-form {
   background: linear-gradient(to right, #6a11cb, #2575fc);
   padding: 30px;
-    border-radius: 10px;
-    max-width: 350px;
-    margin: 50px auto;
-    height: 450px;
-    padding-top: 100px;
-  }
-  :where(.css-dev-only-do-not-override-1gwfwyx).ant-input-affix-wrapper {
-    position: relative;
-    display: inline-flex;
-    width: 100%;
-    min-width: 0;
-    padding: 8px 11px;
-    color: rgba(0, 0, 0, 0.88);
-    font-size: 14px;
-    line-height: 1.5714285714285714;
-    border-radius: 6px;
-    transition: all 0.2s;
+  border-radius: 10px;
+  max-width: 350px;
+  margin: 50px auto;
+  height: 500px;
+  padding-top: 100px;
 }
 
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-input-affix-wrapper {
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+  min-width: 0;
+  padding: 8px 11px;
+  color: rgba(0, 0, 0, 0.88);
+  font-size: 14px;
+  line-height: 1.5714285714285714;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.form-login{
+  width: 441px;
+  margin-left: -70px;
+  margin-bottom: -100px;
+  margin-top: -100px;
+}
