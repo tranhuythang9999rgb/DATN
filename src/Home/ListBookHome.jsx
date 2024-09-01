@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Spin, Card, Typography, message, Row, Col, Image, Button, Space } from 'antd';
-import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { Spin, Card, Typography, message,  Image, Button } from 'antd';
 import './index.css';
-import { MdAddShoppingCart } from 'react-icons/md';
+import {  MdAddShoppingCart } from 'react-icons/md';
 const { Meta } = Card;
 
 function ListBookHome({ nameTypeBook }) {
@@ -50,7 +49,13 @@ function ListBookHome({ nameTypeBook }) {
     useEffect(() => {
         fetchBooks();
     }, [nameTypeBook]);
-
+    function truncateText(text, maxLength) {
+        if (text.length > maxLength) {
+            return text.substring(0, maxLength) + '...';
+        }
+        return text;
+    }
+    
     if (loading) {
         return <Spin tip="Loading books..." />;
     }
@@ -69,9 +74,7 @@ function ListBookHome({ nameTypeBook }) {
                             style={{
                                 width: 250,
                                 height: 300,
-                                borderRadius: 10,
                                 overflow: 'hidden',
-                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                             }}
                             cover={
                                 <Image
@@ -80,7 +83,6 @@ function ListBookHome({ nameTypeBook }) {
                                     style={{
                                         marginTop: '-39px',
                                         height: 300,
-                                        borderRadius: '10px 10px 0 0',
                                         marginLeft: '-30px'
                                     }}
                                 />
@@ -93,9 +95,7 @@ function ListBookHome({ nameTypeBook }) {
                             style={{
                                 width: 250,
                                 height: 300,
-                                borderRadius: 10,
                                 overflow: 'hidden',
-                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                             }}
                             cover={
                                 <Image
@@ -104,7 +104,6 @@ function ListBookHome({ nameTypeBook }) {
                                     style={{
                                         marginTop: '-39px',
                                         height: 300,
-                                        borderRadius: '10px 10px 0 0',
                                         marginLeft: '-30px'
                                     }}
                                 />
@@ -113,9 +112,21 @@ function ListBookHome({ nameTypeBook }) {
                         >
                             <Meta />
                         </Card>
-                        
                     </div>
-                    <div style={{ paddingTop: '10px',background:'red' ,marginTop:'300px'}}>hi hi</div>
+                    <div style={{ paddingTop: '12px', marginTop: '295px',background:'white',borderBottomLeftRadius:'10px',borderBottomRightRadius:'10px' }}>
+                        <div style={{display:'flex',justifyContent:'space-between'}}>
+                            <div style={{paddingLeft:'10px'}}>
+                            {truncateText(item.book.title, 20)} {/* Adjust the maxLength as needed */}
+                            </div>
+                            <div>
+                                {item.book.price}VND
+                            </div>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'center',paddingTop:'5px' }}>
+                            <Button>Mua</Button>
+                            <MdAddShoppingCart style={{ fontSize: '25px', color: 'orange' }} />
+                        </div>
+                    </div>
                 </div>
             ))}
         </div>

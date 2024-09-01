@@ -1,6 +1,6 @@
 .box{
     display: flex;
-    margin-left: 400px;
+    margin-left: 230px;
     margin-right: 200px;
     margin-top: 200px;
     flex-wrap: wrap;
@@ -9,7 +9,6 @@
 .done{
     width: 250px;
     height: 300px;
-    border: 1px solid;
     margin-top: 50px;
-    border-radius: 10px;
+    margin-bottom: 40px;
 }
