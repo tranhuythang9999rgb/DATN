@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './home_index.css';
 import { FcHome } from 'react-icons/fc';
-import { Avatar, Button, Card, Col, Image, Input, Modal, Row, Tooltip, Typography } from 'antd';
+import { Avatar, Button, Card, Col, Dropdown, Image, Input, Menu, message, Modal, Row, Spin, Tooltip, Typography } from 'antd';
 import Login from '../common/Login';
 import { CiLogin, CiSearch } from 'react-icons/ci';
 import { GiArmoredBoomerang } from 'react-icons/gi';
@@ -12,6 +12,7 @@ import axios from 'axios';
 import { MdSell } from 'react-icons/md';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';  // Import FaHeart for the filled heart icon
 import DetailBuy from './DetailBuy';
+import ListBookHome from './ListBookHome';
 const { Meta } = Card;
 const { Title } = Typography;
 
@@ -20,6 +21,8 @@ function HomePage() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isNextBuy, setIsNextBuy] = useState(false);
     const [selectedBookId, setSelectedBookId] = useState(null);  // Add state to manage selected book ID
+    const [authors, setAuthors] = useState([]);
+    const [loadingAuBook, setLoadingAuBook] = useState(false);
 
     useEffect(() => {
         // Check for the username in local storage
@@ -85,7 +88,49 @@ function HomePage() {
         setSelectedBookId(bookId);
         setIsNextBuy(true);
     };
+    // Function to fetch the list of authors
+    const fetchAuthors = async () => {
+        setLoadingAuBook(true);
+        try {
+            const response = await axios.get('http://127.0.0.1:8080/manager/type_book/list');
+            console.log('Response data:', response.data); // Debugging
+            if (response.data.code === 0) {
+                setAuthors(response.data.body);
+            } else {
+                message.error('Failed to fetch authors');
+            }
+        } catch (error) {
+            console.error('Error fetching authors:', error);
+            message.error('Error fetching authors');
+        } finally {
+            setLoadingAuBook(false);
+        }
+    };
 
+    // Fetch authors when the component mounts
+    useEffect(() => {
+        fetchAuthors();
+    }, []);
+
+    // Create Menu items for Dropdown with custom styles
+    const menu = (
+        <Menu>
+            {authors.length > 0 ? (
+                authors.map(author => (
+                    <Menu.Item
+                        key={author.id}
+                        style={{ cursor: 'pointer', padding: '10px 20px', minWidth: '200px' }} // Custom styles
+                    >
+                        {author.name}
+                    </Menu.Item>
+                ))
+            ) : (
+                <Menu.Item disabled style={{ padding: '10px 20px' }}>
+                    No authors available
+                </Menu.Item>
+            )}
+        </Menu>
+    );
     if (isNextBuy) {
         return <DetailBuy book_id={selectedBookId} />;
     }
@@ -117,7 +162,20 @@ function HomePage() {
                     <ul>
                         <li style={{ cursor: 'pointer' }} onClick={() => window.location.reload()}><FcHome />Trang chủ</li>
                         <li>Tin sách</li>
-                        <li style={{cursor:'pointer'}}>Thư viện sách</li>
+                        <li style={{ cursor: 'pointer', listStyle: 'none' }}>
+                            <div>
+                                <Dropdown overlay={menu} trigger={['click']}>
+                                    <a
+                                        style={{ textDecoration: 'none', color: 'black' }}
+                                        href="#"
+                                        onClick={e => e.preventDefault()}
+                                        className="ant-dropdown-link"
+                                    >
+                                        {loadingAuBook ? <Spin /> : 'Thư viện sách'}
+                                    </a>
+                                </Dropdown>
+                            </div>
+                        </li>
                         <li>Tác giả</li>
                         <li>Cuộc thi</li>
                         <li>Thông tin cửa hàng</li>
