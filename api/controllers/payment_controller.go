@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"os"
 	errors "shoe_shop_server/common/error"
+	"shoe_shop_server/common/log"
+	"shoe_shop_server/common/utils"
 	"shoe_shop_server/core/entities"
 	"shoe_shop_server/core/usecase"
 
@@ -32,9 +34,11 @@ func (u *ControllersPayment) CreatePayment(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, err)
 		return
 	}
-	ctx.SetCookie("order_id", fmt.Sprintln(req.OrderCode), 3600, "/", "localhost:8080", false, true)
+	ctx.SetCookie("order_id", fmt.Sprint(req.OrderCode), 3600, "/", "localhost", false, true)
+	req.ExpiredAt = utils.GenerateTimestampExpiredAt(15)
 	resp, err := u.pay.CreatePayment(ctx, req)
 	if err != nil {
+		log.Error(err, "error server")
 		u.baseController.ErrorData(ctx, errors.ErrSystem)
 		return
 	}

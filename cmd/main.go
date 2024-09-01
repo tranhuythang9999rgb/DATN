@@ -4,8 +4,10 @@ import (
 	"context"
 	"flag"
 	"shoe_shop_server/api/routers"
+	"shoe_shop_server/common/enums"
 	"shoe_shop_server/common/log"
 	"shoe_shop_server/core/configs"
+	"shoe_shop_server/core/usecase"
 	"shoe_shop_server/fxloader"
 
 	"net/http"
@@ -21,7 +23,10 @@ func init() {
 	flag.StringVar(&pathConfig, "configs", "configs/configs.json", "path config")
 	flag.Parse()
 	configs.LoadConfig(pathConfig)
-
+	err := usecase.InitKeyPayPos(enums.ClientIDPayOs, enums.ApiKeyPayOs, enums.ChecksumKeyPayOs)
+	if err != nil {
+		log.Error(err, "error")
+	}
 }
 
 func main() {
