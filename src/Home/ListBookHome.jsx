@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Spin, Card, Typography, message, Image, Button, Modal, Dropdown, Menu, Input, Tooltip } from 'antd';
+import { Spin, Card, Typography, message, Image, Button, Modal, Dropdown, Menu, Input, Tooltip, Row } from 'antd';
 import './index.css';
 import { MdAddShoppingCart } from 'react-icons/md';
 import Cookies from 'js-cookie';
@@ -26,16 +26,27 @@ function ListBookHome({ nameTypeBook }) {
     const [selectedAuthor, setSelectedAuthor] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [username, setUsername] = useState(null);
+    const [orderDesc,setOrderDesc] = useState('');
+    const [orderAsc,setOrderAsc] = useState('');
 
     // Function to fetch books data
     const fetchBooks = async () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await axios.get(`http://127.0.0.1:8080/manager/book/list/type_book?name=${encodeURIComponent(nameTypeBook)}`);
+            // Construct query params based on the active sort order
+            const params = new URLSearchParams();
+            params.append('name', nameTypeBook);
+            if (orderDesc) {
+                params.append('desc', orderDesc);
+            }
+            if (orderAsc) {
+                params.append('asc', orderAsc);
+            }
+    
+            const response = await axios.get(`http://127.0.0.1:8080/manager/book/list/type_book?${params.toString()}`);
             if (response.data.code === 0) {
-                // Access book_detail_list from response
-                setBooks(response.data.body.book_detail_list || []); // Ensure it's an array
+                setBooks(response.data.body.book_detail_list || []);
             } else {
                 message.error('Failed to fetch books');
             }
@@ -46,6 +57,7 @@ function ListBookHome({ nameTypeBook }) {
             setLoading(false);
         }
     };
+    
     useEffect(() => {
         // Check for the username in local storage
         const storedUsername = localStorage.getItem('username');
@@ -130,6 +142,19 @@ function ListBookHome({ nameTypeBook }) {
             setIsNext(true);
         }
     };
+
+    const handleOrderDesc = ()=>{
+        setOrderDesc('1');
+        setOrderAsc('');
+        fetchBooks();
+
+    }
+    const handleOrderAsc = ()=>{
+        setOrderAsc('2');
+        setOrderDesc('');
+        fetchBooks();
+    }
+
     if (loading) {
         return <Spin tip="Loading books..." />;
     }
@@ -153,9 +178,6 @@ function ListBookHome({ nameTypeBook }) {
         </Menu>
     );
     if (books.length === 0) {
-        const timeoutId = setTimeout(() => {
-            window.location.reload();
-        }, 2000); // 5000 milliseconds = 5 seconds
 
         return <div>
             <Typography.Text>Chưa có sách nào.</Typography.Text>;
@@ -166,7 +188,7 @@ function ListBookHome({ nameTypeBook }) {
     }
     return (
         <div>
-//
+
             <div className='layout-header'>
                 <div className='layout-header-start'>
                     <div style={{ position: 'relative', display: 'inline-block' }}>
@@ -244,11 +266,13 @@ function ListBookHome({ nameTypeBook }) {
                     </ul>
                 </div>
             </div>
-
-
-//
-
+            <div className='order-monoi'>
+                <div>Sắp xếp theo</div>
+                <Button onClick={handleOrderDesc}>Giá thấp đến cao </Button>
+                <Button onClick={handleOrderAsc}>Giá cao đến thấp</Button>
+            </div>
             <div className='box'>
+
                 {books.map((item) => (
                     <div className='done' key={item.book.id} style={{ marginLeft: '10px', marginRight: '10px' }}>
                         <div>
