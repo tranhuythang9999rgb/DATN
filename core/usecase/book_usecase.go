@@ -253,8 +253,8 @@ func (u *UploadBookUseCase) GetdetailBookByid(ctx context.Context, id string) (*
 	}, nil
 }
 
-func (u *UploadBookUseCase) GetListBookByTypeBook(ctx context.Context, typeBook string) ([]*entities.BookRespDetail, errors.Error) {
-	var bookDetails []*entities.BookRespDetail
+func (u *UploadBookUseCase) GetListBookByTypeBook(ctx context.Context, typeBook string) (*entities.BookRespDetailList, errors.Error) {
+	var bookDetails []*entities.BookDetailList
 
 	// Lấy danh sách sách theo loại sách
 	respListBook, err := u.books.GetListBookByTypeBook(ctx, typeBook)
@@ -274,28 +274,33 @@ func (u *UploadBookUseCase) GetListBookByTypeBook(ctx context.Context, typeBook 
 		}
 
 		// Tạo đối tượng BookRespDetail và thêm vào danh sách kết quả
-		bookDetails = append(bookDetails, &entities.BookRespDetail{
-			ID:            book.ID,
-			Title:         book.Title,
-			AuthorName:    book.AuthorName,
-			Publisher:     book.Publisher,
-			PublishedDate: book.PublishedDate,
-			ISBN:          book.ISBN,
-			Genre:         book.Genre,
-			Description:   book.Description,
-			Language:      book.Language,
-			PageCount:     book.PageCount,
-			Dimensions:    book.Dimensions,
-			Weight:        book.Weight,
-			Price:         book.Price,
-			DiscountPrice: book.DiscountPrice,
-			Quantity:      book.Quantity,
-			Notes:         book.Notes,
-			IsActive:      true,
-			OpeningStatus: book.OpeningStatus,
-			Files:         listFileResp, // `Files` sẽ là một mảng rỗng nếu không có file nào
+		bookDetails = append(bookDetails, &entities.BookDetailList{
+			Book: &domain.Book{
+				ID:            book.ID,
+				Title:         book.Title,
+				AuthorName:    book.AuthorName,
+				Publisher:     book.Publisher,
+				PublishedDate: book.PublishedDate,
+				ISBN:          book.ISBN,
+				Genre:         book.Genre,
+				Description:   book.Description,
+				Language:      book.Language,
+				PageCount:     book.PageCount,
+				Dimensions:    book.Dimensions,
+				Weight:        book.Weight,
+				Price:         book.Price,
+				DiscountPrice: book.DiscountPrice,
+				Quantity:      book.Quantity,
+				Notes:         book.Notes,
+				IsActive:      true,
+				OpeningStatus: book.OpeningStatus,
+			},
+			Files: listFileResp, // `Files` sẽ là một mảng rỗng nếu không có file nào
 		})
 	}
 
-	return bookDetails, nil
+	return &entities.BookRespDetailList{
+		BookDetailList: bookDetails,
+		Count:          len(bookDetails),
+	}, nil
 }

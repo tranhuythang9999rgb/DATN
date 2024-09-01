@@ -2,6 +2,7 @@ package entities
 
 import (
 	"mime/multipart"
+	"shoe_shop_server/core/domain"
 )
 
 // Book đại diện cho một cuốn sách trong hệ thống
@@ -118,4 +119,14 @@ type BookRespDetail struct {
 	IsActive      bool     `json:"is_active"`      // Xác định cuốn sách có đang được hiển thị hay không
 	OpeningStatus int      `json:"opening_status"` // Trạng thái mở bán (0: Chưa mở bán, 1: Đang mở bán, 2: Đã đóng bán)
 	Files         []string `json:"files"`
+}
+
+type BookDetailList struct {
+	Book  *domain.Book `json:"book"`
+	Files []string     `json:"files"`
+}
+
+type BookRespDetailList struct {
+	BookDetailList []*BookDetailList `json:"book_detail_list"`
+	Count          int               `json:"count"`
 }
