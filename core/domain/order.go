@@ -72,5 +72,5 @@ type RepositoryOrder interface {
 
 	GetInforMationBook(ctx context.Context, order_id, book_id int64) (*Order, error)
 
-	UpdateStatusOrder(ctx context.Context, id int64) error
+	UpdateStatusOrder(ctx context.Context, id int64, status int) error
 }

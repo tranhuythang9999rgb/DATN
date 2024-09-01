@@ -98,7 +98,7 @@ func (c *CollectionOrder) GetInforMationBook(ctx context.Context, order_id, book
 	}
 	return order, result.Error
 }
-func (u *CollectionOrder) UpdateStatusOrder(ctx context.Context, id int64) error {
-	result := u.db.Model(&domain.Order{}).Where("id = ? ", id).UpdateColumn("status", enums.ORDER_PEND)
+func (u *CollectionOrder) UpdateStatusOrder(ctx context.Context, id int64, status int) error {
+	result := u.db.Model(&domain.Order{}).Where("id = ? ", id).UpdateColumn("status", status)
 	return result.Error
 }

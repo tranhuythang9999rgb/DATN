@@ -54,7 +54,12 @@ func InitKeyPayPos(clientId string, apiKey string, checksumKey string) error {
 const PayOSBaseUrl = "https://api-merchant.payos.vn/"
 
 func (u *UseCasePayment) CreatePayment(ctx context.Context, paymentData entities.CheckoutRequestType) (*entities.CheckoutResponseDataType, error) {
-
+	err := u.order.order.UpdateStatusOrder(ctx, paymentData.OrderCode, enums.ORDER_ARE_PAYING)
+	if err != nil {
+		return &entities.CheckoutResponseDataType{
+			RespOrder: "error server",
+		}, err
+	}
 	if paymentData.OrderCode == 0 || paymentData.Amount == 0 || paymentData.Description == "" || paymentData.CancelUrl == "" || paymentData.ReturnUrl == "" {
 		requiredPaymentData := entities.CheckoutRequestType{
 			OrderCode:   paymentData.OrderCode,
@@ -103,13 +108,13 @@ func (u *UseCasePayment) CreatePayment(ctx context.Context, paymentData entities
 	paymentData.Signature = &signaturePaymentRequest
 	checkoutRequest, err := json.Marshal(paymentData)
 	if err != nil {
-		log.Error(err, "error 1")
+		log.Error(err, "error")
 		return nil, resources.NewPayOSError(enums.InternalServerErrorErrorCode, err.Error())
 	}
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(checkoutRequest))
 	if err != nil {
-		log.Error(err, "error 2")
+		log.Error(err, "error")
 		return nil, resources.NewPayOSError(enums.InternalServerErrorErrorCode, err.Error())
 	}
 
@@ -136,20 +141,20 @@ func (u *UseCasePayment) CreatePayment(ctx context.Context, paymentData entities
 	if paymentLinkRes.Code == "00" {
 		paymentLinkResSignatute, _ := u.CreateSignatureFromObj(paymentLinkRes.Data, PayOSChecksumKey)
 		if paymentLinkResSignatute != *paymentLinkRes.Signature {
-			log.Error(err, "error 5")
+			log.Error(err, "error")
 			return nil, resources.NewPayOSError(enums.DataNotIntegrityErrorCode, enums.DataNotIntegrityErrorMessage)
 		}
 		if paymentLinkRes.Data != nil {
 			jsonData, err := json.Marshal(paymentLinkRes.Data)
 			if err != nil {
-				log.Error(err, "error 6")
+				log.Error(err, "error")
 				return nil, resources.NewPayOSError(enums.InternalServerErrorErrorCode, enums.InternalServerErrorErrorMessage)
 			}
 
 			var paymentLinkData entities.CheckoutResponseDataType
 			err = json.Unmarshal(jsonData, &paymentLinkData)
 			if err != nil {
-				log.Error(err, "error 7")
+				log.Error(err, "error")
 				return nil, resources.NewPayOSError(enums.InternalServerErrorErrorCode, enums.InternalServerErrorErrorMessage)
 			}
 			log.Infof("next url", paymentLinkData.CheckoutUrl)

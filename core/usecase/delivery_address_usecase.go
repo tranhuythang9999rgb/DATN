@@ -40,7 +40,7 @@ func (u *DeliveryAddressUseCase) AddDeliveryAddress(ctx context.Context, req *en
 	if err != nil {
 		return errors.NewCustomHttpErrorWithCode(enums.DB_ERR_CODE, enums.DB_ERR_MESS, "500")
 	}
-	err = u.order.UpdateStatusOrder(ctx, req.OrderID)
+	err = u.order.UpdateStatusOrder(ctx, req.OrderID, enums.ORDER_PEND)
 	if err != nil {
 		return errors.NewCustomHttpErrorWithCode(enums.DB_ERR_CODE, enums.DB_ERR_MESS, "500")
 	}

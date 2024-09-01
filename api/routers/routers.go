@@ -24,6 +24,7 @@ func NewApiRouter(
 	authorBook *controllers.ControllersAuthorBook,
 	order *controllers.ControllerOrder,
 	deliveryAddress *controllers.ControllerDeliveryAddress,
+	payment *controllers.ControllersPayment,
 
 ) *ApiRouter {
 	engine := gin.New()
@@ -89,6 +90,12 @@ func NewApiRouter(
 	deliveryAddressGroup := r.Group("/delivery_address")
 	{
 		deliveryAddressGroup.POST("/add", deliveryAddress.AddDeliveryAddress)
+	}
+	paymentGroup := r.Group("/payment")
+	{
+		paymentGroup.POST("/add", payment.CreatePayment)
+		paymentGroup.GET("/return/create/payment", payment.ReturnUrlAfterPayment)
+		paymentGroup.GET("/return/calcel/payment", payment.ReturnUrlAftercanCelPayment)
 	}
 	// address public
 	r.GET("/public/customer/cities", addresPublic.GetAllCity)
