@@ -12,7 +12,6 @@ import axios from 'axios';
 import { MdSell } from 'react-icons/md';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';  // Import FaHeart for the filled heart icon
 import DetailBuy from './DetailBuy';
-import ListBookHome from './ListBookHome';
 const { Meta } = Card;
 const { Title } = Typography;
 
