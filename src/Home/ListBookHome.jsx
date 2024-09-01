@@ -5,14 +5,18 @@ import './index.css';
 import { MdAddShoppingCart } from 'react-icons/md';
 import Cookies from 'js-cookie';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import DetailBuy from './DetailBuy';
 
 const { Meta } = Card;
 
 function ListBookHome({ nameTypeBook }) {
-    const [books, setBooks] = useState([]);
+    const [books, setBooks] = useState([]); // Initialize as an empty array
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [likedBooks, setLikedBooks] = useState({});
+    const [selectedBookId, setSelectedBookId] = useState(null);  // Add state to manage selected book ID
+    const [isNextBuy, setIsNextBuy] = useState(false);
+
 
     // Function to fetch books data
     const fetchBooks = async () => {
@@ -22,7 +26,7 @@ function ListBookHome({ nameTypeBook }) {
             const response = await axios.get(`http://127.0.0.1:8080/manager/book/list/type_book?name=${encodeURIComponent(nameTypeBook)}`);
             if (response.data.code === 0) {
                 // Access book_detail_list from response
-                setBooks(response.data.body.book_detail_list);
+                setBooks(response.data.body.book_detail_list || []); // Ensure it's an array
             } else {
                 message.error('Failed to fetch books');
             }
@@ -55,10 +59,9 @@ function ListBookHome({ nameTypeBook }) {
         });
     };
 
-    // Handle "Buy Now" action
     const handleBuyNow = (bookId) => {
-        // Implement buy now functionality here
-        message.success(`Book with ID ${bookId} purchased!`);
+        setSelectedBookId(bookId);
+        setIsNextBuy(true);
     };
 
     // Fetch books and load liked books when the component mounts or nameTypeBook changes
@@ -82,6 +85,18 @@ function ListBookHome({ nameTypeBook }) {
         return <Typography.Text type="danger">{error}</Typography.Text>;
     }
 
+    if (books.length === 0) {
+        const timeoutId = setTimeout(() => {
+            window.location.reload();
+        }, 2000); // 5000 milliseconds = 5 seconds
+
+        return <div>
+            <Typography.Text>Chưa có sách nào.</Typography.Text>;
+        </div>
+    }
+    if (isNextBuy) {
+        return <DetailBuy book_id={selectedBookId} />;
+    }
     return (
         <div className='box'>
             {books.map((item) => (
@@ -126,7 +141,9 @@ function ListBookHome({ nameTypeBook }) {
                             </div>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '5px' }}>
-                            <Button onClick={() => handleBuyNow(item.book.id)}>Mua</Button>
+                            <Button onClick={() => handleBuyNow(item.book.id)} style={{ background: 'red', color: 'white', fontSize: '17px' }}>
+                                Mua ngay
+                            </Button>
                             <MdAddShoppingCart style={{ fontSize: '25px', color: 'orange' }} />
                         </div>
                     </div>
