@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Spin, Card, Typography, message,  Image, Button } from 'antd';
+import { Spin, Card, Typography, message, Image, Button } from 'antd';
 import './index.css';
-import {  MdAddShoppingCart } from 'react-icons/md';
+import { MdAddShoppingCart } from 'react-icons/md';
+import Cookies from 'js-cookie';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+
 const { Meta } = Card;
 
 function ListBookHome({ nameTypeBook }) {
@@ -31,12 +34,25 @@ function ListBookHome({ nameTypeBook }) {
         }
     };
 
+    // Load liked books from cookies
+    const loadLikedBooks = () => {
+        const liked = Cookies.get('likedBooks');
+        if (liked) {
+            setLikedBooks(JSON.parse(liked));
+        }
+    };
+
     // Toggle like status for a book
     const toggleLike = (bookId) => {
-        setLikedBooks((prevLikedBooks) => ({
-            ...prevLikedBooks,
-            [bookId]: !prevLikedBooks[bookId],
-        }));
+        setLikedBooks((prevLikedBooks) => {
+            const updatedLikedBooks = {
+                ...prevLikedBooks,
+                [bookId]: !prevLikedBooks[bookId],
+            };
+            // Save updated liked books to cookies
+            Cookies.set('likedBooks', JSON.stringify(updatedLikedBooks), { expires: 7 });
+            return updatedLikedBooks;
+        });
     };
 
     // Handle "Buy Now" action
@@ -45,17 +61,19 @@ function ListBookHome({ nameTypeBook }) {
         message.success(`Book with ID ${bookId} purchased!`);
     };
 
-    // Fetch books when the component mounts or nameTypeBook changes
+    // Fetch books and load liked books when the component mounts or nameTypeBook changes
     useEffect(() => {
         fetchBooks();
+        loadLikedBooks();
     }, [nameTypeBook]);
+
     function truncateText(text, maxLength) {
         if (text.length > maxLength) {
             return text.substring(0, maxLength) + '...';
         }
         return text;
     }
-    
+
     if (loading) {
         return <Spin tip="Loading books..." />;
     }
@@ -66,9 +84,16 @@ function ListBookHome({ nameTypeBook }) {
 
     return (
         <div className='box'>
-            {books.map((item, index) => (
+            {books.map((item) => (
                 <div className='done' key={item.book.id} style={{ marginLeft: '10px', marginRight: '10px' }}>
                     <div>
+                        <div style={{ display: 'flex', justifyContent: 'end' }}>
+                            <Button
+                                type="text"
+                                icon={likedBooks[item.book.id] ? <FaHeart style={{ color: 'red' }} /> : <FaRegHeart />}
+                                onClick={() => toggleLike(item.book.id)}
+                            />
+                        </div>
                         <Card
                             hoverable
                             style={{
@@ -87,43 +112,21 @@ function ListBookHome({ nameTypeBook }) {
                                     }}
                                 />
                             }
-
-                        >
-                            <Meta />
-                        </Card>      <Card
-                            hoverable
-                            style={{
-                                width: 250,
-                                height: 300,
-                                overflow: 'hidden',
-                            }}
-                            cover={
-                                <Image
-                                    alt={item.book.title}
-                                    src={item.files[0] || 'http://placehold.it/300x400'}
-                                    style={{
-                                        marginTop: '-39px',
-                                        height: 300,
-                                        marginLeft: '-30px'
-                                    }}
-                                />
-                            }
-
                         >
                             <Meta />
                         </Card>
                     </div>
-                    <div style={{ paddingTop: '12px', marginTop: '295px',background:'white',borderBottomLeftRadius:'10px',borderBottomRightRadius:'10px' }}>
-                        <div style={{display:'flex',justifyContent:'space-between'}}>
-                            <div style={{paddingLeft:'10px'}}>
-                            {truncateText(item.book.title, 20)} {/* Adjust the maxLength as needed */}
+                    <div style={{ paddingTop: '12px', marginTop: '295px', background: 'white', borderBottomLeftRadius: '10px', borderBottomRightRadius: '10px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <div style={{ paddingLeft: '10px' }}>
+                                {truncateText(item.book.title, 20)} {/* Adjust the maxLength as needed */}
                             </div>
                             <div>
-                                {item.book.price}VND
+                                {item.book.price} VND
                             </div>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'center',paddingTop:'5px' }}>
-                            <Button>Mua</Button>
+                        <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '5px' }}>
+                            <Button onClick={() => handleBuyNow(item.book.id)}>Mua</Button>
                             <MdAddShoppingCart style={{ fontSize: '25px', color: 'orange' }} />
                         </div>
                     </div>
