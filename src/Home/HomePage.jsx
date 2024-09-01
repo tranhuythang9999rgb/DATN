@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './home_index.css';
 import { FcHome } from 'react-icons/fc';
-import { Avatar, Button, Card, Col, Dropdown, Image, Input, Menu, message, Modal, Row, Spin, Tooltip, Typography } from 'antd';
+import { Avatar, Button, Card, Col, Dropdown, Image, Input, Menu, message, Modal, Row, Select, Spin, Tooltip, Typography } from 'antd';
 import Login from '../common/Login';
 import { CiLogin, CiSearch } from 'react-icons/ci';
 import { GiArmoredBoomerang } from 'react-icons/gi';
@@ -12,6 +12,8 @@ import axios from 'axios';
 import { MdSell } from 'react-icons/md';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';  // Import FaHeart for the filled heart icon
 import DetailBuy from './DetailBuy';
+import ListBookHome from './ListBookHome';
+import Pages1 from '../Test/Pages1';
 const { Meta } = Card;
 const { Title } = Typography;
 
@@ -22,6 +24,9 @@ function HomePage() {
     const [selectedBookId, setSelectedBookId] = useState(null);  // Add state to manage selected book ID
     const [authors, setAuthors] = useState([]);
     const [loadingAuBook, setLoadingAuBook] = useState(false);
+    const [isNext, setIsNext] = useState(false);
+    const [selectedAuthor, setSelectedAuthor] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         // Check for the username in local storage
@@ -89,7 +94,7 @@ function HomePage() {
     };
     // Function to fetch the list of authors
     const fetchAuthors = async () => {
-        setLoadingAuBook(true);
+        setLoading(true);
         try {
             const response = await axios.get('http://127.0.0.1:8080/manager/type_book/list');
             console.log('Response data:', response.data); // Debugging
@@ -102,9 +107,10 @@ function HomePage() {
             console.error('Error fetching authors:', error);
             message.error('Error fetching authors');
         } finally {
-            setLoadingAuBook(false);
+            setLoading(false);
         }
     };
+
 
     // Fetch authors when the component mounts
     useEffect(() => {
@@ -112,27 +118,38 @@ function HomePage() {
     }, []);
 
     // Create Menu items for Dropdown with custom styles
+
+    useEffect(() => {
+        fetchAuthors();
+    }, []);
+
+    const handleMenuClick = (e) => {
+        const selectedAuthor = authors.find(author => author.id === parseInt(e.key, 10));
+        if (selectedAuthor) {
+            setSelectedAuthor(selectedAuthor);
+            setIsNext(true);
+        }
+    };
+
     const menu = (
-        <Menu>
-            {authors.length > 0 ? (
-                authors.map(author => (
-                    <Menu.Item
-                        key={author.id}
-                        style={{ cursor: 'pointer', padding: '10px 20px', minWidth: '200px' }} // Custom styles
-                    >
-                        {author.name}
-                    </Menu.Item>
-                ))
-            ) : (
-                <Menu.Item disabled style={{ padding: '10px 20px' }}>
-                    No authors available
+        <Menu onClick={handleMenuClick}>
+            {authors.map(author => (
+                <Menu.Item key={author.id}>
+                    {author.name}
                 </Menu.Item>
-            )}
+            ))}
         </Menu>
     );
+
+    if (isNext && selectedAuthor) {
+        return <ListBookHome nameTypeBook={selectedAuthor.name} />;
+    }
+
+
     if (isNextBuy) {
         return <DetailBuy book_id={selectedBookId} />;
     }
+
     //
     return (
         <div className='layout-home'>
@@ -162,18 +179,15 @@ function HomePage() {
                         <li style={{ cursor: 'pointer' }} onClick={() => window.location.reload()}><FcHome />Trang chủ</li>
                         <li>Tin sách</li>
                         <li style={{ cursor: 'pointer', listStyle: 'none' }}>
-                            <div>
+                            {loading ? (
+                                <Spin tip="Loading authors..." />
+                            ) : (
                                 <Dropdown overlay={menu} trigger={['click']}>
-                                    <a
-                                        style={{ textDecoration: 'none', color: 'black' }}
-                                        href="#"
-                                        onClick={e => e.preventDefault()}
-                                        className="ant-dropdown-link"
-                                    >
-                                        {loadingAuBook ? <Spin /> : 'Thư viện sách'}
-                                    </a>
+                                    <Button style={{border:'none',marginTop:'-10px'}}>
+                                        Thư viện sách
+                                    </Button>
                                 </Dropdown>
-                            </div>
+                            )}
                         </li>
                         <li>Tác giả</li>
                         <li>Cuộc thi</li>

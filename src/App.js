@@ -11,6 +11,7 @@ import DetailBuy from "./Home/DetailBuy";
 import HomePage from "./Home/HomePage";
 import ListBookHome from "./Home/ListBookHome";
 import SubmitBuyBook from "./Home/SubmitBuyBook";
+import Pages1 from "./Test/Pages1";
 import Pages2 from "./Test/Pages2";
 import AppRouter from "./Test/Routers/routers";
 
@@ -25,7 +26,7 @@ function App() {
       {/* <HomePage/> */}
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
-      {/* <CheckLogin/> */}
+      <CheckLogin/>
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
@@ -33,7 +34,8 @@ function App() {
       {/* <AppRouter/> */}
       {/* <Pages2/> */}
       {/* <SubmitBuyBook/> */}
-      <ListBookHome nameTypeBook={'6'}/>
+      {/* <ListBookHome nameTypeBook={'6'}/> */}
+    {/* <Pages1/> */}
     </div>
   );
 }
