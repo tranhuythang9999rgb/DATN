@@ -10,6 +10,7 @@ import (
 	"shoe_shop_server/common/utils"
 	"shoe_shop_server/core/domain"
 	"shoe_shop_server/core/entities"
+	"sort"
 	"strconv"
 )
 
@@ -253,7 +254,7 @@ func (u *UploadBookUseCase) GetdetailBookByid(ctx context.Context, id string) (*
 	}, nil
 }
 
-func (u *UploadBookUseCase) GetListBookByTypeBook(ctx context.Context, typeBook string) (*entities.BookRespDetailList, errors.Error) {
+func (u *UploadBookUseCase) GetListBookByTypeBook(ctx context.Context, typeBook, desc, asc string) (*entities.BookRespDetailList, errors.Error) {
 	var bookDetails []*entities.BookDetailList
 
 	// Lấy danh sách sách theo loại sách
@@ -296,6 +297,18 @@ func (u *UploadBookUseCase) GetListBookByTypeBook(ctx context.Context, typeBook 
 				OpeningStatus: book.OpeningStatus,
 			},
 			Files: listFileResp, // `Files` sẽ là một mảng rỗng nếu không có file nào
+		})
+	}
+	switch {
+	case desc != "" && asc == "":
+		// Sort by price in descending order
+		sort.Slice(bookDetails, func(i, j int) bool {
+			return bookDetails[i].Book.Price > bookDetails[j].Book.Price
+		})
+	case asc != "" && desc == "":
+		// Sort by price in ascending order
+		sort.Slice(bookDetails, func(i, j int) bool {
+			return bookDetails[i].Book.Price < bookDetails[j].Book.Price
 		})
 	}
 
