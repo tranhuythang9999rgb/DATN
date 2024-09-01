@@ -79,7 +79,6 @@ function ListBookHome({ nameTypeBook }) {
                                 >
                                     {likedBooks[book.book.id] ? <FaHeart /> : <FaRegHeart />}
                                 </div>
-                                
                                 <Image
                                     alt={book.book.title}
                                     src={book.files[0] || 'http://placehold.it/300x400'}
