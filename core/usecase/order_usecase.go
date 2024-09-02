@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"shoe_shop_server/common/enums"
 	errors "shoe_shop_server/common/error"
-	"shoe_shop_server/common/log"
 	"shoe_shop_server/common/utils"
 	"shoe_shop_server/core/domain"
 	"shoe_shop_server/core/entities"
@@ -31,23 +30,6 @@ func (u *UseCaseOrder) CreateOrder(ctx context.Context, req *entities.Order) (in
 	orderId := utils.GenerateUniqueKey()
 	orderDate := time.Now()
 	orderDateString := orderDate.Format("2006-01-02 15:04:05")
-
-	// Start a transaction
-	tx, err := u.trans.BeginTransaction(ctx)
-	if err != nil {
-		return 0, errors.NewSystemError("error system 1")
-	}
-
-	defer func() {
-		if r := recover(); r != nil {
-			tx.Rollback()
-			panic(r)
-		} else if err != nil {
-			tx.Rollback()
-		} else {
-			tx.Commit()
-		}
-	}()
 
 	// Fetch the book details
 	book, err := u.book.GetBookById(ctx, req.BookID)
@@ -92,16 +74,16 @@ func (u *UseCaseOrder) CreateOrder(ctx context.Context, req *entities.Order) (in
 		if err != nil {
 			return 0, errors.NewSystemError("error system")
 		}
-		log.Infof("id ", checkorderExists.Quantity, "req ", req.Quantity, "count : ", book.Quantity-(checkorderExists.Quantity-req.Quantity))
+		// log.Infof("id ", checkorderExists.Quantity, "req ", req.Quantity, "count : ", book.Quantity-(checkorderExists.Quantity-req.Quantity))
 		// Update book quantity
-		err = u.book.UpdateQuantity(ctx, tx, req.BookID, book.Quantity-(req.Quantity-checkorderExists.Quantity))
+		err = u.book.UpdateQuantity(ctx, req.BookID, book.Quantity-(req.Quantity-checkorderExists.Quantity))
 		if err != nil {
-			return 0, errors.NewSystemError("error system 4")
+			return 0, errors.NewSystemError("error system")
 		}
 		return req.OrderId, nil
 	} else {
 		// Create a new order
-		err = u.order.CreateOrder(ctx, tx, &domain.Order{
+		err = u.order.CreateOrder(ctx, &domain.Order{
 			ID:                orderId,
 			CustomerName:      req.CustomerName,
 			OrderDate:         orderDateString,
@@ -127,7 +109,7 @@ func (u *UseCaseOrder) CreateOrder(ctx context.Context, req *entities.Order) (in
 		}
 
 		// Update book quantity
-		err = u.book.UpdateQuantity(ctx, tx, req.BookID, book.QuantityOrigin-req.Quantity)
+		err = u.book.UpdateQuantity(ctx, req.BookID, book.QuantityOrigin-req.Quantity)
 		if err != nil {
 			return 0, errors.NewSystemError("error system 6")
 		}
@@ -144,10 +126,11 @@ func (u *UseCaseOrder) GetOrderById(ctx context.Context, id string) (*domain.Ord
 	return resp, nil
 }
 
-func (u *UseCaseOrder) UpdateStatusOrder(ctx context.Context, orderId, status string) errors.Error {
+func (u *UseCaseOrder) UpdateStatusOrder(ctx context.Context, orderId string) errors.Error {
 	numberOrderId, _ := strconv.ParseInt(orderId, 10, 64)
-	statusNumber, _ := strconv.ParseInt(status, 10, 64)
-	err := u.order.UpdateStatusOrder(ctx, numberOrderId, int(statusNumber))
+	//statusNumber, _ := strconv.ParseInt(status, 10, 64)
+	//log.Infof("req ", statusNumber)
+	err := u.order.UpdateStatusOrderSucsess(ctx, numberOrderId)
 	if err != nil {
 		return errors.NewSystemError(fmt.Sprintf("error system . %v", err))
 	}

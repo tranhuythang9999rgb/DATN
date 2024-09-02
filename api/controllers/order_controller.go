@@ -46,8 +46,7 @@ func (u *ControllerOrder) GetOrderById(ctx *gin.Context) {
 
 func (u *ControllerOrder) UpdateStatusOrder(ctx *gin.Context) {
 	orderId := ctx.Query("order_id")
-	status := ctx.Query("status")
-	err := u.order.UpdateStatusOrder(ctx, orderId, status)
+	err := u.order.UpdateStatusOrder(ctx, orderId)
 	if err != nil {
 		u.baseController.ErrorData(ctx, err)
 		return

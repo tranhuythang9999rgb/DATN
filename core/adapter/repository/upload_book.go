@@ -118,8 +118,8 @@ func (c *CollectionBook) GetBookByIdTopSell(ctx context.Context, id int64) (*dom
 	result := c.book.Where("id = ? and is_active = true", id).First(&book)
 	return book, result.Error
 }
-func (u *CollectionBook) UpdateQuantity(ctx context.Context, tx *gorm.DB, id int64, quantity int) error {
-	result := tx.Model(&domain.Book{}).Where("id = ?", id).UpdateColumn("quantity", quantity)
+func (u *CollectionBook) UpdateQuantity(ctx context.Context, id int64, quantity int) error {
+	result := u.book.Model(&domain.Book{}).Where("id = ?", id).UpdateColumn("quantity", quantity)
 	return result.Error
 }
 

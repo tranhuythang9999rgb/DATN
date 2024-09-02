@@ -2,8 +2,6 @@ package domain
 
 import (
 	"context"
-
-	"gorm.io/gorm"
 )
 
 // Order đại diện cho bảng orders trong cơ sở dữ liệu
@@ -53,7 +51,7 @@ type OrderForm struct {
 
 type RepositoryOrder interface {
 	// CreateOrder thêm một đơn hàng mới vào cơ sở dữ liệu
-	CreateOrder(ctx context.Context, tx *gorm.DB, order *Order) error
+	CreateOrder(ctx context.Context, order *Order) error
 
 	// GetOrderByID lấy thông tin đơn hàng theo ID
 	GetOrderByID(ctx context.Context, id int64) (*Order, error)
@@ -73,4 +71,6 @@ type RepositoryOrder interface {
 	GetInforMationBook(ctx context.Context, order_id, book_id int64) (*Order, error)
 
 	UpdateStatusOrder(ctx context.Context, id int64, status int) error
+
+	UpdateStatusOrderSucsess(ctx context.Context, id int64) error
 }

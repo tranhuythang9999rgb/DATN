@@ -337,7 +337,7 @@ func (u *UploadBookUseCase) UpdateQuantityBookByOrderId(ctx context.Context, ord
 		tx.Rollback()
 		return errors.NewSystemError(fmt.Sprintf("error system %v", err))
 	}
-	err = u.books.UpdateQuantity(ctx, tx, orderIdNumber, bookInfor.Quantity+orderInfor.Quantity)
+	err = u.books.UpdateQuantity(ctx, orderIdNumber, bookInfor.Quantity+orderInfor.Quantity)
 	if err != nil {
 		tx.Rollback()
 		return errors.NewSystemError(fmt.Sprintf("error system %v", err))

@@ -6,6 +6,8 @@
     <title>Order Status Update</title>
     <!-- JS-Cookie Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
+    <!-- Axios Library -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
     <div class="text-center">
@@ -15,21 +17,22 @@
         <h3 class="mt-3">Processing your order, please wait...</h3>
     </div>
     <script>
-        // Function to update order status
+        // Function to update order status using Axios
         async function updateOrderStatus(orderId) {
             try {
-                //127.0.0.1:8080/manager/order/update/sucess?order_id=10&status=23
-                const response = await fetch(`http://127.0.0.1:8080/manager/order/update/sucess?order_id=${orderId}&status=23`, {
-                    method: 'PATCH',
+                const response = await axios.patch(`http://127.0.0.1:8080/manager/order/update/success`, null, {
+                    params: {
+                        order_id: orderId,
+                        status: 23
+                    },
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 });
 
-                const data = await response.json();
-                console.log("API Response:", data); // Log the API response for debugging
+                console.log("API Response:", response.data); // Log API response for debugging
 
-                if (data.code === 0) {
+                if (response.data.code === 0) {
                     window.location.href = 'http://127.0.0.1:3000';
                 } else {
                     alert('Failed to update order status. Please try again.');
@@ -40,11 +43,14 @@
             }
         }
 
-        // Get order_id from cookies and update order status
+        // Get order_id from cookies and update order status with delay
         window.onload = function () {
             const orderId = Cookies.get('order_id');
             if (orderId) {
-                updateOrderStatus(orderId);
+                // Delay 30s (30000 milliseconds) before updating the order status
+                setTimeout(function () {
+                    updateOrderStatus(orderId);
+                }, 30000);
             } else {
                 alert('Order ID is missing. Unable to update order status.');
             }

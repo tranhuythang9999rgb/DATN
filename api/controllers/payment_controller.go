@@ -40,11 +40,11 @@ func (u *ControllersPayment) CreatePayment(ctx *gin.Context) {
 	cancelUrl := "http://localhost:8080/manager/payment/return/calcel/payment"
 	returnUrl := "http://127.0.0.1:8080/manager/payment/return/create/payment"
 
-	ctx.SetCookie("order_id", fmt.Sprintln(orderId), 3600, "/", "localhost:8080", false, true)
+	ctx.SetCookie("order_id", fmt.Sprint(order.ID), 3600, "/", "localhost", false, true)
 
 	resp, err := u.pay.CreatePayment(ctx, entities.CheckoutRequestType{
 		OrderCode:   order.ID,
-		Amount:      order.BookPrice,
+		Amount:      order.TotalAmount,
 		Description: description,
 		CancelUrl:   cancelUrl,
 		ReturnUrl:   returnUrl,

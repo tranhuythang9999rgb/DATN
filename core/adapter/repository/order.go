@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"shoe_shop_server/common/enums"
+	"shoe_shop_server/common/log"
 	"shoe_shop_server/core/adapter"
 	"shoe_shop_server/core/domain"
 
@@ -22,8 +23,8 @@ func NewCollectionOrder(db *adapter.PostGresql) domain.RepositoryOrder {
 }
 
 // CreateOrder thêm một đơn hàng mới vào cơ sở dữ liệu
-func (c *CollectionOrder) CreateOrder(ctx context.Context, tx *gorm.DB, order *domain.Order) error {
-	result := tx.Create(&order)
+func (c *CollectionOrder) CreateOrder(ctx context.Context, order *domain.Order) error {
+	result := c.db.Create(&order)
 	return result.Error
 }
 
@@ -100,5 +101,11 @@ func (c *CollectionOrder) GetInforMationBook(ctx context.Context, order_id, book
 }
 func (u *CollectionOrder) UpdateStatusOrder(ctx context.Context, id int64, status int) error {
 	result := u.db.Model(&domain.Order{}).Where("id = ? ", id).UpdateColumn("status", status)
+	return result.Error
+}
+
+func (u *CollectionOrder) UpdateStatusOrderSucsess(ctx context.Context, id int64) error {
+	log.Infof("order id : ", id)
+	result := u.db.Model(&domain.Order{}).Where("id = ? ", id).UpdateColumn("status", 23)
 	return result.Error
 }

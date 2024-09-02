@@ -87,7 +87,7 @@ func NewApiRouter(
 	{
 		orderGroup.POST("/add", order.CreateOrder)
 		orderGroup.GET("/infor", order.GetOrderById)
-		orderGroup.PATCH("/update/sucess", order.UpdateStatusOrder)
+		orderGroup.PATCH("/update/success", order.UpdateStatusOrder)
 	}
 	deliveryAddressGroup := r.Group("/delivery_address")
 	{
