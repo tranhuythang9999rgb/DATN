@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"math"
 	"shoe_shop_server/common/enums"
 	errors "shoe_shop_server/common/error"
@@ -18,18 +19,21 @@ type UploadBookUseCase struct {
 	fie_lc domain.RepositoryFileStorages
 	books  domain.RepositoryBook
 	trans  domain.RepositoryTransaction
+	order  domain.RepositoryOrder
 }
 
 func NewUploadBookUseCase(
 	fie_lc domain.RepositoryFileStorages,
 	books domain.RepositoryBook,
 	trans domain.RepositoryTransaction,
+	order domain.RepositoryOrder,
 
 ) *UploadBookUseCase {
 	return &UploadBookUseCase{
 		fie_lc: fie_lc,
 		books:  books,
 		trans:  trans,
+		order:  order,
 	}
 }
 func (u *UploadBookUseCase) AddBook(ctx context.Context, req *entities.Book) errors.Error {
@@ -316,4 +320,28 @@ func (u *UploadBookUseCase) GetListBookByTypeBook(ctx context.Context, typeBook,
 		BookDetailList: bookDetails,
 		Count:          len(bookDetails),
 	}, nil
+}
+func (u *UploadBookUseCase) UpdateQuantityBookByOrderId(ctx context.Context, orderId string) errors.Error {
+
+	orderIdNumber, _ := strconv.ParseInt(orderId, 10, 64)
+	tx, _ := u.trans.BeginTransaction(ctx)
+
+	orderInfor, err := u.order.GetOrderByID(ctx, orderIdNumber)
+	if err != nil {
+		tx.Rollback()
+		return errors.NewSystemError(fmt.Sprintf("error system %v", err))
+	}
+	bookInfor, err := u.books.GetBookById(ctx, orderInfor.BookID)
+	if err != nil {
+		tx.Rollback()
+		return errors.NewSystemError(fmt.Sprintf("error system %v", err))
+	}
+	err = u.books.UpdateQuantity(ctx, tx, orderIdNumber, bookInfor.Quantity+orderInfor.Quantity)
+	if err != nil {
+		tx.Rollback()
+		return errors.NewSystemError(fmt.Sprintf("error system %v", err))
+	}
+
+	tx.Commit()
+	return nil
 }

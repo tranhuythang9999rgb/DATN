@@ -57,6 +57,7 @@ func NewApiRouter(
 		bookGroup.GET("/sell/well", book.GetListBookSellWell)
 		bookGroup.GET("/detail/page", book.GetdetailBookByid)
 		bookGroup.GET("/list/type_book", book.GetListBookByTypeBook)
+		bookGroup.PATCH("/update/order/cancel", book.UpdateQuantityBookByOrderId)
 	}
 	fileGroup := r.Group("/file")
 	{
@@ -86,6 +87,7 @@ func NewApiRouter(
 	{
 		orderGroup.POST("/add", order.CreateOrder)
 		orderGroup.GET("/infor", order.GetOrderById)
+		orderGroup.PATCH("/update/sucess", order.UpdateStatusOrder)
 	}
 	deliveryAddressGroup := r.Group("/delivery_address")
 	{
@@ -93,7 +95,7 @@ func NewApiRouter(
 	}
 	paymentGroup := r.Group("/payment")
 	{
-		paymentGroup.POST("/add", payment.CreatePayment)
+		paymentGroup.PATCH("/add", payment.CreatePayment)
 		paymentGroup.GET("/return/create/payment", payment.ReturnUrlAfterPayment)
 		paymentGroup.GET("/return/calcel/payment", payment.ReturnUrlAftercanCelPayment)
 	}

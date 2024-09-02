@@ -43,3 +43,14 @@ func (u *ControllerOrder) GetOrderById(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, resp)
 }
+
+func (u *ControllerOrder) UpdateStatusOrder(ctx *gin.Context) {
+	orderId := ctx.Query("id")
+	status := ctx.Query("status")
+	err := u.order.UpdateStatusOrder(ctx, orderId, status)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, nil)
+}

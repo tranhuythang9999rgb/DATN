@@ -54,6 +54,7 @@ func InitKeyPayPos(clientId string, apiKey string, checksumKey string) error {
 const PayOSBaseUrl = "https://api-merchant.payos.vn/"
 
 func (u *UseCasePayment) CreatePayment(ctx context.Context, paymentData entities.CheckoutRequestType) (*entities.CheckoutResponseDataType, error) {
+
 	err := u.order.order.UpdateStatusOrder(ctx, paymentData.OrderCode, enums.ORDER_ARE_PAYING)
 	if err != nil {
 		return &entities.CheckoutResponseDataType{
@@ -343,3 +344,24 @@ func (u *UseCasePayment) convertToString(value interface{}) string {
 		return fmt.Sprint(value)
 	}
 }
+
+// {
+// 	"orderCode": 1234567891,
+// 	"amount": 12000,
+// 	"description": "Movie Ticket",
+// 	"cancelUrl": "http://127.0.0.1:8080/manager/payment/return/create/payment",
+// 	"returnUrl": "http://127.0.0.1:8080/manager/payment/return/create/payment",
+// 	"items": [
+// 	  {
+// 		"name": "Ticket 1",
+// 		"price": 50,
+// 		"quantity": 2
+// 	  }
+// 	],
+// 	"buyerName": "John Doe",
+// 	"buyerEmail": "johndoe@example.com",
+// 	"buyerPhone": "1234567890",
+// 	"buyerAddress": "123 Main St",
+// 	"showTimeId": 9876543210,
+// 	"seats": "A1, A2"
+//   }

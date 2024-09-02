@@ -166,7 +166,7 @@ ALTER TABLE books
 COMMENT ON COLUMN books.genre IS 'Loại sách';
 
 ALTER TABLE books 
-  ADD COLUMN quantity_origin int;
+  ADD COLUMN quantity_origin int DEFAULT 10;
 
 COMMENT ON COLUMN books.quantity_origin IS 'Số  lượng sách ban đầu';
 

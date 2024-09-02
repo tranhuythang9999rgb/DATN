@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"fmt"
 	"shoe_shop_server/common/enums"
 	errors "shoe_shop_server/common/error"
 	"shoe_shop_server/common/utils"
@@ -140,4 +141,14 @@ func (u *UseCaseOrder) GetOrderById(ctx context.Context, id string) (*domain.Ord
 		return nil, errors.NewSystemError("error system")
 	}
 	return resp, nil
+}
+
+func (u *UseCaseOrder) UpdateStatusOrder(ctx context.Context, orderId, status string) errors.Error {
+	numberOrderId, _ := strconv.ParseInt(orderId, 10, 64)
+	statusNumber, _ := strconv.ParseInt(status, 10, 64)
+	err := u.order.UpdateStatusOrder(ctx, numberOrderId, int(statusNumber))
+	if err != nil {
+		return errors.NewSystemError(fmt.Sprintf("error system . %v", err))
+	}
+	return nil
 }

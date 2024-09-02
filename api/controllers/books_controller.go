@@ -127,3 +127,13 @@ func (u *ControllersUploadBooks) GetListBookByTypeBook(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, books)
 }
+
+func (u *ControllersUploadBooks) UpdateQuantityBookByOrderId(ctx *gin.Context) {
+	orderId := ctx.Query("id")
+	err := u.books.UpdateQuantityBookByOrderId(ctx, orderId)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, nil)
+}

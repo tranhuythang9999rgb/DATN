@@ -105,10 +105,11 @@ const (
 	ORDER_CANCEL   = 11
 	ROLE_CUSTOMER  = 13
 
-	TICKET_OPEN_SALE  = 15
-	TICKET_CLOSE_SALE = 17
-	ORDER_PEND        = 19
-	ORDER_ARE_PAYING  = 21
+	TICKET_OPEN_SALE           = 15
+	TICKET_CLOSE_SALE          = 17
+	ORDER_PEND                 = 19
+	ORDER_ARE_PAYING           = 21
+	ORDER_WAITING_FOR_SHIPMENT = 23
 )
 const (
 	NoSignatureErrorMessage         = "No signature."
