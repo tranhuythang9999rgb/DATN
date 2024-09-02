@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	errors "shoe_shop_server/common/error"
@@ -36,10 +37,11 @@ func (u *ControllersPayment) CreatePayment(ctx *gin.Context) {
 	order, _ := u.order.GetOrderById(ctx, orderId)
 
 	description := "Xin Cam on"
-	cancelUrl := "http://localhost:8080/manager/public/customer/payment/calcel"
+	cancelUrl := "http://localhost:8080/manager/payment/return/calcel/payment"
 	returnUrl := "http://127.0.0.1:8080/manager/payment/return/create/payment"
 
-	ctx.SetCookie("order_id", orderId, 3600, "/", "localhost", false, true)
+	ctx.SetCookie("order_id", fmt.Sprintln(orderId), 3600, "/", "localhost:8080", false, true)
+
 	resp, err := u.pay.CreatePayment(ctx, entities.CheckoutRequestType{
 		OrderCode:   order.ID,
 		Amount:      order.BookPrice,

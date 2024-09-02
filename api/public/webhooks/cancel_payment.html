@@ -3,9 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cancel Payment</title>
+    <title>Order Status Update</title>
+    <!-- JS-Cookie Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
 </head>
 <body>
-    
+    <div class="text-center">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <h3 class="mt-3">Processing your order, please wait...</h3>
+    </div>
+    <script>
+        // Function to update order status
+        async function updateOrderStatus(orderId) {
+            try {
+                //127.0.0.1:8080/manager/order/update/sucess?order_id=10&status=23
+                const response = await fetch(`http://127.0.0.1:8080/manager/order/update/sucess?order_id=${orderId}&status=23`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+                console.log("API Response:", data); // Log the API response for debugging
+
+                if (data.code === 0) {
+                    window.location.href = 'http://127.0.0.1:3000';
+                } else {
+                    alert('Failed to update order status. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while processing your request.');
+            }
+        }
+
+        // Get order_id from cookies and update order status
+        window.onload = function () {
+            const orderId = Cookies.get('order_id');
+            if (orderId) {
+                updateOrderStatus(orderId);
+            } else {
+                alert('Order ID is missing. Unable to update order status.');
+            }
+        }
+    </script>
 </body>
 </html>
