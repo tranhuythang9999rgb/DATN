@@ -130,6 +130,9 @@ func (u *UseCaseOrder) UpdateStatusOrder(ctx context.Context, orderId string) er
 	numberOrderId, _ := strconv.ParseInt(orderId, 10, 64)
 	//statusNumber, _ := strconv.ParseInt(status, 10, 64)
 	//log.Infof("req ", statusNumber)
+	orderInfor, _ := u.order.GetOrderByID(ctx, numberOrderId)
+	bookInfor, _ := u.book.GetBookById(ctx, orderInfor.BookID)
+	u.book.UpdateQuantity(ctx, orderInfor.BookID, bookInfor.Quantity-orderInfor.Quantity)
 	err := u.order.UpdateStatusOrderSucsess(ctx, numberOrderId)
 	if err != nil {
 		return errors.NewSystemError(fmt.Sprintf("error system . %v", err))
