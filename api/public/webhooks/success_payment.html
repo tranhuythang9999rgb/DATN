@@ -43,14 +43,20 @@
             }
         }
 
-        // Get order_id from cookies and update order status with delay
+        // Function to get query parameter from URL
+        function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Get orderCode from URL and update order status with delay
         window.onload = function () {
-            const orderId = Cookies.get('order_id');
+            const orderId = getQueryParam('orderCode');
             if (orderId) {
                 // Delay 30s (30000 milliseconds) before updating the order status
                 setTimeout(function () {
                     updateOrderStatus(orderId);
-                }, 30000);
+                }, 9000);
             } else {
                 alert('Order ID is missing. Unable to update order status.');
             }
