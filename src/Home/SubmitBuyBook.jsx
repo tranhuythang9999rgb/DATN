@@ -111,7 +111,7 @@ const SubmitBuyBook = () => {
     const handleCreatePayment = async () => {
         setLoadingPayment(true);
         try {
-            const orderId = localStorage.getItem('order_id');
+            const orderId = localStorage.getItem('order_id') || 0;
             const response = await axios.patch(`http://127.0.0.1:8080/manager/payment/add?id=${orderId}`, {
                 headers: {
                     'Content-Type': 'application/json'
