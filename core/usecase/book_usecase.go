@@ -56,10 +56,11 @@ func (u *UploadBookUseCase) AddBook(ctx context.Context, req *entities.Book) err
 		Price:         req.Price,
 		DiscountPrice: req.DiscountPrice,
 		// PurchasePrice: req.PurchasePrice,
-		Quantity:      req.Quantity,
-		Notes:         req.Notes,
-		IsActive:      true,
-		OpeningStatus: req.OpeningStatus,
+		Quantity:       req.Quantity,
+		Notes:          req.Notes,
+		IsActive:       true,
+		OpeningStatus:  req.OpeningStatus,
+		QuantityOrigin: req.Quantity,
 	}
 	err := u.books.Create(ctx, tx, &bookModel)
 	if err != nil {

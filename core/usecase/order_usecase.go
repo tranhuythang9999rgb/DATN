@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"shoe_shop_server/common/enums"
 	errors "shoe_shop_server/common/error"
+	"shoe_shop_server/common/log"
 	"shoe_shop_server/common/utils"
 	"shoe_shop_server/core/domain"
 	"shoe_shop_server/core/entities"
@@ -91,9 +92,9 @@ func (u *UseCaseOrder) CreateOrder(ctx context.Context, req *entities.Order) (in
 		if err != nil {
 			return 0, errors.NewSystemError("error system")
 		}
-
+		log.Infof("id ", checkorderExists.Quantity, "req ", req.Quantity, "count : ", book.Quantity-(checkorderExists.Quantity-req.Quantity))
 		// Update book quantity
-		err = u.book.UpdateQuantity(ctx, tx, req.BookID, book.QuantityOrigin-req.Quantity)
+		err = u.book.UpdateQuantity(ctx, tx, req.BookID, book.Quantity-(req.Quantity-checkorderExists.Quantity))
 		if err != nil {
 			return 0, errors.NewSystemError("error system 4")
 		}
