@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Input, Radio, Row, Select, Space, Typography, message, notification } from 'antd';
 import DetailBuy from './DetailBuy';
-import './home_index.css';
 import { GrPaypal } from 'react-icons/gr';
 import { IoReturnUpBackOutline } from 'react-icons/io5';
 import GetOrderById from './GetOrderById';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const { Title } = Typography;
 
@@ -19,11 +19,52 @@ const SubmitBuyBook = () => {
     const [cities, setCities] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [communes, setCommunes] = useState([]);
-    const [paymentMethod, setPaymentMethod] = useState(1); // Default to 1 (Thanh toán khi giao hàng)
+    const [paymentMethod, setPaymentMethod] = useState(1);
+    const [loadingPayment, setLoadingPayment] = useState(false);
 
-    const handleGoBack = () => {
-        setIsGoback(true);
-        openNotification('Notification', 'You have returned to the previous page.');
+    useEffect(() => {
+        // Fetch list of cities on mount
+        fetchCities();
+    }, []);
+
+    const fetchCities = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/manager/public/customer/cities');
+            const data = await response.json();
+            setCities(data.cities.map(city => city['Tỉnh Thành Phố']));
+        } catch (error) {
+            console.error('Error fetching cities:', error);
+        }
+    };
+
+    const handleCityChange = async (value) => {
+        setSelectedCity(value);
+        setSelectedDistrict('');
+        setSelectedCommune('');
+        setDistricts([]);
+        setCommunes([]);
+
+        try {
+            const response = await fetch(`http://localhost:8080/manager/public/customer/districts?name=${encodeURIComponent(value)}`);
+            const data = await response.json();
+            setDistricts(data.districts.map(district => district['Quận Huyện']));
+        } catch (error) {
+            console.error('Error fetching districts:', error);
+        }
+    };
+
+    const handleDistrictChange = async (value) => {
+        setSelectedDistrict(value);
+        setSelectedCommune('');
+        setCommunes([]);
+
+        try {
+            const response = await fetch(`http://localhost:8080/manager/public/customer/communes?name=${encodeURIComponent(value)}`);
+            const data = await response.json();
+            setCommunes(data.communes.map(commune => commune['Phường Xã']));
+        } catch (error) {
+            console.error('Error fetching communes:', error);
+        }
     };
 
     const handleFormSubmit = async (values) => {
@@ -31,35 +72,32 @@ const SubmitBuyBook = () => {
         Object.keys(values).forEach(key => {
             formData.append(key, values[key]);
         });
-        formData.append('payment_method', paymentMethod); // Add payment method to FormData
-    
-        // Retrieve the order_id from localStorage
+        formData.append('payment_method', paymentMethod);
+
         const orderId = localStorage.getItem('order_id');
-    
+
         if (orderId) {
-            formData.append('order_id', orderId); // Append the order_id to the FormData
-    
+            formData.append('order_id', orderId);
+
             try {
                 if (paymentMethod === 1) {
-                    // Call API for "Thanh toán khi giao hàng"
                     const response = await axios.post('http://localhost:8080/manager/delivery_address/add', formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data'
                         }
                     });
-    
+
                     const data = response.data;
-    
+
                     if (data.code === 0) {
                         message.success('Đặt hàng thành công!');
                         openNotification('Order Success', 'Your order has been placed successfully.');
-                        handleGoBack();
+                        setIsGoback(true);
                     } else {
                         message.error('Có lỗi xảy ra!');
                     }
                 } else {
-                    // Handle other payment methods if needed
-                    message.warning('Chức năng thanh toán trực tuyến chưa được hỗ trợ.');
+                    handleCreatePayment();
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -67,6 +105,37 @@ const SubmitBuyBook = () => {
             }
         } else {
             message.error('Order ID is missing!');
+        }
+    };
+
+    const handleCreatePayment = async () => {
+        setLoadingPayment(true);
+        try {
+            const orderId = localStorage.getItem('order_id');
+            const response = await axios.patch(`http://127.0.0.1:8080/manager/payment/add?id=${orderId}`, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            Cookies.set("order_id", localStorage.getItem('order_id'), { expires: 30 });
+
+            const paymentResult = response.data;
+            if (paymentResult.code === 0) {
+                console.log('Redirecting to:', paymentResult.checkoutUrl);  // Debugging line
+                window.location.href = paymentResult.body.checkoutUrl;
+                return;
+            }else{
+                setLoadingPayment(false);
+                message.error('Lỗi máy chủ vui lòng thử lại hoặc kiểm tra kết nối mạng thiết bị');
+            }
+
+          
+        } catch (error) {
+            console.log(error);
+            message.error('Lỗi máy chủ vui lòng thử lại hoặc kiểm tra kết nối mạng thiết bị');
+        } finally {
+            setLoadingPayment(false);
         }
     };
 
@@ -81,44 +150,6 @@ const SubmitBuyBook = () => {
         });
     };
 
-    useEffect(() => {
-        // Fetch list of cities
-        fetch('http://localhost:8080/manager/public/customer/cities')
-            .then(response => response.json())
-            .then(data => setCities(data.cities.map(city => city['Tỉnh Thành Phố'])))
-            .catch(error => console.error(error));
-    }, []);
-
-    const handleCityChange = (value) => {
-        setSelectedCity(value);
-        setSelectedDistrict('');
-        setSelectedCommune('');
-        setDistricts([]);
-        setCommunes([]);
-
-        // Fetch districts based on selected city
-        fetch(`http://localhost:8080/manager/public/customer/districts?name=${encodeURIComponent(value)}`)
-            .then(response => response.json())
-            .then(data => setDistricts(data.districts.map(district => district['Quận Huyện'])))
-            .catch(error => console.error(error));
-    };
-
-    const handleDistrictChange = (value) => {
-        setSelectedDistrict(value);
-        setSelectedCommune('');
-        setCommunes([]);
-
-        // Fetch communes based on selected district
-        fetch(`http://localhost:8080/manager/public/customer/communes?name=${encodeURIComponent(value)}`)
-            .then(response => response.json())
-            .then(data => setCommunes(data.communes.map(commune => commune['Phường Xã'])))
-            .catch(error => console.error(error));
-    };
-
-    const handlePaymentMethodChange = (e) => {
-        setPaymentMethod(e.target.value);
-    };
-
     if (isGoback) {
         return <DetailBuy book_id={localStorage.getItem('book_id')} />;
     }
@@ -127,7 +158,7 @@ const SubmitBuyBook = () => {
         <div>
             {contextHolder}
             <Row>
-                <IoReturnUpBackOutline onClick={handleGoBack} style={{ fontSize: '25px', cursor: 'pointer' }} />
+                <IoReturnUpBackOutline onClick={() => setIsGoback(true)} style={{ fontSize: '25px', cursor: 'pointer' }} />
             </Row>
             <Row justify="center">
                 <Col span={16}>
@@ -150,11 +181,6 @@ const SubmitBuyBook = () => {
                                 <Form.Item name="province" rules={[{ required: true, message: 'Chọn thành phố' }]}>
                                     <Select
                                         placeholder="Chọn thành phố"
-                                        style={{ width: '100%', height: 42 }}
-                                        showSearch
-                                        filterOption={(input, option) =>
-                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                        }
                                         onChange={handleCityChange}
                                         value={selectedCity || undefined}
                                     >
@@ -165,14 +191,9 @@ const SubmitBuyBook = () => {
                                 </Form.Item>
                                 <Form.Item name="district" rules={[{ required: true, message: 'Chọn quận/huyện' }]}>
                                     <Select
-                                        style={{ width: '100%', height: 42 }}
-                                        showSearch
-                                        filterOption={(input, option) =>
-                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                        }
+                                        placeholder="Chọn quận/huyện"
                                         onChange={handleDistrictChange}
                                         value={selectedDistrict || undefined}
-                                        placeholder="Chọn quận/huyện"
                                     >
                                         {districts.map(district => (
                                             <Select.Option key={district} value={district}>{district}</Select.Option>
@@ -181,13 +202,8 @@ const SubmitBuyBook = () => {
                                 </Form.Item>
                                 <Form.Item name="commune" rules={[{ required: true, message: 'Chọn phường/xã' }]}>
                                     <Select
-                                        style={{ width: '100%', height: 42 }}
-                                        showSearch
-                                        filterOption={(input, option) =>
-                                            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                        }
-                                        value={selectedCommune || undefined}
                                         placeholder="Chọn phường/xã"
+                                        value={selectedCommune || undefined}
                                     >
                                         {communes.map(commune => (
                                             <Select.Option key={commune} value={commune}>{commune}</Select.Option>
@@ -200,32 +216,29 @@ const SubmitBuyBook = () => {
                                 <Form.Item name="note">
                                     <Input placeholder='Ghi chú' />
                                 </Form.Item>
-                                <Form.Item>
-                                    <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
-                                        Đặt hàng
-                                    </Button>
-                                </Form.Item>
                             </Form>
                         </Col>
-                        <Col style={{ marginTop: '16px' }} span={8}>
-                            <Radio.Group onChange={handlePaymentMethodChange} value={paymentMethod}>
+                        <Col span={8} style={{ marginTop: '16px' }}>
+                            <Radio.Group onChange={e => setPaymentMethod(e.target.value)} value={paymentMethod}>
                                 <Space direction='vertical' style={{ width: '100%' }}>
-                                    <Space.Compact>
-                                        <Button style={{ height: '50px', fontSize: '20px', width: '100%' }}>
-                                            <Radio value={1} /> Thanh toán khi giao hàng
+                                    <Button
+                                        style={{ height: '50px', fontSize: '20px', width: '100%' }}
+                                        onClick={form.submit}
+                                    >
+                                        <Radio value={1} /> Thanh toán khi giao hàng
+                                    </Button>
+                                    <Button
+                                        style={{ height: '50px', fontSize: '20px', width: '100%' }}
+                                    >
+                                        <Radio value={2} /> Thanh toán trực tuyến <GrPaypal />
+                                    </Button>
+                                    {paymentMethod === 2 && (
+                                        <Button
+                                            onClick={handleCreatePayment}
+                                            loading={loadingPayment}
+                                            style={{ height: '50px', fontSize: '20px', width: '100%' }}>
+                                            {loadingPayment ? 'Đang xử lý...' : 'Thanh toán'}
                                         </Button>
-                                    </Space.Compact>
-                                    <Space.Compact>
-                                        <Button style={{ height: '50px', fontSize: '20px', width: '100%' }}>
-                                            <Radio value={2} /> Thanh toán trực tuyến <GrPaypal />
-                                        </Button>
-                                    </Space.Compact>
-                                    {paymentMethod !== 1 && (
-                                        <Space.Compact>
-                                            <Button style={{ height: '50px', fontSize: '20px', width: '100%' }}>
-                                                Thanh toán
-                                            </Button>
-                                        </Space.Compact>
                                     )}
                                 </Space>
                             </Radio.Group>

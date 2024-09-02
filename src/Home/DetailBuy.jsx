@@ -21,29 +21,29 @@ const DetailBuy = ({ book_id }) => {
     const [error, setError] = useState(null);
     const [items, setItems] = useState(1);
     const [isBuy, setIsBuy] = useState(false);
-
-    useEffect(() => {
-        const fetchBookDetails = async () => {
-            try {
-                const response = await axios.get(`http://localhost:8080/manager/book/detail/page?id=${book_id}`);
-                if (response.data && response.data.body) {
-                    setBook(response.data.body);
-                    localStorage.setItem('book_id', book_id);
-                } else {
-                    setError('Không tìm thấy dữ liệu');
-                }
-            } catch (error) {
-                setError('Lỗi khi lấy dữ liệu');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchBookDetails();
-    }, [book_id]);
     const [username, setUsername] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
+
+    const fetchBookDetails = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/manager/book/detail/page?id=${book_id}`);
+            if (response.data && response.data.body) {
+                setBook(response.data.body);
+                localStorage.setItem('book_id', book_id);
+            } else {
+                setError('Không tìm thấy dữ liệu');
+            }
+        } catch (error) {
+            setError('Lỗi khi lấy dữ liệu');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchBookDetails();
+    }, [book_id]);
 
     useEffect(() => {
         // Check for the username in local storage
@@ -141,15 +141,15 @@ const DetailBuy = ({ book_id }) => {
         formData.append('customer_name', customerName);
         formData.append('book_id', book_id); // Ensure book_id is a string
         formData.append('quantity', items.toString()); // Ensure quantity is a string
-        formData.append('order_id',orderId);
-    
+        formData.append('order_id', orderId);
+
         try {
             const response = await axios.post('http://127.0.0.1:8080/manager/order/add', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-    
+
             if (response.data.code === 0) {
                 localStorage.setItem('order_id', response.data.body);
             }
@@ -157,7 +157,7 @@ const DetailBuy = ({ book_id }) => {
             message.error('error server');
         }
     }
-    
+
 
     if (isBuy) {
         return (
@@ -190,8 +190,8 @@ const DetailBuy = ({ book_id }) => {
                 </div>
                 <div className='layout-header-center'>
                     <ul>
-                    <li style={{ cursor: 'pointer' }} onClick={() => window.location.reload()}><FcHome />Trang chủ</li>
-                    <li>Tin sách</li>
+                        <li style={{ cursor: 'pointer' }} onClick={() => window.location.reload()}><FcHome />Trang chủ</li>
+                        <li>Tin sách</li>
                         <li>Thư viện sách</li>
                         <li>Tác giả</li>
                         <li>Cuộc thi</li>
@@ -321,7 +321,7 @@ const DetailBuy = ({ book_id }) => {
                                 <Space>
                                     <div style={{ display: 'flex', border: '1px solid gray', borderRadius: '5px' }}>
                                         <BiMinusCircle
-                                        min={1}
+                                            min={1}
                                             onClick={decrement}
                                             style={{ opacity: 0.7, cursor: 'pointer', fontSize: '30px', marginLeft: '5px' }} // Làm mờ icon và thêm con trỏ chuột khi hover
                                         />

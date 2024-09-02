@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, Space } from 'antd';
 import axios from 'axios';
 import './index_login.css';
 import { MdAdminPanelSettings } from 'react-icons/md';
@@ -78,9 +78,14 @@ const Login = () => {
                         </Checkbox>
                     </Form.Item>
                     <Form.Item style={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button type="primary" htmlType="submit" loading={loading}>
-                            Đăng nhập
-                        </Button>
+                        <Space>
+                            <Button type="primary" htmlType="submit" loading={loading}>
+                                Đăng nhập
+                            </Button>
+                            <Button>
+                                Đăng ký tài khoản
+                            </Button>
+                        </Space>
                     </Form.Item>
                 </Form>
             </div>
