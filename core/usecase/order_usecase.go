@@ -88,16 +88,11 @@ func (u *UseCaseOrder) CreateOrder(ctx context.Context, req *entities.Order) (in
 			Status:            enums.ORDER_INIT,
 		})
 		if err != nil {
-			return 0, errors.NewSystemError("error system 3")
+			return 0, errors.NewSystemError("error system")
 		}
-		var quantityUpdate int
-		if req.Quantity == checkorderExists.Quantity {
-			quantityUpdate = book.Quantity
-		} else {
-			quantityUpdate = book.Quantity - (req.Quantity - checkorderExists.Quantity)
-		}
+
 		// Update book quantity
-		err = u.book.UpdateQuantity(ctx, tx, req.BookID, quantityUpdate)
+		err = u.book.UpdateQuantity(ctx, tx, req.BookID, book.QuantityOrigin-req.Quantity)
 		if err != nil {
 			return 0, errors.NewSystemError("error system 4")
 		}
@@ -130,7 +125,7 @@ func (u *UseCaseOrder) CreateOrder(ctx context.Context, req *entities.Order) (in
 		}
 
 		// Update book quantity
-		err = u.book.UpdateQuantity(ctx, tx, req.BookID, book.Quantity-req.Quantity)
+		err = u.book.UpdateQuantity(ctx, tx, req.BookID, book.QuantityOrigin-req.Quantity)
 		if err != nil {
 			return 0, errors.NewSystemError("error system 6")
 		}

@@ -34,7 +34,7 @@ func (u *ControllersPayment) CreatePayment(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, err)
 		return
 	}
-	ctx.SetCookie("order_id", fmt.Sprint(req.OrderCode), 3600, "/", "localhost", false, true)
+	ctx.SetCookie("order_id", fmt.Sprint(req.OrderCode), 3600, "/", "localhost:8080", false, true)
 	req.ExpiredAt = utils.GenerateTimestampExpiredAt(15)
 	resp, err := u.pay.CreatePayment(ctx, req)
 	if err != nil {

@@ -164,3 +164,12 @@ ALTER TABLE books
     RENAME COLUMN stock TO quantity;
 
 COMMENT ON COLUMN books.genre IS 'Loại sách';
+
+ALTER TABLE books 
+  ADD COLUMN quantity_origin int;
+
+COMMENT ON COLUMN books.quantity_origin IS 'Số  lượng sách ban đầu';
+
+UPDATE books
+SET quantity_origin = 100
+WHERE quantity_origin < 100;
