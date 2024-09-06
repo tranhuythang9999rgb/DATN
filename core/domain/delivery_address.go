@@ -18,4 +18,5 @@ type DeliveryAddress struct {
 type RepositoryDeliveryAddress interface {
 	Create(ctx context.Context, req *DeliveryAddress) error
 	UpdateEmailAndOtp(ctx context.Context, req *DeliveryAddress) error
+	GetAddressByUserName(ctx context.Context, username string) (*DeliveryAddress, error)
 }

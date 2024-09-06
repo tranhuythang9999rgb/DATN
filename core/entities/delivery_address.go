@@ -10,3 +10,12 @@ type DeliveryAddress struct {
 	Commune     string `form:"commune"`
 	Detailed    string `form:"detailed"`
 }
+
+type DeliveryAddressUpdateProFile struct {
+	UserName    string `form:"user_name"`
+	PhoneNumber string `form:"phone_number"`
+	Province    string `form:"province"`
+	District    string `form:"district"`
+	Commune     string `form:"commune"`
+	Detailed    string `form:"detailed"`
+}

@@ -86,3 +86,8 @@ func (c *CollectionUser) FindUserByEmail(ctx context.Context, email string) (boo
 
 	return isCheck, user.Role, nil
 }
+func (c *CollectionUser) GetProFile(ctx context.Context, name string) (*domain.User, error) {
+	var user *domain.User
+	result := c.us.Where("username = ?", name).First(&user)
+	return user, result.Error
+}

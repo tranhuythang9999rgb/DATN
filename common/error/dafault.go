@@ -12,6 +12,6 @@ var (
 	ErrSystem           = NewCustomHttpError(http.StatusInternalServerError, SystemError, "system_error")
 	ErrBadRequest       = NewCustomHttpError(http.StatusBadRequest, BadRequest, "invalid_request")
 	ErrResourceNotFound = NewCustomHttpError(http.StatusNotFound, ResourceNotFound, "resource_not_found")
-	ErrConflict         = NewCustomHttpError(http.StatusConflict, Conflict, "username_has_exist or email")
+	ErrConflict         = NewCustomHttpError(http.StatusOK, Conflict, "username_has_exist or email")
 	ErrEmpty            = NewCustomHttpError(http.StatusOK, Success, "")
 )

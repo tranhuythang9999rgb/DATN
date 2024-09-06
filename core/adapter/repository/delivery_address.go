@@ -29,3 +29,12 @@ func (c *CollectionDeliveryAddress) UpdateEmailAndOtp(ctx context.Context, req *
 	result := c.db.Where("email = ? otp = ? ", req.Email, req.Otp).UpdateColumns(&req)
 	return result.Error
 }
+
+func (c *CollectionDeliveryAddress) GetAddressByUserName(ctx context.Context, username string) (*domain.DeliveryAddress, error) {
+	var address *domain.DeliveryAddress
+	result := c.db.Where("user_name = ? ", username).First(&address)
+	if result.Error == gorm.ErrRecordNotFound {
+		return nil, nil
+	}
+	return address, result.Error
+}

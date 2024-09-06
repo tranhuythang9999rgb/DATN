@@ -59,3 +59,13 @@ func (u *ControllersUser) Login(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, resp)
 }
+
+func (u *ControllersUser) GetProFile(ctx *gin.Context) {
+	name := ctx.Query("name")
+	user, err := u.user.GetProFile(ctx, name)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, user)
+}

@@ -48,7 +48,7 @@ func (u *ControllersPayment) CreatePayment(ctx *gin.Context) {
 		Description: description,
 		CancelUrl:   cancelUrl,
 		ReturnUrl:   returnUrl,
-		ExpiredAt:   utils.GenerateTimestampExpiredAt(15),
+		ExpiredAt:   utils.GenerateTimestampExpiredAt(15), //
 	})
 	if err != nil {
 		log.Error(err, "error server")

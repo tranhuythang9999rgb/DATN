@@ -69,3 +69,11 @@ func (u *UserCaseUse) Login(ctx context.Context, user_name, password string) (*e
 		Role:     role,
 	}, nil
 }
+
+func (u *UserCaseUse) GetProFile(ctx context.Context, name string) (*domain.User, errors.Error) {
+	user, err := u.user.GetProFile(ctx, name)
+	if err != nil {
+		return nil, errors.ErrSystem
+	}
+	return user, nil
+}

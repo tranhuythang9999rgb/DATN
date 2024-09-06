@@ -46,6 +46,7 @@ func NewApiRouter(
 	{
 		userGroup.POST("/register", user.AddUser)
 		userGroup.POST("/login", user.Login)
+		userGroup.GET("/profile", user.GetProFile)
 	}
 	bookGroup := r.Group("/book")
 	{
@@ -92,6 +93,8 @@ func NewApiRouter(
 	deliveryAddressGroup := r.Group("/delivery_address")
 	{
 		deliveryAddressGroup.POST("/add", deliveryAddress.AddDeliveryAddress)
+		deliveryAddressGroup.POST("/add/profile", deliveryAddress.AddDeliveryAddressUpdateProfile)
+		deliveryAddressGroup.GET("/infor/profile", deliveryAddress.GetAddressByUserName)
 	}
 	paymentGroup := r.Group("/payment")
 	{

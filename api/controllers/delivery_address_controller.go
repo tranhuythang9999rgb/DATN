@@ -1,7 +1,9 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
+	errors "shoe_shop_server/common/error"
 	"shoe_shop_server/core/entities"
 	"shoe_shop_server/core/usecase"
 
@@ -33,4 +35,28 @@ func (u *ControllerDeliveryAddress) AddDeliveryAddress(ctx *gin.Context) {
 		return
 	}
 	u.baseController.Success(ctx, nil)
+}
+
+func (u *ControllerDeliveryAddress) AddDeliveryAddressUpdateProfile(ctx *gin.Context) {
+	var req entities.DeliveryAddressUpdateProFile
+	if err := ctx.ShouldBind(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	err := u.deliveryAddress.AddDeliveryAddressUpdateProfile(ctx, &req)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, nil)
+}
+
+func (u *ControllerDeliveryAddress) GetAddressByUserName(ctx *gin.Context) {
+	name := ctx.Query("name")
+	resp, err := u.deliveryAddress.GetAddressByUserName(ctx, name)
+	if err != nil {
+		u.baseController.ErrorData(ctx, errors.NewCustomHttpError(200, 0, fmt.Sprintln(err.Error())))
+		return
+	}
+	u.baseController.Success(ctx, resp)
 }

@@ -31,4 +31,5 @@ type RepositoryUser interface {
 	FindAccount(ctx context.Context, req *UserReqByForm) ([]*User, error)
 	FindUserByUseName(ctx context.Context, name string) (bool, int, error)
 	FindUserByEmail(ctx context.Context, email string) (bool, int, error)
+	GetProFile(ctx context.Context, name string) (*User, error)
 }
