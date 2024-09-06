@@ -1,44 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useImperativeHandle, forwardRef } from 'react';
 import axios from 'axios';
 import { List, Typography, Spin, Alert, Button, Modal } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
 
-const ListCart = ({oncreateLoad}) => {
+const ListCart = forwardRef((props, ref) => {
     const [carts, setCarts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Fetch cart list
     const fetchCartList = async () => {
+        setLoading(true);
         try {
             const userData = JSON.parse(localStorage.getItem('userData'));
-            // Gọi API để lấy danh sách giỏ hàng
             const response = await axios.get('http://127.0.0.1:8080/manager/cart/list', {
                 params: { name: userData.user_name }
             });
 
             if (response.data.code === 0) {
-                // Cập nhật trạng thái với dữ liệu giỏ hàng
                 setCarts(response.data.body.carts);
             } else {
-                // Xử lý lỗi nếu có
                 setError(response.data.message);
             }
         } catch (err) {
-            // Xử lý lỗi khi gọi API
             setError('Cuộc gọi API thất bại');
         } finally {
             setLoading(false);
         }
     };
+
+    // Expose the fetchCartList function to the parent component via ref
+    useImperativeHandle(ref, () => ({
+        reloadCart: fetchCartList
+    }));
+
     useEffect(() => {
-        
         fetchCartList();
     }, []);
 
     const handleDelete = (cartId) => {
-        // Hiển thị hộp thoại xác nhận trước khi xóa
         Modal.confirm({
             title: 'Xác nhận xóa',
             content: 'Bạn có chắc chắn muốn xóa mục này khỏi giỏ hàng?',
@@ -52,7 +54,6 @@ const ListCart = ({oncreateLoad}) => {
                     });
 
                     if (response.data.code === 0) {
-                        // Xóa mục khỏi danh sách sau khi xóa thành công
                         setCarts(carts.filter(item => item.cart_id !== cartId));
                     } else {
                         setError(response.data.message);
@@ -121,6 +122,6 @@ const ListCart = ({oncreateLoad}) => {
             )}
         </div>
     );
-};
+});
 
 export default ListCart;

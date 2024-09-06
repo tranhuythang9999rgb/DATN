@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Card, Col, Image, Row, Typography, Rate, Button, Input, Tooltip, Modal, Carousel, Space, message, Drawer } from 'antd';
 import { FaUser, FaBookOpen, FaCalendarAlt, FaBarcode, FaLanguage, FaFileAlt, FaRulerCombined, FaWeightHanging, FaDollarSign, FaPercent, FaBoxes } from 'react-icons/fa';
@@ -27,9 +27,14 @@ const DetailBuy = ({ book_id }) => {
     const [username, setUsername] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isDrawerVisibleCart, setIsDrawerVisibleCart] = useState(false);
+    const cartRef = useRef(null);
 
     const openDrawerCart = () => {
         setIsDrawerVisibleCart(true);
+        // Optional: Reload the cart data when the drawer opens
+        if (cartRef.current) {
+            cartRef.current.reloadCart();
+        }
     };
 
     const closeDrawerCart = () => {
@@ -267,7 +272,7 @@ const DetailBuy = ({ book_id }) => {
                                     visible={isDrawerVisibleCart}
                                     width={800}
                                 >
-                                    <ListCart />
+                                    <ListCart ref={cartRef} />
                                 </Drawer>
 
 

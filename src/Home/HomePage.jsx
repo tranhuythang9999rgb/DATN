@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './home_index.css';
 import { FcHome } from 'react-icons/fc';
 import { Avatar, Button, Card, Col, Drawer, Dropdown, Image, Input, Menu, message, Modal, Row, Select, Space, Spin, Tooltip, Typography } from 'antd';
@@ -31,15 +31,19 @@ function HomePage() {
     const [books, setBooks] = useState([]);
     const [likedBooks, setLikedBooks] = useState({});  // State to store liked status for each book
     const [isDrawerVisibleCart, setIsDrawerVisibleCart] = useState(false);
+    const cartRef = useRef(null);
 
     const openDrawerCart = () => {
         setIsDrawerVisibleCart(true);
+        // Optional: Reload the cart data when the drawer opens
+        if (cartRef.current) {
+            cartRef.current.reloadCart();
+        }
     };
 
     const closeDrawerCart = () => {
         setIsDrawerVisibleCart(false);
     };
-
     useEffect(() => {
         // Check for the username in local storage
         const storedUsername = localStorage.getItem('userData');
@@ -256,7 +260,7 @@ function HomePage() {
                                         visible={isDrawerVisibleCart}
                                         width={800}
                                     >
-                                        <ListCart />
+                                        <ListCart ref={cartRef} />
                                     </Drawer>
 
 
