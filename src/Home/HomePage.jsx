@@ -27,7 +27,7 @@ function HomePage() {
     const [isNext, setIsNext] = useState(false);
     const [selectedAuthor, setSelectedAuthor] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [isNextProFile,setIsNextProFile] = useState(false);
+    const [isNextProFile, setIsNextProFile] = useState(false);
     useEffect(() => {
         // Check for the username in local storage
         const storedUsername = localStorage.getItem('userData');
@@ -151,8 +151,8 @@ function HomePage() {
         return <DetailBuy book_id={selectedBookId} />;
     }
 
-    if(isNextProFile) {
-        return <ProFile/>
+    if (isNextProFile) {
+        return <ProFile />
     }
 
     //
@@ -188,7 +188,7 @@ function HomePage() {
                                 <Spin tip="Loading authors..." />
                             ) : (
                                 <Dropdown overlay={menu} trigger={['click']}>
-                                    <Button style={{border:'none',marginTop:'-10px'}}>
+                                    <Button style={{ border: 'none', marginTop: '-10px' }}>
                                         Thư viện sách
                                     </Button>
                                 </Dropdown>
@@ -207,8 +207,8 @@ function HomePage() {
                         <li>
                             {username ? (
                                 <Space>
-                                <Button style={{border:'none',fontSize:'17px'}} onClick={handleLogoutClick}>Đăng xuất</Button>
-                                <Button style={{border:'none',fontSize:'17px'}} onClick={handleNextProFile}>profile</Button>
+                                    <Button style={{ border: 'none', fontSize: '17px' }} onClick={handleLogoutClick}>Đăng xuất</Button>
+                                    <Button style={{ border: 'none', fontSize: '17px' }} onClick={handleNextProFile}>profile</Button>
                                 </Space>
                             ) : (
                                 <>
@@ -230,10 +230,13 @@ function HomePage() {
                             )}
                         </li>
                         <li>
-                            <Tooltip title="Giỏ hàng">
-                                <AiOutlineShoppingCart style={{ fontSize: '20px' }} />
-                            </Tooltip>
+                            {username ? (
+                                <Tooltip title="Giỏ hàng">
+                                    <AiOutlineShoppingCart style={{ fontSize: '20px' }} />
+                                </Tooltip>
+                            ) : null}
                         </li>
+
                     </ul>
                 </div>
 

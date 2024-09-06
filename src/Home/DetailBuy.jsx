@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, Col, Image, Row, Typography, Rate, Button, Input, Tooltip, Modal, Carousel, Space, message } from 'antd';
-import { FaUser, FaBookOpen, FaCalendarAlt, FaBarcode, FaLanguage, FaFileAlt, FaRulerCombined, FaWeightHanging, FaDollarSign, FaPercent, FaBoxes, FaStickyNote, FaStar, FaShoppingCart } from 'react-icons/fa';
+import { FaUser, FaBookOpen, FaCalendarAlt, FaBarcode, FaLanguage, FaFileAlt, FaRulerCombined, FaWeightHanging, FaDollarSign, FaPercent, FaBoxes } from 'react-icons/fa';
 import './home_index.css';
 import { CgAdd } from 'react-icons/cg';
 import { FcHome } from 'react-icons/fc';
@@ -12,6 +12,7 @@ import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { BiMinusCircle } from 'react-icons/bi';
 import SubmitBuyBook from './SubmitBuyBook';
 import { IoReturnUpBack } from 'react-icons/io5';
+import { addToCart } from '../user/Carts';
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -48,7 +49,8 @@ const DetailBuy = ({ book_id }) => {
 
     useEffect(() => {
         // Check for the username in local storage
-        const storedUsername = localStorage.getItem('username');
+        const storedUsername = JSON.parse(localStorage.getItem('userData'));
+
         if (storedUsername) {
             setUsername(storedUsername);
         }
@@ -111,7 +113,21 @@ const DetailBuy = ({ book_id }) => {
     const decrement = () => {
         setItems(prevItems => Math.max(0, prevItems - 1)); // Đảm bảo items không giảm xuống dưới 0
     };
-
+    const handleAddToCart = async () => {
+        if (!username) {
+            message.error('Bạn cần đăng nhập để thêm vào giỏ hàng');
+            return;
+        }
+        const bookId = localStorage.getItem('book_id')
+        const result = await addToCart(bookId, items);
+        
+        if (result.success) {
+            message.success('Sách đã được thêm vào giỏ hàng');
+        } else {
+            message.error(result.message || 'Có lỗi xảy ra khi thêm sách vào giỏ hàng');
+        }
+    };
+    
     const RecommendedBook = ({ title, author, rating }) => (
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
             <Image
@@ -236,15 +252,15 @@ const DetailBuy = ({ book_id }) => {
                 </div>
 
             </div>
-          
+
             <Row style={{ display: 'flex', marginTop: '100px' }} gutter={[16, 16]}>
                 <Col span={8}>
                     <div>
                         <IoReturnUpBack
                             onClick={handlerGoBack}
-                            style={{ display: 'flex',fontSize:'25px',cursor:'pointer',paddingLeft:'20px'}}
+                            style={{ display: 'flex', fontSize: '25px', cursor: 'pointer', paddingLeft: '20px' }}
                         />
-                        
+
                     </div>
                     <div>Ảnh mô tả</div>
                     <Carousel afterChange={onChange} style={{ marginBottom: '20px' }}>
@@ -357,7 +373,9 @@ const DetailBuy = ({ book_id }) => {
                                     <Button onClick={handleNextSubmitBuy} style={{ marginTop: '10px', height: '50px', width: '100px', background: 'red', color: 'white', fontSize: '20px' }}>
                                         Mua ngay
                                     </Button>
-                                    <Button style={{ marginTop: '10px', height: '50px', background: '#228b22', color: 'white', fontSize: '20px' }}>Thêm vào giỏ hàng</Button>
+                                    <Button onClick={handleAddToCart} style={{ marginTop: '10px', height: '50px', background: '#228b22', color: 'white', fontSize: '20px' }}>
+                                        Thêm vào giỏ hàng
+                                    </Button>
                                 </Space>
                             </Row>
                             <Row>

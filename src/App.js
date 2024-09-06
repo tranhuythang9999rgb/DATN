@@ -16,6 +16,7 @@ import Pages2 from "./Test/Pages2";
 import AppRouter from "./Test/Routers/routers";
 import AddAddress from "./user/AddAddress";
 import GetTheShippingAddress from "./user/GetTheShippingAddress";
+import ListCart from "./user/ListCart";
 import ProFile from "./user/Profile";
 import RegisterUser from "./user/RegisterUser";
 
@@ -30,7 +31,7 @@ function App() {
       {/* <HomePage/> */}
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
-      <CheckLogin/>
+      {/* <CheckLogin/> */}
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
@@ -44,6 +45,7 @@ function App() {
     {/* <ProFile/> */}
     {/* <AddAddress/> */}
     {/* <GetTheShippingAddress/> */}
+    <ListCart/>
     </div>
   );
 }
