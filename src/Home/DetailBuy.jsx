@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Card, Col, Image, Row, Typography, Rate, Button, Input, Tooltip, Modal, Carousel, Space, message } from 'antd';
+import { Card, Col, Image, Row, Typography, Rate, Button, Input, Tooltip, Modal, Carousel, Space, message, Drawer } from 'antd';
 import { FaUser, FaBookOpen, FaCalendarAlt, FaBarcode, FaLanguage, FaFileAlt, FaRulerCombined, FaWeightHanging, FaDollarSign, FaPercent, FaBoxes } from 'react-icons/fa';
 import './home_index.css';
 import { CgAdd } from 'react-icons/cg';
@@ -13,6 +13,7 @@ import { BiMinusCircle } from 'react-icons/bi';
 import SubmitBuyBook from './SubmitBuyBook';
 import { IoReturnUpBack } from 'react-icons/io5';
 import { addToCart } from '../user/Carts';
+import ListCart from '../user/ListCart';
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -25,6 +26,15 @@ const DetailBuy = ({ book_id }) => {
     const [isBuy, setIsBuy] = useState(false);
     const [username, setUsername] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isDrawerVisibleCart, setIsDrawerVisibleCart] = useState(false);
+
+    const openDrawerCart = () => {
+        setIsDrawerVisibleCart(true);
+    };
+
+    const closeDrawerCart = () => {
+        setIsDrawerVisibleCart(false);
+    };
 
 
     const fetchBookDetails = async () => {
@@ -120,14 +130,14 @@ const DetailBuy = ({ book_id }) => {
         }
         const bookId = localStorage.getItem('book_id')
         const result = await addToCart(bookId, items);
-        
+
         if (result.success) {
             message.success('Sách đã được thêm vào giỏ hàng');
         } else {
             message.error(result.message || 'Có lỗi xảy ra khi thêm sách vào giỏ hàng');
         }
     };
-    
+
     const RecommendedBook = ({ title, author, rating }) => (
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
             <Image
@@ -224,7 +234,7 @@ const DetailBuy = ({ book_id }) => {
                         </li>
                         <li>
                             {username ? (
-                                <Button onClick={handleLogoutClick}>Đăng xuất</Button>
+                                <Button style={{ border: 'none' }} onClick={handleLogoutClick}>Đăng xuất</Button>
                             ) : (
                                 <>
 
@@ -245,7 +255,22 @@ const DetailBuy = ({ book_id }) => {
                         </li>
                         <li>
                             <Tooltip title="Giỏ hàng">
-                                <AiOutlineShoppingCart style={{ fontSize: '20px' }} />
+                                <AiOutlineShoppingCart
+                                    style={{ fontSize: '20px', cursor: 'pointer' }}
+                                    onClick={openDrawerCart}
+                                />
+
+                                <Drawer
+                                    title="Giỏ hàng của bạn"
+                                    placement="right"
+                                    onClose={closeDrawerCart}
+                                    visible={isDrawerVisibleCart}
+                                    width={800}
+                                >
+                                    <ListCart />
+                                </Drawer>
+
+
                             </Tooltip>
                         </li>
                     </ul>

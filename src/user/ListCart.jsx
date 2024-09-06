@@ -5,35 +5,35 @@ import { DeleteOutlined } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
 
-const ListCart = () => {
+const ListCart = ({oncreateLoad}) => {
     const [carts, setCarts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchCartList = async () => {
-            try {
-                const userData = JSON.parse(localStorage.getItem('userData'));
-                // Gọi API để lấy danh sách giỏ hàng
-                const response = await axios.get('http://127.0.0.1:8080/manager/cart/list', {
-                    params: { name: userData.user_name }
-                });
+    const fetchCartList = async () => {
+        try {
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            // Gọi API để lấy danh sách giỏ hàng
+            const response = await axios.get('http://127.0.0.1:8080/manager/cart/list', {
+                params: { name: userData.user_name }
+            });
 
-                if (response.data.code === 0) {
-                    // Cập nhật trạng thái với dữ liệu giỏ hàng
-                    setCarts(response.data.body.carts);
-                } else {
-                    // Xử lý lỗi nếu có
-                    setError(response.data.message);
-                }
-            } catch (err) {
-                // Xử lý lỗi khi gọi API
-                setError('Cuộc gọi API thất bại');
-            } finally {
-                setLoading(false);
+            if (response.data.code === 0) {
+                // Cập nhật trạng thái với dữ liệu giỏ hàng
+                setCarts(response.data.body.carts);
+            } else {
+                // Xử lý lỗi nếu có
+                setError(response.data.message);
             }
-        };
-
+        } catch (err) {
+            // Xử lý lỗi khi gọi API
+            setError('Cuộc gọi API thất bại');
+        } finally {
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
+        
         fetchCartList();
     }, []);
 
