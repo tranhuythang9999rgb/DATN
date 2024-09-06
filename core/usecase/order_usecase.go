@@ -76,10 +76,7 @@ func (u *UseCaseOrder) CreateOrder(ctx context.Context, req *entities.Order) (in
 		}
 		// log.Infof("id ", checkorderExists.Quantity, "req ", req.Quantity, "count : ", book.Quantity-(checkorderExists.Quantity-req.Quantity))
 		// Update book quantity
-		err = u.book.UpdateQuantity(ctx, req.BookID, book.Quantity-(req.Quantity-checkorderExists.Quantity))
-		if err != nil {
-			return 0, errors.NewSystemError("error system")
-		}
+
 		return req.OrderId, nil
 	} else {
 		// Create a new order
@@ -108,11 +105,6 @@ func (u *UseCaseOrder) CreateOrder(ctx context.Context, req *entities.Order) (in
 			return 0, errors.NewSystemError("error system 5")
 		}
 
-		// Update book quantity
-		err = u.book.UpdateQuantity(ctx, req.BookID, book.QuantityOrigin-req.Quantity)
-		if err != nil {
-			return 0, errors.NewSystemError("error system 6")
-		}
 		return orderId, nil
 	}
 }

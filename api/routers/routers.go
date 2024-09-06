@@ -25,6 +25,7 @@ func NewApiRouter(
 	order *controllers.ControllerOrder,
 	deliveryAddress *controllers.ControllerDeliveryAddress,
 	payment *controllers.ControllersPayment,
+	cart *controllers.ControllerCart,
 
 ) *ApiRouter {
 	engine := gin.New()
@@ -106,6 +107,14 @@ func NewApiRouter(
 	r.GET("/public/customer/cities", addresPublic.GetAllCity)
 	r.GET("/public/customer/districts", addresPublic.GetAllDistrictsByCityName)
 	r.GET("/public/customer/communes", addresPublic.GetAllCommunesByDistrictName)
+	//cart
+	cartGroup := r.Group("/cart")
+	{
+		cartGroup.POST("/add", cart.AddCart)
+		cartGroup.DELETE("/delete", cart.DeleteCart)
+		cartGroup.GET("/list", cart.GetListCartByUserId)
+		cartGroup.PATCH("/update", cart.UpdateQuantityCartById)
+	}
 	return &ApiRouter{
 		Engine: engine,
 	}

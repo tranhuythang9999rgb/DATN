@@ -1,3 +1,4 @@
+-- Active: 1724172274110@@127.0.0.1@5432@shoe_shop
 create table if not exists users
 (
     id           bigint       not null
@@ -173,3 +174,13 @@ COMMENT ON COLUMN books.quantity_origin IS 'Số  lượng sách ban đầu';
 UPDATE books
 SET quantity_origin = 100
 WHERE quantity_origin < 100;
+
+CREATE TABLE  if not exists carts(
+    id BIGINT PRIMARY KEY,
+    user_id BIGINT,
+    book_id BIGINT,
+    quantity INTEGER
+);
+
+ALTER TABLE carts 
+  ADD COLUMN create_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP;
