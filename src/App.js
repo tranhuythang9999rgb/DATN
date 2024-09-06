@@ -14,6 +14,8 @@ import SubmitBuyBook from "./Home/SubmitBuyBook";
 import Pages1 from "./Test/Pages1";
 import Pages2 from "./Test/Pages2";
 import AppRouter from "./Test/Routers/routers";
+import AddAddress from "./user/AddAddress";
+import ProFile from "./user/Profile";
 import RegisterUser from "./user/RegisterUser";
 
 
@@ -37,7 +39,9 @@ function App() {
       {/* <SubmitBuyBook/> */}
       {/* <ListBookHome nameTypeBook={'6'}/> */}
     {/* <Pages1/> */}
-    <RegisterUser/>
+    {/* <RegisterUser/> */}
+    {/* <ProFile/> */}
+    <AddAddress/>
     </div>
   );
 }

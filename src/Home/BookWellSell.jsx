@@ -3,7 +3,6 @@ import { Button, Card, Col, Image, Row, Tooltip, Typography } from 'antd';
 import axios from 'axios';
 import { MdSell } from 'react-icons/md';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';  // Import FaHeart for the filled heart icon
-import { IoCartOutline } from 'react-icons/io5';
 import Cookies from 'js-cookie';  // Import js-cookie
 
 const { Meta } = Card;

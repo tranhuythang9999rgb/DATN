@@ -13,7 +13,6 @@ import { MdSell } from 'react-icons/md';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';  // Import FaHeart for the filled heart icon
 import DetailBuy from './DetailBuy';
 import ListBookHome from './ListBookHome';
-import Pages1 from '../Test/Pages1';
 const { Meta } = Card;
 const { Title } = Typography;
 
@@ -30,7 +29,7 @@ function HomePage() {
 
     useEffect(() => {
         // Check for the username in local storage
-        const storedUsername = localStorage.getItem('username');
+        const storedUsername = localStorage.getItem('userData');
         if (storedUsername) {
             setUsername(storedUsername);
         }
@@ -42,7 +41,7 @@ function HomePage() {
 
     const handleLogoutClick = () => {
         // Clear the username from local storage
-        localStorage.removeItem('username');
+        localStorage.removeItem('userData');
         setUsername(null);
     };
 

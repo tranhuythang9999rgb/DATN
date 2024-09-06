@@ -11,6 +11,7 @@ import { GiArmoredBoomerang } from 'react-icons/gi';
 import { FcHome } from 'react-icons/fc';
 import { CiLogin, CiSearch } from 'react-icons/ci';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
+import './home_index.css';
 
 const { Meta } = Card;
 
@@ -250,7 +251,7 @@ function ListBookHome({ nameTypeBook }) {
                                         visible={isModalVisible}
                                         onCancel={handleModalClose}
                                         footer={null}
-                                        width={400}
+                                        width={350}
                                         height={500}
                                     >
                                         <Login />

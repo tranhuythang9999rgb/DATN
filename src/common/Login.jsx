@@ -4,11 +4,12 @@ import axios from 'axios';
 import './index_login.css';
 import { MdAdminPanelSettings } from 'react-icons/md';
 import { RiAdminLine, RiLockPasswordFill } from 'react-icons/ri';
+import RegisterUser from '../user/RegisterUser';
 
 const Login = () => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
-
+    const [isNextFormRegister,setIsNextFormRegister] = useState(false);
     const handleFormSubmit = async (values) => {
         setLoading(true);
 
@@ -36,7 +37,14 @@ const Login = () => {
             setLoading(false);
         }
     };
-
+    const handlerNextRegisetr = ()=>{
+        setIsNextFormRegister(true);
+    }
+    if(isNextFormRegister) {
+        return (
+            <RegisterUser/>
+        )
+    }
     return (
         <div className="container-login-user">
             <div className='form-login'>
@@ -82,7 +90,7 @@ const Login = () => {
                             <Button type="primary" htmlType="submit" loading={loading}>
                                 Đăng nhập
                             </Button>
-                            <Button>
+                            <Button onClick={handlerNextRegisetr}>
                                 Đăng ký tài khoản
                             </Button>
                         </Space>
