@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './home_index.css';
 import { FcHome } from 'react-icons/fc';
-import { Avatar, Button, Card, Col, Dropdown, Image, Input, Menu, message, Modal, Row, Select, Spin, Tooltip, Typography } from 'antd';
+import { Avatar, Button, Card, Col, Dropdown, Image, Input, Menu, message, Modal, Row, Select, Space, Spin, Tooltip, Typography } from 'antd';
 import Login from '../common/Login';
 import { CiLogin, CiSearch } from 'react-icons/ci';
 import { GiArmoredBoomerang } from 'react-icons/gi';
@@ -13,6 +13,7 @@ import { MdSell } from 'react-icons/md';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';  // Import FaHeart for the filled heart icon
 import DetailBuy from './DetailBuy';
 import ListBookHome from './ListBookHome';
+import ProFile from '../user/Profile';
 const { Meta } = Card;
 const { Title } = Typography;
 
@@ -26,7 +27,7 @@ function HomePage() {
     const [isNext, setIsNext] = useState(false);
     const [selectedAuthor, setSelectedAuthor] = useState(null);
     const [loading, setLoading] = useState(false);
-
+    const [isNextProFile,setIsNextProFile] = useState(false);
     useEffect(() => {
         // Check for the username in local storage
         const storedUsername = localStorage.getItem('userData');
@@ -40,11 +41,12 @@ function HomePage() {
     };
 
     const handleLogoutClick = () => {
-        // Clear the username from local storage
         localStorage.removeItem('userData');
         setUsername(null);
     };
-
+    const handleNextProFile = () => {
+        setIsNextProFile(true);
+    };
     const handleModalClose = () => {
         setIsModalVisible(false);
     };
@@ -149,6 +151,10 @@ function HomePage() {
         return <DetailBuy book_id={selectedBookId} />;
     }
 
+    if(isNextProFile) {
+        return <ProFile/>
+    }
+
     //
     return (
         <div className='layout-home'>
@@ -200,7 +206,10 @@ function HomePage() {
                         </li>
                         <li>
                             {username ? (
-                                <Button onClick={handleLogoutClick}>Đăng xuất</Button>
+                                <Space>
+                                <Button style={{border:'none',fontSize:'17px'}} onClick={handleLogoutClick}>Đăng xuất</Button>
+                                <Button style={{border:'none',fontSize:'17px'}} onClick={handleNextProFile}>profile</Button>
+                                </Space>
                             ) : (
                                 <>
 

@@ -64,6 +64,7 @@ function AddAddress() {
         try {
             const response = await axios.post('http://127.0.0.1:8080/manager/delivery_address/add/profile', formData);
             if (response.data.code === 0) {
+                localStorage.setItem('status_address','ok')
                 message.success('Địa chỉ đã được thêm thành công.');
                 form.resetFields();
             } else {

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { List, Avatar } from 'antd';
+import { List, Avatar, Col, Row, Button, Tooltip } from 'antd';
 import axios from 'axios';
+import GetTheShippingAddress from './GetTheShippingAddress';
+import { IoReturnUpBack } from 'react-icons/io5';
 
 function ProFile() {
     const [profileData, setProfileData] = useState(null);
@@ -36,29 +38,40 @@ function ProFile() {
         { title: 'Email', description: profileData.email },
         { title: 'Họ và tên', description: profileData.full_name },
         { title: 'Địa chỉ', description: profileData.address },
-        { title: 'Số điện thoại', description: profileData.phone_number },
-        { title: 'Role', description: profileData.role },
     ];
-
+    const handlerGoBack = () => {
+        window.location.reload()
+    }
     return (
         <div>
-            <h1>Thông tin người dùng</h1>
-            <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                <Avatar size={128} src={profileData.avatar} />
-            </div>
-            <List
-                itemLayout="horizontal"
-                dataSource={data}
-                renderItem={item => (
-                    <List.Item>
-                        <List.Item.Meta
-                            title={<strong>{item.title}</strong>}
-                            description={item.description}
-                        />
-                    </List.Item>
-                )}
-            />
-         
+            <Row>
+                <Tooltip title="Quay lại">
+                    <IoReturnUpBack onClick={handlerGoBack} style={{ fontSize: '25px', cursor: 'pointer',marginLeft:'20px' }} />
+                </Tooltip>
+            </Row>
+            <Row>
+                <Col span={12}>
+                    <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                        <Avatar size={128} src={profileData.avatar} />
+                    </div>
+                    <List
+                        itemLayout="horizontal"
+                        dataSource={data}
+                        renderItem={item => (
+                            <List.Item>
+                                <List.Item.Meta
+                                    title={<strong>{item.title}</strong>}
+                                    description={item.description}
+                                />
+                            </List.Item>
+                        )}
+                    /></Col>
+                <Col span={12}>
+                    <GetTheShippingAddress />
+                </Col>
+            </Row>
+
+
         </div>
     );
 }

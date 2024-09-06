@@ -15,6 +15,7 @@ import Pages1 from "./Test/Pages1";
 import Pages2 from "./Test/Pages2";
 import AppRouter from "./Test/Routers/routers";
 import AddAddress from "./user/AddAddress";
+import GetTheShippingAddress from "./user/GetTheShippingAddress";
 import ProFile from "./user/Profile";
 import RegisterUser from "./user/RegisterUser";
 
@@ -29,7 +30,7 @@ function App() {
       {/* <HomePage/> */}
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
-      {/* <CheckLogin/> */}
+      <CheckLogin/>
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
@@ -41,7 +42,8 @@ function App() {
     {/* <Pages1/> */}
     {/* <RegisterUser/> */}
     {/* <ProFile/> */}
-    <AddAddress/>
+    {/* <AddAddress/> */}
+    {/* <GetTheShippingAddress/> */}
     </div>
   );
 }
