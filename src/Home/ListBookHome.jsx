@@ -274,7 +274,7 @@ function ListBookHome({ nameTypeBook }) {
             <div className='box'>
 
                 {books.map((item) => (
-                    <div className='done' key={item.book.id} style={{ marginLeft: '10px', marginRight: '10px' }}>
+                    <div className='done' key={item.book.id} style={{ marginLeft: '30px', marginRight: '10px' }}>
                         <div>
                             <div style={{ display: 'flex', justifyContent: 'end' }}>
                                 <Button
