@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './home_index.css';
 import { FcHome } from 'react-icons/fc';
-import { Avatar, Button, Card, Col, Dropdown, Image, Input, Menu, message, Modal, Row, Select, Space, Spin, Tooltip, Typography } from 'antd';
+import { Avatar, Button, Card, Col, Drawer, Dropdown, Image, Input, Menu, message, Modal, Row, Select, Space, Spin, Tooltip, Typography } from 'antd';
 import Login from '../common/Login';
 import { CiLogin, CiSearch } from 'react-icons/ci';
 import { GiArmoredBoomerang } from 'react-icons/gi';
@@ -14,6 +14,7 @@ import { FaRegHeart, FaHeart } from 'react-icons/fa';  // Import FaHeart for the
 import DetailBuy from './DetailBuy';
 import ListBookHome from './ListBookHome';
 import ProFile from '../user/Profile';
+import ListCart from '../user/ListCart';
 const { Meta } = Card;
 const { Title } = Typography;
 
@@ -23,11 +24,22 @@ function HomePage() {
     const [isNextBuy, setIsNextBuy] = useState(false);
     const [selectedBookId, setSelectedBookId] = useState(null);  // Add state to manage selected book ID
     const [authors, setAuthors] = useState([]);
-    const [loadingAuBook, setLoadingAuBook] = useState(false);
     const [isNext, setIsNext] = useState(false);
     const [selectedAuthor, setSelectedAuthor] = useState(null);
     const [loading, setLoading] = useState(false);
     const [isNextProFile, setIsNextProFile] = useState(false);
+    const [books, setBooks] = useState([]);
+    const [likedBooks, setLikedBooks] = useState({});  // State to store liked status for each book
+    const [isDrawerVisibleCart, setIsDrawerVisibleCart] = useState(false);
+
+    const openDrawerCart = () => {
+        setIsDrawerVisibleCart(true);
+    };
+
+    const closeDrawerCart = () => {
+        setIsDrawerVisibleCart(false);
+    };
+
     useEffect(() => {
         // Check for the username in local storage
         const storedUsername = localStorage.getItem('userData');
@@ -51,8 +63,7 @@ function HomePage() {
         setIsModalVisible(false);
     };
     //
-    const [books, setBooks] = useState([]);
-    const [likedBooks, setLikedBooks] = useState({});  // State to store liked status for each book
+
 
     useEffect(() => {
         // Fetch data from API
@@ -230,9 +241,25 @@ function HomePage() {
                             )}
                         </li>
                         <li>
+                            {/* Giỏ hàng */}
                             {username ? (
                                 <Tooltip title="Giỏ hàng">
-                                    <AiOutlineShoppingCart style={{ fontSize: '20px' }} />
+                                    <AiOutlineShoppingCart
+                                        style={{ fontSize: '20px', cursor: 'pointer' }}
+                                        onClick={openDrawerCart}
+                                    />
+
+                                    <Drawer
+                                        title="Giỏ hàng của bạn"
+                                        placement="right"
+                                        onClose={closeDrawerCart}
+                                        visible={isDrawerVisibleCart}
+                                        width={800}
+                                    >
+                                        <ListCart />
+                                    </Drawer>
+
+
                                 </Tooltip>
                             ) : null}
                         </li>

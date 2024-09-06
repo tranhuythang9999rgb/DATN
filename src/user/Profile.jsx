@@ -3,6 +3,7 @@ import { List, Avatar, Col, Row, Button, Tooltip } from 'antd';
 import axios from 'axios';
 import GetTheShippingAddress from './GetTheShippingAddress';
 import { IoReturnUpBack } from 'react-icons/io5';
+import ListCart from './ListCart';
 
 function ProFile() {
     const [profileData, setProfileData] = useState(null);
@@ -46,11 +47,12 @@ function ProFile() {
         <div>
             <Row>
                 <Tooltip title="Quay lại">
-                    <IoReturnUpBack onClick={handlerGoBack} style={{ fontSize: '25px', cursor: 'pointer',marginLeft:'20px' }} />
+                    <IoReturnUpBack onClick={handlerGoBack} style={{ fontSize: '25px', cursor: 'pointer', marginLeft: '20px' }} />
                 </Tooltip>
             </Row>
+
             <Row>
-                <Col span={12}>
+                <Col span={8}>
                     <div style={{ textAlign: 'center', marginTop: '20px' }}>
                         <Avatar size={128} src={profileData.avatar} />
                     </div>
@@ -65,11 +67,16 @@ function ProFile() {
                                 />
                             </List.Item>
                         )}
-                    /></Col>
-                <Col span={12}>
+                    />
+                </Col>
+                <Col span={8}>
                     <GetTheShippingAddress />
                 </Col>
+                <Col span={8}>
+                <ListCart/>
+                </Col>
             </Row>
+
 
 
         </div>

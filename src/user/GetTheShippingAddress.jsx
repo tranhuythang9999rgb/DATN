@@ -55,7 +55,7 @@ function GetTheShippingAddress() {
                     )}
                 />
             ) : (
-                <p>Không tìm thấy thông tin địa chỉ</p>
+                <p>Chưa có địa chỉ giao hàngthông tin địa chỉ</p>
             )}
         </div>
     );
