@@ -11,6 +11,7 @@ import Login from '../common/Login';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { BiMinusCircle } from 'react-icons/bi';
 import SubmitBuyBook from './SubmitBuyBook';
+import { IoReturnUpBack } from 'react-icons/io5';
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -164,7 +165,9 @@ const DetailBuy = ({ book_id }) => {
             <SubmitBuyBook />
         )
     }
-
+    const handlerGoBack = () => {
+        window.location.reload()
+    }
     return (
         <div style={{ backgroundColor: bookThemeStyles.mainBackground, padding: '20px', borderRadius: bookThemeStyles.borderRadius }}>
             <div className='layout-header'>
@@ -233,9 +236,17 @@ const DetailBuy = ({ book_id }) => {
                 </div>
 
             </div>
+          
             <Row style={{ display: 'flex', marginTop: '100px' }} gutter={[16, 16]}>
                 <Col span={8}>
-
+                    <div>
+                        <IoReturnUpBack
+                            onClick={handlerGoBack}
+                            style={{ display: 'flex',fontSize:'25px',cursor:'pointer',paddingLeft:'20px'}}
+                        />
+                        
+                    </div>
+                    <div>Ảnh mô tả</div>
                     <Carousel afterChange={onChange} style={{ marginBottom: '20px' }}>
                         {book.files && book.files.map((item, index) => (
                             <div key={index}>
