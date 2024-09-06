@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Spin, Card, Typography, message, Image, Button, Modal, Dropdown, Menu, Input, Tooltip, Row } from 'antd';
+import { Spin, Card, Typography, message, Image, Button, Modal, Dropdown, Menu, Input, Tooltip, Row, Drawer, Space } from 'antd';
 import './index.css';
 import { MdAddShoppingCart } from 'react-icons/md';
 import Cookies from 'js-cookie';
@@ -12,6 +12,8 @@ import { FcHome } from 'react-icons/fc';
 import { CiLogin, CiSearch } from 'react-icons/ci';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import './home_index.css';
+import ListCart from '../user/ListCart';
+import { PiSortAscendingFill } from 'react-icons/pi';
 
 const { Meta } = Card;
 
@@ -27,8 +29,23 @@ function ListBookHome({ nameTypeBook }) {
     const [selectedAuthor, setSelectedAuthor] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [username, setUsername] = useState(null);
-    const [orderDesc,setOrderDesc] = useState('');
-    const [orderAsc,setOrderAsc] = useState('');
+    const [orderDesc, setOrderDesc] = useState('');
+    const [orderAsc, setOrderAsc] = useState('');
+    const [selectedSort, setSelectedSort] = useState(null); // Save the selected sort option
+    const [isDrawerVisibleCart, setIsDrawerVisibleCart] = useState(false);
+    const cartRef = useRef(null);
+
+    const openDrawerCart = () => {
+        setIsDrawerVisibleCart(true);
+        // Optional: Reload the cart data when the drawer opens
+        if (cartRef.current) {
+            cartRef.current.reloadCart();
+        }
+    };
+
+    const closeDrawerCart = () => {
+        setIsDrawerVisibleCart(false);
+    };
 
     // Function to fetch books data
     const fetchBooks = async () => {
@@ -44,7 +61,7 @@ function ListBookHome({ nameTypeBook }) {
             if (orderAsc) {
                 params.append('asc', orderAsc);
             }
-    
+
             const response = await axios.get(`http://127.0.0.1:8080/manager/book/list/type_book?${params.toString()}`);
             if (response.data.code === 0) {
                 setBooks(response.data.body.book_detail_list || []);
@@ -58,10 +75,10 @@ function ListBookHome({ nameTypeBook }) {
             setLoading(false);
         }
     };
-    
+
     useEffect(() => {
         // Check for the username in local storage
-        const storedUsername = localStorage.getItem('username');
+        const storedUsername = localStorage.getItem('userData');
         if (storedUsername) {
             setUsername(storedUsername);
         }
@@ -144,16 +161,18 @@ function ListBookHome({ nameTypeBook }) {
         }
     };
 
-    const handleOrderDesc = ()=>{
+    const handleOrderDesc = () => {
         setOrderDesc('1');
         setOrderAsc('');
         fetchBooks();
+        setSelectedSort('1')
 
     }
-    const handleOrderAsc = ()=>{
+    const handleOrderAsc = () => {
         setOrderAsc('2');
         setOrderDesc('');
         fetchBooks();
+        setSelectedSort('2')
     }
 
     if (loading) {
@@ -260,17 +279,53 @@ function ListBookHome({ nameTypeBook }) {
                             )}
                         </li>
                         <li>
-                            <Tooltip title="Giỏ hàng">
-                                <AiOutlineShoppingCart style={{ fontSize: '20px' }} />
-                            </Tooltip>
+                            {/* Giỏ hàng */}
+                            {username ? (
+                                <Tooltip title="Giỏ hàng">
+                                    <AiOutlineShoppingCart
+                                        style={{ fontSize: '20px', cursor: 'pointer' }}
+                                        onClick={openDrawerCart}
+                                    />
+
+                                    <Drawer
+                                        title="Giỏ hàng của bạn"
+                                        placement="right"
+                                        onClose={closeDrawerCart}
+                                        visible={isDrawerVisibleCart}
+                                        width={800}
+                                    >
+                                        <ListCart ref={cartRef} />
+                                    </Drawer>
+
+
+                                </Tooltip>
+                            ) : null}
                         </li>
                     </ul>
                 </div>
             </div>
             <div className='order-monoi'>
-                <div>Sắp xếp theo</div>
-                <Button onClick={handleOrderDesc}>Giá thấp đến cao </Button>
-                <Button onClick={handleOrderAsc}>Giá cao đến thấp</Button>
+                <Space style={{ background: '#F5F5F5', padding: '20px', width: '700px', justifyContent: 'end' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', fontSize: '16px', fontWeight: '300', color: '#333' }}>
+                        <PiSortAscendingFill style={{ fontSize: '20px', marginRight: '8px', color: '#1890ff' }} />
+                        Sắp xếp theo
+                    </div>
+                    <Button
+
+                        type={selectedSort === '1' ? 'primary' : 'default'}
+                        onClick={handleOrderDesc}
+                        style={{ marginLeft: '10px', fontSize: '16px', fontWeight: '500' }}
+                    >
+                        Giá thấp đến cao
+                    </Button>
+                    <Button
+                        type={selectedSort === '2' ? 'primary' : 'default'}
+                        onClick={handleOrderAsc}
+                        style={{ marginLeft: '10px', fontSize: '16px', fontWeight: '500' }}
+                    >
+                        Giá cao đến thấp
+                    </Button>
+                </Space>
             </div>
             <div className='box'>
 
