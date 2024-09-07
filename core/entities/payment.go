@@ -76,6 +76,7 @@ type CheckoutRequestType struct {
 	ExpiredAt    *int    `json:"expiredAt"`
 	ShowTimeId   int64   `json:"showTimeId"`
 	Seats        string  `json:"seats"`
+	OrderId      int64   `json:"order_id"` //cus
 }
 
 type CheckoutRequestController struct {

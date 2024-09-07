@@ -55,7 +55,7 @@ const PayOSBaseUrl = "https://api-merchant.payos.vn/"
 
 func (u *UseCasePayment) CreatePayment(ctx context.Context, paymentData entities.CheckoutRequestType) (*entities.CheckoutResponseDataType, error) {
 
-	err := u.order.order.UpdateStatusOrder(ctx, paymentData.OrderCode, enums.ORDER_ARE_PAYING)
+	err := u.order.order.UpdateStatusOrder(ctx, paymentData.OrderId, enums.ORDER_ARE_PAYING)
 	if err != nil {
 		return &entities.CheckoutResponseDataType{
 			RespOrder: "error server",

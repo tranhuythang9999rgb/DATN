@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	errors "shoe_shop_server/common/error"
@@ -40,8 +39,7 @@ func (u *ControllersPayment) CreatePayment(ctx *gin.Context) {
 	cancelUrl := "http://localhost:8080/manager/payment/return/calcel/payment"
 	returnUrl := "http://127.0.0.1:8080/manager/payment/return/create/payment"
 
-	ctx.SetCookie("order_id", fmt.Sprint(order.ID), 3600, "/", "localhost", false, true)
-
+	ctx.SetCookie("order_id", orderId, 3600, "/", "127.0.0.1", false, true)
 	resp, err := u.pay.CreatePayment(ctx, entities.CheckoutRequestType{
 		OrderCode:   order.ID,
 		Amount:      order.TotalAmount,
@@ -49,6 +47,7 @@ func (u *ControllersPayment) CreatePayment(ctx *gin.Context) {
 		CancelUrl:   cancelUrl,
 		ReturnUrl:   returnUrl,
 		ExpiredAt:   utils.GenerateTimestampExpiredAt(15), //
+		OrderId:     order.ID,
 	})
 	if err != nil {
 		log.Error(err, "error server")
@@ -72,6 +71,8 @@ func (c *ControllersPayment) ReturnUrlAfterPayment(ctx *gin.Context) {
 
 }
 func (c *ControllersPayment) ReturnUrlAftercanCelPayment(ctx *gin.Context) {
+	orderId := ctx.Query("order_id")
+	log.Info(orderId)
 	path := "api/public/webhooks/cancel_payment.html"
 	htmlBytes, err := os.ReadFile(path)
 	if err != nil {
