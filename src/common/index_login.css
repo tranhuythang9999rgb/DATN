@@ -27,3 +27,44 @@
   margin-bottom: -100px;
   margin-top: -100px;
 }
+
+
+.country-filter {
+  display: flex;
+  flex-direction: column;
+}
+
+.country-checkbox {
+  margin-bottom: 8px;
+  width: 200px;
+}
+
+.ant-checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.ant-checkbox {
+  border-color: #d9d9d9;
+  background-color: #fff;
+}
+
+.ant-checkbox-checked {
+  border-color: #1890ff;
+  background-color: #1890ff;
+}
+
+.ant-checkbox-inner {
+  border-radius: 4px;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #1890ff;
+  border-color: #1890ff;
+}
+
+.ant-checkbox-wrapper + .ant-checkbox-wrapper {
+  margin-top: 4px;
+}

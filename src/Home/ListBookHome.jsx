@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Spin, Card, Typography, message, Image, Button, Modal, Dropdown, Menu, Input, Tooltip, Row, Drawer, Space } from 'antd';
+import { Spin, Card, Typography, message, Image, Button, Modal, Dropdown, Menu, Input, Tooltip, Row, Drawer, Space, Col, Checkbox } from 'antd';
 import './index.css';
 import { MdAddShoppingCart } from 'react-icons/md';
 import Cookies from 'js-cookie';
@@ -14,6 +14,9 @@ import { AiOutlineShoppingCart } from 'react-icons/ai';
 import './home_index.css';
 import ListCart from '../user/ListCart';
 import { PiSortAscendingFill } from 'react-icons/pi';
+import CountryFilter from '../common/CountryFilter';
+import Link from 'antd/es/typography/Link';
+const { Title, Text } = Typography;
 
 const { Meta } = Card;
 
@@ -46,7 +49,11 @@ function ListBookHome({ nameTypeBook }) {
     const closeDrawerCart = () => {
         setIsDrawerVisibleCart(false);
     };
-
+    const handleCountryFilterChange = (selectedCountries) => {
+        // Update your book list based on the selected countries
+        // This might involve calling your API with the new filter
+        console.log('Selected countries:', selectedCountries);
+    };
     // Function to fetch books data
     const fetchBooks = async () => {
         setLoading(true);
@@ -327,59 +334,109 @@ function ListBookHome({ nameTypeBook }) {
                     </Button>
                 </Space>
             </div>
-            <div className='box'>
 
-                {books.map((item) => (
-                    <div className='done' key={item.book.id} style={{ marginLeft: '30px', marginRight: '10px' }}>
-                        <div>
-                            <div style={{ display: 'flex', justifyContent: 'end' }}>
-                                <Button
-                                    type="text"
-                                    icon={likedBooks[item.book.id] ? <FaHeart style={{ color: 'red' }} /> : <FaRegHeart />}
-                                    onClick={() => toggleLike(item.book.id)}
-                                />
-                            </div>
-                            <Card
-                                hoverable
-                                style={{
-                                    width: 250,
-                                    height: 300,
-                                    overflow: 'hidden',
-                                }}
-                                cover={
-                                    <Image
-                                        alt={item.book.title}
-                                        src={item.files[0] || 'http://placehold.it/300x400'}
-                                        style={{
-                                            marginTop: '-39px',
-                                            height: 300,
-                                            marginLeft: '-30px'
-                                        }}
-                                    />
-                                }
-                            >
-                                <Meta />
-                            </Card>
-                        </div>
-                        <div style={{ paddingTop: '12px', marginTop: '295px', background: 'white', borderBottomLeftRadius: '10px', borderBottomRightRadius: '10px' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <div style={{ paddingLeft: '10px' }}>
-                                    {truncateText(item.book.title, 20)} {/* Adjust the maxLength as needed */}
-                                </div>
-                                <div>
-                                    {item.book.price} VND
-                                </div>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '5px' }}>
-                                <Button onClick={() => handleBuyNow(item.book.id)} style={{ background: 'red', color: 'white', fontSize: '17px' }}>
-                                    Mua ngay
-                                </Button>
-                                <MdAddShoppingCart style={{ fontSize: '25px', color: 'orange' }} />
-                            </div>
-                        </div>
+            <Row>
+                <Col span={6} pull={18}>
+                    <div className='list-check-box'>
+                        <h1 style={{ color: 'green', width: '200px' }}>Quốc gia</h1>
+                        <CountryFilter onFilterChange={handleCountryFilterChange} />
                     </div>
-                ))}
+                </Col>
+                <Col style={{ marginLeft: '50px' }} span={18} push={6}>
+                    <div className='box'>
+
+                        {books.map((item) => (
+                            <div className='done' key={item.book.id} style={{ marginLeft: '30px', marginRight: '10px' }}>
+                                <div>
+                                    <div style={{ display: 'flex', justifyContent: 'end' }}>
+                                        <Button
+                                            type="text"
+                                            icon={likedBooks[item.book.id] ? <FaHeart style={{ color: 'red' }} /> : <FaRegHeart />}
+                                            onClick={() => toggleLike(item.book.id)}
+                                        />
+                                    </div>
+                                    <Card
+                                        hoverable
+                                        style={{
+                                            width: 250,
+                                            height: 300,
+                                            overflow: 'hidden',
+                                        }}
+                                        cover={
+                                            <Image
+                                                alt={item.book.title}
+                                                src={item.files[0] || 'http://placehold.it/300x400'}
+                                                style={{
+                                                    marginTop: '-39px',
+                                                    height: 300,
+                                                    marginLeft: '-30px'
+                                                }}
+                                            />
+                                        }
+                                    >
+                                        <Meta />
+                                    </Card>
+                                </div>
+                                <div style={{ paddingTop: '12px', marginTop: '295px', background: 'white', borderBottomLeftRadius: '10px', borderBottomRightRadius: '10px' }}>
+                                    <div style={{justifyContent: 'space-between' }}>
+                                        <div style={{ paddingLeft: '10px' }}>
+                                            {truncateText(item.book.title, 20)}
+                                        </div>
+                                        <div style={{ paddingLeft: '10px' }}>
+                                            {item.book.price} VND
+                                        </div>
+                                    </div>
+                                    <div style={{ display: 'flex', justifyContent: 'center', paddingTop: '5px' }}>
+                                        <Button onClick={() => handleBuyNow(item.book.id)} style={{ background: 'red', color: 'white', fontSize: '17px' }}>
+                                            Mua ngay
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </Col>
+            </Row>
+
+            <div className='footer'>
+                <Row justify="space-evenly" align="middle">
+                    <Col span={4} className='footer-col'>
+                        <Title level={4}>Thông tin</Title>
+                        <ul>
+                            <li><Link href="/about" target="_blank">Giới thiệu</Link></li>
+                            <li><Link href="/contact" target="_blank">Liên hệ</Link></li>
+                            <li><Link href="/faq" target="_blank">Câu hỏi thường gặp</Link></li>
+                            <li><Link href="/returns" target="_blank">Chính sách đổi trả</Link></li>
+                        </ul>
+                    </Col>
+                    <Col span={4} className='footer-col'>
+                        <Title level={4}>Dịch vụ khách hàng</Title>
+                        <ul>
+                            <li><Link href="/support" target="_blank">Hỗ trợ khách hàng</Link></li>
+                            <li><Link href="/shipping" target="_blank">Giao hàng</Link></li>
+                            <li><Link href="/payment" target="_blank">Phương thức thanh toán</Link></li>
+                        </ul>
+                    </Col>
+                    <Col span={4} className='footer-col'>
+                        <Title level={4}>Kết nối với chúng tôi</Title>
+                        <ul>
+                            <li><Link href="https://facebook.com" target="_blank">Facebook</Link></li>
+                            <li><Link href="https://twitter.com" target="_blank">Twitter</Link></li>
+                            <li><Link href="https://instagram.com" target="_blank">Instagram</Link></li>
+                        </ul>
+                    </Col>
+                    <Col span={4} className='footer-col'>
+                        <Title level={4}>Thông tin liên hệ</Title>
+                        <Text>Hưng Hà Thái Bình, Việt Nam</Text><br />
+                        <Text>Email: contact@bookstore.vn</Text><br />
+                        <Text>Điện thoại: +84 123 456 789</Text>
+                    </Col>
+                </Row>
+                <div className='footer-bottom'>
+                    <Text>© 2024 Sách Việt Nam. Bảo lưu mọi quyền.</Text>
+                </div>
             </div>
+
         </div>
 
     );
