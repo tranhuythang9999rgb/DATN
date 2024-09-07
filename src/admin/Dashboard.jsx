@@ -13,6 +13,7 @@ import ListBooks from './ListBooks';
 import AuthorBook from './AuthorBook';
 import Publishers from './Publishers';
 import TypeBook from './TypeBook';
+import ListOrder from './ListOrder';
 
 const { Header, Content, Sider } = Layout;
 const clearLocalStorageAndReload = () => {
@@ -136,6 +137,7 @@ const tabsContent = [
             </span>
         ),
         content: <div>
+            <ListOrder/>
         </div>,
     },
     {

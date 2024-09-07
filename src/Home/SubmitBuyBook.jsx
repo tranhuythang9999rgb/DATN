@@ -9,6 +9,8 @@ import Cookies from 'js-cookie';
 import { RiSecurePaymentLine } from 'react-icons/ri';
 import { BsBackpack2 } from 'react-icons/bs';
 import GetTheShippingAddress from '../user/GetTheShippingAddress';
+import Header from '../Utils/Header';
+import Footer from '../Utils/Footer';
 
 const { Title } = Typography;
 
@@ -168,7 +170,7 @@ const SubmitBuyBook = () => {
     return (
         <div>
             {contextHolder}
-            //header
+            <Header/>
             <Row>
                 <IoReturnUpBackOutline onClick={() => setIsGoback(true)} style={{ fontSize: '25px', cursor: 'pointer' }} />
             </Row>
@@ -177,7 +179,7 @@ const SubmitBuyBook = () => {
                     <Row gutter={16}>
                         <Col span={8}>
 
-                        {status_address && valueAddress === 1 && storedUsername ? (
+                        {valueAddress === 1 && storedUsername ? (
                                 <p>
                                     <GetTheShippingAddress/>
                                 </p>
@@ -287,8 +289,9 @@ const SubmitBuyBook = () => {
                         </Col>
                     </Row>
                 </Col>
-                //footer
+               
             </Row>
+            <Footer/>
         </div>
     );
 };

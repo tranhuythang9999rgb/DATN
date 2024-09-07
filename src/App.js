@@ -25,13 +25,13 @@ import RegisterUser from "./user/RegisterUser";
 function App() {
   return (
     <div>
-      {/* <Dashboard /> */}
+      <Dashboard />
       {/* <UploadBook/> */}
       {/* <ListBooks/> */}
       {/* <HomePage/> */}
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
-      <CheckLogin/>
+      {/* <CheckLogin/> */}
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
