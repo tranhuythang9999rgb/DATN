@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { List, Typography, Spin, Alert } from 'antd'; // Thêm các component Ant Design cần thiết
+import { List, Typography, Spin, Alert, Button } from 'antd'; // Import Button from Ant Design
 
-const { Title } = Typography; // Để sử dụng Title từ Ant Design
+const { Title } = Typography;
 
 const GetOrderById = () => {
     const [order, setOrder] = useState(null);
@@ -35,6 +35,11 @@ const GetOrderById = () => {
         fetchOrder();
     }, [orderId]);
 
+    const handleBuyNow = () => {
+        // Handle buy now logic (e.g., redirect to a payment page, call an API)
+        alert('Chức năng mua ngay chưa được triển khai!');
+    };
+
     if (loading) return <Spin size="large" tip="Đang tải..." />;
     if (error) return <Alert message="Lỗi" description={error} type="error" />;
 
@@ -47,22 +52,10 @@ const GetOrderById = () => {
                         <List
                             bordered
                             dataSource={[
-                                { label: 'ID', value: order.id },
-                                { label: 'ID sách', value: order.book_id },
                                 { label: 'Tổng số tiền', value: order.total_amount },
                                 { label: 'Tiêu đề sách', value: order.book_title },
-                                { label: 'Tác giả sách', value: order.book_author },
-                                { label: 'Nhà xuất bản sách', value: order.book_publisher },
-                                { label: 'Ngày xuất bản sách', value: order.book_published_date },
-                                { label: 'ISBN sách', value: order.book_isbn },
-                                { label: 'Thể loại sách', value: order.book_genre },
-                                { label: 'Ngôn ngữ sách', value: order.book_language },
-                                { label: 'Số trang sách', value: order.book_page_count },
-                                { label: 'Kích thước sách', value: order.book_dimensions },
-                                { label: 'Cân nặng sách', value: order.book_weight },
                                 { label: 'Giá sách', value: order.book_price },
                                 { label: 'Số lượng', value: order.quantity },
-
                             ]}
                             renderItem={item => (
                                 <List.Item>
@@ -71,6 +64,8 @@ const GetOrderById = () => {
                             )}
                         />
                     </div>
+
+                  
                 </div>
             ) : (
                 <p>Không có thông tin đơn hàng</p>

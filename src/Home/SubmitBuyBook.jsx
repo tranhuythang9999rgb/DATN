@@ -6,6 +6,8 @@ import { IoReturnUpBackOutline } from 'react-icons/io5';
 import GetOrderById from './GetOrderById';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { RiSecurePaymentLine } from 'react-icons/ri';
+import { BsBackpack2 } from 'react-icons/bs';
 
 const { Title } = Typography;
 
@@ -21,7 +23,11 @@ const SubmitBuyBook = () => {
     const [communes, setCommunes] = useState([]);
     const [paymentMethod, setPaymentMethod] = useState(1);
     const [loadingPayment, setLoadingPayment] = useState(false);
-
+    const [valueAddress, setValueAddress] = useState(1);
+    const onChangeAddress = (e) => {
+        console.log('radio checked', e.target.value);
+        setValueAddress(e.target.value);
+    };
     useEffect(() => {
         // Fetch list of cities on mount
         fetchCities();
@@ -91,6 +97,7 @@ const SubmitBuyBook = () => {
 
                     if (data.code === 0) {
                         message.success('Đặt hàng thành công!');
+                        localStorage.setItem('status_address', 'ok');
                         openNotification('Order Success', 'Your order has been placed successfully.');
                         setIsGoback(true);
                     } else {
@@ -125,12 +132,12 @@ const SubmitBuyBook = () => {
                 console.log('Redirecting to:', paymentResult.checkoutUrl);  // Debugging line
                 window.location.href = paymentResult.body.checkoutUrl;
                 return;
-            }else{
+            } else {
                 setLoadingPayment(false);
                 message.error('Lỗi máy chủ vui lòng thử lại hoặc kiểm tra kết nối mạng thiết bị');
             }
 
-          
+
         } catch (error) {
             console.log(error);
             message.error('Lỗi máy chủ vui lòng thử lại hoặc kiểm tra kết nối mạng thiết bị');
@@ -149,6 +156,7 @@ const SubmitBuyBook = () => {
             },
         });
     };
+    const status_address = localStorage.getItem('status_address');
 
     if (isGoback) {
         return <DetailBuy book_id={localStorage.getItem('book_id')} />;
@@ -164,59 +172,67 @@ const SubmitBuyBook = () => {
                 <Col span={16}>
                     <Row gutter={16}>
                         <Col span={8}>
-                            <GetOrderById />
-                        </Col>
-                        <Col span={8}>
-                            <Form form={form} onFinish={handleFormSubmit}>
-                                <Title level={2}>Nhập thông tin nhận hàng</Title>
-                                <Form.Item name="email" rules={[{ required: true, message: 'Email is required' }]}>
-                                    <Input placeholder='Email' />
-                                </Form.Item>
-                                <Form.Item name="user_name" rules={[{ required: true, message: 'Họ tên is required' }]}>
-                                    <Input placeholder='Họ tên' />
-                                </Form.Item>
-                                <Form.Item name="phone_number" rules={[{ required: true, message: 'Số điện thoại is required' }]}>
-                                    <Input placeholder='Số điện thoại' />
-                                </Form.Item>
-                                <Form.Item name="province" rules={[{ required: true, message: 'Chọn thành phố' }]}>
-                                    <Select
-                                        placeholder="Chọn thành phố"
-                                        onChange={handleCityChange}
-                                        value={selectedCity || undefined}
-                                    >
-                                        {cities.map(city => (
-                                            <Select.Option key={city} value={city}>{city}</Select.Option>
-                                        ))}
-                                    </Select>
-                                </Form.Item>
-                                <Form.Item name="district" rules={[{ required: true, message: 'Chọn quận/huyện' }]}>
-                                    <Select
-                                        placeholder="Chọn quận/huyện"
-                                        onChange={handleDistrictChange}
-                                        value={selectedDistrict || undefined}
-                                    >
-                                        {districts.map(district => (
-                                            <Select.Option key={district} value={district}>{district}</Select.Option>
-                                        ))}
-                                    </Select>
-                                </Form.Item>
-                                <Form.Item name="commune" rules={[{ required: true, message: 'Chọn phường/xã' }]}>
-                                    <Select
-                                        placeholder="Chọn phường/xã"
-                                        value={selectedCommune || undefined}
-                                    >
-                                        {communes.map(commune => (
-                                            <Select.Option key={commune} value={commune}>{commune}</Select.Option>
-                                        ))}
-                                    </Select>
-                                </Form.Item>
-                                <Form.Item name="detailed" rules={[{ required: true, message: 'Chi tiết địa chỉ is required' }]}>
-                                    <Input placeholder='Chi tiết địa chỉ' />
-                                </Form.Item>
-                                <Form.Item name="note">
-                                    <Input placeholder='Ghi chú' />
-                                </Form.Item>
-                            </Form>
+
+                            {status_address ? (
+                                <p>Địa chỉ giao hàng hiện tại đã được lưu. Bạn có thể sử dụng địa chỉ hiện tại hoặc nhập địa chỉ mới.</p>
+                            ) : (
+                                <Form form={form} onFinish={handleFormSubmit}>
+                                    <Title level={2}>Nhập thông tin nhận hàng</Title>
+                                    <Form.Item name="email" rules={[{ required: true, message: 'Email is required' }]}>
+                                        <Input placeholder='Email' />
+                                    </Form.Item>
+                                    <Form.Item name="user_name" rules={[{ required: true, message: 'Họ tên is required' }]}>
+                                        <Input placeholder='Họ tên' />
+                                    </Form.Item>
+                                    <Form.Item name="phone_number" rules={[{ required: true, message: 'Số điện thoại is required' }]}>
+                                        <Input placeholder='Số điện thoại' />
+                                    </Form.Item>
+                                    <Form.Item name="province" rules={[{ required: true, message: 'Chọn thành phố' }]}>
+                                        <Select
+                                            placeholder="Chọn thành phố"
+                                            onChange={handleCityChange}
+                                            value={selectedCity || undefined}
+                                        >
+                                            {cities.map(city => (
+                                                <Select.Option key={city} value={city}>{city}</Select.Option>
+                                            ))}
+                                        </Select>
+                                    </Form.Item>
+                                    <Form.Item name="district" rules={[{ required: true, message: 'Chọn quận/huyện' }]}>
+                                        <Select
+                                            placeholder="Chọn quận/huyện"
+                                            onChange={handleDistrictChange}
+                                            value={selectedDistrict || undefined}
+                                        >
+                                            {districts.map(district => (
+                                                <Select.Option key={district} value={district}>{district}</Select.Option>
+                                            ))}
+                                        </Select>
+                                    </Form.Item>
+                                    <Form.Item name="commune" rules={[{ required: true, message: 'Chọn phường/xã' }]}>
+                                        <Select
+                                            placeholder="Chọn phường/xã"
+                                            value={selectedCommune || undefined}
+                                        >
+                                            {communes.map(commune => (
+                                                <Select.Option key={commune} value={commune}>{commune}</Select.Option>
+                                            ))}
+                                        </Select>
+                                    </Form.Item>
+                                    <Form.Item name="detailed" rules={[{ required: true, message: 'Chi tiết địa chỉ is required' }]}>
+                                        <Input placeholder='Chi tiết địa chỉ' />
+                                    </Form.Item>
+                                    <Form.Item name="note">
+                                        <Input placeholder='Ghi chú' />
+                                    </Form.Item>
+                                    <Form.Item>
+                                        <Space>
+                                            <Button type="primary" htmlType="submit" loading={loadingPayment}>Đặt hàng</Button>
+                                            <Button onClick={() => setIsGoback(true)}>Quay lại</Button>
+                                        </Space>
+                                    </Form.Item>
+                                </Form>
+                            )}
                         </Col>
                         <Col span={8} style={{ marginTop: '16px' }}>
                             <Radio.Group onChange={e => setPaymentMethod(e.target.value)} value={paymentMethod}>
@@ -232,16 +248,42 @@ const SubmitBuyBook = () => {
                                     >
                                         <Radio value={2} /> Thanh toán trực tuyến <GrPaypal />
                                     </Button>
-                                    {paymentMethod === 2 && (
-                                        <Button
-                                            onClick={handleCreatePayment}
-                                            loading={loadingPayment}
-                                            style={{ height: '50px', fontSize: '20px', width: '100%' }}>
-                                            {loadingPayment ? 'Đang xử lý...' : 'Thanh toán'}
-                                        </Button>
+                                 
+                                    {!status_address ? (
+                                        <p>Địa chỉ giao hàng hiện tại đã được lưu. Bạn có thể sử dụng địa chỉ hiện tại hoặc nhập địa chỉ mới.</p>
+                                    ) : (
+                                        <Radio.Group onChange={onChangeAddress} value={valueAddress}>
+                                            <Radio value={1}>Địa chỉ hiện tại</Radio>
+                                            <Radio value={2}>Địa chỉ mới</Radio>
+                                        </Radio.Group>
                                     )}
+
                                 </Space>
                             </Radio.Group>
+                        </Col>
+                        <Col span={8}>
+                            <GetOrderById />
+                            {
+                                paymentMethod === 2 && (
+                                    <Button
+                                        onClick={handleCreatePayment}
+                                        loading={loadingPayment}
+                                        style={{ height: '50px', fontSize: '20px', width: '100%' }}
+                                    >
+                                        {loadingPayment ? 'Đang xử lý...' : <>Thanh toán <RiSecurePaymentLine style={{ marginLeft: '8px' }} /></>}
+                                    </Button>
+                                )}
+
+                            {
+                                paymentMethod !== 2 && (
+                                    <Button
+                                        onClick={handleCreatePayment}
+                                        loading={loadingPayment}
+                                        style={{ height: '50px', fontSize: '20px', width: '100%' }}
+                                    >
+                                        {"" ? 'Đang xử lý...' : <>Đặt hàng <BsBackpack2 style={{ marginLeft: '8px' }} /></>}
+                                    </Button>
+                                )}
                         </Col>
                     </Row>
                 </Col>
