@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button, Form, Input, message, Select } from 'antd';
 
-function AddAddress() {
+function AddAddress({onSuccess}) {
     const userData = JSON.parse(localStorage.getItem('userData'));
     const [form] = Form.useForm();
     const [cities, setCities] = useState([]);
@@ -60,13 +60,14 @@ function AddAddress() {
         formData.append('district', values.district);
         formData.append('commune', values.commune);
         formData.append('detailed', values.detailed);
-
+    
         try {
             const response = await axios.post('http://127.0.0.1:8080/manager/delivery_address/add/profile', formData);
             if (response.data.code === 0) {
-                localStorage.setItem('status_address','ok')
+                localStorage.setItem('status_address', 'ok');
                 message.success('Địa chỉ đã được thêm thành công.');
                 form.resetFields();
+                onSuccess();  // Call onSuccess to refresh the address list
             } else {
                 message.error(`Có lỗi xảy ra: ${response.data.message}`);
             }
@@ -77,6 +78,7 @@ function AddAddress() {
             setLoading(false);
         }
     };
+    
 
     return (
         <div>
