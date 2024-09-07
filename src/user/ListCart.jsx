@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useImperativeHandle, forwardRef } from 'react';
 import axios from 'axios';
-import { List, Typography, Spin, Alert, Button, Modal } from 'antd';
+import { List, Typography, Spin, Alert, Button, Modal, Checkbox, Tooltip, Space } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
@@ -9,6 +9,7 @@ const ListCart = forwardRef((props, ref) => {
     const [carts, setCarts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [checkedItems, setCheckedItems] = useState([]);
 
     // Fetch cart list
     const fetchCartList = async () => {
@@ -65,6 +66,23 @@ const ListCart = forwardRef((props, ref) => {
         });
     };
 
+    const handleCheckboxChange = (cartId) => {
+        setCheckedItems(prevCheckedItems => {
+            if (prevCheckedItems.includes(cartId)) {
+                return prevCheckedItems.filter(id => id !== cartId);
+            } else {
+                return [...prevCheckedItems, cartId];
+            }
+        });
+    };
+
+    const handleBuyNow = () => {
+        // Handle the "Buy Now" action (e.g., send selected cart items to the backend for purchase)
+        const selectedItems = carts.filter(item => checkedItems.includes(item.cart_id));
+        console.log('Selected items for purchase:', selectedItems);
+        // Add your buy logic here, such as sending the selected items to an API endpoint
+    };
+
     if (loading) {
         return <Spin tip="Đang tải..." />;
     }
@@ -77,46 +95,67 @@ const ListCart = forwardRef((props, ref) => {
         <div>
             <Title level={2}>Giỏ hàng của bạn</Title>
             {carts.length > 0 ? (
-                <List
-                    itemLayout="horizontal"
-                    dataSource={carts}
-                    renderItem={item => (
-                        <List.Item
-                            style={{
-                                border: '1px solid #d9d9d9',
-                                borderRadius: '4px',
-                                marginBottom: '10px',
-                                padding: '10px'
-                            }}
-                            actions={[
-                                <Button
-                                    type="danger"
-                                    icon={<DeleteOutlined />}
-                                    onClick={() => handleDelete(item.cart_id)}
-                                >
-                                    Xóa
-                                </Button>
-                            ]}
+                <div>
+                    <List
+                        itemLayout="horizontal"
+                        dataSource={carts}
+                        renderItem={item => (
+                            <List.Item
+                                style={{
+                                    border: '1px solid #d9d9d9',
+                                    borderRadius: '4px',
+                                    marginBottom: '10px',
+                                    padding: '10px'
+                                }}
+                                actions={[
+                                    <div>
+                                        <Space>
+                                            <Tooltip title="Chọn mục này">
+                                                <Checkbox
+                                                    checked={checkedItems.includes(item.cart_id)}
+                                                    onChange={() => handleCheckboxChange(item.cart_id)}
+                                                />
+                                            </Tooltip>
+                                            <Button
+                                                type="danger"
+                                                icon={<DeleteOutlined />}
+                                                onClick={() => handleDelete(item.cart_id)}
+                                            >
+                                                Xóa
+                                            </Button>
+                                        </Space>
+                                    </div>
+                                ]}
+                            >
+                                <List.Item.Meta
+                                    title={<Text strong>Mã sách:</Text>}
+                                    description={item.book_id}
+                                />
+                                <List.Item.Meta
+                                    title={<Text strong>Tên sách:</Text>}
+                                    description={item.book_name}
+                                />
+                                <List.Item.Meta
+                                    title={<Text strong>Số lượng:</Text>}
+                                    description={item.quantity}
+                                />
+                                <List.Item.Meta
+                                    title={<Text strong>Giá:</Text>}
+                                    description={item.price}
+                                />
+                            </List.Item>
+                        )}
+                    />
+                    <div style={{ marginTop: '20px', textAlign: 'right' }}>
+                        <Button
+                            type="primary"
+                            disabled={checkedItems.length === 0}
+                            onClick={handleBuyNow}
                         >
-                            <List.Item.Meta
-                                title={<Text strong>Mã sách:</Text>}
-                                description={item.book_id}
-                            />
-                            <List.Item.Meta
-                                title={<Text strong>Tên sách:</Text>}
-                                description={item.book_name}
-                            />
-                            <List.Item.Meta
-                                title={<Text strong>Số lượng:</Text>}
-                                description={item.quantity}
-                            />
-                            <List.Item.Meta
-                                title={<Text strong>Giá:</Text>}
-                                description={item.price}
-                            />
-                        </List.Item>
-                    )}
-                />
+                            Mua ngay
+                        </Button>
+                    </div>
+                </div>
             ) : (
                 <Text>Giỏ hàng của bạn đang trống</Text>
             )}
