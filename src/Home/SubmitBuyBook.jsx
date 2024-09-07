@@ -8,6 +8,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { RiSecurePaymentLine } from 'react-icons/ri';
 import { BsBackpack2 } from 'react-icons/bs';
+import GetTheShippingAddress from '../user/GetTheShippingAddress';
 
 const { Title } = Typography;
 
@@ -129,6 +130,7 @@ const SubmitBuyBook = () => {
 
             const paymentResult = response.data;
             if (paymentResult.code === 0) {
+                localStorage.removeItem('order_id');
                 console.log('Redirecting to:', paymentResult.checkoutUrl);  // Debugging line
                 window.location.href = paymentResult.body.checkoutUrl;
                 return;
@@ -157,7 +159,8 @@ const SubmitBuyBook = () => {
         });
     };
     const status_address = localStorage.getItem('status_address');
-
+    const storedUsername = localStorage.getItem('userData');
+ 
     if (isGoback) {
         return <DetailBuy book_id={localStorage.getItem('book_id')} />;
     }
@@ -173,8 +176,10 @@ const SubmitBuyBook = () => {
                     <Row gutter={16}>
                         <Col span={8}>
 
-                        {status_address && valueAddress === 1 ? (
-                                <p>Địa chỉ giao hàng hiện tại đã được lưu. Bạn có thể sử dụng địa chỉ hiện tại hoặc nhập địa chỉ mới.</p>
+                        {status_address && valueAddress === 1 && storedUsername ? (
+                                <p>
+                                    <GetTheShippingAddress/>
+                                </p>
                             ) : (
                                 <Form form={form} onFinish={handleFormSubmit}>
                                     <Title level={2}>Nhập thông tin nhận hàng</Title>
@@ -225,12 +230,7 @@ const SubmitBuyBook = () => {
                                     <Form.Item name="note">
                                         <Input placeholder='Ghi chú' />
                                     </Form.Item>
-                                    <Form.Item>
-                                        <Space>
-                                            <Button type="primary" htmlType="submit" loading={loadingPayment}>Đặt hàng</Button>
-                                            <Button onClick={() => setIsGoback(true)}>Quay lại</Button>
-                                        </Space>
-                                    </Form.Item>
+                                   
                                 </Form>
                             )}
                         </Col>
@@ -266,7 +266,7 @@ const SubmitBuyBook = () => {
                             {
                                 paymentMethod === 2 && (
                                     <Button
-                                        onClick={handleCreatePayment}
+                                        onClick={handleCreatePayment &&form.submit}
                                         loading={loadingPayment}
                                         style={{ height: '50px', fontSize: '20px', width: '100%' }}
                                     >

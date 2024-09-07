@@ -13,7 +13,7 @@ const GetOrderById = () => {
     useEffect(() => {
         const fetchOrder = async () => {
             if (!orderId || orderId === 0) {
-                setError('Mã đơn hàng không hợp lệ');
+                setError('Vui lòng kiểm tra kết nói mạng học thiết bị');
                 setLoading(false);
                 return;
             }
@@ -35,10 +35,7 @@ const GetOrderById = () => {
         fetchOrder();
     }, [orderId]);
 
-    const handleBuyNow = () => {
-        // Handle buy now logic (e.g., redirect to a payment page, call an API)
-        alert('Chức năng mua ngay chưa được triển khai!');
-    };
+   
 
     if (loading) return <Spin size="large" tip="Đang tải..." />;
     if (error) return <Alert message="Lỗi" description={error} type="error" />;
