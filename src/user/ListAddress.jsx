@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Table, Tag, Button, message, Modal } from 'antd';
+import { Table, Tag, Button, message, Modal, Popconfirm } from 'antd';
 import AddAddress from './AddAddress';
 
 const ListAddress = () => {
@@ -54,6 +54,22 @@ const ListAddress = () => {
         }
     };
 
+    const handleDelete = async (id) => {
+        try {
+            const response = await axios.delete(`http://127.0.0.1:8080/manager/delivery_address/delete`, {
+                params: { id }
+            });
+            if (response.data.code === 0) {
+                message.success('Địa chỉ đã được xóa thành công');
+                fetchData();
+            } else {
+                message.error('Lỗi khi xóa địa chỉ: ' + response.data.message);
+            }
+        } catch (error) {
+            message.error('Lỗi khi xóa địa chỉ: ' + error.message);
+        }
+    };
+
     // Handle Modal visibility
     const showModal = () => {
         setIsModalVisible(true);
@@ -68,8 +84,6 @@ const ListAddress = () => {
         setIsModalVisible(false);
         fetchData();
     };
-
-    
 
     useEffect(() => {
         fetchData();
@@ -123,6 +137,23 @@ const ListAddress = () => {
                         <Button onClick={() => handleUpdateStatusAddress(record.id)}>Đặt làm mặc định</Button>
                     )}
                 </div>
+            ),
+        },
+        {
+            title: 'Thao tác',
+            key: 'action',
+            render: (record) => (
+                <Popconfirm
+                    title="Bạn có chắc chắn muốn xóa địa chỉ này?"
+                    onConfirm={() => handleDelete(record.id)}
+                    okText="Có"
+                    cancelText="Không"
+                    disabled={record.default_address === 29} // Disable delete for default address
+                >
+                    <Button type="primary" danger disabled={record.default_address === 29}>
+                        Xóa
+                    </Button>
+                </Popconfirm>
             ),
         }
     ];
