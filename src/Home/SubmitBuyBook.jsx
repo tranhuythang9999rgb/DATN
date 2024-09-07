@@ -173,7 +173,7 @@ const SubmitBuyBook = () => {
                     <Row gutter={16}>
                         <Col span={8}>
 
-                            {status_address ? (
+                        {status_address && valueAddress === 1 ? (
                                 <p>Địa chỉ giao hàng hiện tại đã được lưu. Bạn có thể sử dụng địa chỉ hiện tại hoặc nhập địa chỉ mới.</p>
                             ) : (
                                 <Form form={form} onFinish={handleFormSubmit}>
@@ -277,8 +277,7 @@ const SubmitBuyBook = () => {
                             {
                                 paymentMethod !== 2 && (
                                     <Button
-                                        onClick={handleCreatePayment}
-                                        loading={loadingPayment}
+                                        onClick={form.submit}
                                         style={{ height: '50px', fontSize: '20px', width: '100%' }}
                                     >
                                         {"" ? 'Đang xử lý...' : <>Đặt hàng <BsBackpack2 style={{ marginLeft: '8px' }} /></>}
