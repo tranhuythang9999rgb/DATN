@@ -31,14 +31,14 @@ function App() {
       {/* <HomePage/> */}
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
-      {/* <CheckLogin/> */}
+      <CheckLogin/>
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
       {/* <DetailBuy book_id={7861741} /> */}
       {/* <AppRouter/> */}
       {/* <Pages2/> */}
-      <SubmitBuyBook/>
+      {/* <SubmitBuyBook/> */}
       {/* <ListBookHome nameTypeBook={'6'}/> */}
     {/* <Pages1/> */}
     {/* <RegisterUser/> */}

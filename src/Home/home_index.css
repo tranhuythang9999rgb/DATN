@@ -121,31 +121,38 @@ body {
 }
 
 .layout-header {
-    position: fixed; /* Fixes the header to the top of the page */
+    position: fixed;
+    /* Fixes the header to the top of the page */
     top: 0;
     left: 0;
-    width: 100%; /* Ensures the header spans the entire width */
-    z-index: 1000; /* Keeps the header above other content */
-    background-color: #fff; /* Optional: Set a background color */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Adds a shadow for better visibility */
+    width: 100%;
+    /* Ensures the header spans the entire width */
+    z-index: 1000;
+    /* Keeps the header above other content */
+    background-color: #fff;
+    /* Optional: Set a background color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Optional: Adds a shadow for better visibility */
 }
+
 :where(.css-dev-only-do-not-override-1gwfwyx).ant-image .ant-image-img {
     margin-top: 90px;
 }
+
 /* home_index.css */
 
-:where(.css-dev-only-do-not-override-1gwfwyx).ant-image .ant-image-img{
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-image .ant-image-img {
     margin-top: 10px;
     padding-top: 30px;
 }
 
-:where(.css-dev-only-do-not-override-1gwfwyx).ant-card .ant-card-cover >*{
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-card .ant-card-cover>* {
     display: flex;
     margin-left: 30px;
     margin-top: 10px;
 }
 
-.ant-col ant-col-10 css-dev-only-do-not-override-1gwfwyx{
+.ant-col ant-col-10 css-dev-only-do-not-override-1gwfwyx {
     margin-top: 800px;
 }
 
@@ -157,10 +164,12 @@ body {
     text-align: center;
     width: 1350px;
 }
-:where(.css-dev-only-do-not-override-1gwfwyx).ant-card-bordered{
+
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-card-bordered {
     height: 330px;
 }
-.submit-after-buy{
+
+.submit-after-buy {
     background-color: white;
     padding: 10px;
     border-radius: 0;
@@ -170,6 +179,52 @@ body {
     border-radius: 8px;
 }
 
-:where(.css-dev-only-do-not-override-1gwfwyx).ant-col-push-6{
-    inset-inline-start:20%
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-col-push-6 {
+    inset-inline-start: 20%
 }
+
+.footer-home-page {
+    background-color: #f1f1f1;
+    padding: 40px 20px;
+    border-top: 1px solid #e0e0e0;
+    font-family: Arial, sans-serif;
+}
+
+.footer-col-home-page {
+    padding: 0 20px;
+}
+
+.footer-col-home-page Title {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.footer-col-home-page ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-col-home-page li {
+    margin-bottom: 10px;
+}
+
+.footer-col-home-page a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.footer-col-home-page a:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom-home-page {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 20px;
+}
+
+.footer-bottom-home-page Text {
+    color: #666;
+}
+

@@ -1,86 +1,198 @@
-import React, { useEffect, useState } from 'react';
-import { List, Avatar, Col, Row, Button, Tooltip } from 'antd';
-import axios from 'axios';
-import GetTheShippingAddress from './GetTheShippingAddress';
-import { IoReturnUpBack } from 'react-icons/io5';
-import ListCart from './ListCart';
+import React, { useState } from 'react';
+import { Breadcrumb, Layout, Menu, theme, Tabs, Button } from 'antd';
+import { GiAbstract078 } from 'react-icons/gi';
+import { GrUserAdmin } from 'react-icons/gr';
+import { IoMdCloudUpload } from 'react-icons/io';
+import { FcBarChart } from 'react-icons/fc';
+import { LuClipboardList, LuFileBarChart } from 'react-icons/lu';
+import { TbLogout2, TbUsersGroup } from 'react-icons/tb';
 
-function ProFile() {
-    const [profileData, setProfileData] = useState(null);
+const { Header, Content, Sider } = Layout;
+const clearLocalStorageAndReload = () => {
+    localStorage.clear(); // Xóa hết dữ liệu trong localStorage
+    window.location.reload(); // Reload lại trang
+};
 
-    useEffect(() => {
-        const fetchProfileData = async () => {
-            try {
-                const response = await axios.get('http://127.0.0.1:8080/manager/user/profile', {
-                    params: {
-                        name: 'thangth1', // Tên tài khoản bạn muốn lấy thông tin
-                    },
-                });
+const items1 = [
+    {
+        key: 'logout',
+        icon: (
+            <Button
+                onClick={clearLocalStorageAndReload}
 
-                if (response.data.code === 0) {
-                    setProfileData(response.data.body);
-                } else {
-                    console.log('Có lỗi xảy ra:', response.data.message);
-                }
-            } catch (error) {
-                console.error('Lỗi khi gọi API:', error);
-            }
-        };
+                style={{
+                    backgroundColor: 'gray'
+                }}
+            >
+                <TbLogout2
 
-        fetchProfileData();
-    }, []);
+                />
+            </Button>
+        ),
+    },
+    {
+        key: 'abstract',
+        icon: (
+            <GiAbstract078
+                style={{
+                    justifyContent: 'center',
+                    fontSize: '60px',
+                }}
+            />
+        ),
+    },
+];
 
-    if (!profileData) {
-        return <div>Loading...</div>;
-    }
 
-    const data = [
-        { title: 'Tên tài khoản', description: profileData.username },
-        { title: 'Email', description: profileData.email },
-        { title: 'Họ và tên', description: profileData.full_name },
-        { title: 'Địa chỉ', description: profileData.address },
-    ];
-    const handlerGoBack = () => {
-        window.location.reload()
-    }
+const tabsContent = [
+    {
+        key: '1',
+        label: (
+            <span className="tab-label">
+                <IoMdCloudUpload className="icon" /> Tải thông tin sách
+            </span>
+        ),
+        content: <div>
+        </div>,
+    },
+    {
+        key: '2',
+        label: (
+            <span className="tab-label" style={{ fontSize: '17px' }}>
+                <FcBarChart className="icon" /> Quản lý danh mục
+            </span>
+        ),
+        content: <div>
+        </div>,
+    },
+    {
+        key: '3',
+        label: (
+            <span className="tab-label" style={{ fontSize: '17px' }}>
+                <LuFileBarChart style={{ fontSize: '25px' }} className="icon" /> Quản lý tác giả
+            </span>
+        ),
+        content: <div>
+        </div>,
+    },
+    {
+        key: '4',
+        label: (
+            <span className="tab-label" style={{ fontSize: '17px', color: '#4a4a4a' }}>
+                <LuClipboardList style={{ fontSize: '40px' }} className="icon-quan-ly-sach9" />Quản lý nhà xuất bản
+            </span>
+        ),
+        content: <div>
+        </div>,
+    },
+
+];
+
+const items2 = [
+    {
+        key: 'sub1',
+        icon: <GrUserAdmin />,
+        label: (<span style={{
+            fontSize: '18px',
+
+        }}>
+            Quản lý
+        </span>),
+        children: tabsContent.map(tab => ({
+            key: tab.key,
+            label: tab.label,
+            content: tab.content,
+        })),
+    },
+];
+
+function Dashboard() {
+    const {
+        token: { colorBgContainer, borderRadiusLG },
+    } = theme.useToken();
+
+    const [activeMenuItem, setActiveMenuItem] = useState('1');
+
+    const handleMenuClick = ({ key }) => {
+        setActiveMenuItem(key);
+    };
+
     return (
         <div>
-            <Row>
-                <Tooltip title="Quay lại">
-                    <IoReturnUpBack onClick={handlerGoBack} style={{ fontSize: '25px', cursor: 'pointer', marginLeft: '20px' }} />
-                </Tooltip>
-            </Row>
-
-            <Row>
-                <Col span={8}>
-                    <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                        <Avatar size={128} src={profileData.avatar} />
-                    </div>
-                    <List
-                        itemLayout="horizontal"
-                        dataSource={data}
-                        renderItem={item => (
-                            <List.Item>
-                                <List.Item.Meta
-                                    title={<strong>{item.title}</strong>}
-                                    description={item.description}
-                                />
-                            </List.Item>
-                        )}
+            <Layout>
+                <Header
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        background:
+                            'linear-gradient(90deg, rgba(255, 189, 68, 1) 0%, rgba(240, 98, 146, 1) 35%, rgba(0, 122, 166, 1) 100%)',
+                    }}
+                >
+                    <div className="demo-logo" />
+                    <Menu
+                        theme="dark"
+                        mode="horizontal"
+                        defaultSelectedKeys={['abstract']}
+                        items={items1}
+                        style={{
+                            flex: 1,
+                            alignItems: 'center',
+                            background:
+                                'linear-gradient(90deg, rgba(255, 189, 68, 1) 0%, rgba(240, 98, 146, 1) 35%, rgba(0, 122, 166, 1) 100%)',
+                        }}
                     />
-                </Col>
-                <Col span={8}>
-                    <GetTheShippingAddress />
-                </Col>
-                <Col span={8}>
-                <ListCart/>
-                </Col>
-            </Row>
-
-
-
+                </Header>
+                <Layout>
+                    <Sider
+                        width={250}
+                        style={{
+                            background: colorBgContainer,
+                        }}
+                    >
+                        <Menu
+                            mode="inline"
+                            defaultSelectedKeys={['sub1']}
+                            defaultOpenKeys={['sub1']}
+                            style={{
+                                height: '100%',
+                                borderRight: 0,
+                            }}
+                            items={items2}
+                            onClick={handleMenuClick}
+                        />
+                    </Sider>
+                    <Layout
+                        style={{
+                            padding: '0 24px 24px',
+                        }}
+                    >
+                        <Breadcrumb
+                            style={{
+                                margin: '16px 0',
+                            }}
+                        />
+                        <Content
+                            style={{
+                                padding: 24,
+                                margin: 0,
+                                minHeight: 280,
+                                background: colorBgContainer,
+                                borderRadius: borderRadiusLG,
+                            }}
+                        >
+                            <Tabs
+                                activeKey={activeMenuItem}
+                                items={tabsContent.map(tab => ({
+                                    key: tab.key,
+                                    children: tab.content,
+                                }))}
+                            />
+                        </Content>
+                    </Layout>
+                </Layout>
+            </Layout>
         </div>
     );
 }
 
-export default ProFile;
+export default Dashboard;

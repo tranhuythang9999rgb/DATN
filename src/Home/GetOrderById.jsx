@@ -49,10 +49,10 @@ const GetOrderById = () => {
                         <List
                             bordered
                             dataSource={[
-                                { label: 'Tổng số tiền', value: order.total_amount },
                                 { label: 'Tiêu đề sách', value: order.book_title },
                                 { label: 'Giá sách', value: order.book_price },
                                 { label: 'Số lượng', value: order.quantity },
+                                { label: <span className="bold-text" style={{fontSize:'25px'}}>Tổng số tiền</span>, value: <span style={{ textTransform: 'uppercase',fontSize:'25px' }}>{order.total_amount}</span> }
                             ]}
                             renderItem={item => (
                                 <List.Item>

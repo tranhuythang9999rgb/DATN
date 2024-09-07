@@ -16,8 +16,10 @@ import ListBookHome from './ListBookHome';
 import ProFile from '../user/Profile';
 import ListCart from '../user/ListCart';
 import { CgProfile } from 'react-icons/cg';
+import Link from 'antd/es/typography/Link';
+import './index.css';
 const { Meta } = Card;
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 function HomePage() {
     const [username, setUsername] = useState(null);
@@ -424,13 +426,45 @@ function HomePage() {
                 </div>
 
 
-                <div className='layout-footer-lien-he'>
-                    <h3>Liên hệ</h3>
-                    {/* Contact information or other footer content */}
-                    <p>Email: thaonguyen@gmail.com</p>
-                    <p>Phone: +123 456 789</p>
-                    {/* Add more contact details as needed */}
+                <div className='footer-home-page'>
+                    <Row justify="space-evenly" align="middle">
+                        <Col span={4} className='footer-col-home-page'>
+                            <Title level={4}>Thông tin</Title>
+                            <ul>
+                                <li><Link href="/about" target="_blank">Giới thiệu</Link></li>
+                                <li><Link href="/contact" target="_blank">Liên hệ</Link></li>
+                                <li><Link href="/faq" target="_blank">Câu hỏi thường gặp</Link></li>
+                                <li><Link href="/returns" target="_blank">Chính sách đổi trả</Link></li>
+                            </ul>
+                        </Col>
+                        <Col span={4} className='footer-col-home-page'>
+                            <Title level={4}>Dịch vụ khách hàng</Title>
+                            <ul>
+                                <li><Link href="/support" target="_blank">Hỗ trợ khách hàng</Link></li>
+                                <li><Link href="/shipping" target="_blank">Giao hàng</Link></li>
+                                <li><Link href="/payment" target="_blank">Phương thức thanh toán</Link></li>
+                            </ul>
+                        </Col>
+                        <Col span={4} className='footer-col-home-page'>
+                            <Title level={4}>Kết nối với chúng tôi</Title>
+                            <ul>
+                                <li><Link href="https://facebook.com" target="_blank">Facebook</Link></li>
+                                <li><Link href="https://twitter.com" target="_blank">Twitter</Link></li>
+                                <li><Link href="https://instagram.com" target="_blank">Instagram</Link></li>
+                            </ul>
+                        </Col>
+                        <Col span={4} className='footer-col-home-page'>
+                            <Title level={4}>Thông tin liên hệ</Title>
+                            <Text>Hưng Hà Thái Bình, Việt Nam</Text><br />
+                            <Text>Email: contact@bookstore.vn</Text><br />
+                            <Text>Điện thoại: +84 123 456 789</Text>
+                        </Col>
+                    </Row>
+                    <div className='footer-bottom-home-page'>
+                        <Text>© 2024 Sách Việt Nam. Bảo lưu mọi quyền.</Text>
+                    </div>
                 </div>
+
             </div>
 
         </div>

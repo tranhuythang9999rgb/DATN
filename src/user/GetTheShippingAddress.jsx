@@ -33,7 +33,7 @@ function GetTheShippingAddress() {
 
     return (
         <div>
-            <h1>Thông tin địa chỉ giao hàng</h1>
+            <h1>Thông tin địa chỉ giao hàng mặc định</h1>
             {loading ? (
                 <p>Đang tải dữ liệu...</p>
             ) : addressInfo ? (

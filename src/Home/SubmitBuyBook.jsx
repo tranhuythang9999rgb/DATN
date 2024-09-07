@@ -168,6 +168,7 @@ const SubmitBuyBook = () => {
     return (
         <div>
             {contextHolder}
+            //header
             <Row>
                 <IoReturnUpBackOutline onClick={() => setIsGoback(true)} style={{ fontSize: '25px', cursor: 'pointer' }} />
             </Row>
@@ -286,6 +287,7 @@ const SubmitBuyBook = () => {
                         </Col>
                     </Row>
                 </Col>
+                //footer
             </Row>
         </div>
     );
