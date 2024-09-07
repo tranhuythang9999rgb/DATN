@@ -96,6 +96,8 @@ func NewApiRouter(
 		deliveryAddressGroup.POST("/add", deliveryAddress.AddDeliveryAddress)
 		deliveryAddressGroup.POST("/add/profile", deliveryAddress.AddDeliveryAddressUpdateProfile)
 		deliveryAddressGroup.GET("/infor/profile", deliveryAddress.GetAddressByUserName)
+		deliveryAddressGroup.GET("/list", deliveryAddress.GetListAddressByUserName)
+		deliveryAddressGroup.PATCH("/update", deliveryAddress.UpdateStatusAddressById)
 	}
 	paymentGroup := r.Group("/payment")
 	{

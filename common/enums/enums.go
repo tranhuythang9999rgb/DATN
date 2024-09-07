@@ -113,6 +113,8 @@ const (
 
 	TYPE_PAYMENT_ONLINE  = 25
 	TYPE_PAYMENT_OFFLINE = 27
+
+	ADDRESS_STATUS_DEFAULT = 29
 )
 const (
 	NoSignatureErrorMessage         = "No signature."

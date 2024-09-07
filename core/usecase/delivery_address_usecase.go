@@ -4,10 +4,10 @@ import (
 	"context"
 	"shoe_shop_server/common/enums"
 	errors "shoe_shop_server/common/error"
-	"shoe_shop_server/common/log"
 	"shoe_shop_server/common/utils"
 	"shoe_shop_server/core/domain"
 	"shoe_shop_server/core/entities"
+	"strconv"
 )
 
 type DeliveryAddressUseCase struct {
@@ -28,7 +28,6 @@ func NewDeliveryAddressUseCase(delivery_address domain.RepositoryDeliveryAddress
 }
 
 func (u *DeliveryAddressUseCase) AddDeliveryAddress(ctx context.Context, req *entities.DeliveryAddress) errors.Error {
-	log.Infof("req ", req.OrderID)
 	err := u.delivery_address.Create(ctx, &domain.DeliveryAddress{
 		ID:          utils.GenerateUniqueKey(),
 		OrderID:     req.OrderID,
@@ -56,16 +55,17 @@ func (u *DeliveryAddressUseCase) AddDeliveryAddressUpdateProfile(ctx context.Con
 		return errors.ErrSystem
 	}
 	err = u.delivery_address.Create(ctx, &domain.DeliveryAddress{
-		ID:          utils.GenerateUniqueKey(),
-		OrderID:     0,
-		Email:       user.Email,
-		UserName:    req.UserName,
-		PhoneNumber: req.PhoneNumber,
-		Province:    req.Province,
-		District:    req.District,
-		Commune:     req.Commune,
-		Detailed:    req.Commune,
-		Otp:         0,
+		ID:             utils.GenerateUniqueKey(),
+		OrderID:        0,
+		Email:          user.Email,
+		UserName:       req.UserName,
+		PhoneNumber:    req.PhoneNumber,
+		Province:       req.Province,
+		District:       req.District,
+		Commune:        req.Commune,
+		Detailed:       req.Commune,
+		Otp:            0,
+		DefaultAddress: enums.ADDRESS_STATUS_DEFAULT,
 	})
 	if err != nil {
 		return errors.ErrSystem
@@ -79,4 +79,21 @@ func (u *DeliveryAddressUseCase) GetAddressByUserName(ctx context.Context, usern
 		return nil, errors.ErrSystem
 	}
 	return info, nil
+}
+
+func (u *DeliveryAddressUseCase) GetListAddressByUserName(ctx context.Context, user_name string) ([]*domain.DeliveryAddress, errors.Error) {
+	listAddress, err := u.delivery_address.GetListAddressByUserName(ctx, user_name)
+	if err != nil {
+		return nil, errors.ErrSystem
+	}
+	return listAddress, nil
+}
+
+func (u *DeliveryAddressUseCase) UpdateStatusAddressById(ctx context.Context, id string, name string) errors.Error {
+	numberId, _ := strconv.ParseInt(id, 10, 64)
+	err := u.delivery_address.UpdateStatusAddressById(ctx, numberId, name)
+	if err != nil {
+		return errors.ErrSystem
+	}
+	return nil
 }

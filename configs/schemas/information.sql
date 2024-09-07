@@ -188,3 +188,7 @@ ALTER TABLE carts
 ALTER TABLE orders 
   ADD COLUMN type_payment INT;
 COMMENT ON COLUMN orders.type_payment IS 'loại hình thức thanh toán , oneline, thanh toán khi nhận hàng';
+
+ALTER TABLE delivery_addresses 
+  ADD COLUMN default_address INT;
+COMMENT ON COLUMN delivery_addresses.default_address IS 'địa chỉ nhận hàng mặc định';

@@ -60,3 +60,24 @@ func (u *ControllerDeliveryAddress) GetAddressByUserName(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, resp)
 }
+
+func (u *ControllerDeliveryAddress) GetListAddressByUserName(ctx *gin.Context) {
+	name := ctx.Query("name")
+	resp, err := u.deliveryAddress.GetListAddressByUserName(ctx, name)
+	if err != nil {
+		u.baseController.ErrorData(ctx, errors.NewCustomHttpError(200, 0, fmt.Sprintln(err.Error())))
+		return
+	}
+	u.baseController.Success(ctx, resp)
+}
+
+func (u *ControllerDeliveryAddress) UpdateStatusAddressById(ctx *gin.Context) {
+	name := ctx.Query("name")
+	id := ctx.Query("id")
+	err := u.deliveryAddress.UpdateStatusAddressById(ctx, id, name)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, nil)
+}
