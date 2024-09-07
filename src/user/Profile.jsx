@@ -5,8 +5,14 @@ import { GrUserAdmin } from 'react-icons/gr';
 import { IoMdCloudUpload } from 'react-icons/io';
 import { FcBarChart } from 'react-icons/fc';
 import { LuClipboardList, LuFileBarChart } from 'react-icons/lu';
-import { TbLogout2, TbUsersGroup } from 'react-icons/tb';
-
+import { TbLogout2 } from 'react-icons/tb';
+import './user_index.css';
+import { RiLuggageCartLine, RiProfileFill } from 'react-icons/ri';
+import { FaAddressCard } from 'react-icons/fa';
+import { BsJournalBookmarkFill } from 'react-icons/bs';
+import InforMationUser from './InforMationUser';
+import GetTheShippingAddress from './GetTheShippingAddress';
+import ListAddress from './ListAddress';
 const { Header, Content, Sider } = Layout;
 const clearLocalStorageAndReload = () => {
     localStorage.clear(); // Xóa hết dữ liệu trong localStorage
@@ -36,7 +42,7 @@ const items1 = [
             <GiAbstract078
                 style={{
                     justifyContent: 'center',
-                    fontSize: '60px',
+                    fontSize: '40px',
                 }}
             />
         ),
@@ -49,41 +55,41 @@ const tabsContent = [
         key: '1',
         label: (
             <span className="tab-label">
-                <IoMdCloudUpload className="icon" /> Tải thông tin sách
+                <RiProfileFill className="icon" />  Thông tin cá nhân
             </span>
         ),
         content: <div>
+            <InforMationUser/>
         </div>,
     },
     {
         key: '2',
         label: (
             <span className="tab-label" style={{ fontSize: '17px' }}>
-                <FcBarChart className="icon" /> Quản lý danh mục
+                <FaAddressCard className="icon" /> Thông địa chỉ nhận hàng
             </span>
         ),
-        content: <div>
+        content: <div style={{marginLeft:'70px'}}>
+            <ListAddress/>
         </div>,
     },
     {
         key: '3',
         label: (
             <span className="tab-label" style={{ fontSize: '17px' }}>
-                <LuFileBarChart style={{ fontSize: '25px' }} className="icon" /> Quản lý tác giả
+                <RiLuggageCartLine style={{ fontSize: '25px' }} className="icon" /> Đơn hàng của tôi
             </span>
         ),
-        content: <div>
-        </div>,
+        content: <div></div>,
     },
     {
         key: '4',
         label: (
             <span className="tab-label" style={{ fontSize: '17px', color: '#4a4a4a' }}>
-                <LuClipboardList style={{ fontSize: '40px' }} className="icon-quan-ly-sach9" />Quản lý nhà xuất bản
+                <BsJournalBookmarkFill style={{ fontSize: '30px' }} className="icon-quan-ly-sach9" />Danh sách sản phẩm yêu thích
             </span>
         ),
-        content: <div>
-        </div>,
+        content: <div></div>,
     },
 
 ];

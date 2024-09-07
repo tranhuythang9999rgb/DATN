@@ -31,7 +31,7 @@ function App() {
       {/* <HomePage/> */}
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
-      <CheckLogin/>
+      {/* <CheckLogin/> */}
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
@@ -42,7 +42,7 @@ function App() {
       {/* <ListBookHome nameTypeBook={'6'}/> */}
     {/* <Pages1/> */}
     {/* <RegisterUser/> */}
-    {/* <ProFile/> */}
+    <ProFile/>
     {/* <AddAddress/> */}
     {/* <GetTheShippingAddress/> */}
     {/* <ListCart/> */}
