@@ -293,7 +293,7 @@ const DetailBuy = ({ book_id }) => {
 
                     </div>
                     <div>Ảnh mô tả</div>
-                    <Carousel afterChange={onChange} style={{ marginBottom: '20px' }}>
+                    <Carousel afterChange={onChange} style={{ marginBottom: '20px',border:'1px solid green' }}>
                         {book.files && book.files.map((item, index) => (
                             <div key={index}>
                                 <Image

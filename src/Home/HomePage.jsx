@@ -15,6 +15,7 @@ import DetailBuy from './DetailBuy';
 import ListBookHome from './ListBookHome';
 import ProFile from '../user/Profile';
 import ListCart from '../user/ListCart';
+import { CgProfile } from 'react-icons/cg';
 const { Meta } = Card;
 const { Title } = Typography;
 
@@ -223,7 +224,7 @@ function HomePage() {
                             {username ? (
                                 <Space>
                                     <Button style={{ border: 'none', fontSize: '17px' }} onClick={handleLogoutClick}>Đăng xuất</Button>
-                                    <Button style={{ border: 'none', fontSize: '17px' }} onClick={handleNextProFile}>profile</Button>
+                                    <Button style={{ border: 'none', fontSize: '17px' }} onClick={handleNextProFile}><CgProfile /> </Button>
                                 </Space>
                             ) : (
                                 <>
