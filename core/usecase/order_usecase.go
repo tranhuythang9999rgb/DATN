@@ -137,3 +137,6 @@ func (u *UseCaseOrder) UpdateStatusOrder(ctx context.Context, orderId string) er
 	}
 	return nil
 }
+func (u *UseCaseOrder) ListOrder(ctx context.Context) ([]*domain.Order, errors.Error) {
+	return nil, nil
+}

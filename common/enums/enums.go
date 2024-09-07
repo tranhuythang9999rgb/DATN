@@ -110,6 +110,9 @@ const (
 	ORDER_PEND                 = 19
 	ORDER_ARE_PAYING           = 21
 	ORDER_WAITING_FOR_SHIPMENT = 23
+
+	TYPE_PAYMENT_ONLINE  = 25
+	TYPE_PAYMENT_OFFLINE = 27
 )
 const (
 	NoSignatureErrorMessage         = "No signature."

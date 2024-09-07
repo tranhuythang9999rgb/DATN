@@ -5,4 +5,5 @@ type Order struct {
 	BookID       int64  `form:"book_id"`       // ID sách
 	Quantity     int    `form:"quantity"`      // Số lượng sách trong đơn hàng
 	OrderId      int64  `form:"order_id"`      // check xem sachs do da chuan bij mua chua
+	TypePayment  int    `form:"type_payment"`
 }

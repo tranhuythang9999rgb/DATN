@@ -184,3 +184,7 @@ CREATE TABLE  if not exists carts(
 
 ALTER TABLE carts 
   ADD COLUMN create_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP;
+
+ALTER TABLE orders 
+  ADD COLUMN type_payment INT;
+COMMENT ON COLUMN orders.type_payment IS 'loại hình thức thanh toán , oneline, thanh toán khi nhận hàng';

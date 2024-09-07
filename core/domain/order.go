@@ -25,6 +25,7 @@ type Order struct {
 	Quantity          int     `json:"quantity"`            // Số lượng sách trong đơn hàng
 	TotalAmount       float64 `json:"total_amount"`        // Tổng số tiền
 	Status            int     `json:"status"`              // Trạng thái đơn hàng
+	TypePayment       int     `json:"type_payment"`
 }
 
 type OrderForm struct {

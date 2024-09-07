@@ -100,7 +100,12 @@ func (c *CollectionOrder) GetInforMationBook(ctx context.Context, order_id, book
 	return order, result.Error
 }
 func (u *CollectionOrder) UpdateStatusOrder(ctx context.Context, id int64, status int) error {
-	result := u.db.Model(&domain.Order{}).Where("id = ? ", id).UpdateColumn("status", status)
+	result := u.db.Model(&domain.Order{}).
+		Where("id = ?", id).
+		Updates(map[string]interface{}{
+			"status":       status,
+			"type_payment": enums.TYPE_PAYMENT_ONLINE,
+		})
 	return result.Error
 }
 

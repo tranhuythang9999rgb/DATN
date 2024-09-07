@@ -46,7 +46,7 @@ func (u *ControllersPayment) CreatePayment(ctx *gin.Context) {
 		Description: description,
 		CancelUrl:   cancelUrl,
 		ReturnUrl:   returnUrl,
-		ExpiredAt:   utils.GenerateTimestampExpiredAt(15), //
+		ExpiredAt:   utils.GenerateTimestampExpiredAt(15), //Thời gian tồn tại của QR code
 		OrderId:     order.ID,
 	})
 	if err != nil {
