@@ -2,7 +2,7 @@ import React from 'react';
 import Chatbot from 'react-chatbot-kit';
 import 'react-chatbot-kit/build/main.css';
 import { createChatBotMessage } from 'react-chatbot-kit';
-
+import './chat_bot.css';;
 // Cấu hình chatbot (Config)
 const config = {
   botName: 'Trợ Lý Ảo', // Đổi tên bot sang tiếng Việt
@@ -12,24 +12,34 @@ const config = {
 };
 
 // Bộ phân tích tin nhắn (MessageParser)
+// Bộ phân tích tin nhắn (MessageParser)
 class MessageParser {
-  constructor(actionProvider) {
-    this.actionProvider = actionProvider;
-  }
-
-  parse(message) {
-    const lowerCaseMessage = message.toLowerCase();
-
-    if (lowerCaseMessage.includes('xin chào') || lowerCaseMessage.includes('chào')) {
-      this.actionProvider.handleHello();
-    } else if (lowerCaseMessage.includes('giúp đỡ') || lowerCaseMessage.includes('trợ giúp')) {
-      this.actionProvider.handleHelp();
-    } else {
-      this.actionProvider.handleDefault();
+    constructor(actionProvider) {
+      this.actionProvider = actionProvider;
+    }
+  
+    parse(message) {
+      const lowerCaseMessage = message.toLowerCase();
+  
+      // Kiểm tra các từ khóa để chào lại
+      if (
+        lowerCaseMessage.includes('xin chào') || 
+        lowerCaseMessage.includes('chào') || 
+        lowerCaseMessage.includes('hi') || 
+        lowerCaseMessage.includes('hello')
+      ) {
+        this.actionProvider.handleHello();
+      } else if (
+        lowerCaseMessage.includes('giúp đỡ') || 
+        lowerCaseMessage.includes('trợ giúp')
+      ) {
+        this.actionProvider.handleHelp();
+      } else {
+        this.actionProvider.handleDefault();
+      }
     }
   }
-}
-
+  
 // Bộ xử lý hành động (ActionProvider)
 class ActionProvider {
   constructor(createChatBotMessage, setStateFunc) {
@@ -67,7 +77,7 @@ class ActionProvider {
 // Thành phần ChatBot (ChatBot component)
 function ChatBot() {
   return (
-    <div style={{ maxWidth: '300px', margin: 'auto' }}>
+    <div className="chatbot-container">
       <Chatbot
         config={config}
         messageParser={MessageParser}
