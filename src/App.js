@@ -18,6 +18,7 @@ import Pages1 from "./Test/Pages1";
 import Pages2 from "./Test/Pages2";
 import AppRouter from "./Test/Routers/routers";
 import AddAddress from "./user/AddAddress";
+import DisPlaySubmitByFromCart from "./user/DisPlaySubmitByFromCart";
 import GetTheShippingAddress from "./user/GetTheShippingAddress";
 import ListCart from "./user/ListCart";
 import ListOrderUser from "./user/ListOrderUser";
@@ -54,6 +55,7 @@ function App() {
     {/* <Statistical/> */}
     {/* <ChatBot/> */}
     {/* <GetListBookUserBook/> */}
+    {/* <DisPlaySubmitByFromCart/> */}
     </div>
   );
 }

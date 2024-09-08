@@ -13,7 +13,7 @@ import 'antd/dist/reset.css'; // Import style của Ant Design
 const config = {
   botName: 'Trợ Lý Ảo',
   initialMessages: [
-    createChatBotMessage('Xin chào! Tôi có thể giúp gì cho bạn hôm nay 😊'),
+    createChatBotMessage('Xin chào! Tôi  là mi lu có thể giúp gì cho bạn hôm nay 😊'),
   ],
 };
 

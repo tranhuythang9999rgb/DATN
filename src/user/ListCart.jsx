@@ -11,7 +11,6 @@ const ListCart = forwardRef((props, ref) => {
     const [error, setError] = useState(null);
     const [checkedItems, setCheckedItems] = useState([]);
 
-    // Fetch cart list
     const fetchCartList = async () => {
         setLoading(true);
         try {
@@ -32,7 +31,6 @@ const ListCart = forwardRef((props, ref) => {
         }
     };
 
-    // Expose the fetchCartList function to the parent component via ref
     useImperativeHandle(ref, () => ({
         reloadCart: fetchCartList
     }));
@@ -77,10 +75,8 @@ const ListCart = forwardRef((props, ref) => {
     };
 
     const handleBuyNow = () => {
-        // Handle the "Buy Now" action (e.g., send selected cart items to the backend for purchase)
         const selectedItems = carts.filter(item => checkedItems.includes(item.cart_id));
         console.log('Selected items for purchase:', selectedItems);
-        // Add your buy logic here, such as sending the selected items to an API endpoint
     };
 
     if (loading) {
@@ -90,6 +86,7 @@ const ListCart = forwardRef((props, ref) => {
     if (error) {
         return <Alert message="Lỗi" description={error} type="error" />;
     }
+
 
     return (
         <div>
