@@ -178,3 +178,44 @@
 .search-container .ant-btn {
   box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
 }
+
+
+.footer-home-page {
+  background-color: #f8f8f8; /* Light gray background for the footer */
+  padding: 20px 0;
+  border-top: 1px solid #ddd; /* Light border at the top */
+}
+
+.footer-col-home-page {
+  text-align: center; /* Center-align text inside columns */
+}
+
+.footer-col-home-page ul {
+  list-style: none; /* Remove default list styling */
+  padding: 0;
+  margin: 0;
+}
+
+.footer-col-home-page li {
+  margin: 8px 0; /* Space between list items */
+}
+
+.footer-col-home-page a {
+  color: #1890ff; /* Link color */
+  text-decoration: none; /* Remove underline from links */
+}
+
+.footer-col-home-page a:hover {
+  text-decoration: underline; /* Underline links on hover */
+}
+
+.footer-bottom-home-page {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #888; /* Light gray text color */
+}
+
+.footer-bottom-home-page .ant-typography {
+  margin: 0; /* Remove default margin */
+}

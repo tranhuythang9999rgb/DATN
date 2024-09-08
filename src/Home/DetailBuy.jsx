@@ -307,7 +307,7 @@ const DetailBuy = ({ book_id }) => {
                     <div>
                         <IoReturnUpBack
                             onClick={handlerGoBack}
-                            style={{ display: 'flex', fontSize: '25px', cursor: 'pointer', paddingLeft: '20px' }}
+                            style={{ display: 'flex', fontSize: '50px', cursor: 'pointer', paddingLeft: '20px' }}
                         />
 
                     </div>

@@ -404,7 +404,7 @@ function HomePage() {
                     <div className='footer-home-page'>
                         <Row justify="space-evenly" align="middle">
                             <Col span={4} className='footer-col-home-page'>
-                                <Title style={{ display: 'flex', justifyContent: 'center' }} level={4}>Thông tin</Title>
+                                <Title level={4}>Thông tin</Title>
                                 <ul>
                                     <li><Link href="/about" target="_blank">Giới thiệu</Link></li>
                                     <li><Link href="/contact" target="_blank">Liên hệ</Link></li>
@@ -413,7 +413,7 @@ function HomePage() {
                                 </ul>
                             </Col>
                             <Col span={4} className='footer-col-home-page'>
-                                <Title style={{ display: 'flex', justifyContent: 'center' }} level={4}>Dịch vụ khách hàng</Title>
+                                <Title level={4}>Dịch vụ khách hàng</Title>
                                 <ul>
                                     <li><Link href="/support" target="_blank">Hỗ trợ khách hàng</Link></li>
                                     <li><Link href="/shipping" target="_blank">Giao hàng</Link></li>
@@ -421,7 +421,7 @@ function HomePage() {
                                 </ul>
                             </Col>
                             <Col span={4} className='footer-col-home-page'>
-                                <Title style={{ display: 'flex', justifyContent: 'center' }} level={4}>Kết nối với chúng tôi</Title>
+                                <Title level={4}>Kết nối với chúng tôi</Title>
                                 <ul>
                                     <li><Link href="https://facebook.com" target="_blank">Facebook</Link></li>
                                     <li><Link href="https://twitter.com" target="_blank">Twitter</Link></li>
@@ -429,7 +429,7 @@ function HomePage() {
                                 </ul>
                             </Col>
                             <Col span={4} className='footer-col-home-page'>
-                                <Title style={{ display: 'flex', justifyContent: 'center', marginTop: '-3px' }} level={4}>Thông tin liên hệ</Title>
+                                <Title level={4}>Thông tin liên hệ</Title>
                                 <Text>Hưng Hà Thái Bình, Việt Nam</Text><br />
                                 <Text>Email: contact@bookstore.vn</Text><br />
                                 <Text>Điện thoại: +84 123 456 789</Text>
