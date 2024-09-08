@@ -22,15 +22,17 @@ function Statistical() {
                     const groupedByBook = result.body.reduce((acc, order) => {
                         const book = order.book_title;
                         if (!acc[book]) {
-                            acc[book] = { totalAmount: 0, color: randomColor() };
+                            acc[book] = { totalAmount: 0, totalQuantity: 0, color: randomColor() };
                         }
                         acc[book].totalAmount += order.total_amount;
+                        acc[book].totalQuantity += order.quantity; // Tính tổng số sách
                         return acc;
                     }, {});
 
                     const chartData = Object.keys(groupedByBook).map(book => ({
                         bookTitle: book,
                         totalAmount: groupedByBook[book].totalAmount,
+                        totalQuantity: groupedByBook[book].totalQuantity,
                         color: groupedByBook[book].color
                     }));
 
@@ -55,15 +57,17 @@ function Statistical() {
                         const groupedByBook = result.body.reduce((acc, order) => {
                             const book = order.book_title;
                             if (!acc[book]) {
-                                acc[book] = { totalAmount: 0, color: randomColor() };
+                                acc[book] = { totalAmount: 0, totalQuantity: 0, color: randomColor() };
                             }
                             acc[book].totalAmount += order.total_amount;
+                            acc[book].totalQuantity += order.quantity; // Tính tổng số sách
                             return acc;
                         }, {});
 
                         const chartData = Object.keys(groupedByBook).map(book => ({
                             bookTitle: book,
                             totalAmount: groupedByBook[book].totalAmount,
+                            totalQuantity: groupedByBook[book].totalQuantity,
                             color: groupedByBook[book].color
                         }));
 
@@ -101,18 +105,32 @@ function Statistical() {
                     <XAxis dataKey="bookTitle" label={{ value: "Tên Sách", position: "insideBottomRight", offset: 0 }} />
                     <YAxis label={{ value: "Doanh thu (VND)", angle: -90, position: "insideLeft" }} />
                     <Tooltip 
-                        formatter={(value) => [`${value} VND`, 'Doanh thu']}
+                        formatter={(value, name) => {
+                            if (name === 'totalAmount') {
+                                return [`${value} VND`, 'Doanh thu'];
+                            } else if (name === 'totalQuantity') {
+                                return [`${value}`, 'Tổng số sách'];
+                            }
+                            return [`${value}`, name];
+                        }}
                         labelFormatter={(label) => `Tên Sách: ${label}`}
                     />
                     <Legend verticalAlign="top" height={36} />
                     <Bar 
                         dataKey="totalAmount"
+                        name="Doanh thu"
                         barSize={30}
                     >
                         {filteredData.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={entry.color} />
                         ))}
                     </Bar>
+                    <Bar 
+                        dataKey="totalQuantity"
+                        name="Tổng số sách"
+                        barSize={30}
+                        fill="#82ca9d" // Một màu khác cho cột tổng số sách
+                    />
                 </BarChart>
             </ResponsiveContainer>
         </div>

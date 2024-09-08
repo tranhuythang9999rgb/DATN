@@ -99,7 +99,16 @@ const ListOrder = () => {
             title: 'Trạng Thái',
             dataIndex: 'status',
             key: 'status',
-            render: (status) => status === 31 ? 'Đơn hàng đã giao thành công và nhận tiền' : 'Đang chờ'
+            render: (status) => {
+                switch (status) {
+                    case 31:
+                        return 'Đơn hàng đã giao thành công và nhận tiền';
+                    case 33:
+                        return 'Đơn hàng đã bị hủy';
+                    default:
+                        return 'Đang chờ';
+                }
+            }
         },
         {
             title: 'Loại Thanh Toán',
