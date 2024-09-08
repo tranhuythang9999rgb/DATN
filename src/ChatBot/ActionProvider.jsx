@@ -7,7 +7,20 @@ class ActionProvider {
     }
 
     handleHello() {
-        const botMessage = this.createChatBotMessage('Xin chào! Rất vui được gặp bạn.');
+        const currentHour = new Date().getHours(); // Get the current hour (0-23)
+        let greeting;
+
+        if (currentHour >= 5 && currentHour < 12) {
+            greeting = 'Chào buổi sáng! Rất vui được gặp bạn.';
+        } else if (currentHour >= 12 && currentHour < 17) {
+            greeting = 'Chào buổi trưa! Rất vui được gặp bạn.';
+        } else if (currentHour >= 17 && currentHour < 21) {
+            greeting = 'Chào buổi chiều! Rất vui được gặp bạn.';
+        } else {
+            greeting = 'Chào buổi tối! Rất vui được gặp bạn.';
+        }
+
+        const botMessage = this.createChatBotMessage(greeting);
         this.updateChatbotState(botMessage);
     }
 

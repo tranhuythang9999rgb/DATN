@@ -21,7 +21,8 @@ class MessageParser {
             this.actionProvider.handleHelp();
         } else if (
             lowerCaseMessage.includes('ngày hôm nay') ||
-            lowerCaseMessage.includes('mấy giờ')
+            lowerCaseMessage.includes('mấy giờ') ||
+            lowerCaseMessage.includes('mấy h')
         ) {
             this.actionProvider.handleDateTime();
         } else if (
