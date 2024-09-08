@@ -35,7 +35,7 @@ function App() {
       {/* <HomePage/> */}
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
-      {/* <CheckLogin/> */}
+      <CheckLogin/>
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
@@ -52,7 +52,7 @@ function App() {
     {/* <ListCart/> */}
     {/* <ListOrderUser/> */}
     {/* <Statistical/> */}
-    <ChatBot/>
+    {/* <ChatBot/> */}
     {/* <GetListBookUserBook/> */}
     </div>
   );

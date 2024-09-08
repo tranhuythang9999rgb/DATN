@@ -18,6 +18,7 @@ import ListCart from '../user/ListCart';
 import { CgProfile } from 'react-icons/cg';
 import Link from 'antd/es/typography/Link';
 import './index.css';
+import ChatBot from '../ChatBot/ChatBot';
 const { Meta } = Card;
 const { Title, Text } = Typography;
 
@@ -286,10 +287,16 @@ function HomePage() {
                 </div>
             </div>
 
-
+            <span style={{
+                position:'absolute',
+                marginLeft:'1470px',
+                marginTop:'-440px'
+                }}>
+                <ChatBot/>
+            </span>
 
             <div className="layout-footer">
-
+                            
                 <div className='layout-footer-tac-gia'>
                     <h1>Tác giả</h1>
                     {/* List of new book authors */}
@@ -470,7 +477,7 @@ function HomePage() {
 
 
             </div>
-
+           
         </div>
     );
 }
