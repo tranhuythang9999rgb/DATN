@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Typography, Pagination, Spin, Alert } from 'antd';
+import { Table, Typography, Pagination, Spin, Alert, Modal, Button } from 'antd';
 import axios from 'axios';
 
 const { Title } = Typography;
@@ -11,26 +11,29 @@ const ListOrder = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [total, setTotal] = useState(0);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [selectedOrderId, setSelectedOrderId] = useState(null);
+    
+    const fetchOrders = async () => {
+        try {
+            setLoading(true);
+            const response = await axios.get('http://127.0.0.1:8080/manager/order/list/admin', {
+                params: {
+                    page: currentPage,
+                    size: pageSize,
+                },
+            });
+            setOrders(response.data.body);
+            setTotal(response.data.total);
+        } catch (err) {
+            setError(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchOrders = async () => {
-            try {
-                setLoading(true);
-                const response = await axios.get('http://127.0.0.1:8080/manager/order/list/admin', {
-                    params: {
-                        page: currentPage,
-                        size: pageSize,
-                    },
-                });
-                setOrders(response.data.body);
-                setTotal(response.data.total); // Ensure your API returns the total count of items
-            } catch (err) {
-                setError(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
+       
         fetchOrders();
     }, [currentPage, pageSize]);
 
@@ -39,26 +42,62 @@ const ListOrder = () => {
         setPageSize(pageSize);
     };
 
+    const showModal = (id) => {
+        setSelectedOrderId(id);
+        setIsModalVisible(true);
+    };
+
+    const handleOk = async () => {
+        try {
+            const response = await axios.patch(`http://127.0.0.1:8080/manager/order/update/admin/submit`, null, {
+                params: { id: selectedOrderId },
+            });
+
+            if (response.data.code === 0) {
+                Modal.success({ title: 'Success', content: 'Order updated successfully!' });
+                setIsModalVisible(false);
+                fetchOrders(); // refresh the orders list
+            } else {
+                Modal.error({ title: 'Error', content: response.data.message });
+            }
+        } catch (err) {
+            Modal.error({ title: 'Error', content: 'An error occurred during the update.' });
+        }
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
+
     const columns = [
         { title: 'Mã Đơn Hàng', dataIndex: 'id', key: 'id' },
         { title: 'Tên Khách Hàng', dataIndex: 'customer_name', key: 'customer_name' },
         { title: 'Ngày Đặt Hàng', dataIndex: 'order_date', key: 'order_date' },
-        { title: 'Tiêu Đề Sách', dataIndex: 'book_title', key: 'book_title' },
-        { title: 'Tác Giả Sách', dataIndex: 'book_author', key: 'book_author' },
-        { title: 'Nhà Xuất Bản', dataIndex: 'book_publisher', key: 'book_publisher' },
-        { title: 'Ngày Xuất Bản', dataIndex: 'book_published_date', key: 'book_published_date' },
-        { title: 'ISBN', dataIndex: 'book_isbn', key: 'book_isbn' },
-        { title: 'Thể Loại Sách', dataIndex: 'book_genre', key: 'book_genre' },
-        { title: 'Mô Tả Sách', dataIndex: 'book_description', key: 'book_description' },
-        { title: 'Ngôn Ngữ Sách', dataIndex: 'book_language', key: 'book_language' },
-        { title: 'Số Trang', dataIndex: 'book_page_count', key: 'book_page_count' },
-        { title: 'Kích Thước Sách', dataIndex: 'book_dimensions', key: 'book_dimensions' },
-        { title: 'Trọng Lượng Sách', dataIndex: 'book_weight', key: 'book_weight' },
+        { title: 'Tên sách', dataIndex: 'book_title', key: 'book_title' },
         { title: 'Giá Sách', dataIndex: 'book_price', key: 'book_price' },
         { title: 'Số Lượng', dataIndex: 'quantity', key: 'quantity' },
         { title: 'Tổng Số Tiền', dataIndex: 'total_amount', key: 'total_amount' },
-        { title: 'Trạng Thái', dataIndex: 'status', key: 'status' },
-        { title: 'Loại Thanh Toán', dataIndex: 'type_payment', key: 'type_payment' },
+        {
+            title: 'Trạng Thái',
+            dataIndex: 'status',
+            key: 'status',
+            render: (status) => status === 31 ? 'Đơn hàng đã giao thành công và nhận tiền' : 'Đang chờ'
+        },
+        {
+            title: 'Loại Thanh Toán',
+            dataIndex: 'type_payment',
+            key: 'type_payment',
+            render: (type_payment) => type_payment === 25 ? 'Đã thanh toán online' : 'Thanh toán khi nhận hàng'
+        },
+        {
+            title: 'Hành Động',
+            key: 'action',
+            render: (_, record) => (
+                <Button type="primary" onClick={() => showModal(record.id)}>
+                    Cập Nhật Đơn Hàng
+                </Button>
+            )
+        }
     ];
 
     if (loading) return <Spin size="large" />;
@@ -80,6 +119,14 @@ const ListOrder = () => {
                 onChange={handlePageChange}
                 showSizeChanger
             />
+            <Modal
+                title="Xác Nhận Cập Nhật"
+                visible={isModalVisible}
+                onOk={handleOk}
+                onCancel={handleCancel}
+            >
+                <p>Bạn có chắc chắn muốn cập nhật đơn hàng {selectedOrderId} không?</p>
+            </Modal>
         </div>
     );
 };

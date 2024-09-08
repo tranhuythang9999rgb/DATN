@@ -143,6 +143,10 @@ const ListCart = forwardRef((props, ref) => {
                                     title={<Text strong>Giá:</Text>}
                                     description={item.price}
                                 />
+                                 <List.Item.Meta
+                                    title={<Text strong>Tổng số tiền:</Text>}
+                                    description={item.total_amount}
+                                />
                             </List.Item>
                         )}
                     />

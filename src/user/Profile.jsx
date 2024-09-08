@@ -13,9 +13,9 @@ import { BsJournalBookmarkFill } from 'react-icons/bs';
 import InforMationUser from './InforMationUser';
 import GetTheShippingAddress from './GetTheShippingAddress';
 import ListAddress from './ListAddress';
+import ListOrderUser from './ListOrderUser';
 const { Header, Content, Sider } = Layout;
 const clearLocalStorageAndReload = () => {
-    localStorage.clear(); // Xóa hết dữ liệu trong localStorage
     window.location.reload(); // Reload lại trang
 };
 
@@ -80,7 +80,9 @@ const tabsContent = [
                 <RiLuggageCartLine style={{ fontSize: '25px' }} className="icon" /> Đơn hàng của tôi
             </span>
         ),
-        content: <div></div>,
+        content: <div>
+            <ListOrderUser/>
+        </div>,
     },
     {
         key: '4',
