@@ -326,3 +326,36 @@
   display: flex;
   margin: 0 auto;
 }
+
+
+/* /// */
+
+
+.card-cover {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.like-icon {
+  position: absolute;
+  top: -2px; /* Adjusted position */
+  right: 90px; /* Adjusted position */
+  font-size: 25px;
+  color: pink; /* Default color */
+  cursor: pointer;
+  z-index: 10; /* Ensures the icon is above other elements */
+}
+
+.like-icon.liked {
+  color: red; /* Color when liked */
+}
+
+.card-image {
+  height: 200px;
+  object-fit: cover;
+  width: 220px;
+  display: block; /* Ensures the image is a block-level element for centering */
+  margin: 0 auto;
+}

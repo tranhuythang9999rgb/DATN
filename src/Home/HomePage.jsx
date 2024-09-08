@@ -339,7 +339,7 @@ function HomePage() {
                                                         objectFit: 'cover',
                                                         width: '220px',
                                                         display: 'block', // Ensure the image is a block-level element for centering
-                                                        margin: '0 auto',
+                                                        marginLeft:'10px'
                                                     }}
                                                 />
                                             </div>
