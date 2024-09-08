@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Typography, Pagination, Spin, Alert, Modal, Button } from 'antd';
+import { Table, Typography, Pagination, Spin, Alert, Modal, Button, Drawer } from 'antd';
 import axios from 'axios';
 
 const { Title } = Typography;
@@ -13,7 +13,9 @@ const ListOrder = () => {
     const [total, setTotal] = useState(0);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedOrderId, setSelectedOrderId] = useState(null);
-    
+    const [isDrawerVisible, setIsDrawerVisible] = useState(false);
+    const [userProfile, setUserProfile] = useState(null);
+
     const fetchOrders = async () => {
         try {
             setLoading(true);
@@ -33,7 +35,6 @@ const ListOrder = () => {
     };
 
     useEffect(() => {
-       
         fetchOrders();
     }, [currentPage, pageSize]);
 
@@ -69,6 +70,23 @@ const ListOrder = () => {
         setIsModalVisible(false);
     };
 
+    const showDrawer = async (userName) => {
+        try {
+            const response = await axios.get('http://127.0.0.1:8080/manager/delivery_address/infor/profile', {
+                params: { name: userName },
+            });
+            setUserProfile(response.data.body);
+            setIsDrawerVisible(true);
+        } catch (err) {
+            setError(err);
+        }
+    };
+
+    const handleDrawerClose = () => {
+        setIsDrawerVisible(false);
+        setUserProfile(null);
+    };
+
     const columns = [
         { title: 'Mã Đơn Hàng', dataIndex: 'id', key: 'id' },
         { title: 'Tên Khách Hàng', dataIndex: 'customer_name', key: 'customer_name' },
@@ -93,9 +111,14 @@ const ListOrder = () => {
             title: 'Hành Động',
             key: 'action',
             render: (_, record) => (
-                <Button type="primary" onClick={() => showModal(record.id)}>
-                    Cập Nhật Đơn Hàng
-                </Button>
+                <>
+                    <Button type="primary" onClick={() => showModal(record.id)}>
+                        Cập Nhật Đơn Hàng
+                    </Button>
+                    <Button type="link" onClick={() => showDrawer(record.customer_name)}>
+                        Xem Thông Tin Khách Hàng
+                    </Button>
+                </>
             )
         }
     ];
@@ -127,6 +150,26 @@ const ListOrder = () => {
             >
                 <p>Bạn có chắc chắn muốn cập nhật đơn hàng {selectedOrderId} không?</p>
             </Modal>
+            <Drawer
+                title="Thông Tin Khách Hàng"
+                width={400}
+                onClose={handleDrawerClose}
+                visible={isDrawerVisible}
+            >
+                {userProfile ? (
+                    <div>
+                        <p><b>Tên người dùng:</b> {userProfile.user_name}</p>
+                        <p><b>Email:</b> {userProfile.email}</p>
+                        <p><b>Số điện thoại:</b> {userProfile.phone_number}</p>
+                        <p><b>Tỉnh:</b> {userProfile.province}</p>
+                        <p><b>Huyện:</b> {userProfile.district}</p>
+                        <p><b>Xã:</b> {userProfile.commune}</p>
+                        <p><b>Địa chỉ chi tiết:</b> {userProfile.detailed}</p>
+                    </div>
+                ) : (
+                    <Spin size="large" />
+                )}
+            </Drawer>
         </div>
     );
 };
