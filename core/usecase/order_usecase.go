@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"shoe_shop_server/common/enums"
 	errors "shoe_shop_server/common/error"
+	"shoe_shop_server/common/log"
 	"shoe_shop_server/common/utils"
 	"shoe_shop_server/core/domain"
 	"shoe_shop_server/core/entities"
@@ -153,4 +154,20 @@ func (u *UseCaseOrder) UpdateOrderForSend(ctx context.Context, id string) errors
 		return errors.NewSystemError(fmt.Sprintf("error system . %v", err))
 	}
 	return nil
+}
+
+func (u *UseCaseOrder) ListOrdersUseTk(ctx context.Context, start, end string) ([]*domain.Order, errors.Error) {
+	startN, _ := strconv.ParseInt(start, 10, 64)
+	endN, _ := strconv.ParseInt(end, 10, 64)
+	listOrder, err := u.order.ListOrdersUseTk(ctx, &domain.OrderFormUseTk{
+		StartTime: startN,
+		EndTime:   endN,
+	})
+	log.Infof("req ", start, end)
+	if err != nil {
+		log.Error(err, "error")
+		return nil, errors.ErrSystem
+	}
+	log.Infof("data ", listOrder)
+	return listOrder, nil
 }

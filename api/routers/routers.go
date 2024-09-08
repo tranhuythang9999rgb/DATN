@@ -92,6 +92,7 @@ func NewApiRouter(
 		orderGroup.PATCH("/update/success", order.UpdateStatusOrder)
 		orderGroup.GET("/list/admin", order.GetListOrder)
 		orderGroup.PATCH("/update/admin/submit", order.UpdateOrderForSend)
+		orderGroup.GET("/list/order/admin", order.ListOrdersUseTk)
 	}
 	deliveryAddressGroup := r.Group("/delivery_address")
 	{

@@ -195,3 +195,7 @@ COMMENT ON COLUMN delivery_addresses.default_address IS 'địa chỉ nhận hà
 
 ALTER TABLE orders 
   ADD COLUMN create_time timestamp with time zone DEFAULT NOW();
+
+
+ALTER TABLE orders 
+  ADD COLUMN create_order INTEGER;

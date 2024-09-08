@@ -26,6 +26,7 @@ type Order struct {
 	TotalAmount       float64 `json:"total_amount"`        // Tổng số tiền
 	Status            int     `json:"status"`              // Trạng thái đơn hàng
 	TypePayment       int     `json:"type_payment"`
+	CreateTime        string  `json:"create_time"`
 }
 
 type OrderForm struct {
@@ -48,6 +49,11 @@ type OrderForm struct {
 	Quantity          int     `form:"quantity"`            // Số lượng sách trong đơn hàng
 	TotalAmount       float64 `form:"total_amount"`        // Tổng số tiền
 	Status            int     `form:"status"`              // Trạng thái đơn hàng
+}
+
+type OrderFormUseTk struct {
+	StartTime int64 `form:"start_time"`
+	EndTime   int64 `form:"end_time"`
 }
 
 type RepositoryOrder interface {
@@ -76,4 +82,6 @@ type RepositoryOrder interface {
 	UpdateStatusOrderSucsess(ctx context.Context, id int64) error
 
 	UpdateOrderForSend(ctx context.Context, id int64, status int) error
+
+	ListOrdersUseTk(ctx context.Context, filter *OrderFormUseTk) ([]*Order, error)
 }

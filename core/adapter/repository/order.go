@@ -146,3 +146,12 @@ func (u *CollectionOrder) UpdateOrderForSend(ctx context.Context, id int64, stat
 		})
 	return result.Error
 }
+
+func (c *CollectionOrder) ListOrdersUseTk(ctx context.Context, filter *domain.OrderFormUseTk) ([]*domain.Order, error) {
+	var orders []*domain.Order
+
+	// Truy vấn với khoảng thời gian
+	result := c.db.Where("create_order BETWEEN ? AND ?", filter.StartTime, filter.EndTime).Find(&orders)
+
+	return orders, result.Error
+}

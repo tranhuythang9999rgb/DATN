@@ -78,3 +78,15 @@ func (u *ControllerOrder) UpdateOrderForSend(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, nil)
 }
+
+func (u *ControllerOrder) ListOrdersUseTk(ctx *gin.Context) {
+
+	start := ctx.Query("start")
+	end := ctx.Query("end")
+	resp, err := u.order.ListOrdersUseTk(ctx, start, end)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, resp)
+}
