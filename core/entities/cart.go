@@ -11,9 +11,10 @@ type ListCart struct {
 	Count int         `json:"count"`
 }
 type CartResp struct {
-	CartId   int64   `json:"cart_id"`
-	BookId   int64   `json:"book_id"`
-	BookName string  `json:"book_name"`
-	Quantity int     `json:"quantity"`
-	Price    float64 `json:"price"`
+	CartId      int64   `json:"cart_id"`
+	BookId      int64   `json:"book_id"`
+	BookName    string  `json:"book_name"`
+	Quantity    int     `json:"quantity"`
+	Price       float64 `json:"price"`
+	TotalAmount float64 `json:"total_amount"`
 }

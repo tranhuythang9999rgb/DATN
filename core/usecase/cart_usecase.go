@@ -47,11 +47,12 @@ func (u *CartUseCase) ListCartByUser(ctx context.Context, username string) (*ent
 	for _, v := range carts {
 		book, _ := u.book.GetBookById(ctx, v.BookID)
 		listCartResp = append(listCartResp, &entities.CartResp{
-			CartId:   v.ID,
-			BookId:   v.BookID,
-			BookName: book.Title,
-			Quantity: v.Quantity,
-			Price:    book.Price,
+			CartId:      v.ID,
+			BookId:      v.BookID,
+			BookName:    book.Title,
+			Quantity:    v.Quantity,
+			Price:       book.Price,
+			TotalAmount: float64(v.Quantity) * book.Price,
 		})
 	}
 	return &entities.ListCart{

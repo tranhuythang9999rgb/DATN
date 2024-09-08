@@ -365,3 +365,113 @@ func (u *UseCasePayment) convertToString(value interface{}) string {
 // 	"showTimeId": 9876543210,
 // 	"seats": "A1, A2"
 //   }
+
+func (u *UseCasePayment) CreatePaymentCart(ctx context.Context, paymentData entities.CheckoutRequestType) (*entities.CheckoutResponseDataType, error) {
+
+	if paymentData.OrderCode == 0 || paymentData.Amount == 0 || paymentData.Description == "" || paymentData.CancelUrl == "" || paymentData.ReturnUrl == "" {
+		requiredPaymentData := entities.CheckoutRequestType{
+			OrderCode:   paymentData.OrderCode,
+			Amount:      paymentData.Amount,
+			ReturnUrl:   paymentData.ReturnUrl,
+			CancelUrl:   paymentData.CancelUrl,
+			Description: paymentData.Description,
+		}
+		requiredKeys := []string{"OrderCode", "Amount", "ReturnUrl", "CancelUrl", "Description"}
+		keysError := []string{}
+		for _, key := range requiredKeys {
+			switch key {
+			case "OrderCode":
+				if requiredPaymentData.OrderCode == 0 {
+					keysError = append(keysError, key)
+				}
+			case "Amount":
+				if requiredPaymentData.Amount == 0 {
+					keysError = append(keysError, key)
+				}
+			case "ReturnUrl":
+				if requiredPaymentData.ReturnUrl == "" {
+					keysError = append(keysError, key)
+				}
+			case "CancelUrl":
+				if requiredPaymentData.CancelUrl == "" {
+					keysError = append(keysError, key)
+				}
+			case "Description":
+				if requiredPaymentData.Description == "" {
+					keysError = append(keysError, key)
+				}
+			}
+		}
+
+		if len(keysError) > 0 {
+			msgError := fmt.Sprintf("%s %s must not be undefined or null.", enums.InvalidParameterErrorMessage, strings.Join(keysError, ", "))
+			return nil, resources.NewPayOSError(enums.InvalidParameterErrorCode, msgError)
+		}
+	}
+	if paymentData.OrderCode < -9007199254740991 || paymentData.OrderCode > 9007199254740991 {
+		return nil, resources.NewPayOSError(enums.InvalidParameterErrorCode, enums.OrderCodeOuOfRange)
+	}
+	url := fmt.Sprintf("%s/v2/payment-requests", PayOSBaseUrl)
+	signaturePaymentRequest, _ := u.CreateSignatureOfPaymentRequest(paymentData, PayOSChecksumKey)
+	paymentData.Signature = &signaturePaymentRequest
+	checkoutRequest, err := json.Marshal(paymentData)
+	if err != nil {
+		log.Error(err, "error")
+		return nil, resources.NewPayOSError(enums.InternalServerErrorErrorCode, err.Error())
+	}
+
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(checkoutRequest))
+	if err != nil {
+		log.Error(err, "error")
+		return nil, resources.NewPayOSError(enums.InternalServerErrorErrorCode, err.Error())
+	}
+
+	req.Header.Set("x-client-id", PayOSClientId)
+	req.Header.Set("x-api-key", PayOSApiKey)
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		log.Error(err, "error 3")
+		return nil, resources.NewPayOSError(enums.InternalServerErrorErrorCode, err.Error())
+	}
+	defer res.Body.Close()
+
+	var paymentLinkRes entities.PayOSResponseType
+	resBody, _ := io.ReadAll(res.Body)
+	err = json.Unmarshal(resBody, &paymentLinkRes)
+	if err != nil {
+		log.Error(err, "error 4")
+		return nil, resources.NewPayOSError(enums.InternalServerErrorErrorCode, err.Error())
+	}
+
+	if paymentLinkRes.Code == "00" {
+		paymentLinkResSignatute, _ := u.CreateSignatureFromObj(paymentLinkRes.Data, PayOSChecksumKey)
+		if paymentLinkResSignatute != *paymentLinkRes.Signature {
+			log.Error(err, "error")
+			return nil, resources.NewPayOSError(enums.DataNotIntegrityErrorCode, enums.DataNotIntegrityErrorMessage)
+		}
+		if paymentLinkRes.Data != nil {
+			jsonData, err := json.Marshal(paymentLinkRes.Data)
+			if err != nil {
+				log.Error(err, "error")
+				return nil, resources.NewPayOSError(enums.InternalServerErrorErrorCode, enums.InternalServerErrorErrorMessage)
+			}
+
+			var paymentLinkData entities.CheckoutResponseDataType
+			err = json.Unmarshal(jsonData, &paymentLinkData)
+			if err != nil {
+				log.Error(err, "error")
+				return nil, resources.NewPayOSError(enums.InternalServerErrorErrorCode, enums.InternalServerErrorErrorMessage)
+			}
+			log.Infof("next url", paymentLinkData.CheckoutUrl)
+
+			//them check
+			return &paymentLinkData, nil
+		}
+
+	}
+
+	return nil, resources.NewPayOSError(paymentLinkRes.Code, paymentLinkRes.Desc)
+}

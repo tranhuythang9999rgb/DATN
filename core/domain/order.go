@@ -74,4 +74,6 @@ type RepositoryOrder interface {
 	UpdateStatusOrder(ctx context.Context, id int64, status int) error
 
 	UpdateStatusOrderSucsess(ctx context.Context, id int64) error
+
+	UpdateOrderForSend(ctx context.Context, id int64, status int) error
 }

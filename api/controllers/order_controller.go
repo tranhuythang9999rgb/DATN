@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"shoe_shop_server/core/domain"
 	"shoe_shop_server/core/entities"
 	"shoe_shop_server/core/usecase"
 
@@ -47,6 +48,30 @@ func (u *ControllerOrder) GetOrderById(ctx *gin.Context) {
 func (u *ControllerOrder) UpdateStatusOrder(ctx *gin.Context) {
 	orderId := ctx.Query("order_id")
 	err := u.order.UpdateStatusOrder(ctx, orderId)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, nil)
+}
+
+func (u *ControllerOrder) GetListOrder(ctx *gin.Context) {
+	var req domain.OrderForm
+	if err := ctx.ShouldBind(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	resp, err := u.order.ListOrder(ctx, &req)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, resp)
+}
+
+func (u *ControllerOrder) UpdateOrderForSend(ctx *gin.Context) {
+	id := ctx.Query("id")
+	err := u.order.UpdateOrderForSend(ctx, id)
 	if err != nil {
 		u.baseController.ErrorData(ctx, err)
 		return

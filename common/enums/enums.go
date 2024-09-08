@@ -115,6 +115,10 @@ const (
 	TYPE_PAYMENT_OFFLINE = 27
 
 	ADDRESS_STATUS_DEFAULT = 29
+
+	ORDER_STATUS_SUBMIT_SEND = 31
+
+	ORDER_STATUS_CANCEL_BY_USER = 33
 )
 const (
 	NoSignatureErrorMessage         = "No signature."

@@ -90,6 +90,8 @@ func NewApiRouter(
 		orderGroup.POST("/add", order.CreateOrder)
 		orderGroup.GET("/infor", order.GetOrderById)
 		orderGroup.PATCH("/update/success", order.UpdateStatusOrder)
+		orderGroup.GET("/list/admin", order.GetListOrder)
+		orderGroup.PATCH("/update/admin/submit", order.UpdateOrderForSend)
 	}
 	deliveryAddressGroup := r.Group("/delivery_address")
 	{
@@ -98,6 +100,7 @@ func NewApiRouter(
 		deliveryAddressGroup.GET("/infor/profile", deliveryAddress.GetAddressByUserName)
 		deliveryAddressGroup.GET("/list", deliveryAddress.GetListAddressByUserName)
 		deliveryAddressGroup.PATCH("/update", deliveryAddress.UpdateStatusAddressById)
+		deliveryAddressGroup.DELETE("/delete", deliveryAddress.DeleteAddressById)
 	}
 	paymentGroup := r.Group("/payment")
 	{

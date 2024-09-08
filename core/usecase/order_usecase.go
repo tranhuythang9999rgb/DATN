@@ -137,6 +137,20 @@ func (u *UseCaseOrder) UpdateStatusOrder(ctx context.Context, orderId string) er
 	}
 	return nil
 }
-func (u *UseCaseOrder) ListOrder(ctx context.Context) ([]*domain.Order, errors.Error) {
-	return nil, nil
+
+func (u *UseCaseOrder) ListOrder(ctx context.Context, req *domain.OrderForm) ([]*domain.Order, errors.Error) {
+	listOrder, err := u.order.ListOrders(ctx, req)
+	if err != nil {
+		return nil, errors.ErrSystem
+	}
+	return listOrder, nil
+}
+
+func (u *UseCaseOrder) UpdateOrderForSend(ctx context.Context, id string) errors.Error {
+	idNumber, _ := strconv.ParseInt(id, 10, 64)
+	err := u.order.UpdateOrderForSend(ctx, idNumber, enums.ORDER_STATUS_SUBMIT_SEND)
+	if err != nil {
+		return errors.NewSystemError(fmt.Sprintf("error system . %v", err))
+	}
+	return nil
 }

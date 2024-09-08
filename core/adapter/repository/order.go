@@ -2,9 +2,9 @@ package repository
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"shoe_shop_server/common/enums"
-	"shoe_shop_server/common/log"
 	"shoe_shop_server/core/adapter"
 	"shoe_shop_server/core/domain"
 
@@ -78,7 +78,7 @@ func (c *CollectionOrder) ListOrders(ctx context.Context, filter *domain.OrderFo
 		Quantity:          filter.Quantity,
 		TotalAmount:       filter.TotalAmount,
 		Status:            filter.Status,
-	}).Find(&orders)
+	}).Order("create_time desc").Find(&orders)
 
 	return orders, result.Error
 }
@@ -109,8 +109,40 @@ func (u *CollectionOrder) UpdateStatusOrder(ctx context.Context, id int64, statu
 	return result.Error
 }
 
+// UpdateStatusOrderSucsess updates the status and payment type of an order.
 func (u *CollectionOrder) UpdateStatusOrderSucsess(ctx context.Context, id int64) error {
-	log.Infof("order id : ", id)
-	result := u.db.Model(&domain.Order{}).Where("id = ? ", id).UpdateColumn("status", 23)
+
+	if id <= 0 {
+		return errors.New("invalid order ID")
+	}
+
+	newStatus := 23
+	paymentType := enums.TYPE_PAYMENT_ONLINE
+
+	result := u.db.Model(&domain.Order{}).
+		Where("id = ?", id).
+		Updates(map[string]interface{}{
+			"status":       newStatus,
+			"type_payment": paymentType,
+		})
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return errors.New("no rows affected; check if the order exists")
+	}
+
+	return nil
+}
+
+func (u *CollectionOrder) UpdateOrderForSend(ctx context.Context, id int64, status int) error {
+	result := u.db.Model(&domain.Order{}).
+		Where("id = ?", id).
+		Updates(map[string]interface{}{
+			"status":       status,
+			"type_payment": enums.TYPE_PAYMENT_ONLINE,
+		})
 	return result.Error
 }

@@ -97,3 +97,12 @@ func (u *DeliveryAddressUseCase) UpdateStatusAddressById(ctx context.Context, id
 	}
 	return nil
 }
+
+func (u *DeliveryAddressUseCase) DeleteAddressById(ctx context.Context, id string) errors.Error {
+	numberId, _ := strconv.ParseInt(id, 10, 64)
+	err := u.delivery_address.DeleteAddressById(ctx, numberId)
+	if err != nil {
+		return errors.ErrSystem
+	}
+	return nil
+}

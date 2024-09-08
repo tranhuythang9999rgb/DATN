@@ -22,4 +22,5 @@ type RepositoryDeliveryAddress interface {
 	GetAddressByUserName(ctx context.Context, username string) (*DeliveryAddress, error)
 	GetListAddressByUserName(ctx context.Context, username string) ([]*DeliveryAddress, error)
 	UpdateStatusAddressById(ctx context.Context, id int64, userName string) error
+	DeleteAddressById(ctx context.Context, id int64) error
 }

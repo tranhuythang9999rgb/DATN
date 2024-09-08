@@ -81,3 +81,13 @@ func (u *ControllerDeliveryAddress) UpdateStatusAddressById(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, nil)
 }
+
+func (u *ControllerDeliveryAddress) DeleteAddressById(ctx *gin.Context) {
+	id := ctx.Query("id")
+	err := u.deliveryAddress.DeleteAddressById(ctx, id)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, nil)
+}

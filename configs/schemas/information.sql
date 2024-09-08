@@ -192,3 +192,6 @@ COMMENT ON COLUMN orders.type_payment IS 'loại hình thức thanh toán , onel
 ALTER TABLE delivery_addresses 
   ADD COLUMN default_address INT;
 COMMENT ON COLUMN delivery_addresses.default_address IS 'địa chỉ nhận hàng mặc định';
+
+ALTER TABLE orders 
+  ADD COLUMN create_time timestamp with time zone DEFAULT NOW();

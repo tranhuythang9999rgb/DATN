@@ -103,3 +103,27 @@ func (c *ControllersPayment) ReturnUrlAftercanCelPayment(ctx *gin.Context) {
 //         "resp_order": null
 //     }
 // }
+
+func (u *ControllersPayment) CreatePaymentCart(ctx *gin.Context) {
+
+	uuid := utils.GenerateUniqueKey()
+	description := "Xin Cam on"
+	cancelUrl := "http://localhost:8080/manager/payment/return/calcel/payment"
+	returnUrl := "http://127.0.0.1:8080/manager/payment/return/create/payment"
+
+	resp, err := u.pay.CreatePaymentCart(ctx, entities.CheckoutRequestType{
+		OrderCode:   uuid,
+		Amount:      0,
+		Description: description,
+		CancelUrl:   cancelUrl,
+		ReturnUrl:   returnUrl,
+		ExpiredAt:   utils.GenerateTimestampExpiredAt(15), //Thời gian tồn tại của QR code
+	})
+	if err != nil {
+		log.Error(err, "error server")
+		u.baseController.ErrorData(ctx, errors.ErrSystem)
+		return
+	}
+	u.baseController.Success(ctx, resp)
+
+}
