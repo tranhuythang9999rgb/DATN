@@ -111,6 +111,7 @@ function HomePage() {
     const handleBuyNow = (bookId) => {
         setSelectedBookId(bookId);
         setIsNextBuy(true);
+        localStorage.setItem("book_id",bookId);
     };
     // Function to fetch the list of authors
     const fetchAuthors = async () => {

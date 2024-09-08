@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Card, Col, Image, Row, Typography, Rate, Button, Input, Tooltip, Modal, Carousel, Space, message, Drawer } from 'antd';
+import { Card, Col, Image, Row, Typography, Rate, Button, Input, Tooltip, Modal, Carousel, Space, message, Drawer, Spin } from 'antd';
 import { FaUser, FaBookOpen, FaCalendarAlt, FaBarcode, FaLanguage, FaFileAlt, FaRulerCombined, FaWeightHanging, FaDollarSign, FaPercent, FaBoxes } from 'react-icons/fa';
 import './home_index.css';
 import { CgAdd } from 'react-icons/cg';
@@ -44,10 +44,18 @@ const DetailBuy = ({ book_id }) => {
 
     const fetchBookDetails = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/manager/book/detail/page?id=${book_id}`);
+            // Add a 2-second delay before loading book_id
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+            
+            const bookId = localStorage.getItem("book_id");
+            if (!bookId) {
+                setError('Không tìm thấy mã sách');
+                return;
+            }
+            
+            const response = await axios.get(`http://localhost:8080/manager/book/detail/page?id=${bookId}`);
             if (response.data && response.data.body) {
                 setBook(response.data.body);
-                localStorage.setItem('book_id', book_id);
             } else {
                 setError('Không tìm thấy dữ liệu');
             }
@@ -57,7 +65,11 @@ const DetailBuy = ({ book_id }) => {
             setLoading(false);
         }
     };
-
+    
+    useEffect(() => {
+        fetchBookDetails();
+    }, [book_id]); // Ensure the book_id is properly defined
+    
     useEffect(() => {
         fetchBookDetails();
     }, [book_id]);
@@ -87,7 +99,14 @@ const DetailBuy = ({ book_id }) => {
     const onChange = (currentSlide) => {
         console.log('Current slide:', currentSlide);
     };
-    if (loading) return <div>Đang tải...</div>;
+
+    
+    if (loading) return (
+      <div className="loading-container">
+        <Spin size="large" tip="Đang tải..." />
+      </div>
+    );
+    
     if (error) return <div>{error}</div>;
     if (!book) return <div>Không có thông tin sách.</div>;
 
