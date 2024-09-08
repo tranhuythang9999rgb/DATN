@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
-import { Button, DatePicker, Space, Select, InputNumber } from 'antd';
+import { Button, DatePicker, Space, Select } from 'antd';
 import moment from 'moment';
 
 const { RangePicker } = DatePicker;
@@ -38,6 +38,8 @@ const Statistical = () => {
     }, [fetchData, dateRange]);
 
     const processData = () => {
+        console.log('Dữ liệu gốc:', data);
+
         const groupedData = data.reduce((acc, order) => {
             const key = groupBy === 'date' ? moment(order.order_date).format('DD/MM/YYYY') : order.book_title;
             if (!acc[key]) {
@@ -48,12 +50,16 @@ const Statistical = () => {
             return acc;
         }, {});
 
+        console.log('Dữ liệu nhóm:', groupedData);
+
         const sortedData = Object.entries(groupedData)
             .map(([key, value]) => ({
                 key,
                 ...value
             }))
             .sort((a, b) => b.quantity - a.quantity);
+
+        console.log('Dữ liệu sắp xếp:', sortedData);
 
         return sortedData.slice(0, topN);
     };
@@ -81,7 +87,6 @@ const Statistical = () => {
                         format="DD/MM/YYYY"
                         onChange={(dates) => setDateRange(dates)}
                     />
-                   
                     <Select defaultValue="date" style={{ width: 120 }} onChange={setGroupBy}>
                         <Option value="date">Theo ngày</Option>
                         <Option value="product">Theo sản phẩm</Option>
@@ -106,8 +111,8 @@ const Statistical = () => {
                     <YAxis yAxisId="right" orientation="right" stroke="#82ca9d" />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend />
-                    <Bar yAxisId="left" dataKey="quantity" fill="#8884d8" name="Số lượng" />
-                    <Bar yAxisId="right" dataKey="amount" fill="#82ca9d" name="Doanh thu" />
+                    <Bar yAxisId="left" dataKey="quantity" fill="#8884d8" name="Số lượng" barSize={20} />
+                    <Bar yAxisId="right" dataKey="amount" fill="#82ca9d" name="Doanh thu" barSize={20} />
                 </BarChart>
             </ResponsiveContainer>
         </div>
