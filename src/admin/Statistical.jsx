@@ -1,21 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from 'recharts';
 import axios from 'axios';
-import { DatePicker, Space } from 'antd';
+import { Button, DatePicker, Space } from 'antd';
+import moment from 'moment';
+
+const { RangePicker } = DatePicker;
 
 const Statistical = () => {
     const [data, setData] = useState([]);
+    const [fetchData, setFetchData] = useState(false);
+    const [dateRange, setDateRange] = useState([null, null]);
 
     useEffect(() => {
-        // Fetch data from the API
-        axios.get('http://127.0.0.1:8080/manager/order/list/order/admin?start=1725774521&end=1725774521')
-            .then(response => {
-                setData(response.data.body);
-            })
-            .catch(error => {
-                console.error('Lỗi khi lấy dữ liệu:', error);
-            });
-    }, []);
+        const [startDate, endDate] = dateRange;
+
+        if (fetchData && startDate && endDate) {
+            // Convert dates to Unix timestamps using moment
+            const startTimestamp = moment(startDate).startOf('day').unix();
+            const endTimestamp = moment(endDate).endOf('day').unix();
+
+            console.log(`Fetching data with start=${startTimestamp} and end=${endTimestamp}`);
+
+            // Fetch data from the API with selected date range
+            axios.get(`http://127.0.0.1:8080/manager/order/list/order/admin?start=${startTimestamp}&end=${endTimestamp}`)
+                .then(response => {
+                    console.log('API response:', response.data);
+                    setData(response.data.body);
+                    setFetchData(false); // Reset fetchData flag after fetching
+                })
+                .catch(error => {
+                    console.error('Lỗi khi lấy dữ liệu:', error);
+                });
+        }
+    }, [fetchData, dateRange]);
 
     // Transform the data for the chart
     const aggregatedData = data.reduce((acc, order) => {
@@ -53,10 +70,11 @@ const Statistical = () => {
             <h1>Thống Kê Đơn Hàng Theo Tựa Sách</h1>
             <div>
                 <Space>
-                    start
-                    <DatePicker />
-                    end
-                    <DatePicker />
+                    <RangePicker
+                        format="DD/MM/YYYY"
+                        onChange={(dates) => setDateRange(dates)}
+                    />
+                    <Button onClick={() => setFetchData(true)}>Thống kê</Button>
                 </Space>
             </div>
             <BarChart
