@@ -1,28 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
-import { Button, DatePicker, Space } from 'antd';
+import { Button, DatePicker, Space, Select, InputNumber } from 'antd';
 import moment from 'moment';
-import CircularChart from './CircularChart';
 
 const { RangePicker } = DatePicker;
+const { Option } = Select;
 
 const Statistical = () => {
     const [data, setData] = useState([]);
     const [fetchData, setFetchData] = useState(false);
     const [dateRange, setDateRange] = useState([null, null]);
+    const [topN, setTopN] = useState(5);
+    const [groupBy, setGroupBy] = useState('date');
 
     useEffect(() => {
         const [startDate, endDate] = dateRange;
 
         if (fetchData && startDate && endDate) {
-            // Convert dates to ISO 8601 format
             const startIso = startDate.startOf('day').toISOString();
             const endIso = endDate.endOf('day').toISOString();
 
-            console.log(`Fetching data with start=${startIso} and end=${endIso}`);
-
-            // Fetch data from the API with selected date range
             axios.get(`http://127.0.0.1:8080/manager/order/list/order/admin`, {
                 params: {
                     start: moment(startIso).unix(),
@@ -30,9 +28,8 @@ const Statistical = () => {
                 }
             })
                 .then(response => {
-                    console.log('API response:', response.data);
                     setData(response.data.body);
-                    setFetchData(false); // Reset fetchData flag after fetching
+                    setFetchData(false);
                 })
                 .catch(error => {
                     console.error('Lỗi khi lấy dữ liệu:', error);
@@ -40,38 +37,35 @@ const Statistical = () => {
         }
     }, [fetchData, dateRange]);
 
-    // Grouping by date and book_title to handle multiple books on the same day
-    const aggregatedData = data.reduce((acc, order) => {
-        const orderDate = moment(order.order_date).format('DD/MM/YYYY'); // Format date
-        const key = `${orderDate} - ${order.book_title}`; // Combine date and book title as the key
+    const processData = () => {
+        const groupedData = data.reduce((acc, order) => {
+            const key = groupBy === 'date' ? moment(order.order_date).format('DD/MM/YYYY') : order.book_title;
+            if (!acc[key]) {
+                acc[key] = { quantity: 0, amount: 0 };
+            }
+            acc[key].quantity += order.quantity;
+            acc[key].amount += order.total_amount;
+            return acc;
+        }, {});
 
-        const existingEntry = acc.find(item => item.key === key);
+        const sortedData = Object.entries(groupedData)
+            .map(([key, value]) => ({
+                key,
+                ...value
+            }))
+            .sort((a, b) => b.quantity - a.quantity);
 
-        if (existingEntry) {
-            existingEntry.amount += order.total_amount;
-            existingEntry.quantity += order.quantity; // Aggregate quantity for same book on the same day
-        } else {
-            acc.push({
-                key, // Use date and book title as a combined key
-                date: orderDate,
-                book_title: order.book_title,
-                amount: order.total_amount,
-                quantity: order.quantity,
-            });
-        }
-        return acc;
-    }, []);
+        return sortedData.slice(0, topN);
+    };
 
-    // Custom tooltip component
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
-            const { book_title, amount, quantity, date } = payload[0].payload;
+            const { key, quantity, amount } = payload[0].payload;
             return (
-                <div className="custom-tooltip">
-                    <p className="label"><strong>{book_title}</strong></p>
-                    <p>Ngày: {date}</p>
-                    <p className="intro">Tổng số tiền: {amount} VND</p>
-                    <p className="intro">Số lượng: {quantity}</p>
+                <div className="custom-tooltip" style={{ backgroundColor: 'white', padding: '10px', border: '1px solid #ccc' }}>
+                    <p className="label"><strong>{key}</strong></p>
+                    <p>Số lượng: {quantity}</p>
+                    <p>Tổng số tiền: {amount.toLocaleString()} VND</p>
                 </div>
             );
         }
@@ -80,47 +74,42 @@ const Statistical = () => {
 
     return (
         <div>
-            <h1>Thống Kê Đơn Hàng Theo Ngày Và Tựa Sách</h1>
-            <div>
+            <h1>Thống Kê Top {topN} Sản Phẩm Bán Chạy</h1>
+            <Space direction="vertical" size="middle" style={{ marginBottom: 20 }}>
                 <Space>
                     <RangePicker
                         format="DD/MM/YYYY"
                         onChange={(dates) => setDateRange(dates)}
                     />
+                   
+                    <Select defaultValue="date" style={{ width: 120 }} onChange={setGroupBy}>
+                        <Option value="date">Theo ngày</Option>
+                        <Option value="product">Theo sản phẩm</Option>
+                    </Select>
                     <Button onClick={() => setFetchData(true)}>Thống kê</Button>
                 </Space>
-            </div>
-            <BarChart
-                width={1000}
-                height={500}
-                data={aggregatedData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
-            >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                    dataKey="key" // Use the combined key for X-axis
-                    tick={{ angle: -45 }}
-                    textAnchor="end"
-                    label={{ value: 'Ngày và Tựa Sách', position: 'insideBottomRight', offset: 0 }}
-                />
-                <YAxis
-                    label={{ value: 'Tổng Số Tiền', angle: -90, position: 'insideLeft', offset: 0 }}
-                />
-                <Tooltip content={<CustomTooltip />} />
-                <Legend />
-                <Bar
-                    dataKey="amount"
-                    fill="#8884d8"
-                    barSize={20} // Adjust the size of the bars
-                />
-                <Bar
-                    dataKey="quantity"
-                    fill="#82ca9d"
-                    barSize={20} // Adjust size for quantity bars
-                />
-            </BarChart>
-
-            <CircularChart />
+            </Space>
+            <ResponsiveContainer width="100%" height={500}>
+                <BarChart
+                    data={processData()}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis
+                        dataKey="key"
+                        tick={{ angle: -45 }}
+                        textAnchor="end"
+                        interval={0}
+                        height={60}
+                    />
+                    <YAxis yAxisId="left" orientation="left" stroke="#8884d8" />
+                    <YAxis yAxisId="right" orientation="right" stroke="#82ca9d" />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Legend />
+                    <Bar yAxisId="left" dataKey="quantity" fill="#8884d8" name="Số lượng" />
+                    <Bar yAxisId="right" dataKey="amount" fill="#82ca9d" name="Doanh thu" />
+                </BarChart>
+            </ResponsiveContainer>
         </div>
     );
 }
