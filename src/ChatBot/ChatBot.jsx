@@ -3,15 +3,15 @@ import Chatbot from 'react-chatbot-kit';
 import 'react-chatbot-kit/build/main.css';
 import { createChatBotMessage } from 'react-chatbot-kit';
 
-// Config
+// Cấu hình chatbot (Config)
 const config = {
-  botName: 'ChatBot',
+  botName: 'Trợ Lý Ảo', // Đổi tên bot sang tiếng Việt
   initialMessages: [
     createChatBotMessage('Xin chào! Tôi có thể giúp gì cho bạn hôm nay?'),
   ],
 };
 
-// MessageParser
+// Bộ phân tích tin nhắn (MessageParser)
 class MessageParser {
   constructor(actionProvider) {
     this.actionProvider = actionProvider;
@@ -30,7 +30,7 @@ class MessageParser {
   }
 }
 
-// ActionProvider
+// Bộ xử lý hành động (ActionProvider)
 class ActionProvider {
   constructor(createChatBotMessage, setStateFunc) {
     this.createChatBotMessage = createChatBotMessage;
@@ -64,7 +64,7 @@ class ActionProvider {
   }
 }
 
-// ChatBot component
+// Thành phần ChatBot (ChatBot component)
 function ChatBot() {
   return (
     <div style={{ maxWidth: '300px', margin: 'auto' }}>
