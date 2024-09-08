@@ -2,6 +2,7 @@ import AuthorBook from "./admin/AuthorBook";
 import Dashboard from "./admin/Dashboard";
 import ListBooks from "./admin/ListBooks";
 import Publishers from "./admin/Publishers";
+import Statistical from "./admin/Statistical";
 import TypeBook from "./admin/TypeBook";
 import UploadBook from "./admin/UploadBook";
 import CheckLogin from "./common/CheckLogin";
@@ -26,7 +27,7 @@ import RegisterUser from "./user/RegisterUser";
 function App() {
   return (
     <div>
-      <Dashboard />
+      {/* <Dashboard /> */}
       {/* <UploadBook/> */}
       {/* <ListBooks/> */}
       {/* <HomePage/> */}
@@ -48,6 +49,7 @@ function App() {
     {/* <GetTheShippingAddress/> */}
     {/* <ListCart/> */}
     {/* <ListOrderUser/> */}
+    <Statistical/>
     </div>
   );
 }

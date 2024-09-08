@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Breadcrumb, Layout, Menu, theme, Tabs, Button } from 'antd';
-import { GiAbstract078 } from 'react-icons/gi';
+import { GiAbstract078, GiWantedReward } from 'react-icons/gi';
 import { GrUserAdmin } from 'react-icons/gr';
 
 import './admin_index.css';
@@ -14,6 +14,9 @@ import AuthorBook from './AuthorBook';
 import Publishers from './Publishers';
 import TypeBook from './TypeBook';
 import ListOrder from './ListOrder';
+import { FaUserTie } from 'react-icons/fa';
+import { CiLineHeight } from 'react-icons/ci';
+import { FiPieChart } from 'react-icons/fi';
 
 const { Header, Content, Sider } = Layout;
 const clearLocalStorageAndReload = () => {
@@ -79,7 +82,7 @@ const tabsContent = [
         key: '3',
         label: (
             <span className="tab-label" style={{ fontSize: '17px' }}>
-                <LuFileBarChart style={{ fontSize: '25px' }} className="icon" /> Quản lý tác giả
+                <FaUserTie style={{ fontSize: '25px' }} className="icon" /> Quản lý tác giả
             </span>
         ),
         content: <div>
@@ -101,7 +104,7 @@ const tabsContent = [
         key: '5',
         label: (
             <span className="tab-label" style={{ fontSize: '17px', color: '#4a4a4a' }}>
-                <TbUsersGroup style={{ fontSize: '25px' }} className="icon-quan-ly-khach-hang" /> Quản lý sách
+                <CiLineHeight style={{ fontSize: '25px' }} className="icon-quan-ly-khach-hang" /> Quản lý sách
             </span>
         ),
         content: <div>
@@ -112,7 +115,7 @@ const tabsContent = [
         key: '6',
         label: (
             <span className="tab-label" style={{ fontSize: '17px', color: '#4a4a4a' }}>
-                <TbUsersGroup style={{ fontSize: '25px' }} className="icon-quan-ly-khach-hang" /> Quản lý điểm
+                <GiWantedReward style={{ fontSize: '25px' }} className="icon-quan-ly-khach-hang" /> Quản lý điểm
             </span>
         ),
         content: <div>
@@ -133,7 +136,7 @@ const tabsContent = [
         key: '8',
         label: (
             <span className="tab-label" style={{ fontSize: '17px', color: '#4a4a4a' }}>
-                <TbUsersGroup style={{ fontSize: '25px' }} className="icon-quan-ly-khach-hang" /> Thống kê đơn hàng
+                <LuFileBarChart style={{ fontSize: '25px' }} className="icon-quan-ly-khach-hang" /> Thống kê đơn hàng
             </span>
         ),
         content: <div>
@@ -144,7 +147,7 @@ const tabsContent = [
         key: '9',
         label: (
             <span className="tab-label" style={{ fontSize: '17px', color: '#4a4a4a' }}>
-                <TbUsersGroup style={{ fontSize: '25px' }} className="icon-quan-ly-khach-hang" /> Thống kê doanh thu
+                <FiPieChart style={{ fontSize: '25px' }} className="icon-quan-ly-khach-hang" /> Thống kê doanh thu
             </span>
         ),
         content: <div>
