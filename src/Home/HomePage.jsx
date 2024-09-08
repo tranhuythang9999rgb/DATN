@@ -111,7 +111,7 @@ function HomePage() {
     const handleBuyNow = (bookId) => {
         setSelectedBookId(bookId);
         setIsNextBuy(true);
-        localStorage.setItem("book_id",bookId);
+        localStorage.setItem("book_id", bookId);
     };
     // Function to fetch the list of authors
     const fetchAuthors = async () => {
@@ -180,30 +180,16 @@ function HomePage() {
         <div className='layout-home'>
             <div className='layout-header'>
                 <div className='layout-header-start'>
-                    <div style={{ position: 'relative', display: 'inline-block' }}>
-                        <GiArmoredBoomerang
-                            style={{ display: 'flex', marginLeft: '10px', color: 'green', fontSize: '100px' }}
-                        />
-                        <span
-                            style={{
-                                position: 'absolute',
-                                top: '50%',
-                                left: '50%',
-                                transform: 'translate(-50%, -50%)',
-                                color: 'orange',
-                                fontWeight: 'bold',
-                                fontSize: '18px',
-                            }}
-                        >
-                            TS Shop
-                        </span>
+                    <div className='icon-container'>
+                        <GiArmoredBoomerang className='icon' />
+                        <span className='text'>TS Shop</span>
                     </div>
                 </div>
                 <div className='layout-header-center'>
                     <ul>
-                        <li style={{ cursor: 'pointer' }} onClick={() => window.location.reload()}><FcHome />Trang chủ</li>
+                        <li onClick={() => window.location.reload()}><FcHome />Trang chủ</li>
                         <li>Tin sách</li>
-                        <li style={{ cursor: 'pointer', listStyle: 'none' }}>
+                        <li>
                             {loading ? (
                                 <Spin tip="Loading authors..." />
                             ) : (
@@ -217,26 +203,21 @@ function HomePage() {
                         <li>Tác giả</li>
                         <li>Cuộc thi</li>
                         <li>Thông tin cửa hàng</li>
-                        <li>
-                            <div style={{ display: 'flex' }}>
-                                <Input placeholder='Tìm kiếm ...' style={{ height: '30px' }} />
-                                <Button style={{ height: '30px' }}><CiSearch />
-                                </Button>
-                            </div>
+                        <li className='search-container'>
+                            <Input placeholder='Tìm kiếm ...' />
+                            <Button><CiSearch /></Button>
                         </li>
-                        <li>
+                        <li className='user-actions'>
                             {username ? (
-                                <Space>
-                                    <Button style={{ border: 'none', fontSize: '17px' }} onClick={handleLogoutClick}>Đăng xuất</Button>
-                                    <Button style={{ border: 'none', fontSize: '17px' }} onClick={handleNextProFile}><CgProfile /> </Button>
-                                </Space>
+                                <>
+                                    <Button onClick={handleLogoutClick}>Đăng xuất</Button>
+                                    <Button onClick={handleNextProFile}><CgProfile /></Button>
+                                </>
                             ) : (
                                 <>
-
                                     <Tooltip title="Đăng nhập">
                                         <CiLogin style={{ fontSize: '20px', cursor: 'pointer' }} onClick={handleLoginClick} />
                                     </Tooltip>
-
                                     <Modal
                                         title="Đăng nhập"
                                         visible={isModalVisible}
@@ -250,14 +231,9 @@ function HomePage() {
                             )}
                         </li>
                         <li>
-                            {/* Giỏ hàng */}
-                            {username ? (
+                            {username && (
                                 <Tooltip title="Giỏ hàng">
-                                    <AiOutlineShoppingCart
-                                        style={{ fontSize: '20px', cursor: 'pointer' }}
-                                        onClick={openDrawerCart}
-                                    />
-
+                                    <AiOutlineShoppingCart className='cart-icon' onClick={openDrawerCart} />
                                     <Drawer
                                         title="Giỏ hàng của bạn"
                                         placement="right"
@@ -267,33 +243,27 @@ function HomePage() {
                                     >
                                         <ListCart ref={cartRef} />
                                     </Drawer>
-
-
                                 </Tooltip>
-                            ) : null}
+                            )}
                         </li>
-
                     </ul>
                 </div>
-
-                <div className='layout-header-end'></div>
             </div>
+
             <div className='layout-content'>
 
                 <div className='layout-content-image'>
                     <Image width='40%' src='https://th.bing.com/th/id/OIG2.gBo1U.SuIE.iiAHhpJnI?w=1024&h=1024&rs=1&pid=ImgDetMain' />
                 </div>
-                <div>
 
-                </div>
             </div>
 
             <span>
-                <ChatBot/>
+                <ChatBot />
             </span>
 
             <div className="layout-footer">
-                            
+
                 <div className='layout-footer-tac-gia'>
                     <h1>Tác giả</h1>
                     {/* List of new book authors */}
@@ -434,7 +404,7 @@ function HomePage() {
                     <div className='footer-home-page'>
                         <Row justify="space-evenly" align="middle">
                             <Col span={4} className='footer-col-home-page'>
-                                <Title style={{display:'flex' ,justifyContent:'center'}} level={4}>Thông tin</Title>
+                                <Title style={{ display: 'flex', justifyContent: 'center' }} level={4}>Thông tin</Title>
                                 <ul>
                                     <li><Link href="/about" target="_blank">Giới thiệu</Link></li>
                                     <li><Link href="/contact" target="_blank">Liên hệ</Link></li>
@@ -443,7 +413,7 @@ function HomePage() {
                                 </ul>
                             </Col>
                             <Col span={4} className='footer-col-home-page'>
-                                <Title style={{display:'flex' ,justifyContent:'center'}} level={4}>Dịch vụ khách hàng</Title>
+                                <Title style={{ display: 'flex', justifyContent: 'center' }} level={4}>Dịch vụ khách hàng</Title>
                                 <ul>
                                     <li><Link href="/support" target="_blank">Hỗ trợ khách hàng</Link></li>
                                     <li><Link href="/shipping" target="_blank">Giao hàng</Link></li>
@@ -451,7 +421,7 @@ function HomePage() {
                                 </ul>
                             </Col>
                             <Col span={4} className='footer-col-home-page'>
-                                <Title style={{display:'flex' ,justifyContent:'center'}} level={4}>Kết nối với chúng tôi</Title>
+                                <Title style={{ display: 'flex', justifyContent: 'center' }} level={4}>Kết nối với chúng tôi</Title>
                                 <ul>
                                     <li><Link href="https://facebook.com" target="_blank">Facebook</Link></li>
                                     <li><Link href="https://twitter.com" target="_blank">Twitter</Link></li>
@@ -459,7 +429,7 @@ function HomePage() {
                                 </ul>
                             </Col>
                             <Col span={4} className='footer-col-home-page'>
-                                <Title style={{display:'flex' ,justifyContent:'center',marginTop:'-3px'}} level={4}>Thông tin liên hệ</Title>
+                                <Title style={{ display: 'flex', justifyContent: 'center', marginTop: '-3px' }} level={4}>Thông tin liên hệ</Title>
                                 <Text>Hưng Hà Thái Bình, Việt Nam</Text><br />
                                 <Text>Email: contact@bookstore.vn</Text><br />
                                 <Text>Điện thoại: +84 123 456 789</Text>
@@ -474,7 +444,7 @@ function HomePage() {
 
 
             </div>
-           
+
         </div>
     );
 }

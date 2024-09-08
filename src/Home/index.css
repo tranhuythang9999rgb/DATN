@@ -62,3 +62,119 @@
   .footer-col-home-page ul{
     display: block;
   }
+
+  .layout-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 10px 20px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.layout-header-start {
+    display: flex;
+    align-items: center;
+}
+
+.layout-header-start .icon-container {
+    position: relative;
+    display: inline-block;
+}
+
+.layout-header-start .icon-container .icon {
+    color: green;
+    font-size: 100px;
+}
+
+.layout-header-start .icon-container .text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: orange;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.layout-header-center {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.layout-header-center ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.layout-header-center ul li {
+    margin: 0 15px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.layout-header-center ul li:hover {
+    color: #1890ff;
+}
+
+.layout-header-center ul li .ant-dropdown-trigger {
+    display: flex;
+    align-items: center;
+}
+
+.layout-header-center ul li .search-container {
+    display: flex;
+    align-items: center;
+}
+
+.layout-header-center ul li .search-container .ant-input {
+    height: 30px;
+}
+
+.layout-header-center ul li .search-container .ant-btn {
+    height: 30px;
+}
+
+.layout-header-center ul li .user-actions {
+    display: flex;
+    align-items: center;
+}
+
+.layout-header-center ul li .user-actions .ant-btn {
+    font-size: 17px;
+}
+
+.layout-header-center ul li .user-actions .anticon {
+    font-size: 20px;
+}
+
+.layout-header-center ul li .cart-icon {
+    font-size: 20px;
+    cursor: pointer;
+}
+.search-container {
+  display: flex;
+  align-items: center;
+}
+
+.search-container .ant-input {
+  height: 30px; /* Ensure input height matches the button */
+  border-radius: 4px 0 0 4px; /* Match the border-radius with the button */
+}
+
+.search-container .ant-btn {
+  height: 30px; /* Match the height of the button to the input */
+  border-radius: 0 4px 4px 0; /* Match the border-radius with the input */
+  border: none; /* Remove default border if not needed */
+}
+
+.search-container .ant-input,
+.search-container .ant-btn {
+  box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+}
