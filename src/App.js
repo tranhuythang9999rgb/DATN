@@ -33,7 +33,7 @@ function App() {
       {/* <HomePage/> */}
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
-      {/* <CheckLogin/> */}
+      <CheckLogin/>
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
@@ -49,7 +49,7 @@ function App() {
     {/* <GetTheShippingAddress/> */}
     {/* <ListCart/> */}
     {/* <ListOrderUser/> */}
-    <Statistical/>
+    {/* <Statistical/> */}
     </div>
   );
 }

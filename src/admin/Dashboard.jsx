@@ -17,6 +17,7 @@ import ListOrder from './ListOrder';
 import { FaUserTie } from 'react-icons/fa';
 import { CiLineHeight } from 'react-icons/ci';
 import { FiPieChart } from 'react-icons/fi';
+import Statistical from './Statistical';
 
 const { Header, Content, Sider } = Layout;
 const clearLocalStorageAndReload = () => {
@@ -151,7 +152,7 @@ const tabsContent = [
             </span>
         ),
         content: <div>
-
+            <Statistical/>
         </div>,
     },
 

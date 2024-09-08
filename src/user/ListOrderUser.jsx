@@ -54,6 +54,7 @@ const ListOrderUser = () => {
         { title: 'Giá Sách', dataIndex: 'book_price', key: 'book_price' },
         { title: 'Số Lượng', dataIndex: 'quantity', key: 'quantity' },
         { title: 'Tổng Số Tiền', dataIndex: 'total_amount', key: 'total_amount' },
+        
     ];
 
     if (loading) return <Spin size="large" />;
