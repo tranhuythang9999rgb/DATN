@@ -306,6 +306,7 @@ function HomePage() {
                         </li>
                     </ul>
                 </div>
+
                 <div className='layout-footer-list-bool-well-sell'>
                     <div style={{ padding: '20px' }}>
                         <Title level={2}>Top Sản phẩm bán chạy <MdSell /></Title>
@@ -314,18 +315,18 @@ function HomePage() {
                                 <Col span={4} key={book.id} style={{ display: 'flex', justifyContent: 'center' }}>
                                     <Card
                                         cover={
-                                            <div style={{ position: 'relative' }}>
+                                            <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                                 <div
                                                     className='icon-trai-tim'
                                                     onClick={() => toggleLike(book.id)}  // Toggle like status on click
                                                     style={{
                                                         position: 'absolute',
-                                                        top: '3px',
-                                                        right: '35px',
+                                                        top: '-2px',  // Adjusted position
+                                                        right: '90px', // Adjusted position
                                                         fontSize: '25px',
                                                         color: likedBooks[book.id] ? 'red' : 'pink',  // Change color if liked
                                                         cursor: 'pointer',
-                                                        borderRadius: '90%',
+                                                        zIndex: 10,  // Ensures the icon is above other elements
                                                     }}
                                                 >
                                                     {likedBooks[book.id] ? <FaHeart /> : <FaRegHeart />}
@@ -337,7 +338,7 @@ function HomePage() {
                                                         height: '200px',
                                                         objectFit: 'cover',
                                                         width: '220px',
-                                                        display: 'flex',
+                                                        display: 'block', // Ensure the image is a block-level element for centering
                                                         margin: '0 auto',
                                                     }}
                                                 />
@@ -359,17 +360,19 @@ function HomePage() {
                                             <Button onClick={() => handleBuyNow(book.id)} style={{ background: 'red', color: 'white', fontSize: '17px' }}>
                                                 Mua ngay
                                             </Button>
-
                                         </span>
                                     </Card>
+
                                 </Col>
                             ))}
                         </Row>
+
                     </div>
                 </div>
                 <div className='layout-footer-list-bool-well-sell'>
                     <BookWellSell title={'Sắp xuất bản'} />
                 </div>
+
                 <div style={{ marginTop: '370px' }} className='layout-footer-nhaf-xuatban'>
                     <h3>Nhà xuất bản</h3>
                     {/* List of publishers */}

@@ -219,3 +219,110 @@
 .footer-bottom-home-page .ant-typography {
   margin: 0; /* Remove default margin */
 }
+
+.book-well-sell-container {
+  padding: 20px;
+  background-color: #f5f5f5; /* Light background color for contrast */
+  margin-top: 40px; /* Space above the section */
+}
+
+.book-well-sell-title {
+  margin-bottom: 30px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #333; /* Dark color for text */
+  display: flex;
+  align-items: center;
+}
+
+.book-well-sell-title .anticon {
+  margin-left: 10px; /* Space between title and icon */
+  font-size: 30px;
+  color: #d9534f; /* Accent color */
+}
+
+.book-card-col {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px; /* Space between cards */
+}
+
+.book-card {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  border-radius: 10px; /* Rounded corners for cards */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.book-card:hover {
+  transform: translateY(-10px); /* Lift effect on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+.card-cover {
+  position: relative;
+}
+
+.like-icon {
+  position: absolute;
+  top: 10px; /* Adjusted to ensure it's not obscured */
+  right: 10px;
+  font-size: 24px;
+  color: pink; /* Default color */
+  cursor: pointer;
+  z-index: 1; /* Ensures the icon is above the image */
+  transition: color 0.3s ease; /* Smooth color transition */
+}
+
+.card-price {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #666; /* Slightly lighter color for text */
+}
+
+.card-footer {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.buy-now-button {
+  background-color: #d9534f; /* Red background color */
+  color: white;
+  border: none;
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px 20px;
+  font-size: 16px;
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.buy-now-button:hover {
+  background-color: #c9302c; /* Darker red on hover */
+}
+
+/* /// */
+
+
+.like-icon {
+  position: absolute;
+  top: 10px;  /* Adjusted position */
+  right: 50px; /* Adjusted position */
+  font-size: 25px;
+  color: pink; /* Default color */
+  cursor: pointer;
+  z-index: 10; /* Ensures the icon is above other elements */
+  transition: color 0.3s ease; /* Smooth color transition */
+}
+
+.like-icon.liked {
+  color: red; /* Color when liked */
+}
+
+.card-image {
+  height: 200px;
+  object-fit: cover;
+  width: 220px;
+  display: flex;
+  margin: 0 auto;
+}

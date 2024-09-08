@@ -31,93 +31,112 @@ body {
 }
 
 .layout-footer {
+    background-color: #f8f8f8; /* Light gray background for the footer */
+    padding: 20px;
+}
+
+.layout-footer h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.layout-footer ul {
+    list-style: none; /* Remove default list styling */
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-around; /* Space items evenly */
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+}
+
+.layout-footer li {
+    text-align: center;
+    margin: 10px;
+}
+
+.layout-footer .avatar {
+    margin-bottom: 5px;
+}
+
+.layout-footer .avatar img {
+    border-radius: 50%; /* Circular avatar */
+    object-fit: cover; /* Ensure images cover the avatar area */
+}
+
+.layout-footer .book-card {
+    padding: 20px;
+}
+
+.layout-footer .book-card .icon-trai-tim {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.layout-footer .book-card .ant-card-cover {
+    position: relative;
+}
+
+.layout-footer .book-card img {
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.layout-footer .book-card .ant-card-meta {
+    margin-top: 10px;
+}
+
+.layout-footer .book-card .ant-card-body {
     display: flex;
     flex-direction: column;
-    /* Arrange sections in a column */
-    background-color: #f8f9fa;
-    /* Light background color */
-    padding: 20px;
-    border-top: 1px solid #dee2e6;
-    /* Optional border on top */
-}
-
-.layout-footer>div {
-    padding: 10px 0;
-}
-
-.layout-footer h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #343a40;
-    /* Darker heading color */
-}
-
-.layout-footer ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.layout-footer li {
-    margin-bottom: 5px;
-    color: #6c757d;
-    /* Medium gray text color */
-}
-
-.layout-footer p {
-    margin: 5px 0;
-    color: #6c757d;
-    /* Medium gray text color */
-}
-
-.layout-footer-tac-gia,
-.layout-footer-nhaf-xuatban,
-.layout-footer-lien-he {
-    border-bottom: 1px solid #dee2e6;
-    /* Optional border between rows */
-    padding-bottom: 15px;
-}
-
-.layout-footer-tac-gia ul li,
-.layout-footer-nhaf-xuatban ul li {
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.layout-footer-tac-gia ul li:hover,
-.layout-footer-nhaf-xuatban ul li:hover {
-    color: #007bff;
-    /* Blue color on hover */
-}
-
-.layout-footer-lien-he {
-    border-bottom: none;
-    /* No border on the last row */
-}
-
-.layout-footer ul {
-    display: flex;
     justify-content: space-between;
-    /* Distribute items evenly with space between them */
+    height: 100%;
+}
+
+.layout-footer .book-card .buy-now-button {
+    background: red;
+    color: white;
+    font-size: 17px;
+    margin-top: 20px;
+}
+
+.layout-footer .footer-home-page {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.layout-footer .footer-home-page .footer-col-home-page {
+    text-align: center;
+}
+
+.layout-footer .footer-home-page .footer-col-home-page ul {
     padding: 0;
     margin: 0;
-    list-style-type: none;
-    /* Remove default bullets */
-    width: 100%;
-    /* Ensure the UL takes up full width of the container */
 }
 
-.layout-footer li {
-    flex: 1;
-    /* Distribute items equally */
+.layout-footer .footer-home-page .footer-col-home-page li {
+    margin: 8px 0;
+}
+
+.layout-footer .footer-home-page .footer-col-home-page a {
+    color: #1890ff;
+    text-decoration: none;
+}
+
+.layout-footer .footer-home-page .footer-col-home-page a:hover {
+    text-decoration: underline;
+}
+
+.layout-footer .footer-bottom-home-page {
     text-align: center;
-    /* Center the text in each item */
-}
-
-.layout-footer-tac-gia ul,
-.layout-footer-nhaf-xuatban ul {
-    margin-bottom: 15px;
-    /* Optional: Add space between the UL and the following content */
+    margin-top: 20px;
+    font-size: 14px;
+    color: #888;
 }
 
 .layout-header {
@@ -217,3 +236,72 @@ body {
     color: #555;
   }
   
+  /* Container for the Top Products and Upcoming Releases */
+.layout-footer-list-bool-well-sell {
+    padding: 20px;
+    background-color: #f9f9f9; /* Light background color for contrast */
+    margin-bottom: 40px; /* Space between sections */
+}
+
+/* Title styling for both sections */
+.layout-footer-list-bool-well-sell .ant-typography {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333; /* Dark color for text */
+}
+
+/* Card styling for individual books */
+.layout-footer-list-bool-well-sell .ant-card {
+    border-radius: 10px; /* Rounded corners for cards */
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.layout-footer-list-bool-well-sell .ant-card:hover {
+    transform: translateY(-10px); /* Lift effect on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+}
+
+/* Card cover styling */
+.layout-footer-list-bool-well-sell .ant-card-cover {
+    border-bottom: 1px solid #ddd; /* Separator line between image and card content */
+}
+
+/* Styling for the like icon */
+.icon-trai-tim {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    color: pink; /* Default color */
+    cursor: pointer;
+    transition: color 0.3s ease; /* Smooth color transition */
+}
+
+.icon-trai-tim.liked {
+    color: red; /* Color when liked */
+}
+
+/* Image styling inside the card */
+.layout-footer-list-bool-well-sell .ant-image {
+    height: 200px;
+    object-fit: cover;
+    width: 100%; /* Full width of the card */
+}
+
+/* Button styling */
+.layout-footer-list-bool-well-sell .ant-btn {
+    background-color: #d9534f; /* Red background color */
+    color: white;
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.layout-footer-list-bool-well-sell .ant-btn:hover {
+    background-color: #c9302c; /* Darker red on hover */
+}
