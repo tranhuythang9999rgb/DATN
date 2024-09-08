@@ -6,6 +6,7 @@ import Statistical from "./admin/Statistical";
 import TypeBook from "./admin/TypeBook";
 import UploadBook from "./admin/UploadBook";
 import ChatBot from "./ChatBot/ChatBot";
+import GetListBookUserBook from "./ChatBot/GetListBookUseBot";
 import CheckLogin from "./common/CheckLogin";
 import CheckQrCode from "./common/CheckQrCode";
 import Login from "./common/Login";
@@ -52,6 +53,7 @@ function App() {
     {/* <ListOrderUser/> */}
     {/* <Statistical/> */}
     <ChatBot/>
+    {/* <GetListBookUserBook/> */}
     </div>
   );
 }

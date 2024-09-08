@@ -1,9 +1,10 @@
 .chatbot-container {
-    max-width: 600px; /* Chiều rộng mong muốn */
-    margin: auto;
-  }
-  
-  .react-chatbot-kit-chat-container {
-    position: relative;
-    width: 350px;
-  }
+  max-width: 600px;
+  /* Chiều rộng mong muốn */
+  margin: auto;
+}
+
+.react-chatbot-kit-chat-container {
+  position: relative;
+  width: 350px;
+}
