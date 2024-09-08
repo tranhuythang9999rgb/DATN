@@ -19,3 +19,23 @@
   background-color: #fff;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
+
+/* chat_bot.css */
+
+.chatbot-container {
+  position: fixed; /* or 'absolute' if you're positioning relative to another container */
+  bottom: 180px;
+  right: 70px;
+  z-index: 9999; /* Ensures that the chatbot appears on top of other components */
+  /* Add additional styling as needed */
+}
+
+/* Icon toggle CSS */
+.toggle-icon {
+  position: fixed; /* Định vị cố định trên viewport */
+  bottom: 20px; /* Khoảng cách từ đáy viewport */
+  right: 20px; /* Khoảng cách từ bên phải viewport */
+  cursor: pointer; /* Con trỏ chuột thay đổi khi di chuột qua */
+  font-size: 50px; /* Kích thước icon */
+  z-index: 10000; /* Đảm bảo icon luôn nằm trên các phần tử khác */
+}

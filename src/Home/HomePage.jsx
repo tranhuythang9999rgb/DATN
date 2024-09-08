@@ -287,11 +287,7 @@ function HomePage() {
                 </div>
             </div>
 
-            <span style={{
-                position:'absolute',
-                marginLeft:'1470px',
-                marginTop:'-440px'
-                }}>
+            <span>
                 <ChatBot/>
             </span>
 
