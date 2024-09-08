@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { List, Typography, Spin, Alert, Button } from 'antd'; // Import Button from Ant Design
+import { List, Typography, Spin, Alert } from 'antd'; // Import Button from Ant Design
 
 const { Title } = Typography;
 
@@ -8,12 +8,13 @@ const GetOrderById = () => {
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [localLoading, setLocalLoading] = useState(true); // State to handle local storage loading
     const orderId = localStorage.getItem('order_id') || 0;
 
     useEffect(() => {
         const fetchOrder = async () => {
             if (!orderId || orderId === 0) {
-                setError('Vui lòng kiểm tra kết nói mạng học thiết bị');
+                setError('Vui lòng kiểm tra kết nối mạng hoặc thiết bị');
                 setLoading(false);
                 return;
             }
@@ -32,11 +33,17 @@ const GetOrderById = () => {
             }
         };
 
-        fetchOrder();
+        // Simulate a delay before checking local storage and fetching data
+        const timer = setTimeout(() => {
+            setLocalLoading(false);
+            fetchOrder();
+        }, 2000); // Delay of 2 seconds
+
+        // Cleanup timer on component unmount
+        return () => clearTimeout(timer);
     }, [orderId]);
 
-   
-
+    if (localLoading) return <Spin size="large" tip="Đang tải dữ liệu từ bộ nhớ..." />;
     if (loading) return <Spin size="large" tip="Đang tải..." />;
     if (error) return <Alert message="Lỗi" description={error} type="error" />;
 
@@ -61,8 +68,6 @@ const GetOrderById = () => {
                             )}
                         />
                     </div>
-
-                  
                 </div>
             ) : (
                 <p>Không có thông tin đơn hàng</p>

@@ -269,7 +269,7 @@ const SubmitBuyBook = () => {
                             {
                                 paymentMethod === 2 && (
                                     <Button
-                                        onClick={handleCreatePayment &&form.submit}
+                                        onClick={handleCreatePayment}
                                         loading={loadingPayment}
                                         style={{ height: '50px', fontSize: '20px', width: '100%' }}
                                     >
