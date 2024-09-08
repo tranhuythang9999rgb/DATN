@@ -5,6 +5,7 @@ import Publishers from "./admin/Publishers";
 import Statistical from "./admin/Statistical";
 import TypeBook from "./admin/TypeBook";
 import UploadBook from "./admin/UploadBook";
+import ChatBot from "./ChatBot/ChatBot";
 import CheckLogin from "./common/CheckLogin";
 import CheckQrCode from "./common/CheckQrCode";
 import Login from "./common/Login";
@@ -49,7 +50,8 @@ function App() {
     {/* <GetTheShippingAddress/> */}
     {/* <ListCart/> */}
     {/* <ListOrderUser/> */}
-    <Statistical/>
+    {/* <Statistical/> */}
+    <ChatBot/>
     </div>
   );
 }

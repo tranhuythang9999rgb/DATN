@@ -87,18 +87,7 @@ function CircularChart() {
         <div>
             <h1>Thống kê đơn hàng</h1>
             <div style={{ marginBottom: 16 }}>
-                <DatePicker 
-                    onChange={(date, dateString) => setStartDate(dateString)}
-                    format="YYYY-MM-DD"
-                    placeholder="Ngày bắt đầu"
-                    style={{ marginRight: 8 }}
-                />
-                <DatePicker 
-                    onChange={(date, dateString) => setEndDate(dateString)}
-                    format="YYYY-MM-DD"
-                    placeholder="Ngày kết thúc"
-                />
-                <button onClick={handleDateChange} style={{ marginLeft: 8 }}>Lọc</button>
+
             </div>
             <ResponsiveContainer width="100%" height={400}>
                 <PieChart>

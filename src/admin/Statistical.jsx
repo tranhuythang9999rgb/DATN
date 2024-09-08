@@ -3,6 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from 'rec
 import axios from 'axios';
 import { Button, DatePicker, Space } from 'antd';
 import moment from 'moment';
+import CircularChart from './CircularChart';
 
 const { RangePicker } = DatePicker;
 
@@ -101,6 +102,7 @@ const Statistical = () => {
                     barSize={20} // Adjust this value to make the bars narrower or wider
                 />
             </BarChart>
+            <CircularChart/>
         </div>
     );
 }
