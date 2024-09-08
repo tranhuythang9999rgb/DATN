@@ -42,12 +42,12 @@ class ActionProvider {
             // Fetch the list of books from the API
             const response = await axios.get('http://127.0.0.1:8080/manager/book/list');
             const books = response.data.body;
-    
+
             if (books && books.length > 0) {
                 // Convert title to uppercase and ensure price is formatted
                 const upperCaseTitle = books[0].title.toUpperCase();
                 const formattedPrice = books[0].price.toLocaleString('en-US', { style: 'currency', currency: 'VND' });
-    
+
                 // Create the message with formatted title and price
                 const botMessage = this.createChatBotMessage(
                     `CUỐN SÁCH MỚI NHẤT LÀ: "${upperCaseTitle}" CHỈ VỚI GIÁ ${formattedPrice}.`
@@ -64,13 +64,27 @@ class ActionProvider {
             this.updateChatbotState(botMessage);
         }
     }
-    
+
     async handleOk() {
 
         const botMessage = this.createChatBotMessage(
             `Chắc chắn rồi! Nếu bạn có thêm câu hỏi nào hoặc cần hỗ trợ gì thêm, đừng ngần ngại yêu cầu nhé. Chúc bạn có trải nghiệm vui vẻ! 😊`
         );
 
+        this.updateChatbotState(botMessage);
+    }
+
+    async handleBanLaAi() {
+        const botMessage = this.createChatBotMessage(
+            `Tôi là trở lý ảo giúp bạn trải nghiệm mua sách Nếu bạn có thêm câu hỏi nào hoặc cần hỗ trợ gì thêm, đừng ngần ngại yêu cầu nhé. Chúc bạn có trải nghiệm vui vẻ! 😊`
+        );
+
+        this.updateChatbotState(botMessage);
+    }
+    async handleStoreAddress() {
+        const botMessage = this.createChatBotMessage(
+            "Vị trí cửa hàng số nhà 999 ngõ 999 xã Hồng An,huyện Hưng Hà,tỉnh Thái Bình"
+        );
         this.updateChatbotState(botMessage);
     }
 
