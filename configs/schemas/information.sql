@@ -199,3 +199,6 @@ ALTER TABLE orders
 
 ALTER TABLE orders 
   ADD COLUMN create_order INTEGER;
+
+ALTER TABLE books 
+ADD COLUMN create_time timestamp with time zone DEFAULT NOW();

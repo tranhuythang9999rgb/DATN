@@ -52,12 +52,12 @@ func (c *CollectionBook) List(ctx context.Context, req *domain.BookReqForm, limi
 		Weight:        req.Weight,
 		Price:         req.Price,
 		DiscountPrice: req.DiscountPrice,
-		// PurchasePrice: req.PurchasePrice,
 		Quantity:      req.Quantity,
 		Notes:         req.Notes,
 		IsActive:      req.IsActive,
 		OpeningStatus: req.OpeningStatus,
-	}).Limit(limit).Offset(offset).Find(&books)
+	}).Order("published_date DESC, create_time DESC").Limit(limit).Offset(offset).Find(&books)
+
 	if result.Error != nil {
 		return nil, result.Error
 	}
