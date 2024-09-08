@@ -2,8 +2,20 @@
   max-width: 600px;
   /* Chiều rộng mong muốn */
   margin: auto;
+  border: 1px solid;
+  border-radius: 6px;
+
 }
 
 .react-chatbot-kit-chat-container {
   width: 350px;
+}
+
+/* chat_bot.css */
+.chatbot-container {
+  width: 300px;
+  height: 400px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
