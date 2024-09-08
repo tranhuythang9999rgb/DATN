@@ -1,138 +1,88 @@
 import React, { useState, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer, Cell } from 'recharts';
-import { DatePicker } from 'antd'; // Đảm bảo bạn đã cài đặt thư viện Ant Design
-import 'antd/dist/reset.css'; // Import CSS cho Ant Design
-import moment from 'moment'; // Thêm thư viện moment để xử lý ngày giờ
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid } from 'recharts';
+import axios from 'axios';
+import { DatePicker, Space } from 'antd';
 
-function Statistical() {
+const Statistical = () => {
     const [data, setData] = useState([]);
-    const [filteredData, setFilteredData] = useState([]);
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
 
-    // Function to generate a random color
-    const randomColor = () => `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-
-    // Fetch order data from API
     useEffect(() => {
-        fetch('http://127.0.0.1:8080/manager/order/list/admin')
-            .then(response => response.json())
-            .then(result => {
-                if (result.code === 0) {
-                    const groupedByBook = result.body.reduce((acc, order) => {
-                        const book = order.book_title;
-                        if (!acc[book]) {
-                            acc[book] = { totalAmount: 0, totalQuantity: 0, color: randomColor() };
-                        }
-                        acc[book].totalAmount += order.total_amount;
-                        acc[book].totalQuantity += order.quantity; // Tính tổng số sách
-                        return acc;
-                    }, {});
-
-                    const chartData = Object.keys(groupedByBook).map(book => ({
-                        bookTitle: book,
-                        totalAmount: groupedByBook[book].totalAmount,
-                        totalQuantity: groupedByBook[book].totalQuantity,
-                        color: groupedByBook[book].color
-                    }));
-
-                    setData(chartData);
-                    setFilteredData(chartData); // Set initial filtered data
-                }
+        // Fetch data from the API
+        axios.get('http://127.0.0.1:8080/manager/order/list/order/admin?start=1725774521&end=1725774521')
+            .then(response => {
+                setData(response.data.body);
             })
             .catch(error => {
-                console.error('Error fetching orders:', error);
+                console.error('Lỗi khi lấy dữ liệu:', error);
             });
     }, []);
 
-    // Handle date change
-    const handleDateChange = () => {
-        if (startDate && endDate) {
-            const start = moment(startDate).format('YYYY-MM-DD');
-            const end = moment(endDate).format('YYYY-MM-DD');
-            fetch(`http://127.0.0.1:8080/manager/order/list/admin?start_date=${start}&end_date=${end}`)
-                .then(response => response.json())
-                .then(result => {
-                    if (result.code === 0) {
-                        const groupedByBook = result.body.reduce((acc, order) => {
-                            const book = order.book_title;
-                            if (!acc[book]) {
-                                acc[book] = { totalAmount: 0, totalQuantity: 0, color: randomColor() };
-                            }
-                            acc[book].totalAmount += order.total_amount;
-                            acc[book].totalQuantity += order.quantity; // Tính tổng số sách
-                            return acc;
-                        }, {});
-
-                        const chartData = Object.keys(groupedByBook).map(book => ({
-                            bookTitle: book,
-                            totalAmount: groupedByBook[book].totalAmount,
-                            totalQuantity: groupedByBook[book].totalQuantity,
-                            color: groupedByBook[book].color
-                        }));
-
-                        setFilteredData(chartData);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching orders by date range:', error);
-                });
+    // Transform the data for the chart
+    const aggregatedData = data.reduce((acc, order) => {
+        const existing = acc.find(item => item.book_title === order.book_title);
+        if (existing) {
+            existing.amount += order.total_amount;
+            existing.quantity += order.quantity; // Aggregate quantity as well
         } else {
-            setFilteredData(data); // Reset to initial data if no date is selected
+            acc.push({
+                book_title: order.book_title,
+                amount: order.total_amount,
+                quantity: order.quantity
+            });
         }
+        return acc;
+    }, []);
+
+    // Custom tooltip component
+    const CustomTooltip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+            const { book_title, amount, quantity } = payload[0].payload;
+            return (
+                <div className="custom-tooltip">
+                    <p className="label"><strong>{book_title}</strong></p>
+                    <p className="intro">Tổng số tiền: {amount} VND</p>
+                    <p className="intro">Số lượng: {quantity}</p>
+                </div>
+            );
+        }
+        return null;
     };
 
     return (
         <div>
-            <h1>Thống kê doanh thu</h1>
-            <div style={{ marginBottom: 16 }}>
-                <DatePicker 
-                    onChange={(date, dateString) => setStartDate(dateString)}
-                    format="YYYY-MM-DD"
-                    placeholder="Chọn ngày bắt đầu"
-                    style={{ marginRight: 8 }}
-                />
-                <DatePicker 
-                    onChange={(date, dateString) => setEndDate(dateString)}
-                    format="YYYY-MM-DD"
-                    placeholder="Chọn ngày kết thúc"
-                />
-                <button onClick={handleDateChange} style={{ marginLeft: 8 }}>Thống kê</button>
+            <h1>Thống Kê Đơn Hàng Theo Tựa Sách</h1>
+            <div>
+                <Space>
+                    start
+                    <DatePicker />
+                    end
+                    <DatePicker />
+                </Space>
             </div>
-            <ResponsiveContainer width="100%" height={400}>
-                <BarChart data={filteredData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="bookTitle" label={{ value: "Tên Sách", position: "insideBottomRight", offset: 0 }} />
-                    <YAxis label={{ value: "Doanh thu (VND)", angle: -90, position: "insideLeft" }} />
-                    <Tooltip 
-                        formatter={(value, name) => {
-                            if (name === 'totalAmount') {
-                                return [`${value} VND`, 'Doanh thu'];
-                            } else if (name === 'totalQuantity') {
-                                return [`${value}`, 'Tổng số sách'];
-                            }
-                            return [`${value}`, name];
-                        }}
-                        labelFormatter={(label) => `Tên Sách: ${label}`}
-                    />
-                    <Legend verticalAlign="top" height={36} />
-                    <Bar 
-                        dataKey="totalAmount"
-                        name="Doanh thu"
-                        barSize={30}
-                    >
-                        {filteredData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                    </Bar>
-                    <Bar 
-                        dataKey="totalQuantity"
-                        name="Tổng số sách"
-                        barSize={30}
-                        fill="#82ca9d" // Một màu khác cho cột tổng số sách
-                    />
-                </BarChart>
-            </ResponsiveContainer>
+            <BarChart
+                width={800}
+                height={400}
+                data={aggregatedData}
+                margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
+            >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                    dataKey="book_title"
+                    tick={{ angle: -45 }}
+                    textAnchor="end"
+                    label={{ value: 'Tựa Sách', position: 'insideBottomRight', offset: 0 }}
+                />
+                <YAxis
+                    label={{ value: 'Tổng Số Tiền', angle: -90, position: 'insideLeft', offset: 0 }}
+                />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend />
+                <Bar
+                    dataKey="amount"
+                    fill="#8884d8"
+                    barSize={20} // Adjust this value to make the bars narrower or wider
+                />
+            </BarChart>
         </div>
     );
 }
