@@ -1,5 +1,6 @@
 .form-cart{
     width: 500px;
+    margin: 50px auto;
 }
 
 .product-card {
@@ -60,3 +61,30 @@
     margin-bottom: 10px; /* Khoảng cách giữa các nút */
 }
 
+.footer {
+    background-color: #001529; /* Dark background color */
+    color: white; /* Text color */
+    padding: 20px 0; /* Top and bottom padding */
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.footer-menu {
+    margin-bottom: 20px; /* Space between menu and footer info */
+}
+
+.footer-menu .ant-menu-item {
+    color: white; /* Menu item text color */
+}
+
+.footer-info {
+    font-size: 14px; /* Footer info text size */
+}
