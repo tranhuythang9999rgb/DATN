@@ -2,6 +2,7 @@ import React, { useEffect, useState, useImperativeHandle, forwardRef } from 'rea
 import axios from 'axios';
 import { List, Typography, Spin, Alert, Button, Modal, Checkbox, Tooltip, Space } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
+import FormBuyCart from './FormBuyCart';
 
 const { Title, Text } = Typography;
 
@@ -77,12 +78,9 @@ const ListCart = forwardRef((props, ref) => {
 
     const handleBuyNow = () => {
         const selectedItems = carts.filter(item => checkedItems.includes(item.cart_id));
-        console.log('Selected items for purchase:', selectedItems);
-        // Chuyển đổi selectedItems thành chuỗi JSON
         const selectedItemsJSON = JSON.stringify(selectedItems);
-
-        // Lưu chuỗi JSON vào localStorage
         localStorage.setItem('list_cart', selectedItemsJSON);
+        setIsNextReturnBuy(true)
     };
 
     if (loading) {
@@ -92,7 +90,9 @@ const ListCart = forwardRef((props, ref) => {
     if (error) {
         return <Alert message="Lỗi" description={error} type="error" />;
     }
-
+    if(isNextReturnBuy) return (
+        <FormBuyCart/>
+    )
 
     return (
         <div>

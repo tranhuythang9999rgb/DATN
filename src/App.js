@@ -59,7 +59,7 @@ function App() {
     {/* <GetListBookUserBook/> */}
     {/* <DisPlaySubmitByFromCart/> */}
     {/* <FormBuyCart/> */}
-    <FormBuyCart/>
+    {/* <FormBuyCart/> */}
     <ListCart/>
     </div>
   );
