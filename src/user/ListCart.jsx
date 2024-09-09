@@ -10,6 +10,7 @@ const ListCart = forwardRef((props, ref) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [checkedItems, setCheckedItems] = useState([]);
+    const [isNextReturnBuy, setIsNextReturnBuy] = useState(false);
 
     const fetchCartList = async () => {
         setLoading(true);
@@ -77,6 +78,11 @@ const ListCart = forwardRef((props, ref) => {
     const handleBuyNow = () => {
         const selectedItems = carts.filter(item => checkedItems.includes(item.cart_id));
         console.log('Selected items for purchase:', selectedItems);
+        // Chuyển đổi selectedItems thành chuỗi JSON
+        const selectedItemsJSON = JSON.stringify(selectedItems);
+
+        // Lưu chuỗi JSON vào localStorage
+        localStorage.setItem('list_cart', selectedItemsJSON);
     };
 
     if (loading) {
@@ -140,7 +146,7 @@ const ListCart = forwardRef((props, ref) => {
                                     title={<Text strong>Giá:</Text>}
                                     description={item.price}
                                 />
-                                 <List.Item.Meta
+                                <List.Item.Meta
                                     title={<Text strong>Tổng số tiền:</Text>}
                                     description={item.total_amount}
                                 />

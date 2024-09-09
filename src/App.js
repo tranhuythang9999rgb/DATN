@@ -19,6 +19,8 @@ import Pages2 from "./Test/Pages2";
 import AppRouter from "./Test/Routers/routers";
 import AddAddress from "./user/AddAddress";
 import DisPlaySubmitByFromCart from "./user/DisPlaySubmitByFromCart";
+import DonHangForm from "./user/FormBuyCart";
+import FormBuyCart from "./user/FormBuyCart";
 import GetTheShippingAddress from "./user/GetTheShippingAddress";
 import ListCart from "./user/ListCart";
 import ListOrderUser from "./user/ListOrderUser";
@@ -36,7 +38,7 @@ function App() {
       {/* <HomePage/> */}
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
-      <CheckLogin/>
+      {/* <CheckLogin/> */}
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
@@ -56,6 +58,9 @@ function App() {
     {/* <ChatBot/> */}
     {/* <GetListBookUserBook/> */}
     {/* <DisPlaySubmitByFromCart/> */}
+    {/* <FormBuyCart/> */}
+    <FormBuyCart/>
+    <ListCart/>
     </div>
   );
 }

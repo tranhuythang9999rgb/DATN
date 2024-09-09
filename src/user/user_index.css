@@ -1,0 +1,61 @@
+.form-cart{
+    width: 500px;
+}
+
+.product-card {
+    background-color: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #dcdcdc; /* Viền nhẹ để nổi bật */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bóng nhẹ để tạo độ sâu */
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Hiệu ứng chuyển tiếp mượt mà */
+}
+
+.product-card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Tăng độ bóng khi di chuột */
+    transform: translateY(-4px); /* Hiệu ứng nổi lên khi di chuột */
+}
+
+.product-card-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.product-card-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.product-card-price {
+    font-size: 16px;
+    font-weight: bold;
+    color: green;
+}
+
+.product-card-discount {
+    margin-top: 25px;
+}
+
+.product-card-price-wrapper {
+    display: flex;
+    align-items: center;
+    margin-top: 25px;
+}
+
+.product-card-content {
+    padding-left: 15px;
+}
+/* user_index.css */
+.form-button {
+    width: 100%; /* Chiếm toàn bộ chiều rộng có sẵn */
+    height: 50px;
+}
+
+.form-item-button {
+    margin-bottom: 10px; /* Khoảng cách giữa các nút */
+}
