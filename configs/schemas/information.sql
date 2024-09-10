@@ -214,3 +214,7 @@ CREATE TABLE order_items (
 
 ALTER TABLE authors 
   ADD COLUMN avatar VARCHAR(255);
+
+
+ALTER TABLE authors 
+  ADD COLUMN avatar VARCHAR(255);

@@ -1,7 +1,9 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
+	errors "shoe_shop_server/common/error"
 	"shoe_shop_server/core/entities"
 	"shoe_shop_server/core/usecase"
 
@@ -24,14 +26,24 @@ func NewControllersPublisher(
 }
 
 func (u *ControllersPublisher) AddPublisher(ctx *gin.Context) {
+
+	file, err := ctx.FormFile("file")
+
 	var req entities.Publisher
 	if err := ctx.ShouldBind(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err := u.publisher.AddPublisher(ctx, &req)
+	if err != nil && err != http.ErrMissingFile && err != http.ErrNotMultipart {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": "Không thể tải ảnh lên.",
+		})
+		return
+	}
+	req.File = file
+	err = u.publisher.AddPublisher(ctx, &req)
 	if err != nil {
-		u.baseController.ErrorData(ctx, err)
+		u.baseController.ErrorData(ctx, errors.NewCustomHttpError(500, 10, fmt.Sprintf("%s", err)))
 		return
 	}
 	u.baseController.Success(ctx, nil)

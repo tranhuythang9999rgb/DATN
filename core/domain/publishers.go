@@ -10,6 +10,7 @@ type Publisher struct {
 	ContactNumber string `json:"contact_number"` // Số điện thoại liên hệ
 	Website       string `json:"website"`        // Trang web của nhà xuất bản
 	IsActive      bool   `json:"is_active"`
+	Avatar        string `json:"avatar"`
 }
 
 // RepositoryPublisher định nghĩa các phương thức cho các thao tác trên bảng publishers

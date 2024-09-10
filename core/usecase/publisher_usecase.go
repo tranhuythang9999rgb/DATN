@@ -27,12 +27,17 @@ func (u *PublisherUseCase) AddPublisher(ctx context.Context, req *entities.Publi
 	if pb != nil {
 		return errors.NewCustomHttpError(200, 2, "type name exists")
 	}
+	respFile, err := utils.SetByCurlImage(ctx, req.File)
+	if respFile.Result.Code != 0 || err != nil {
+		return errors.ErrSystem
+	}
 	err = u.pbs.Create(ctx, &domain.Publisher{
 		ID:            utils.GenerateUniqueKey(),
 		Name:          req.Name,
 		Address:       req.Address,
 		ContactNumber: req.ContactNumber,
 		Website:       req.Website,
+		Avatar:        respFile.URL,
 		IsActive:      true,
 	})
 	if err != nil {
