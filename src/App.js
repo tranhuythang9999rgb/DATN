@@ -1,4 +1,3 @@
-import AuthorBook from "./admin/AuthorBook";
 import Dashboard from "./admin/Dashboard";
 import ListBooks from "./admin/ListBooks";
 import Publishers from "./admin/Publishers";
@@ -10,6 +9,7 @@ import GetListBookUserBook from "./ChatBot/GetListBookUseBot";
 import CheckLogin from "./common/CheckLogin";
 import CheckQrCode from "./common/CheckQrCode";
 import Login from "./common/Login";
+import AuthorBook from "./Home/AuthorBook";
 import DetailBuy from "./Home/DetailBuy";
 import HomePage from "./Home/HomePage";
 import ListBookHome from "./Home/ListBookHome";
@@ -39,7 +39,7 @@ function App() {
       {/* <HomePage/> */}
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
-      {/* <CheckLogin/> */}
+      <CheckLogin/>
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
@@ -62,7 +62,8 @@ function App() {
     {/* <FormBuyCart/> */}
     {/* <FormBuyCart/> */}
     {/* <ListCart/> */}
-    <ListPublicSher/>
+    {/* <ListPublicSher/> */}
+    {/* <AuthorBook/> */}
     </div>
   );
 }

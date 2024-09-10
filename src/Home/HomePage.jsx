@@ -19,6 +19,8 @@ import { CgProfile } from 'react-icons/cg';
 import Link from 'antd/es/typography/Link';
 import './index.css';
 import ChatBot from '../ChatBot/ChatBot';
+import ListPublicSher from './ListPublicSher';
+import AuthorBook from './AuthorBook';
 const { Meta } = Card;
 const { Title, Text } = Typography;
 
@@ -267,44 +269,7 @@ function HomePage() {
                 <div className='layout-footer-tac-gia'>
                     <h1>Tác giả</h1>
                     {/* List of new book authors */}
-                    <ul style={{ display: 'flex' }}>
-                        <li>
-                            <div style={{ display: 'block' }}>
-                                <Avatar size={160} src='https://ndu.khanhhoa.edu.vn/upload/104934/fck/files/download.png'>
-                                </Avatar>
-                                <div style={{ marginTop: '5px', color: 'black', fontSize: '20px' }}>Nguyễn Du </div>
-                            </div>
-
-                        </li>
-                        <li>
-                            <div style={{ display: 'block' }}>
-                                <Avatar size={160} src='https://baotangvanhoc.vn/wp-content/uploads/2021/12/Nha-van-Nam-Cao.jpg'>
-                                </Avatar>
-                                <div style={{ marginTop: '5px', color: 'black', fontSize: '20px' }}>Nam Cao</div>
-                            </div>
-                        </li>
-                        <li>
-                            <div style={{ display: 'block' }}>
-                                <Avatar size={160} src='https://www.nxbtre.com.vn/Images/Writer/nxbtre_thumb_30552016_085555.jpg'>
-                                </Avatar>
-                                <div style={{ marginTop: '5px', color: 'black', fontSize: '20px' }}>Nguyễn Nhật Ánh</div>
-                            </div>
-                        </li>
-                        <li>
-                            <div style={{ display: 'block' }}>
-                                <Avatar size={160} src='https://www.thivien.net/attachment/vnduJD_TYrIrUDl9fyOqRw.1503720312.jpg'>
-                                </Avatar>
-                                <div style={{ marginTop: '5px', color: 'black', fontSize: '20px' }}>Xuân Diệu</div>
-                            </div>
-                        </li>
-                        <li>
-                            <div style={{ display: 'block' }}>
-                                <Avatar size={160} src='https://imagev3.vietnamplus.vn/w1000/Uploaded/2024/hotnnz/2024_05_30/huy-can4-9561.jpg.webp'>
-                                </Avatar>
-                                <div style={{ marginTop: '5px', color: 'black', fontSize: '20px' }}>Huy Cận </div>
-                            </div>
-                        </li>
-                    </ul>
+                <AuthorBook/>
                 </div>
 
                 <div className='layout-footer-list-bool-well-sell'>
@@ -375,31 +340,7 @@ function HomePage() {
 
                 <div style={{ marginTop: '370px' }} className='layout-footer-nhaf-xuatban'>
                     <h3>Nhà xuất bản</h3>
-                    {/* List of publishers */}
-                    <ul style={{ display: 'flex' }}>
-                        <li>
-                            <div style={{ display: 'block' }}>
-                                <Avatar size={160} src='https://www.thivien.net/attachment/vnduJD_TYrIrUDl9fyOqRw.1503720312.jpg'>
-                                </Avatar>
-                                <div style={{ marginTop: '5px', color: 'black', fontSize: '20px' }}>Kim Đồng</div>
-                            </div>
-                        </li>
-                        <li>
-                            <div style={{ display: 'block' }}>
-                                <Avatar size={160} src='https://www.thivien.net/attachment/vnduJD_TYrIrUDl9fyOqRw.1503720312.jpg'>
-                                </Avatar>
-                                <div style={{ marginTop: '5px', color: 'black', fontSize: '20px' }}>Xuân Diệu</div>
-                            </div>
-                        </li>
-                        <li>
-                            <div style={{ display: 'block' }}>
-                                <Avatar size={160} src='https://www.thivien.net/attachment/vnduJD_TYrIrUDl9fyOqRw.1503720312.jpg'>
-                                </Avatar>
-                                <div style={{ marginTop: '5px', color: 'black', fontSize: '20px' }}>Xuân Diệu</div>
-                            </div>
-                        </li>
-                        {/* Add more publishers as needed */}
-                    </ul>
+                        <ListPublicSher/>
                 </div>
 
                 <span>

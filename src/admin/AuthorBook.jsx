@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Input, Button, message, Form, DatePicker, Popconfirm, Upload, Avatar } from 'antd';
 import axios from 'axios';
-import moment from 'moment';
-import { render } from '@testing-library/react';
 
 function AuthorBook() {
     const [authors, setAuthors] = useState([]);

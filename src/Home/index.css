@@ -363,7 +363,7 @@
 
 /* Thiết lập container chính cho slider */
 .slider-container {
-  width: 95%;
+  width: 100%;
   margin: 0 auto;
   padding: 20px;
 }
@@ -373,7 +373,7 @@
   text-align: center;
   background: white; /* màu nền mặc định */
   padding: 10px;
-  padding-bottom: 50px;
+  padding-bottom: 10px;
 }
 
 .slick-slide div {
@@ -382,8 +382,7 @@
   align-items: center;
   height: 200px; /* Chiều cao của mỗi slide */
 }
-.slick-next{
-  width: 10px;
-  background-color: #1890ff;
-}
 
+.slick-slider button{
+  background-color: #c9302c;
+}

@@ -4,33 +4,32 @@ import { useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import './index.css';
 
-// Ảnh mặc định khi không có avatar
 const defaultAvatar = 'https://example.com/default-avatar.jpg';
 
-function ListPublicSher() {
-    const [publishers, setPublishers] = useState([]);
+function AuthorBook() {
+
+    const [authors, setAuthors] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    const fetchPublishers = async () => {
+    const fetchAuthors = async () => {
         setLoading(true);
         try {
-            const response = await axios.get('http://127.0.0.1:8080/manager/publisher/list');
+            const response = await axios.get('http://127.0.0.1:8080/manager/author_book/list');
             if (response.data.code === 0) {
-                setPublishers(response.data.body);
+                setAuthors(response.data.body);
             }
         } catch (error) {
-            console.error('Error fetching publishers:', error);
-            message.error('Error fetching publishers');
+            console.error('Error fetching authors:', error);
+            message.error('Error fetching authors');
         } finally {
             setLoading(false);
         }
     };
-
+    // Fetch authors when the component mounts
     useEffect(() => {
-        fetchPublishers();
-    }, []);
+        fetchAuthors();
+    }, [])
 
     const settings = {
         dots: false,
@@ -51,12 +50,12 @@ function ListPublicSher() {
     return (
         <div className="slider-container">
             <Slider {...settings}>
-                {publishers.map((publisher, index) => (
+                {authors.map((authors, index) => (
                     <div key={index}>
-                        <Badge.Ribbon style={{width:'170px',height:'20px'}} text={publisher.name}>
+                        <Badge.Ribbon style={{ width: '170px', height: '20px' }} text={authors.name}>
                             <Avatar
                                 size={200}
-                                src={publisher.avatar || defaultAvatar}
+                                src={authors.avatar || defaultAvatar}
                                 fallback={defaultAvatar} // Nếu ảnh lỗi, dùng ảnh mặc định
                             />
                         </Badge.Ribbon>
@@ -68,4 +67,4 @@ function ListPublicSher() {
     );
 }
 
-export default ListPublicSher;
+export default AuthorBook;
