@@ -5,7 +5,7 @@ import { GrUserAdmin } from 'react-icons/gr';
 
 import './admin_index.css';
 import { IoMdCloudUpload } from 'react-icons/io';
-import { FcBarChart } from 'react-icons/fc';
+import { FcBarChart, FcMindMap } from 'react-icons/fc';
 import { LuClipboardList, LuFileBarChart } from 'react-icons/lu';
 import { TbLogout2, TbUsersGroup } from 'react-icons/tb';
 import UploadBook from './UploadBook';
@@ -45,7 +45,7 @@ const items1 = [
     {
         key: 'abstract',
         icon: (
-            <GiAbstract078
+            <FcMindMap
                 style={{
                     justifyContent: 'center',
                     fontSize: '60px',

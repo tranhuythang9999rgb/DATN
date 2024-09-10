@@ -2,16 +2,13 @@ import React, { useState } from 'react';
 import { Breadcrumb, Layout, Menu, theme, Tabs, Button } from 'antd';
 import { GiAbstract078 } from 'react-icons/gi';
 import { GrUserAdmin } from 'react-icons/gr';
-import { IoMdCloudUpload } from 'react-icons/io';
-import { FcBarChart } from 'react-icons/fc';
-import { LuClipboardList, LuFileBarChart } from 'react-icons/lu';
+
 import { TbLogout2 } from 'react-icons/tb';
 import './user_index.css';
 import { RiLuggageCartLine, RiProfileFill } from 'react-icons/ri';
 import { FaAddressCard } from 'react-icons/fa';
 import { BsJournalBookmarkFill } from 'react-icons/bs';
 import InforMationUser from './InforMationUser';
-import GetTheShippingAddress from './GetTheShippingAddress';
 import ListAddress from './ListAddress';
 import ListOrderUser from './ListOrderUser';
 const { Header, Content, Sider } = Layout;
