@@ -8,10 +8,10 @@ import Cookies from 'js-cookie';  // Import js-cookie
 const { Meta } = Card;
 const { Title } = Typography;
 
-const BookWellSell = ({ title }) => {
+const BookWellSell = ({ title, onEventClick }) => {
     const [books, setBooks] = useState([]);
     const [likedBooks, setLikedBooks] = useState({});  // State to store liked status for each book
-    
+
     useEffect(() => {
         // Fetch data from API
         axios.get('http://localhost:8080/manager/book/sell/well')
@@ -47,9 +47,12 @@ const BookWellSell = ({ title }) => {
         setLikedBooks(updatedLikedBooks);
         saveLikedBooks(updatedLikedBooks);
     };
-
+    const handleClickBuy = (bookId) => {
+        if (onEventClick) onEventClick();
+        localStorage.setItem('book_id', bookId);
+    };
     return (
-        <div style={{ padding: '20px',marginTop:'320px' }}>
+        <div style={{ padding: '20px', marginTop: '320px' }}>
             <Title level={2}>{title}<MdSell /></Title>
             <Row gutter={16} justify="space-between">
                 {books.map(book => (
@@ -61,7 +64,7 @@ const BookWellSell = ({ title }) => {
                                         className='icon-trai-tim'
                                         onClick={() => toggleLike(book.id)}  // Toggle like status on click
                                         style={{
-                                            zIndex:1000,
+                                            zIndex: 1000,
                                             position: 'absolute',
                                             top: '3px',
                                             right: '35px',
@@ -81,7 +84,7 @@ const BookWellSell = ({ title }) => {
                                             objectFit: 'cover',
                                             width: '220px',
                                             display: 'flex',
-                                            marginLeft:'10px'
+                                            marginLeft: '10px'
                                         }}
                                     />
                                 </div>
@@ -99,7 +102,10 @@ const BookWellSell = ({ title }) => {
                                 <p><strong>Giá:</strong> {book.price} VND</p>
                             </div>
                             <span style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px' }}>
-                                <Button style={{ background: 'red', color: 'white', fontSize: '17px' }}>
+                                <Button
+                                    style={{ background: 'red', color: 'white', fontSize: '17px' }}
+                                    onClick={() => handleClickBuy(book.id)} // Pass book.id to handleClickBuy
+                                >
                                     Mua ngay
                                 </Button>
                             </span>
