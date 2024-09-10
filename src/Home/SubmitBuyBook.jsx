@@ -161,9 +161,29 @@ const SubmitBuyBook = () => {
         });
     };
 
-    const handleOrder = () =>{
-        message.success("ok");
-    }
+    const handleOrderBook = async () => {
+        const orderId = localStorage.getItem('order_id') || 0;
+    
+        if (!orderId) {
+            message.error('Order ID not found in local storage.');
+            return;
+        }
+    
+        try {
+            const response = await axios.patch(`http://127.0.0.1:8080/manager/order/api/order/offiline`, null, {
+                params: { id: orderId }
+            });
+    
+            if (response.data.code === 0) {
+                message.success('Order updated successfully.');
+            } else {
+                message.error(`Error: ${response.data.message}`);
+            }
+        } catch (error) {
+            console.error('Error updating order:', error);
+            message.error('Failed to update order.');
+        }
+    };
 
     const status_address = localStorage.getItem('status_address');
     const storedUsername = localStorage.getItem('userData');
@@ -301,7 +321,7 @@ const SubmitBuyBook = () => {
                                         // Case 2.1: valueAddress is 2
                                         return (
                                             <Button
-                                                onClick={form.submit}
+                                                onClick={() => { handleOrderBook(); form.submit(); }}
                                                 style={{ height: '50px', fontSize: '20px', width: '100%' }}
                                             >
                                                 {"" ? 'Đang xử lý...' : <>Đặt hàng <BsBackpack2 style={{ marginLeft: '8px' }} /></>}
@@ -311,7 +331,7 @@ const SubmitBuyBook = () => {
                                         // Case 2.2: Other cases when paymentMethod is not 2 and different address conditions
                                         return (
                                             <Button
-                                                onClick={handleOrder}
+                                                onClick={handleOrderBook}
                                                 style={{ height: '50px', fontSize: '20px', width: '100%' }}
                                             >
                                                 {"" ? 'Đang xử lý...' : <>Đặt hàng <BsBackpack2 style={{ marginLeft: '8px' }} /></>}

@@ -127,7 +127,7 @@ function GetTheShippingAddress() {
                 <List
                     bordered
                     dataSource={[
-                        { label: 'Tên người dùng', value: addressInfo.user_name },
+                        { label: 'Tên người nhận', value: addressInfo.nick_name },
                         { label: 'Số điện thoại', value: addressInfo.phone_number },
                         { label: 'Email', value: addressInfo.email },
                         { label: 'Tỉnh/Thành phố', value: addressInfo.province },

@@ -54,7 +54,25 @@ const ListOrderUser = () => {
         { title: 'Giá Sách', dataIndex: 'book_price', key: 'book_price' },
         { title: 'Số Lượng', dataIndex: 'quantity', key: 'quantity' },
         { title: 'Tổng Số Tiền', dataIndex: 'total_amount', key: 'total_amount' },
-        
+        {
+            title: 'Trạng Thái',
+            dataIndex: 'status',
+            key: 'status',
+            render: (status) => {
+                switch (status) {
+                    case 31:
+                        return 'Đơn hàng đã giao thành công và nhận tiền';
+                    case 33:
+                        return 'Đơn hàng đã bị hủy';
+                    case 19:
+                        return 'Chờ giao hàng';
+                    case 21:
+                        return 'Chờ thanh toán online';
+                    default:
+                        return 'Đang chờ';
+                }
+            }
+        },
     ];
 
     if (loading) return <Spin size="large" />;

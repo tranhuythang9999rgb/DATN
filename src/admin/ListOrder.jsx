@@ -105,16 +105,27 @@ const ListOrder = () => {
                         return 'Đơn hàng đã giao thành công và nhận tiền';
                     case 33:
                         return 'Đơn hàng đã bị hủy';
+                    case 19:
+                        return 'Chờ giao hàng';
                     default:
                         return 'Đang chờ';
                 }
             }
         },
+        
         {
             title: 'Loại Thanh Toán',
             dataIndex: 'type_payment',
             key: 'type_payment',
-            render: (type_payment) => type_payment === 25 ? 'Đã thanh toán online' : 'Thanh toán khi nhận hàng'
+            render: (type_payment) => {
+                if (type_payment === 25) {
+                    return 'Đã thanh toán online';
+                } else if (type_payment === 27) {
+                    return 'Thanh toán khi nhận hàng';
+                } else {
+                    return 'Thanh toán khi nhận hàng'; // Default case if needed
+                }
+            }
         },
         {
             title: 'Hành Động',

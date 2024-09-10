@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button, Form, Input, message, Select } from 'antd';
 
-function AddAddress({onSuccess}) {
+function AddAddress({ onSuccess }) {
     const userData = JSON.parse(localStorage.getItem('userData'));
     const [form] = Form.useForm();
     const [cities, setCities] = useState([]);
@@ -54,6 +54,9 @@ function AddAddress({onSuccess}) {
     const handleSubmit = async (values) => {
         setLoading(true);
         const formData = new FormData();
+        const nickname = values.nick_name.trim() === "" ? userData.user_name : values.nick_name;
+
+        formData.append('nick_name', nickname); // Added nick_name field
         formData.append('user_name', userData.user_name);
         formData.append('phone_number', values.phone_number);
         formData.append('province', values.province);
@@ -78,12 +81,19 @@ function AddAddress({onSuccess}) {
             setLoading(false);
         }
     };
-    
 
     return (
         <div>
             <h1>Thêm địa chỉ giao hàng</h1>
             <Form form={form} onFinish={handleSubmit} layout="vertical">
+              
+                <Form.Item
+                    name="nick_name"
+                    label="Tên Nick"
+                >
+                    <Input placeholder="Nhập tên nick" />
+                </Form.Item>
+
                 <Form.Item
                     name="phone_number"
                     label="Số điện thoại"
