@@ -359,3 +359,31 @@
   display: block; /* Ensures the image is a block-level element for centering */
   margin: 0 auto;
 }
+
+
+/* Thiết lập container chính cho slider */
+.slider-container {
+  width: 95%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Thiết lập kiểu cho các slide */
+.slick-slide {
+  text-align: center;
+  background: white; /* màu nền mặc định */
+  padding: 10px;
+  padding-bottom: 50px;
+}
+
+.slick-slide div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px; /* Chiều cao của mỗi slide */
+}
+.slick-next{
+  width: 10px;
+  background-color: #1890ff;
+}
+

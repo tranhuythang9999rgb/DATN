@@ -13,6 +13,7 @@ import Login from "./common/Login";
 import DetailBuy from "./Home/DetailBuy";
 import HomePage from "./Home/HomePage";
 import ListBookHome from "./Home/ListBookHome";
+import ListPublicSher from "./Home/ListPublicSher";
 import SubmitBuyBook from "./Home/SubmitBuyBook";
 import Pages1 from "./Test/Pages1";
 import Pages2 from "./Test/Pages2";
@@ -32,7 +33,7 @@ import RegisterUser from "./user/RegisterUser";
 function App() {
   return (
     <div>
-      <Dashboard />
+      {/* <Dashboard /> */}
       {/* <UploadBook/> */}
       {/* <ListBooks/> */}
       {/* <HomePage/> */}
@@ -61,6 +62,7 @@ function App() {
     {/* <FormBuyCart/> */}
     {/* <FormBuyCart/> */}
     {/* <ListCart/> */}
+    <ListPublicSher/>
     </div>
   );
 }
