@@ -90,8 +90,10 @@ const ListCart = forwardRef((props, ref) => {
     if (error) {
         return <Alert message="Lỗi" description={error} type="error" />;
     }
-    if(isNextReturnBuy) return (
-        <FormBuyCart/>
+    if (isNextReturnBuy) return (
+        <div>
+            <FormBuyCart />
+        </div>
     )
 
     return (

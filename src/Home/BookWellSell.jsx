@@ -61,6 +61,7 @@ const BookWellSell = ({ title }) => {
                                         className='icon-trai-tim'
                                         onClick={() => toggleLike(book.id)}  // Toggle like status on click
                                         style={{
+                                            zIndex:1000,
                                             position: 'absolute',
                                             top: '3px',
                                             right: '35px',
@@ -80,7 +81,7 @@ const BookWellSell = ({ title }) => {
                                             objectFit: 'cover',
                                             width: '220px',
                                             display: 'flex',
-                                            margin: '0 auto',
+                                            marginLeft:'10px'
                                         }}
                                     />
                                 </div>

@@ -92,7 +92,7 @@ function FormBuyCart() {
     const totalWithShipping = totalAmount + shippingFee;
 
     if (nextHomePage) {
-        return <HomePage />;
+        window.location.reload();
     }
 
     return (
