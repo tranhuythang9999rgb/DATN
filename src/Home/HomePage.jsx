@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './home_index.css';
 import { FcHome } from 'react-icons/fc';
-import { Avatar, Button, Card, Col, Drawer, Dropdown, Image, Input, Menu, message, Modal, Row, Select, Space, Spin, Tooltip, Typography } from 'antd';
+import { Button, Card, Col, Drawer, Dropdown, Image, Input, Menu, message, Modal, Row, Spin, Tooltip, Typography } from 'antd';
 import Login from '../common/Login';
 import { CiLogin, CiSearch } from 'react-icons/ci';
 import { GiArmoredBoomerang } from 'react-icons/gi';
@@ -21,7 +21,6 @@ import './index.css';
 import ChatBot from '../ChatBot/ChatBot';
 import ListPublicSher from './ListPublicSher';
 import AuthorBook from './AuthorBook';
-import ImageHeader from '../Utils/ImageHeader';
 const { Meta } = Card;
 const { Title, Text } = Typography;
 
@@ -258,7 +257,6 @@ function HomePage() {
                 <div className='layout-content-image'>
                     <Image width='30%' src='https://th.bing.com/th/id/OIG2.gBo1U.SuIE.iiAHhpJnI?w=1024&h=1024&rs=1&pid=ImgDetMain' />
                 </div>
-                {/* <ImageHeader/> */}
             </div>
 
             <span>
