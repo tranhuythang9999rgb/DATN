@@ -11,7 +11,6 @@ import { BsBackpack2 } from 'react-icons/bs';
 import GetTheShippingAddress from '../user/GetTheShippingAddress';
 import Header from '../Utils/Header';
 import Footer from '../Utils/Footer';
-import { SmileOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
 
@@ -28,12 +27,25 @@ const SubmitBuyBook = () => {
     const [paymentMethod, setPaymentMethod] = useState(1);
     const [loadingPayment, setLoadingPayment] = useState(false);
     const [valueAddress, setValueAddress] = useState(1);
+    const [isGobackOrderOff, setIsGobackOrderOff] = useState(false);
+    const [redirect, setRedirect] = useState(false);
 
     const onChangeAddress = (e) => {
         console.log('radio checked', e.target.value);
         setValueAddress(e.target.value);
     };
 
+    useEffect(() => {
+        if (isGobackOrderOff) {
+            // Set a delay of 3 seconds (3000 milliseconds)
+            const timer = setTimeout(() => {
+                setRedirect(true);
+            }, 3000);
+
+            // Cleanup timer if the component unmounts or if `isGobackOrderOff` changes
+            return () => clearTimeout(timer);
+        }
+    }, [isGobackOrderOff]);
 
     useEffect(() => {
         // Fetch list of cities on mount
@@ -181,6 +193,7 @@ const SubmitBuyBook = () => {
             if (response.data.code === 0) {
                 openNotification('Đặt hàng thành công', 'Đơn hàng của bạn đã được đặt thành công.');
                 message.success('Order updated successfully.');
+                setIsGobackOrderOff(true)
             } else {
                 message.error(`Error: ${response.data.message}`);
             }
@@ -197,6 +210,9 @@ const SubmitBuyBook = () => {
         return <DetailBuy book_id={localStorage.getItem('book_id')} />;
     }
 
+    if (redirect) {
+        return <DetailBuy book_id={localStorage.getItem('book_id')} />;
+    }
     return (
         <div>
             {contextHolder}
