@@ -77,5 +77,6 @@ func loadAdapter() []fx.Option {
 		fx.Provide(repository.NewCollectionOrder),
 		fx.Provide(repository.NewCollectionDeliveryAddress),
 		fx.Provide(repository.NewCollectionCart),
+		fx.Provide(repository.NewConllectionOrderItem),
 	}
 }

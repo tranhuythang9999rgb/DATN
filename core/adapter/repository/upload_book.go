@@ -73,6 +73,9 @@ func (c *CollectionBook) Update(ctx context.Context, book *domain.Book) error {
 func (c *CollectionBook) GetBookById(ctx context.Context, id int64) (*domain.Book, error) {
 	var book *domain.Book
 	result := c.book.Where("id = ? and is_active = true", id).First(&book)
+	if result.Error == gorm.ErrRecordNotFound {
+		return nil, nil
+	}
 	return book, result.Error
 }
 func (c *CollectionBook) GetListBookSellWell(ctx context.Context) ([]*domain.Book, error) {
@@ -89,7 +92,7 @@ func (c *CollectionBook) GetListBookSellWell(ctx context.Context) ([]*domain.Boo
 	if ordersCount > 100 { //todo
 		// Lấy 5 sản phẩm bán chạy nhất từ bảng orders
 		if err := c.book.WithContext(ctx).
-			Model(&domain.Order{}).
+			Model(&domain.Order{}).Where("is_active = true").
 			Select("book_id, book_title, SUM(quantity) AS quantity").
 			Group("book_id, book_title").
 			Order("quantity DESC").
@@ -100,7 +103,7 @@ func (c *CollectionBook) GetListBookSellWell(ctx context.Context) ([]*domain.Boo
 	} else {
 		// Nếu không có đơn hàng, lấy 5 sách đầu tiên theo thứ tự giảm dần của ID
 		if err := c.book.WithContext(ctx).
-			Model(&domain.Book{}).
+			Model(&domain.Book{}).Where("is_active = true").
 			Order("id DESC").
 			Limit(5).
 			Find(&books).Error; err != nil {
@@ -125,6 +128,6 @@ func (u *CollectionBook) UpdateQuantity(ctx context.Context, id int64, quantity 
 
 func (u *CollectionBook) GetListBookByTypeBook(ctx context.Context, typeBook string) ([]*domain.Book, error) {
 	var books = make([]*domain.Book, 0)
-	result := u.book.Where("genre = ? ", typeBook).Find(&books)
+	result := u.book.Where("genre = ? and  is_active = true", typeBook).Find(&books)
 	return books, result.Error
 }

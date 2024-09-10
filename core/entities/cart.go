@@ -17,4 +17,5 @@ type CartResp struct {
 	Quantity    int     `json:"quantity"`
 	Price       float64 `json:"price"`
 	TotalAmount float64 `json:"total_amount"`
+	Url         string  `json:"url"`
 }

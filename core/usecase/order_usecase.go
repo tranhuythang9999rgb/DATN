@@ -14,16 +14,20 @@ import (
 )
 
 type UseCaseOrder struct {
-	order domain.RepositoryOrder
-	book  domain.RepositoryBook
-	trans domain.RepositoryTransaction
+	order     domain.RepositoryOrder
+	book      domain.RepositoryBook
+	trans     domain.RepositoryTransaction
+	orderItem domain.RepositoryOrderItem
 }
 
-func NewUseCaseOrder(order domain.RepositoryOrder, book domain.RepositoryBook, trans domain.RepositoryTransaction) *UseCaseOrder {
+func NewUseCaseOrder(order domain.RepositoryOrder, book domain.RepositoryBook,
+	orderItem domain.RepositoryOrderItem,
+	trans domain.RepositoryTransaction) *UseCaseOrder {
 	return &UseCaseOrder{
-		order: order,
-		book:  book,
-		trans: trans,
+		order:     order,
+		book:      book,
+		trans:     trans,
+		orderItem: orderItem,
 	}
 }
 
@@ -71,6 +75,8 @@ func (u *UseCaseOrder) CreateOrder(ctx context.Context, req *entities.Order) (in
 			Quantity:          req.Quantity,
 			TotalAmount:       checkorderExists.BookPrice * float64(req.Quantity),
 			Status:            enums.ORDER_INIT,
+			CreateOrder:       utils.GenerateTimestamp(),
+			CreateTime:        time.Now(),
 		})
 		if err != nil {
 			return 0, errors.NewSystemError("error system")
@@ -101,6 +107,7 @@ func (u *UseCaseOrder) CreateOrder(ctx context.Context, req *entities.Order) (in
 			Quantity:          req.Quantity,
 			TotalAmount:       book.Price * float64(req.Quantity),
 			Status:            enums.ORDER_INIT,
+			CreateOrder:       utils.GenerateTimestamp(),
 		})
 		if err != nil {
 			return 0, errors.NewSystemError("error system 5")
@@ -170,4 +177,80 @@ func (u *UseCaseOrder) ListOrdersUseTk(ctx context.Context, start, end string) (
 	}
 	log.Infof("data ", listOrder)
 	return listOrder, nil
+}
+
+// "cart_id": 2594695,
+// "book_id": 8113677,
+// "book_name": "8",
+// "quantity": 1,
+// "price": 8,
+// "total_amount": 8
+// },
+// {
+// "cart_id": 6114771,
+// "book_id": 9274936,
+// "book_name": "",
+// "quantity": 4,
+// "price": 0,
+// "total_amount": 0
+
+func (u *UseCaseOrder) CreateOrderInCart(ctx context.Context, req []*entities.OrderItemReq) errors.Error {
+	// Tạo Order mới
+
+	orderId := utils.GenerateUniqueKey()
+
+	var totalAmount float64
+	for _, item := range req {
+		// Lấy thông tin sách
+		book, err := u.book.GetBookById(ctx, item.BookId)
+		if err != nil {
+			log.Error(err, "error 1")
+			return errors.ErrSystem
+		}
+		// Kiểm tra số lượng tồn kho
+		if book.Quantity < item.Quantity {
+			log.Error(err, "ko du san pham")
+			return errors.NewCustomHttpError(200, 10, "ko du san pham")
+		}
+
+		// Tạo OrderItem mới
+		orderItem := &domain.OrderItem{
+			ID:       utils.GenerateUniqueKey(),
+			OrderID:  orderId,
+			BookID:   item.BookId,
+			Quantity: item.Quantity,
+			Price:    item.Price,
+		}
+
+		if err := u.orderItem.CreateOrderItem(ctx, orderItem); err != nil {
+			log.Error(err, "error 3")
+			return errors.ErrSystem
+		}
+
+		// Cập nhật số lượng sách trong kho
+		if err := u.book.UpdateQuantity(ctx, book.ID, int(book.Quantity)-int(item.Quantity)); err != nil {
+			log.Error(err, "error 4")
+			return errors.ErrSystem
+		}
+
+		// Cập nhật tổng số tiền của đơn hàng
+		totalAmount += item.TotalAmount
+	}
+
+	order := &domain.Order{
+		ID:           orderId,
+		CustomerName: req[0].UserName, // Giả sử tất cả các mục đều có cùng tên khách hàng
+		OrderDate:    time.Now().Format("2006-01-02"),
+		Status:       enums.ORDER_INIT,           // Giả sử đây là trạng thái mặc định
+		TypePayment:  enums.TYPE_PAYMENT_OFFLINE, // Giả sử đây là loại thanh toán mặc định
+		BookPrice:    totalAmount,
+		CreateTime:   time.Now(),
+	}
+
+	if err := u.order.CreateOrder(ctx, order); err != nil {
+		log.Error(err, "error  5")
+		return errors.ErrSystem
+	}
+
+	return nil
 }

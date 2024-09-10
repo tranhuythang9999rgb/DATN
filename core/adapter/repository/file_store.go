@@ -49,3 +49,12 @@ func (c *CollectionFileStore) DeleteFileByIdNotTransaction(ctx context.Context, 
 	result := c.fs.Where("id = ?", fileId).Delete(&domain.FileStorages{}) //
 	return result.Error
 }
+
+func (c *CollectionFileStore) GetFileByObjectId(ctx context.Context, objectId int64) (*domain.FileStorages, error) {
+	var files *domain.FileStorages
+	result := c.fs.Where("any_id = ? ", objectId).First(&files)
+	if result.Error == gorm.ErrRecordNotFound {
+		return nil, nil
+	}
+	return files, result.Error
+}

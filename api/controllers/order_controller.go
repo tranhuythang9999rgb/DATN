@@ -90,3 +90,17 @@ func (u *ControllerOrder) ListOrdersUseTk(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, resp)
 }
+
+func (u *ControllerOrder) CreateOrderItem(ctx *gin.Context) {
+	var req []*entities.OrderItemReq
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	err := u.order.CreateOrderInCart(ctx, req)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, nil)
+}

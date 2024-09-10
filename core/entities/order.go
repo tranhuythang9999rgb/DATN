@@ -7,3 +7,13 @@ type Order struct {
 	OrderId      int64  `form:"order_id"`      // check xem sachs do da chuan bij mua chua
 	TypePayment  int    `form:"type_payment"`
 }
+
+type OrderItemReq struct {
+	CartId      int64   `json:"cart_id"`
+	BookId      int64   `json:"book_id"`
+	BookName    string  `json:"book_name"`
+	Quantity    int     `json:"quantity"`
+	Price       float64 `json:"price"`
+	TotalAmount float64 `json:"total_amount"`
+	UserName    string  `json:"user_name"`
+}

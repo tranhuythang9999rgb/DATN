@@ -202,3 +202,12 @@ ALTER TABLE orders
 
 ALTER TABLE books 
 ADD COLUMN create_time timestamp with time zone DEFAULT NOW();
+
+
+CREATE TABLE order_items (
+    id BIGINT PRIMARY KEY,
+    order_id BIGINT,
+    book_id BIGINT,
+    quantity INTEGER,
+    price NUMERIC(10,2)
+);

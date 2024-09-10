@@ -13,13 +13,16 @@ type CartUseCase struct {
 	cart domain.RepositoryCart
 	user domain.RepositoryUser
 	book domain.RepositoryBook
+	file domain.RepositoryFileStorages
 }
 
-func NerCartUseCase(cart domain.RepositoryCart, user domain.RepositoryUser, book domain.RepositoryBook) *CartUseCase {
+func NerCartUseCase(cart domain.RepositoryCart, user domain.RepositoryUser,
+	book domain.RepositoryBook, file domain.RepositoryFileStorages) *CartUseCase {
 	return &CartUseCase{
 		cart: cart,
 		user: user,
 		book: book,
+		file: file,
 	}
 }
 
@@ -37,6 +40,7 @@ func (u *CartUseCase) AddCart(ctx context.Context, req *entities.Cart) errors.Er
 	}
 	return nil
 }
+
 func (u *CartUseCase) ListCartByUser(ctx context.Context, username string) (*entities.ListCart, errors.Error) {
 	user, _ := u.user.GetProFile(ctx, username)
 	var listCartResp = make([]*entities.CartResp, 0)
@@ -46,20 +50,31 @@ func (u *CartUseCase) ListCartByUser(ctx context.Context, username string) (*ent
 	}
 	for _, v := range carts {
 		book, _ := u.book.GetBookById(ctx, v.BookID)
-		listCartResp = append(listCartResp, &entities.CartResp{
-			CartId:      v.ID,
-			BookId:      v.BookID,
-			BookName:    book.Title,
-			Quantity:    v.Quantity,
-			Price:       book.Price,
-			TotalAmount: float64(v.Quantity) * book.Price,
-		})
+		if book != nil {
+			files, _ := u.file.GetFileByObjectId(ctx, book.ID)
+			fileUrl := "" // Mặc định là chuỗi rỗng
+
+			if files != nil {
+				fileUrl = files.URL
+			}
+
+			listCartResp = append(listCartResp, &entities.CartResp{
+				CartId:      v.ID,
+				BookId:      v.BookID,
+				BookName:    book.Title,
+				Quantity:    v.Quantity,
+				Price:       book.Price,
+				TotalAmount: float64(v.Quantity) * book.Price,
+				Url:         fileUrl, // Gán giá trị URL hoặc chuỗi rỗng nếu files là nil
+			})
+		}
 	}
 	return &entities.ListCart{
 		Carts: listCartResp,
 		Count: len(listCartResp),
 	}, nil
 }
+
 func (u *CartUseCase) DeleteCart(ctx context.Context, id string) errors.Error {
 	idNumber, _ := strconv.ParseInt(id, 10, 64)
 	err := u.cart.DeleteCart(ctx, idNumber)
