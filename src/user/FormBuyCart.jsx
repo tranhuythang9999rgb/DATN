@@ -13,6 +13,7 @@ function FormBuyCart() {
     const [loading, setLoading] = useState(true);
     const [api, contextHolder] = notification.useNotification();
     const [nextHomePage, setNextHomePage] = useState(false);
+    const [buttonLoading, setButtonLoading] = useState(false); // New state for button loading
     const shippingFee = 30000; // Default shipping fee
 
     const openNotification = (placement, message, description) => {
@@ -38,6 +39,7 @@ function FormBuyCart() {
             user_name: userName, // Include user_name here
         }));
 
+        setButtonLoading(true); // Show spinner on button
         try {
             const response = await axios.post('http://127.0.0.1:8080/manager/order/api/orders', updatedCartJson);
 
@@ -47,15 +49,17 @@ function FormBuyCart() {
                 setTimeout(() => {
                     setNextHomePage(true);
                 }, 3000);
-            }else if(response.data.code ===10){
+            } else if (response.data.code === 10) {
                 openNotification('topRight', 'Hàng đã hết');
-            } 
-            else {
+            } else {
                 openNotification('topRight', 'Lỗi đặt hàng', 'Có lỗi xảy ra trong quá trình đặt hàng. Vui lòng thử lại.');
             }
         } catch (error) {
             console.error('Có lỗi xảy ra khi đặt hàng:', error);
             openNotification('topRight', 'Lỗi', 'Có lỗi xảy ra trong quá trình đặt hàng. Vui lòng thử lại.');
+        } finally {
+            // Hide spinner after 3 seconds
+            setTimeout(() => setButtonLoading(false), 3000);
         }
     };
 
@@ -142,7 +146,12 @@ function FormBuyCart() {
                         </Button>
                     </Form.Item>
                     <Form.Item>
-                        <Button type="default" onClick={handleOrder} className="form-button">
+                        <Button
+                            type="default"
+                            onClick={handleOrder}
+                            className="form-button"
+                            loading={buttonLoading} // Show spinner on button
+                        >
                             Đặt hàng
                         </Button>
                     </Form.Item>
