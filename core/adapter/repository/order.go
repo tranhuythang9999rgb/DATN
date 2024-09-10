@@ -78,7 +78,7 @@ func (c *CollectionOrder) ListOrders(ctx context.Context, filter *domain.OrderFo
 		Quantity:          filter.Quantity,
 		TotalAmount:       filter.TotalAmount,
 		Status:            filter.Status,
-	}).Order("create_time desc").Find(&orders)
+	}).Order("create_order desc").Find(&orders)
 
 	return orders, result.Error
 }
@@ -154,4 +154,14 @@ func (c *CollectionOrder) ListOrdersUseTk(ctx context.Context, filter *domain.Or
 	result := c.db.Where("create_order BETWEEN ? AND ?", filter.StartTime, filter.EndTime).Find(&orders)
 
 	return orders, result.Error
+}
+
+func (u *CollectionOrder) UpdateStatusPaymentOffline(ctx context.Context, id int64, status int) error {
+	result := u.db.Model(&domain.Order{}).
+		Where("id = ?", id).
+		Updates(map[string]interface{}{
+			"status":       status,
+			"type_payment": enums.TYPE_PAYMENT_OFFLINE,
+		})
+	return result.Error
 }

@@ -6,6 +6,7 @@ type Order struct {
 	Quantity     int    `form:"quantity"`      // Số lượng sách trong đơn hàng
 	OrderId      int64  `form:"order_id"`      // check xem sachs do da chuan bij mua chua
 	TypePayment  int    `form:"type_payment"`
+	AddressId    int    `form:"address_id"`
 }
 
 type OrderItemReq struct {

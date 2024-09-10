@@ -77,6 +77,7 @@ func (u *UseCaseOrder) CreateOrder(ctx context.Context, req *entities.Order) (in
 			Status:            enums.ORDER_INIT,
 			CreateOrder:       utils.GenerateTimestamp(),
 			CreateTime:        time.Now(),
+			AddressId:         int64(req.AddressId),
 		})
 		if err != nil {
 			return 0, errors.NewSystemError("error system")
@@ -108,6 +109,7 @@ func (u *UseCaseOrder) CreateOrder(ctx context.Context, req *entities.Order) (in
 			TotalAmount:       book.Price * float64(req.Quantity),
 			Status:            enums.ORDER_INIT,
 			CreateOrder:       utils.GenerateTimestamp(),
+			AddressId:         int64(req.AddressId),
 		})
 		if err != nil {
 			return 0, errors.NewSystemError("error system 5")
@@ -147,11 +149,18 @@ func (u *UseCaseOrder) UpdateStatusOrder(ctx context.Context, orderId string) er
 }
 
 func (u *UseCaseOrder) ListOrder(ctx context.Context, req *domain.OrderForm) ([]*domain.Order, errors.Error) {
+	var orders []*domain.Order
+
 	listOrder, err := u.order.ListOrders(ctx, req)
 	if err != nil {
 		return nil, errors.ErrSystem
 	}
-	return listOrder, nil
+	for _, v := range listOrder {
+		if v.Status != 7 {
+			orders = append(orders, v)
+		}
+	}
+	return orders, nil
 }
 
 func (u *UseCaseOrder) UpdateOrderForSend(ctx context.Context, id string) errors.Error {
@@ -252,5 +261,15 @@ func (u *UseCaseOrder) CreateOrderInCart(ctx context.Context, req []*entities.Or
 		return errors.ErrSystem
 	}
 
+	return nil
+}
+
+func (u *UseCaseOrder) UpdateOrderOffline(ctx context.Context, orderId string) errors.Error {
+
+	idNumber, _ := strconv.ParseInt(orderId, 10, 64)
+	err := u.order.UpdateStatusPaymentOffline(ctx, idNumber, enums.ORDER_PEND)
+	if err != nil {
+		return errors.NewSystemError(fmt.Sprintf("error system . %v", err))
+	}
 	return nil
 }

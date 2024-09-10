@@ -104,3 +104,13 @@ func (u *ControllerOrder) CreateOrderItem(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, nil)
 }
+
+func (u *ControllerOrder) UpdateOrderOffline(ctx *gin.Context) {
+	id := ctx.Query("id")
+	err := u.order.UpdateOrderOffline(ctx, id)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, nil)
+}

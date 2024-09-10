@@ -9,6 +9,7 @@ type DeliveryAddress struct {
 	District    string `form:"district"`
 	Commune     string `form:"commune"`
 	Detailed    string `form:"detailed"`
+	NickName    string `form:"nick_name"`
 }
 
 type DeliveryAddressUpdateProFile struct {
@@ -18,4 +19,5 @@ type DeliveryAddressUpdateProFile struct {
 	District    string `form:"district"`
 	Commune     string `form:"commune"`
 	Detailed    string `form:"detailed"`
+	NickName    string `form:"nick_name"`
 }

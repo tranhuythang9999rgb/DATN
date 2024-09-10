@@ -29,6 +29,7 @@ type Order struct {
 	TypePayment       int       `json:"type_payment"`
 	CreateTime        time.Time `json:"create_time"`
 	CreateOrder       int64     `json:"create_order"`
+	AddressId         int64     `json:"address_id"`
 }
 
 type OrderForm struct {
@@ -86,4 +87,6 @@ type RepositoryOrder interface {
 	UpdateOrderForSend(ctx context.Context, id int64, status int) error
 
 	ListOrdersUseTk(ctx context.Context, filter *OrderFormUseTk) ([]*Order, error)
+
+	UpdateStatusPaymentOffline(ctx context.Context, id int64, status int) error
 }

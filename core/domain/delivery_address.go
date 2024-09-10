@@ -14,6 +14,7 @@ type DeliveryAddress struct {
 	Detailed       string `json:"detailed"`
 	Otp            int64  `json:"otp"`
 	DefaultAddress int    `json:"default_address"`
+	NickName       string `json:"nick_name"`
 }
 
 type RepositoryDeliveryAddress interface {

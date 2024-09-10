@@ -29,15 +29,17 @@ func NewDeliveryAddressUseCase(delivery_address domain.RepositoryDeliveryAddress
 
 func (u *DeliveryAddressUseCase) AddDeliveryAddress(ctx context.Context, req *entities.DeliveryAddress) errors.Error {
 	err := u.delivery_address.Create(ctx, &domain.DeliveryAddress{
-		ID:          utils.GenerateUniqueKey(),
-		OrderID:     req.OrderID,
-		Email:       req.Email,
-		UserName:    req.UserName,
-		PhoneNumber: req.PhoneNumber,
-		Province:    req.Province,
-		District:    req.District,
-		Commune:     req.Commune,
-		Detailed:    req.Detailed,
+		ID:             utils.GenerateUniqueKey(),
+		OrderID:        req.OrderID,
+		Email:          req.Email,
+		UserName:       req.UserName,
+		PhoneNumber:    req.PhoneNumber,
+		Province:       req.Province,
+		District:       req.District,
+		Commune:        req.Commune,
+		Detailed:       req.Detailed,
+		DefaultAddress: 0,
+		NickName:       req.NickName,
 	})
 	if err != nil {
 		return errors.NewCustomHttpErrorWithCode(enums.DB_ERR_CODE, enums.DB_ERR_MESS, "500")
@@ -65,7 +67,8 @@ func (u *DeliveryAddressUseCase) AddDeliveryAddressUpdateProfile(ctx context.Con
 		Commune:        req.Commune,
 		Detailed:       req.Commune,
 		Otp:            0,
-		DefaultAddress: enums.ADDRESS_STATUS_DEFAULT,
+		DefaultAddress: 0,
+		NickName:       req.NickName,
 	})
 	if err != nil {
 		return errors.ErrSystem

@@ -33,7 +33,7 @@ func (c *CollectionDeliveryAddress) UpdateEmailAndOtp(ctx context.Context, req *
 
 func (c *CollectionDeliveryAddress) GetAddressByUserName(ctx context.Context, username string) (*domain.DeliveryAddress, error) {
 	var address *domain.DeliveryAddress
-	result := c.db.Where("user_name = ? and default_address = ?", username, 29).First(&address)
+	result := c.db.Where("user_name = ? and default_address = ?", username, enums.ADDRESS_STATUS_DEFAULT).First(&address)
 	if result.Error == gorm.ErrRecordNotFound {
 		return nil, nil
 	}

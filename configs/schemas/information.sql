@@ -216,5 +216,9 @@ ALTER TABLE authors
   ADD COLUMN avatar VARCHAR(255);
 
 
-ALTER TABLE authors 
+ALTER TABLE publishers 
   ADD COLUMN avatar VARCHAR(255);
+
+ALTER TABLE orders 
+  ADD COLUMN address_id BIGINT;
+COMMENT ON COLUMN orders.address_id IS 'thông tin địa chỉ giao hàng';
