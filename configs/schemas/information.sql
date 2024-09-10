@@ -211,3 +211,6 @@ CREATE TABLE order_items (
     quantity INTEGER,
     price NUMERIC(10,2)
 );
+
+ALTER TABLE authors 
+  ADD COLUMN avatar VARCHAR(255);

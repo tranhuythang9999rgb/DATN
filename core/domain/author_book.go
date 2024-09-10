@@ -11,6 +11,7 @@ type Author struct {
 	Biography   string `json:"biography"`   // Tiểu sử ngắn của tác giả
 	BirthDate   string `json:"birth_date"`  // Ngày sinh của tác giả
 	Nationality string `json:"nationality"` // Quốc tịch của tác giả
+	Avatar      string `json:"avatar"`
 }
 type RepositoryAuthor interface {
 	Create(ctx context.Context, author *Author) error

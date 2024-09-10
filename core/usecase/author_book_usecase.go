@@ -26,12 +26,17 @@ func (u *AuthorBookCaseUse) AddAuthorBook(ctx context.Context, req *entities.Aut
 	if author != nil {
 		return errors.NewCustomHttpError(200, 2, "author name exists")
 	}
+	respFile, err := utils.SetByCurlImage(ctx, req.File)
+	if respFile.Result.Code != 0 || err != nil {
+		return errors.ErrSystem
+	}
 	err = u.authorBook.Create(ctx, &domain.Author{
 		ID:          utils.GenerateUniqueKey(),
 		Name:        req.Name,
 		Biography:   req.Biography,
 		BirthDate:   req.BirthDate,
 		Nationality: req.Nationality,
+		Avatar:      respFile.URL,
 	})
 	if err != nil {
 		return errors.NewSystemError("error system")
