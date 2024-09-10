@@ -11,6 +11,7 @@ import { BsBackpack2 } from 'react-icons/bs';
 import GetTheShippingAddress from '../user/GetTheShippingAddress';
 import Header from '../Utils/Header';
 import Footer from '../Utils/Footer';
+import { SmileOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
 
@@ -27,10 +28,13 @@ const SubmitBuyBook = () => {
     const [paymentMethod, setPaymentMethod] = useState(1);
     const [loadingPayment, setLoadingPayment] = useState(false);
     const [valueAddress, setValueAddress] = useState(1);
+
     const onChangeAddress = (e) => {
         console.log('radio checked', e.target.value);
         setValueAddress(e.target.value);
     };
+
+
     useEffect(() => {
         // Fetch list of cities on mount
         fetchCities();
@@ -101,7 +105,7 @@ const SubmitBuyBook = () => {
                     if (data.code === 0) {
                         message.success('Đặt hàng thành công!');
                         localStorage.setItem('status_address', 'ok');
-                        openNotification('Order Success', 'Your order has been placed successfully.');
+                        openNotification('Đặt hàng thành công', 'Đơn hàng của bạn đã được đặt thành công.');
                         setIsGoback(true);
                     } else {
                         message.error('Có lỗi xảy ra!');
@@ -163,18 +167,19 @@ const SubmitBuyBook = () => {
 
     const handleOrderBook = async () => {
         const orderId = localStorage.getItem('order_id') || 0;
-    
+
         if (!orderId) {
             message.error('Order ID not found in local storage.');
             return;
         }
-    
+
         try {
             const response = await axios.patch(`http://127.0.0.1:8080/manager/order/api/order/offiline`, null, {
                 params: { id: orderId }
             });
-    
+
             if (response.data.code === 0) {
+                openNotification('Đặt hàng thành công', 'Đơn hàng của bạn đã được đặt thành công.');
                 message.success('Order updated successfully.');
             } else {
                 message.error(`Error: ${response.data.message}`);
@@ -306,13 +311,16 @@ const SubmitBuyBook = () => {
                                     } else {
                                         // Case 1.2: Other cases when paymentMethod is 2 but different address conditions
                                         return (
-                                            <Button
-                                                onClick={handleCreatePayment && form.submit}
-                                                loading={loadingPayment}
-                                                style={{ height: '50px', fontSize: '20px', width: '100%' }}
-                                            >
-                                                {loadingPayment ? 'Đang xử lý...' : <>Thanh toán <RiSecurePaymentLine style={{ marginLeft: '8px' }} /></>}
-                                            </Button>
+                                            <div>
+                                                <Button
+                                                    onClick={handleCreatePayment && form.submit}
+                                                    loading={loadingPayment}
+                                                    style={{ height: '50px', fontSize: '20px', width: '100%' }}
+                                                >
+                                                    {loadingPayment ? 'Đang xử lý...' : <>Thanh toán <RiSecurePaymentLine style={{ marginLeft: '8px' }} /></>}
+                                                </Button>
+                                            </div>
+
                                         );
                                     }
                                 } else {
@@ -320,12 +328,14 @@ const SubmitBuyBook = () => {
                                     if (valueAddress === 2) {
                                         // Case 2.1: valueAddress is 2
                                         return (
-                                            <Button
-                                                onClick={() => { handleOrderBook(); form.submit(); }}
-                                                style={{ height: '50px', fontSize: '20px', width: '100%' }}
-                                            >
-                                                {"" ? 'Đang xử lý...' : <>Đặt hàng <BsBackpack2 style={{ marginLeft: '8px' }} /></>}
-                                            </Button>
+                                            <div>
+                                                <Button
+                                                    onClick={() => { handleOrderBook(); form.submit(); }}
+                                                    style={{ height: '50px', fontSize: '20px', width: '100%' }}
+                                                >
+                                                    {"" ? 'Đang xử lý...' : <>Đặt hàng <BsBackpack2 style={{ marginLeft: '8px' }} /></>}
+                                                </Button>
+                                            </div>
                                         );
                                     } else {
                                         // Case 2.2: Other cases when paymentMethod is not 2 and different address conditions
@@ -343,7 +353,6 @@ const SubmitBuyBook = () => {
 
 
                         </Col>
-
                     </Row>
                 </Col>
 
