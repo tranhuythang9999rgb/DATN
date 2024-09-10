@@ -99,7 +99,7 @@ function AuthorBook() {
                 <Avatar src={avatar} size={64} />
             ),
         },
-      
+
         {
             title: 'Hành Động',
             key: 'action',

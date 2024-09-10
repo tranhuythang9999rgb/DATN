@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input, Button, message, Form, Popconfirm } from 'antd';
+import { Table, Input, Button, message, Form, Popconfirm, Upload, Avatar } from 'antd';
 import axios from 'axios';
 import './admin_index.css'; // Import your custom CSS
 
@@ -7,6 +7,7 @@ import './admin_index.css'; // Import your custom CSS
 function Publishers() {
     const [publishers, setPublishers] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [imageFile, setImageFile] = useState(null);
 
     // Function to fetch the list of publishers
     const fetchPublishers = async () => {
@@ -32,17 +33,18 @@ function Publishers() {
             formData.append('address', values.address);
             formData.append('contact_number', values.contact_number);
             formData.append('website', values.website);
+            formData.append('file', imageFile);  // Đảm bảo đính kèm đúng file
 
             const response = await axios.post('http://127.0.0.1:8080/manager/publisher/add', formData);
             if (response.data.code === 0) {
                 message.success('Publisher added successfully!');
                 fetchPublishers(); // Refresh the list
             } else if (response.data.code === 2) {
-                message.error('Publisher name already exists.');
+                message.error('Tên nhà xuất bản đã tồn tại');
             }
         } catch (error) {
             console.error('Error adding publisher:', error);
-            message.error('Unable to add publisher.');
+            message.error('Tên nhà xuất bản đã tồn tại.');
         }
     };
 
@@ -101,29 +103,37 @@ function Publishers() {
             key: 'website',
         },
         {
-            title: 'Trạng thái',
-            dataIndex: 'is_active',
-            key: 'is_active',
-            render: (is_active) => (is_active ? 'Hoạt động' : 'Không hoạt động'),
+            title: 'Ảnh Đại Diện',
+            dataIndex: 'avatar',
+            key: 'avatar',
+            render: (avatar) => (
+                <Avatar src={avatar} size={64} />
+            ),
         },
         {
-            title: 'Hành động',
+            title: '',
             key: 'action',
             render: (text, record) => (
                 <span>
-                    <a href="#" onClick={() => handleEdit(record)}>Sửa</a>
-                    <span> | </span>
+                    <Button
+                        type="primary"
+                        onClick={() => handleEdit(record)}
+                        style={{ marginRight: 8 }}
+                    >
+                        Sửa
+                    </Button>
                     <Popconfirm
                         title="Bạn có chắc chắn muốn xóa nhà xuất bản này không?"
                         onConfirm={() => handleDelete(record.id)}
                         okText="Xóa"
                         cancelText="Hủy"
                     >
-                        <a href="#">Xóa</a>
+                        <Button type="dashed">Xóa</Button>
                     </Popconfirm>
                 </span>
             ),
-        },
+        }
+        
     ];
 
     return (
@@ -159,6 +169,20 @@ function Publishers() {
                     >
                         <Input className="custom-input" placeholder="Website" />
                     </Form.Item>
+                    <Upload
+                        maxCount={1}
+                        listType="picture"
+                        accept="image/jpeg,image/png"
+                        beforeUpload={(file) => {
+                            setImageFile(file);
+                            return false;  // Ngăn upload tự động
+                        }}
+                        onRemove={() => {
+                            setImageFile(null);
+                        }}
+                    >
+                        +Upload
+                    </Upload>
                     <Form.Item>
                         <Button
                             type="primary"
