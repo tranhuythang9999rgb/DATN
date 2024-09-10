@@ -188,9 +188,11 @@ const DetailBuy = ({ book_id }) => {
         const customerName = userData ? userData.user_name : '';
         const orderId = localStorage.getItem('order_id') || 0;
 
+        const bookId = localStorage.getItem("book_id");
+
         const formData = new FormData();
         formData.append('customer_name', customerName);
-        formData.append('book_id', book_id); // Ensure book_id is a string
+        formData.append('book_id', bookId); // Ensure book_id is a string
         formData.append('quantity', items.toString()); // Ensure quantity is a string
         formData.append('order_id', orderId);
 

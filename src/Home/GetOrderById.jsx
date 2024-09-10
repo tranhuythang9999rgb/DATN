@@ -12,6 +12,7 @@ const GetOrderById = () => {
     const orderId = localStorage.getItem('order_id') || 0;
 
     useEffect(() => {
+
         const fetchOrder = async () => {
             if (!orderId || orderId === 0) {
                 setError('Vui lòng kiểm tra kết nối mạng hoặc thiết bị');

@@ -160,9 +160,14 @@ const SubmitBuyBook = () => {
             },
         });
     };
+
+    const handleOrder = () =>{
+        message.success("ok");
+    }
+
     const status_address = localStorage.getItem('status_address');
     const storedUsername = localStorage.getItem('userData');
- 
+
     if (isGoback) {
         return <DetailBuy book_id={localStorage.getItem('book_id')} />;
     }
@@ -170,7 +175,7 @@ const SubmitBuyBook = () => {
     return (
         <div>
             {contextHolder}
-            <Header/>
+            <Header />
             <Row>
                 <IoReturnUpBackOutline onClick={() => setIsGoback(true)} style={{ fontSize: '25px', cursor: 'pointer' }} />
             </Row>
@@ -179,9 +184,9 @@ const SubmitBuyBook = () => {
                     <Row gutter={16}>
                         <Col span={8}>
 
-                        {valueAddress === 1 && storedUsername ? (
+                            {valueAddress === 1 && storedUsername ? (
                                 <p>
-                                    <GetTheShippingAddress/>
+                                    <GetTheShippingAddress />
                                 </p>
                             ) : (
                                 <Form form={form} onFinish={handleFormSubmit}>
@@ -233,7 +238,7 @@ const SubmitBuyBook = () => {
                                     <Form.Item name="note">
                                         <Input placeholder='Ghi chú' />
                                     </Form.Item>
-                                   
+
                                 </Form>
                             )}
                         </Col>
@@ -251,47 +256,79 @@ const SubmitBuyBook = () => {
                                     >
                                         <Radio value={2} /> Thanh toán trực tuyến <GrPaypal />
                                     </Button>
-                                 
-                                    {!status_address ? (
-                                        <p>Địa chỉ giao hàng hiện tại đã được lưu. Bạn có thể sử dụng địa chỉ hiện tại hoặc nhập địa chỉ mới.</p>
-                                    ) : (
-                                        <Radio.Group onChange={onChangeAddress} value={valueAddress}>
-                                            <Radio value={1}>Địa chỉ hiện tại</Radio>
-                                            <Radio value={2}>Địa chỉ mới</Radio>
-                                        </Radio.Group>
-                                    )}
+
+
+                                    <Radio.Group onChange={onChangeAddress} value={valueAddress}>
+                                        <Radio value={1}>Địa chỉ hiện tại</Radio>
+                                        <Radio value={2}>Địa chỉ mới</Radio>
+                                    </Radio.Group>
 
                                 </Space>
                             </Radio.Group>
                         </Col>
                         <Col span={8}>
                             <GetOrderById />
-                            {
-                                paymentMethod === 2 && (
-                                    <Button
-                                        onClick={handleCreatePayment}
-                                        loading={loadingPayment}
-                                        style={{ height: '50px', fontSize: '20px', width: '100%' }}
-                                    >
-                                        {loadingPayment ? 'Đang xử lý...' : <>Thanh toán <RiSecurePaymentLine style={{ marginLeft: '8px' }} /></>}
-                                    </Button>
-                                )}
 
-                            {
-                                paymentMethod !== 2 && (
-                                    <Button
-                                        onClick={form.submit}
-                                        style={{ height: '50px', fontSize: '20px', width: '100%' }}
-                                    >
-                                        {"" ? 'Đang xử lý...' : <>Đặt hàng <BsBackpack2 style={{ marginLeft: '8px' }} /></>}
-                                    </Button>
-                                )}
+                            {(() => {
+                                if (paymentMethod === 2) {
+                                    // Case 1: Payment Method is 2
+                                    if (valueAddress === 2 || status_address === null) {
+                                        // Case 1.1: valueAddress is 2 or status_address is null
+                                        return (
+                                            <Button
+                                                onClick={handleCreatePayment && form.submit}
+                                                loading={loadingPayment}
+                                                style={{ height: '50px', fontSize: '20px', width: '100%' }}
+                                            >
+                                                {loadingPayment ? 'Đang xử lý...' : <>Thanh toán <RiSecurePaymentLine style={{ marginLeft: '8px' }} /></>}
+                                            </Button>
+                                        );
+                                    } else {
+                                        // Case 1.2: Other cases when paymentMethod is 2 but different address conditions
+                                        return (
+                                            <Button
+                                                onClick={handleCreatePayment && form.submit}
+                                                loading={loadingPayment}
+                                                style={{ height: '50px', fontSize: '20px', width: '100%' }}
+                                            >
+                                                {loadingPayment ? 'Đang xử lý...' : <>Thanh toán <RiSecurePaymentLine style={{ marginLeft: '8px' }} /></>}
+                                            </Button>
+                                        );
+                                    }
+                                } else {
+                                    // Case 2: Payment Method is not 2
+                                    if (valueAddress === 2) {
+                                        // Case 2.1: valueAddress is 2
+                                        return (
+                                            <Button
+                                                onClick={form.submit}
+                                                style={{ height: '50px', fontSize: '20px', width: '100%' }}
+                                            >
+                                                {"" ? 'Đang xử lý...' : <>Đặt hàng <BsBackpack2 style={{ marginLeft: '8px' }} /></>}
+                                            </Button>
+                                        );
+                                    } else {
+                                        // Case 2.2: Other cases when paymentMethod is not 2 and different address conditions
+                                        return (
+                                            <Button
+                                                onClick={handleOrder}
+                                                style={{ height: '50px', fontSize: '20px', width: '100%' }}
+                                            >
+                                                {"" ? 'Đang xử lý...' : <>Đặt hàng <BsBackpack2 style={{ marginLeft: '8px' }} /></>}
+                                            </Button>
+                                        );
+                                    }
+                                }
+                            })()}
+
+
                         </Col>
+
                     </Row>
                 </Col>
-               
+
             </Row>
-            <Footer/>
+            <Footer />
         </div>
     );
 };

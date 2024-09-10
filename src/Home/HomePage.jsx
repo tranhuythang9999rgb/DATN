@@ -37,6 +37,7 @@ function HomePage() {
     const [books, setBooks] = useState([]);
     const [likedBooks, setLikedBooks] = useState({});  // State to store liked status for each book
     const [isDrawerVisibleCart, setIsDrawerVisibleCart] = useState(false);
+    const [isNextBuyWell, setIsNextBuyWell] = useState(false);
     const cartRef = useRef(null);
 
     const openDrawerCart = () => {
@@ -177,6 +178,9 @@ function HomePage() {
         return <ProFile />
     }
 
+    if(isNextBuyWell) {
+        return <DetailBuy book_id={selectedBookId}/>
+    }
     //
     return (
         <div className='layout-home'>
@@ -266,8 +270,9 @@ function HomePage() {
             <div className="layout-footer">
 
                 <div className='layout-footer-tac-gia'>
+                    <span style={{display:'flex',marginLeft:'10px'}}>
                     <h1>Tác giả</h1>
-                    {/* List of new book authors */}
+                    </span>
                 <AuthorBook/>
                 </div>
 
@@ -334,7 +339,7 @@ function HomePage() {
                     </div>
                 </div>
                 <div className='layout-footer-list-bool-well-sell'>
-                    <BookWellSell title={'Sắp xuất bản'} />
+                    <BookWellSell title={'Sắp xuất bản'} onEventClick={() => setIsNextBuyWell(true)}/>
                 </div>
 
                 <div style={{ marginTop: '370px' }} className='layout-footer-nhaf-xuatban'>
