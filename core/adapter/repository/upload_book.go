@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"fmt"
+	"shoe_shop_server/common/log"
 	"shoe_shop_server/core/adapter"
 	"shoe_shop_server/core/domain"
 
@@ -78,9 +79,11 @@ func (c *CollectionBook) GetBookById(ctx context.Context, id int64) (*domain.Boo
 	}
 	return book, result.Error
 }
+
 func (c *CollectionBook) GetListBookSellWell(ctx context.Context) ([]*domain.Book, error) {
 	var books []*domain.Book
 	var ordersCount int64
+	var topSellingBooks []*domain.Book
 
 	// Kiểm tra số lượng đơn hàng
 	if err := c.book.WithContext(ctx).
@@ -89,28 +92,40 @@ func (c *CollectionBook) GetListBookSellWell(ctx context.Context) ([]*domain.Boo
 		return nil, fmt.Errorf("failed to count orders: %w", err)
 	}
 
-	if ordersCount > 100 { //todo
-		// Lấy 5 sản phẩm bán chạy nhất từ bảng orders
+	// Nếu có đơn hàng, lấy 15 sản phẩm bán chạy nhất
+	if ordersCount > 1 {
 		if err := c.book.WithContext(ctx).
-			Model(&domain.Order{}).Where("is_active = true").
-			Select("book_id, book_title, SUM(quantity) AS quantity").
-			Group("book_id, book_title").
+			Table("orders").
+			Select("books.id, books.title, SUM(orders.quantity) AS quantity").
+			Joins("JOIN books ON orders.book_id = books.id").
+			Where("orders.status != 7").
+			Group("books.id, books.title").
 			Order("quantity DESC").
-			Limit(5).
-			Find(&books).Error; err != nil {
+			Limit(15).
+			Scan(&topSellingBooks).Error; err != nil {
 			return nil, fmt.Errorf("failed to get top selling books: %w", err)
-		}
-	} else {
-		// Nếu không có đơn hàng, lấy 5 sách đầu tiên theo thứ tự giảm dần của ID
-		if err := c.book.WithContext(ctx).
-			Model(&domain.Book{}).Where("is_active = true").
-			Order("id DESC").
-			Limit(5).
-			Find(&books).Error; err != nil {
-			return nil, fmt.Errorf("failed to get books: %w", err)
 		}
 	}
 
+	// Nếu số lượng sách bán chạy ít hơn 15, bổ sung thêm sách mới nhất
+	if len(topSellingBooks) < 15 {
+		missingCount := 15 - len(topSellingBooks)
+		if err := c.book.WithContext(ctx).
+			Model(&domain.Book{}).
+			Where("is_active = true").
+			Order("create_time DESC").
+			Limit(missingCount).
+			Find(&books).Error; err != nil {
+			return nil, fmt.Errorf("failed to get newest books: %w", err)
+		}
+
+		// Kết hợp danh sách sách bán chạy và sách mới nhất
+		books = append(topSellingBooks, books...)
+	} else {
+		// Nếu đã đủ 15 sách bán chạy, sử dụng danh sách này
+		books = topSellingBooks
+	}
+	log.Infof("len : ", len(books))
 	return books, nil
 }
 
