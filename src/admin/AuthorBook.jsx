@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input, Button, message, Form, DatePicker, Popconfirm } from 'antd';
+import { Table, Input, Button, message, Form, DatePicker, Popconfirm, Upload, Avatar } from 'antd';
 import axios from 'axios';
 import moment from 'moment';
+import { render } from '@testing-library/react';
 
 function AuthorBook() {
     const [authors, setAuthors] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [imageFile, setImageFile] = useState(null);
 
     // Function to fetch the list of authors
     const fetchAuthors = async () => {
@@ -31,6 +33,7 @@ function AuthorBook() {
             formData.append('biography', values.biography);
             formData.append('birth_date', values.birth_date.format('YYYY-MM-DD'));
             formData.append('nationality', values.nationality);
+            formData.append('file', imageFile);  // Đảm bảo đính kèm đúng file
 
             const response = await axios.post('http://127.0.0.1:8080/manager/author_book/add', formData);
             if (response.data.code === 0) {
@@ -89,24 +92,30 @@ function AuthorBook() {
             key: 'birth_date',
         },
         {
-            title: 'Quốc Tịch',
-            dataIndex: 'nationality',
-            key: 'nationality',
+            title: 'Ảnh Đại Diện',
+            dataIndex: 'avatar',
+            key: 'avatar',
+            render: (avatar) => (
+                <Avatar src={avatar} size={64} />
+            ),
         },
+      
         {
             title: 'Hành Động',
             key: 'action',
             render: (text, record) => (
                 <span>
-                    <a href="#" onClick={() => handleUpdate(record)}>Sửa</a>
-                    <span> | </span>
+                    <Button type="primary" onClick={() => handleUpdate(record)}>
+                        Sửa
+                    </Button>
+                    <span style={{ margin: '0 8px' }}>|</span>
                     <Popconfirm
                         title="Bạn có chắc chắn muốn xóa tác giả này không?"
                         onConfirm={() => handleDeleteBook(record.id)}
                         okText="Xóa"
                         cancelText="Hủy"
                     >
-                        <a href="#">Xóa</a>
+                        <Button type="dashed">Xóa</Button>
                     </Popconfirm>
                 </span>
             ),
@@ -125,7 +134,7 @@ function AuthorBook() {
             <Form
                 layout="inline"
                 onFinish={addAuthor}
-                style={{ marginBottom: 20, maxWidth: 800 }}
+                style={{ marginBottom: 10, maxWidth: 800 }}
             >
                 <div style={{ display: 'flex' }}>
                     <Form.Item
@@ -155,6 +164,20 @@ function AuthorBook() {
                     >
                         <Input placeholder="Quốc Tịch" style={{ height: '40px' }} />
                     </Form.Item>
+                    <Upload
+                        maxCount={1}
+                        listType="picture"
+                        accept="image/jpeg,image/png"
+                        beforeUpload={(file) => {
+                            setImageFile(file);
+                            return false;  // Ngăn upload tự động
+                        }}
+                        onRemove={() => {
+                            setImageFile(null);
+                        }}
+                    >
+                        +Upload
+                    </Upload>
                     <Form.Item>
                         <Button
                             type="primary"
@@ -163,7 +186,7 @@ function AuthorBook() {
                                 height: '40px',
                                 marginLeft: 8,
                                 width: '195px',
-                                paddingTop: '10px'
+                                paddingTop: '5px',
                             }}
                         >
                             Thêm Tác Giả

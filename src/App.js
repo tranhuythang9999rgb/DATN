@@ -32,7 +32,7 @@ import RegisterUser from "./user/RegisterUser";
 function App() {
   return (
     <div>
-      {/* <Dashboard /> */}
+      <Dashboard />
       {/* <UploadBook/> */}
       {/* <ListBooks/> */}
       {/* <HomePage/> */}
@@ -59,7 +59,7 @@ function App() {
     {/* <GetListBookUserBook/> */}
     {/* <DisPlaySubmitByFromCart/> */}
     {/* <FormBuyCart/> */}
-    <FormBuyCart/>
+    {/* <FormBuyCart/> */}
     {/* <ListCart/> */}
     </div>
   );
