@@ -21,6 +21,7 @@ import './index.css';
 import ChatBot from '../ChatBot/ChatBot';
 import ListPublicSher from './ListPublicSher';
 import AuthorBook from './AuthorBook';
+import ImageHeader from '../Utils/ImageHeader';
 const { Meta } = Card;
 const { Title, Text } = Typography;
 
@@ -255,9 +256,9 @@ function HomePage() {
             <div className='layout-content'>
 
                 <div className='layout-content-image'>
-                    <Image width='40%' src='https://th.bing.com/th/id/OIG2.gBo1U.SuIE.iiAHhpJnI?w=1024&h=1024&rs=1&pid=ImgDetMain' />
+                    <Image width='30%' src='https://th.bing.com/th/id/OIG2.gBo1U.SuIE.iiAHhpJnI?w=1024&h=1024&rs=1&pid=ImgDetMain' />
                 </div>
-
+                {/* <ImageHeader/> */}
             </div>
 
             <span>

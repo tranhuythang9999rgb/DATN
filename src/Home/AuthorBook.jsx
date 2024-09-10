@@ -1,4 +1,4 @@
-import { Avatar, Badge, Image, message } from "antd";
+import { Avatar, Badge, message } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";

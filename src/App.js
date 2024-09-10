@@ -36,10 +36,10 @@ function App() {
       {/* <Dashboard /> */}
       {/* <UploadBook/> */}
       {/* <ListBooks/> */}
-      {/* <HomePage/> */}
+      <HomePage/>
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
-      <CheckLogin/>
+      {/* <CheckLogin/> */}
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
