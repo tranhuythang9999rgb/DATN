@@ -39,7 +39,7 @@ function App() {
       {/* <Dashboard /> */}
       {/* <UploadBook/> */}
       {/* <ListBooks/> */}
-      {/* <HomePage/> */}
+      <HomePage/>
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
       {/* <CheckLogin/> */}
@@ -77,7 +77,7 @@ function App() {
         price='1000'
         publisher='hi hi'
         title='hi hi' /> */}
-      <SliderCard/>
+      {/* <SliderCard/> */}
       {/* <BookWellSell title='Sắp xuất bản'/> */}
     </div>
   );

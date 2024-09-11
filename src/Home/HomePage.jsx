@@ -21,6 +21,7 @@ import './index.module.css';
 import ChatBot from '../ChatBot/ChatBot';
 import ListPublicSher from './ListPublicSher';
 import AuthorBook from './AuthorBook';
+import SliderCard from '../Test/Pages2';
 const { Meta } = Card;
 const { Title, Text } = Typography;
 
@@ -279,70 +280,17 @@ function HomePage() {
                 <div className='layout-footer-list-bool-well-sell'>
                     <div style={{ padding: '20px' }}>
                         <Title level={2}>Top Sản phẩm bán chạy <MdSell /></Title>
-                        <Row gutter={16} justify="space-between">
-                            {books.map(book => (
-                                <Col span={4} key={book.id} style={{ display: 'flex', justifyContent: 'center' }}>
-                                    <Card
-                                        cover={
-                                            <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                                <div
-                                                    className='icon-trai-tim'
-                                                    onClick={() => toggleLike(book.id)}  // Toggle like status on click
-                                                    style={{
-                                                        position: 'absolute',
-                                                        top: '-2px',  // Adjusted position
-                                                        right: '90px', // Adjusted position
-                                                        fontSize: '25px',
-                                                        color: likedBooks[book.id] ? 'red' : 'pink',  // Change color if liked
-                                                        cursor: 'pointer',
-                                                        zIndex: 10,  // Ensures the icon is above other elements
-                                                    }}
-                                                >
-                                                    {likedBooks[book.id] ? <FaHeart /> : <FaRegHeart />}
-                                                </div>
-                                                <Image
-                                                    alt={book.title}
-                                                    src={book.file_desc_first || 'http://placehold.it/300x400'}
-                                                    style={{
-                                                        height: '200px',
-                                                        objectFit: 'cover',
-                                                        width: '220px',
-                                                        display: 'block', // Ensure the image is a block-level element for centering
-                                                        marginLeft:'10px'
-                                                    }}
-                                                />
-                                            </div>
-                                        }
-                                        style={{
-                                            width: '300px',
-                                            height: '380px',
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            justifyContent: 'space-between',
-                                        }}
-                                    >
-                                        <Meta title={book.title} />
-                                        <div style={{ marginTop: '10px' }}>
-                                            <p><strong>Giá:</strong> {book.price} VND</p>
-                                        </div>
-                                        <span style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px' }}>
-                                            <Button onClick={() => handleBuyNow(book.id)} style={{ background: 'red', color: 'white', fontSize: '17px' }}>
-                                                Mua ngay
-                                            </Button>
-                                        </span>
-                                    </Card>
-
-                                </Col>
-                            ))}
-                        </Row>
+                      <SliderCard/>
 
                     </div>
                 </div>
                 <div className='layout-footer-list-bool-well-sell'>
-                    <BookWellSell title={'Sắp xuất bản'} onEventClick={() => setIsNextBuyWell(true)}/>
+                    {/* <BookWellSell title={'Sắp xuất bản'} onEventClick={() => setIsNextBuyWell(true)}/> */}
+                    <Title level={2}>Sách sắp xuất bản</Title>
+                    <SliderCard/>
                 </div>
 
-                <div style={{ marginTop: '370px' }} className='layout-footer-nhaf-xuatban'>
+                <div className='layout-footer-nhaf-xuatban'>
                     <h3>Nhà xuất bản</h3>
                         <ListPublicSher/>
                 </div>

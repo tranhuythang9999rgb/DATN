@@ -1,10 +1,10 @@
-import { Avatar, Badge, Image, message } from "antd";
+import { Avatar, Badge, message } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import './index.module.css';
+import styles from './index_publicshder.module.css'; // Import CSS module
 
 // Ảnh mặc định khi không có avatar
 const defaultAvatar = 'https://example.com/default-avatar.jpg';
@@ -49,10 +49,10 @@ function ListPublicSher() {
     };
 
     return (
-        <div className="slider-container">
+        <div className={styles.sliderContainer}>
             <Slider {...settings}>
                 {publishers.map((publisher, index) => (
-                    <div key={index}>
+                    <div key={index} className={styles.slickSlide}>
                         <Badge.Ribbon style={{width:'170px',height:'20px'}} text={publisher.name}>
                             <Avatar
                                 size={200}
@@ -60,7 +60,6 @@ function ListPublicSher() {
                                 fallback={defaultAvatar} // Nếu ảnh lỗi, dùng ảnh mặc định
                             />
                         </Badge.Ribbon>
-
                     </div>
                 ))}
             </Slider>

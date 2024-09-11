@@ -1,0 +1,64 @@
+/* index_publicshder.module.css */
+
+/* Thiết lập container chính cho slider */
+.sliderContainer {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Thiết lập kiểu cho các slide */
+.slickSlide {
+  text-align: center;
+  padding: 10px;
+  box-sizing: border-box; /* Đảm bảo padding không làm thay đổi kích thước slide */
+}
+
+.slickSlideDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px; /* Chiều cao của mỗi slide */
+}
+
+/* Thiết lập kiểu cho slider khi hiển thị danh sách bán hàng */
+.sliderContainerSell {
+  width: 98%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.sliderContainerSell .slickSlideDiv {
+  height: 350px;
+}
+
+/* Tùy chỉnh các nút điều khiển slider */
+.slickPrev, .slickNext {
+  background-color: #c9302c; /* Màu nền của nút điều khiển */
+  border-radius: 50%; /* Hình dạng tròn cho nút */
+}
+
+.slickPrev {
+  left: 10px;
+}
+
+.slickNext {
+  right: 10px;
+}
+
+/* Tùy chỉnh các điểm điều hướng slider */
+.slickDots {
+  bottom: 10px; /* Khoảng cách từ đáy slider */
+}
+
+.slickDots li button::after {
+  color: #c9302c; /* Màu của điểm điều hướng */
+}
+
+.slickDots li button:before {
+  color: #c9302c; /* Màu của điểm điều hướng */
+}
+
+.slickDots .slickActive button:before {
+  color: #fff; /* Màu của điểm điều hướng đang hoạt động */
+}
