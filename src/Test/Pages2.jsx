@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';  // Import thư viện react-slick
 import './slider_card.css';  // Assuming your styles are correct in this file
-import { Badge, Button, Form, Image, Space } from 'antd';
 import axios from 'axios';
+import CardProduct from '../Home/CardProduct';
 
 const SliderCard = () => {
     const [books, setBooks] = useState([]);
@@ -21,12 +21,11 @@ const SliderCard = () => {
     }, []);
 
 
-    // Cấu hình cho slider
     const settings = {
         dots: false,
         infinite: true,
         speed: 500,
-        slidesToShow: 4, // Số card hiển thị
+        slidesToShow: 5, // Số card hiển thị
         slidesToScroll: 1,
         responsive: [
             {
@@ -47,16 +46,22 @@ const SliderCard = () => {
         ],
     };
 
-    const formatPrice = (price) => {
-        return new Intl.NumberFormat('vi-VN').format(price);
-    };
+
 
     return (
         <div className="slider-container">
             <Slider {...settings}>
                 {books.map((book) => (
                     <div key={book.id} className="card-container">
-                       
+                        <CardProduct
+                            bookId={book.id}
+                            author_name={book.author_name}
+                            discount_price={book.discount_price}
+                            file_desc_first={book.file_desc_first}
+                            price={book.price}
+                            publisher={book.publisher}
+                            title={book.title}
+                        />
                     </div>
                 ))}
             </Slider>
