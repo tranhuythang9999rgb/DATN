@@ -1,0 +1,97 @@
+.footer-home-page {
+    background-color: #f0f2f5;
+    color: #333;
+    padding-top: 20px;
+    padding-left: 200px;
+}
+
+.footer-col-home-page {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Uniform styling for all titles */
+.footer-col-home-page h4.ant-typography {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #1890ff;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #1890ff;
+    text-transform: uppercase;
+}
+
+.footer-col-home-page ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.footer-col-home-page li {
+    margin-bottom: 12px;
+}
+
+.footer-col-home-page a,
+.footer-col-home-page .ant-typography {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.footer-col-home-page a:hover {
+    color: #1890ff;
+    transform: translateX(5px);
+}
+
+/* Social media links */
+.social-media-links a {
+    font-size: 16px;
+}
+
+.social-media-links svg {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+/* Contact information */
+.footer-col-home-page:last-child .ant-typography {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.footer-bottom-home-page {
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.footer-bottom-home-page .ant-typography {
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    .footer-home-page .ant-row {
+        flex-direction: column;
+    }
+
+    .footer-col-home-page {
+        width: 100%;
+        text-align: center;
+    }
+
+    .footer-col-home-page h4.ant-typography {
+        margin-top: 20px;
+    }
+
+    .footer-col-home-page ul,
+    .footer-col-home-page a {
+        justify-content: center;
+    }
+}

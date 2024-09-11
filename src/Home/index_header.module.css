@@ -1,0 +1,135 @@
+.layoutHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f0f2f5;
+    border-bottom: 1px solid #ccc;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: 90px; /* Adjust this value based on your design */
+}
+
+body {
+    padding-top: 60px; /* Should match the height of the header */
+}
+
+.layoutHeaderStart {
+    display: flex;
+    align-items: center;
+}
+
+.iconContainer {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.icon {
+    font-size: 24px;
+    color: #1890ff;
+}
+
+.text {
+    margin-left: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.layoutHeaderCenter {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.layoutHeaderCenter ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+.layoutHeaderCenter li {
+    margin: 0 10px;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    min-width: 100px;
+    height: 40px;
+}
+
+.searchContainer {
+    display: flex;
+    align-items: center;
+}
+
+.searchInput {
+    height: 40px;
+    border-radius: 4px 0 0 4px;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    width: 200px;
+    outline: none;
+}
+
+.searchButton {
+    height: 40px;
+    border-radius: 0 4px 4px 0;
+    background-color: #1890ff;
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 15px;
+    cursor: pointer;
+    border-left: 0;
+}
+
+.searchButton:hover {
+    background-color: #40a9ff;
+}
+
+.searchButton .icon {
+    font-size: 18px;
+}
+
+.userActions {
+    display: flex;
+    align-items: center;
+}
+
+.cartIcon {
+    font-size: 24px;
+    color: #1890ff;
+    cursor: pointer;
+}
+
+button, input {
+    margin: 0 5px;
+}
+
+.layoutContentImage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+}
+
+.layoutContentImage img {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    margin-top: 10px;
+}
+
+.layoutContentImage img:hover {
+    transform: scale(1.05);
+}

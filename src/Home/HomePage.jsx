@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './home_index.module.css';
 import { FcHome } from 'react-icons/fc';
-import { Button, Card, Col, Drawer, Dropdown, Image, Input, Menu, message, Modal, Row, Spin, Tooltip, Typography } from 'antd';
+import { Button, Col, Drawer, Dropdown, Image, Input, Menu, message, Modal, Row, Spin, Tooltip, Typography } from 'antd';
 import Login from '../common/Login';
 import { CiLogin, CiSearch } from 'react-icons/ci';
 import { GiArmoredBoomerang } from 'react-icons/gi';
-import BookWellSell from './BookWellSell';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import Cookies from 'js-cookie';  // Import js-cookie
 import axios from 'axios';
 import { MdSell } from 'react-icons/md';
-import { FaRegHeart, FaHeart } from 'react-icons/fa';  // Import FaHeart for the filled heart icon
 import DetailBuy from './DetailBuy';
 import ListBookHome from './ListBookHome';
 import ProFile from '../user/Profile';
@@ -22,8 +20,11 @@ import ChatBot from '../ChatBot/ChatBot';
 import ListPublicSher from './ListPublicSher';
 import AuthorBook from './AuthorBook';
 import SliderCard from '../Test/Pages2';
-const { Meta } = Card;
+import styles from './index_header.module.css';
+import FooterHeader from '../Utils/FooterHeader';
+
 const { Title, Text } = Typography;
+
 
 function HomePage() {
     const [username, setUsername] = useState(null);
@@ -99,24 +100,9 @@ function HomePage() {
         }
     };
 
-    // Save liked books to cookies
-    const saveLikedBooks = (liked) => {
-        Cookies.set('likedBooks', JSON.stringify(liked), { expires: 365 });  // Cookie expires in 365 days
-    };
 
-    const toggleLike = (bookId) => {
-        const updatedLikedBooks = {
-            ...likedBooks,
-            [bookId]: !likedBooks[bookId]
-        };
-        setLikedBooks(updatedLikedBooks);
-        saveLikedBooks(updatedLikedBooks);
-    };
-    const handleBuyNow = (bookId) => {
-        setSelectedBookId(bookId);
-        setIsNextBuy(true);
-        localStorage.setItem("book_id", bookId);
-    };
+
+
     // Function to fetch the list of authors
     const fetchAuthors = async () => {
         setLoading(true);
@@ -179,22 +165,22 @@ function HomePage() {
         return <ProFile />
     }
 
-    if(isNextBuyWell) {
-        return <DetailBuy book_id={selectedBookId}/>
-    }
-    //
+
     return (
         <div className='layout-home'>
-            <div className='layout-header'>
-                <div className='layout-header-start'>
-                    <div className='icon-container'>
-                        <GiArmoredBoomerang className='icon' />
-                        <span className='text'>TS Shop</span>
+
+            <div className={styles.layoutHeader}>
+                <div className={styles.layoutHeaderStart}>
+                    <div className={styles.iconContainer}>
+                        <GiArmoredBoomerang className={styles.icon} />
+                        <span className={styles.text}>TS Shop</span>
                     </div>
                 </div>
-                <div className='layout-header-center'>
+                <div className={styles.layoutHeaderCenter}>
                     <ul>
-                        <li onClick={() => window.location.reload()}><FcHome />Trang chủ</li>
+                        <li onClick={() => window.location.reload()}>
+                            <FcHome />Trang chủ
+                        </li>
                         <li>Tin sách</li>
                         <li>
                             {loading ? (
@@ -210,11 +196,16 @@ function HomePage() {
                         <li>Tác giả</li>
                         <li>Cuộc thi</li>
                         <li>Thông tin cửa hàng</li>
-                        <li className='search-container'>
-                            <Input placeholder='Tìm kiếm ...' />
-                            <Button><CiSearch /></Button>
+                        <li className={styles.searchContainer}>
+                            <Input 
+                                placeholder='Tìm kiếm ...' 
+                                className={styles.searchInput}
+                            />
+                            <Button className={styles.searchButton}>
+                                <CiSearch className="icon" />
+                            </Button>
                         </li>
-                        <li className='user-actions'>
+                        <li className={styles.userActions}>
                             {username ? (
                                 <>
                                     <Button onClick={handleLogoutClick}>Đăng xuất</Button>
@@ -240,7 +231,7 @@ function HomePage() {
                         <li>
                             {username && (
                                 <Tooltip title="Giỏ hàng">
-                                    <AiOutlineShoppingCart className='cart-icon' onClick={openDrawerCart} />
+                                    <AiOutlineShoppingCart className={styles.cartIcon} onClick={openDrawerCart} />
                                     <Drawer
                                         title="Giỏ hàng của bạn"
                                         placement="right"
@@ -257,11 +248,12 @@ function HomePage() {
                 </div>
             </div>
 
-            <div className='layout-content'>
 
-                <div className='layout-content-image'>
-                    <Image width='30%' src='https://th.bing.com/th/id/OIG2.gBo1U.SuIE.iiAHhpJnI?w=1024&h=1024&rs=1&pid=ImgDetMain' />
-                </div>
+            <div className={styles.layoutContentImage}>
+                <Image 
+                    width="30%" 
+                    src="https://th.bing.com/th/id/OIG2.gBo1U.SuIE.iiAHhpJnI?w=1024&h=1024&rs=1&pid=ImgDetMain"
+                />
             </div>
 
             <span>
@@ -271,74 +263,31 @@ function HomePage() {
             <div className="layout-footer">
 
                 <div className='layout-footer-tac-gia'>
-                    <span style={{display:'flex',marginLeft:'10px'}}>
-                    <h1>Tác giả</h1>
+                    <span style={{ display: 'flex', marginLeft: '10px' }}>
+                        <h1>Tác giả</h1>
                     </span>
-                <AuthorBook/>
+                    <AuthorBook />
                 </div>
 
                 <div className='layout-footer-list-bool-well-sell'>
                     <div style={{ padding: '20px' }}>
                         <Title level={2}>Top Sản phẩm bán chạy <MdSell /></Title>
-                      <SliderCard/>
+                        <SliderCard />
 
                     </div>
                 </div>
                 <div className='layout-footer-list-bool-well-sell'>
                     {/* <BookWellSell title={'Sắp xuất bản'} onEventClick={() => setIsNextBuyWell(true)}/> */}
                     <Title level={2}>Sách sắp xuất bản</Title>
-                    <SliderCard/>
+                    <SliderCard />
                 </div>
 
                 <div className='layout-footer-nhaf-xuatban'>
                     <h3>Nhà xuất bản</h3>
-                        <ListPublicSher/>
+                    <ListPublicSher />
                 </div>
 
-                <span>
-
-                    <div className='footer-home-page'>
-                        <Row justify="space-evenly" align="middle">
-                            <Col span={4} className='footer-col-home-page'>
-                                <Title level={4}>Thông tin</Title>
-                                <ul>
-                                    <li><Link href="/about" target="_blank">Giới thiệu</Link></li>
-                                    <li><Link href="/contact" target="_blank">Liên hệ</Link></li>
-                                    <li><Link href="/faq" target="_blank">Câu hỏi thường gặp</Link></li>
-                                    <li><Link href="/returns" target="_blank">Chính sách đổi trả</Link></li>
-                                </ul>
-                            </Col>
-                            <Col span={4} className='footer-col-home-page'>
-                                <Title level={4}>Dịch vụ khách hàng</Title>
-                                <ul>
-                                    <li><Link href="/support" target="_blank">Hỗ trợ khách hàng</Link></li>
-                                    <li><Link href="/shipping" target="_blank">Giao hàng</Link></li>
-                                    <li><Link href="/payment" target="_blank">Phương thức thanh toán</Link></li>
-                                </ul>
-                            </Col>
-                            <Col span={4} className='footer-col-home-page'>
-                                <Title level={4}>Kết nối với chúng tôi</Title>
-                                <ul>
-                                    <li><Link href="https://facebook.com" target="_blank">Facebook</Link></li>
-                                    <li><Link href="https://twitter.com" target="_blank">Twitter</Link></li>
-                                    <li><Link href="https://instagram.com" target="_blank">Instagram</Link></li>
-                                </ul>
-                            </Col>
-                            <Col span={4} className='footer-col-home-page'>
-                                <Title level={4}>Thông tin liên hệ</Title>
-                                <Text>Hưng Hà Thái Bình, Việt Nam</Text><br />
-                                <Text>Email: contact@bookstore.vn</Text><br />
-                                <Text>Điện thoại: +84 123 456 789</Text>
-                            </Col>
-                        </Row>
-                        <div className='footer-bottom-home-page'>
-                            <Text>© 2024 Sách Việt Nam. Bảo lưu mọi quyền.</Text>
-                        </div>
-                    </div>
-
-                </span>
-
-
+                <FooterHeader/>
             </div>
 
         </div>
