@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { FaRegHeart, FaHeart } from 'react-icons/fa';
-import './card_product.css';  // Assuming your styles are correct in this file
 import { Badge, Button, Col, Form, Image, Row, Space } from "antd";
+import styles from './card_product.module.css'; // Import CSS module
 
 function CardProduct({ onEventClick, bookId, title, author_name, publisher, price, discount_price, file_desc_first }) {
     const [likedBooks, setLikedBooks] = useState({});
@@ -99,10 +99,10 @@ function CardProduct({ onEventClick, bookId, title, author_name, publisher, pric
     };
 
     return (
-        <div>
-            <Form className="cart-product-contain">
+        <div className={styles.cartProductContain}>
+            <Form>
                 <Form.Item>
-                    <Row className="cart-product-like-v1">
+                    <Row className={styles.cartProductLikeV1}>
                         <Col>
                             {author_name}
                         </Col>
@@ -115,55 +115,27 @@ function CardProduct({ onEventClick, bookId, title, author_name, publisher, pric
                         </Col>
                     </Row>
                 </Form.Item>
-                <Form.Item className="cart-product-image-v1">
+                <Form.Item className={styles.cartProductImageV1}>
                     <Space>
                         <Badge.Ribbon color="red" text={`Giảm giá: ${discount_price}%`}>
-                            <Image width={270} height={200} src={file_desc_first || imageDefault} />
+                            <Image width={250} height={170} src={file_desc_first || imageDefault} />
                         </Badge.Ribbon>
                     </Space>
                 </Form.Item>
-                <Form.Item className="cart-product-name-book-price">
-                    <Row style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        fontSize: '20px',
-                        textTransform: "uppercase",
-                    }} className="cart-product-book-titile">
+                <Form.Item className={styles.cartProductNameBookPrice}>
+                    <Row className={styles.cartProductBookTitle}>
                         {title}
                     </Row>
-
-                    <Row
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            paddingLeft: '5px',
-                            paddingRight: '5px'
-                        }}
-                    >
-                        <div
-                            style={{
-                                fontSize: '24px',
-                                fontWeight: 'bold',
-                                fontFamily: 'Arial, sans-serif',
-                                margin: '0 10px'
-                            }}
-                        >
+                    <Row style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <div className={styles.cartProductPrice}>
                             {formatPrice(price)}₫
                         </div>
-                        <div
-                            style={{
-                                fontSize: '24px',
-                                fontWeight: 'bold',
-                                fontFamily: 'Arial, sans-serif',
-                                margin: '0 10px',
-                                color: 'red'
-                            }}
-                        >
+                        <div className={styles.cartProductDiscountedPrice}>
                             {formatPrice(discountedPrice)}₫
                         </div>
                     </Row>
                 </Form.Item>
-                <Form.Item className="cart-product-submit">
+                <Form.Item className={styles.cartProductSubmit}>
                     <Button onClick={() => handleClickBuy(bookId)} type="primary">
                         Mua Ngay
                     </Button>
