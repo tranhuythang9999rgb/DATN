@@ -11,7 +11,7 @@ const FooterHeader = () => {
     <footer className={styles['footer-home-page']}>
       <Row justify="space-evenly" align="middle">
         <Col xs={24} sm={12} md={6} className={styles['footer-col-home-page']}>
-          <Title level={4}>Thông tin</Title>
+          <Title style={{display:'flex',marginTop:'10px'}} level={4}>Thông tin</Title>
           <ul>
             <li><Link to="/about">Giới thiệu</Link></li>
             <li><Link to="/contact">Liên hệ</Link></li>

@@ -1,41 +1,38 @@
+/* Footer styles */
 .footer-home-page {
     background-color: #f0f2f5;
     color: #333;
-    padding-top: 20px;
-    padding-left: 200px;
+    padding-left: 210px;
 }
 
-.footer-col-home-page {
-    margin-bottom: 20px;
+/* Container for the titles */
+.footer-titles-container {
     display: flex;
-    flex-direction: column;
-    height: 100%;
+    justify-content: space-between; /* Distribute space evenly between titles */
+    margin-bottom: 20px;
 }
 
-/* Uniform styling for all titles */
-.footer-col-home-page h4.ant-typography {
+/* Individual title styling */
+.footer-title {
     font-size: 18px;
     font-weight: bold;
-    margin-bottom: 20px;
     color: #1890ff;
     padding-bottom: 10px;
     border-bottom: 2px solid #1890ff;
-    text-transform: uppercase;
 }
 
+/* List styles */
 .footer-col-home-page ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
-    flex-grow: 1;
 }
 
 .footer-col-home-page li {
-    margin-bottom: 12px;
 }
 
-.footer-col-home-page a,
-.footer-col-home-page .ant-typography {
+/* Link styles */
+.footer-col-home-page a {
     color: #333;
     text-decoration: none;
     transition: color 0.3s ease, transform 0.2s ease;
@@ -65,6 +62,7 @@
     margin-bottom: 8px;
 }
 
+/* Footer bottom */
 .footer-bottom-home-page {
     border-top: 1px solid #ddd;
     padding-top: 20px;
@@ -74,24 +72,4 @@
 
 .footer-bottom-home-page .ant-typography {
     color: #666;
-}
-
-@media (max-width: 768px) {
-    .footer-home-page .ant-row {
-        flex-direction: column;
-    }
-
-    .footer-col-home-page {
-        width: 100%;
-        text-align: center;
-    }
-
-    .footer-col-home-page h4.ant-typography {
-        margin-top: 20px;
-    }
-
-    .footer-col-home-page ul,
-    .footer-col-home-page a {
-        justify-content: center;
-    }
 }

@@ -15,6 +15,10 @@ import ListCart from '../user/ListCart';
 import { PiSortAscendingFill } from 'react-icons/pi';
 import CountryFilter from '../common/CountryFilter';
 import Link from 'antd/es/typography/Link';
+import styles from './index_header.module.css';
+import { CgProfile } from 'react-icons/cg';
+import FooterHeader from '../Utils/FooterHeader';
+
 const { Title, Text } = Typography;
 
 const { Meta } = Card;
@@ -35,6 +39,8 @@ function ListBookHome({ nameTypeBook }) {
     const [orderAsc, setOrderAsc] = useState('');
     const [selectedSort, setSelectedSort] = useState(null); // Save the selected sort option
     const [isDrawerVisibleCart, setIsDrawerVisibleCart] = useState(false);
+    const [isNextProFile, setIsNextProFile] = useState(false);
+
     const cartRef = useRef(null);
 
     const openDrawerCart = () => {
@@ -103,6 +109,9 @@ function ListBookHome({ nameTypeBook }) {
     };
     const handleModalClose = () => {
         setIsModalVisible(false);
+    };
+    const handleNextProFile = () => {
+        setIsNextProFile(true);
     };
     // Toggle like status for a book
     const toggleLike = (bookId) => {
@@ -215,32 +224,20 @@ function ListBookHome({ nameTypeBook }) {
     return (
         <div>
 
-            <div className='layout-header'>
-                <div className='layout-header-start'>
-                    <div style={{ position: 'relative', display: 'inline-block' }}>
-                        <GiArmoredBoomerang
-                            style={{ display: 'flex', marginLeft: '10px', color: 'green', fontSize: '100px' }}
-                        />
-                        <span
-                            style={{
-                                position: 'absolute',
-                                top: '50%',
-                                left: '50%',
-                                transform: 'translate(-50%, -50%)',
-                                color: 'orange',
-                                fontWeight: 'bold',
-                                fontSize: '18px',
-                            }}
-                        >
-                            TS Shop
-                        </span>
+            <div className={styles.layoutHeader}>
+                <div className={styles.layoutHeaderStart}>
+                    <div className={styles.iconContainer}>
+                        <GiArmoredBoomerang className={styles.icon} />
+                        <span className={styles.text}>TS Shop</span>
                     </div>
                 </div>
-                <div className='layout-header-center'>
+                <div className={styles.layoutHeaderCenter}>
                     <ul>
-                        <li style={{ cursor: 'pointer' }} onClick={() => window.location.reload()}><FcHome />Trang chủ</li>
+                        <li onClick={() => window.location.reload()}>
+                            <FcHome />Trang chủ
+                        </li>
                         <li>Tin sách</li>
-                        <li style={{ cursor: 'pointer', listStyle: 'none' }}>
+                        <li>
                             {loading ? (
                                 <Spin tip="Loading authors..." />
                             ) : (
@@ -254,30 +251,32 @@ function ListBookHome({ nameTypeBook }) {
                         <li>Tác giả</li>
                         <li>Cuộc thi</li>
                         <li>Thông tin cửa hàng</li>
-                        <li>
-                            <div style={{ display: 'flex' }}>
-                                <Input placeholder='Tìm kiếm ...' style={{ height: '30px' }} />
-                                <Button style={{ height: '30px' }}><CiSearch />
-                                </Button>
-                            </div>
+                        <li className={styles.searchContainer}>
+                            <Input
+                                placeholder='Tìm kiếm ...'
+                                className={styles.searchInput}
+                            />
+                            <Button className={styles.searchButton}>
+                                <CiSearch className="icon" />
+                            </Button>
                         </li>
-                        <li>
+                        <li className={styles.userActions}>
                             {username ? (
-                                <Button onClick={handleLogoutClick}>Đăng xuất</Button>
+                                <>
+                                    <Button onClick={handleLogoutClick}>Đăng xuất</Button>
+                                    <Button onClick={handleNextProFile}><CgProfile /></Button>
+                                </>
                             ) : (
                                 <>
-
                                     <Tooltip title="Đăng nhập">
                                         <CiLogin style={{ fontSize: '20px', cursor: 'pointer' }} onClick={handleLoginClick} />
                                     </Tooltip>
-
                                     <Modal
                                         title="Đăng nhập"
                                         visible={isModalVisible}
                                         onCancel={handleModalClose}
                                         footer={null}
                                         width={350}
-                                        height={500}
                                     >
                                         <Login />
                                     </Modal>
@@ -285,14 +284,9 @@ function ListBookHome({ nameTypeBook }) {
                             )}
                         </li>
                         <li>
-                            {/* Giỏ hàng */}
-                            {username ? (
+                            {username && (
                                 <Tooltip title="Giỏ hàng">
-                                    <AiOutlineShoppingCart
-                                        style={{ fontSize: '20px', cursor: 'pointer' }}
-                                        onClick={openDrawerCart}
-                                    />
-
+                                    <AiOutlineShoppingCart className={styles.cartIcon} onClick={openDrawerCart} />
                                     <Drawer
                                         title="Giỏ hàng của bạn"
                                         placement="right"
@@ -302,14 +296,13 @@ function ListBookHome({ nameTypeBook }) {
                                     >
                                         <ListCart ref={cartRef} />
                                     </Drawer>
-
-
                                 </Tooltip>
-                            ) : null}
+                            )}
                         </li>
                     </ul>
                 </div>
             </div>
+
             <div className='order-monoi'>
                 <Space style={{ background: '#F5F5F5', padding: '20px', width: '700px', justifyContent: 'end' }}>
                     <div style={{ display: 'flex', alignItems: 'center', fontSize: '16px', fontWeight: '300', color: '#333' }}>
@@ -378,7 +371,7 @@ function ListBookHome({ nameTypeBook }) {
                                     </Card>
                                 </div>
                                 <div style={{ paddingTop: '12px', marginTop: '295px', background: 'white', borderBottomLeftRadius: '10px', borderBottomRightRadius: '10px' }}>
-                                    <div style={{justifyContent: 'space-between' }}>
+                                    <div style={{ justifyContent: 'space-between' }}>
                                         <div style={{ paddingLeft: '10px' }}>
                                             {truncateText(item.book.title, 20)}
                                         </div>
@@ -398,45 +391,7 @@ function ListBookHome({ nameTypeBook }) {
                 </Col>
             </Row>
 
-            <div className='footer'>
-                <Row justify="space-evenly" align="middle">
-                    <Col span={4} className='footer-col'>
-                        <Title level={4}>Thông tin</Title>
-                        <ul>
-                            <li><Link href="/about" target="_blank">Giới thiệu</Link></li>
-                            <li><Link href="/contact" target="_blank">Liên hệ</Link></li>
-                            <li><Link href="/faq" target="_blank">Câu hỏi thường gặp</Link></li>
-                            <li><Link href="/returns" target="_blank">Chính sách đổi trả</Link></li>
-                        </ul>
-                    </Col>
-                    <Col span={4} className='footer-col'>
-                        <Title level={4}>Dịch vụ khách hàng</Title>
-                        <ul>
-                            <li><Link href="/support" target="_blank">Hỗ trợ khách hàng</Link></li>
-                            <li><Link href="/shipping" target="_blank">Giao hàng</Link></li>
-                            <li><Link href="/payment" target="_blank">Phương thức thanh toán</Link></li>
-                        </ul>
-                    </Col>
-                    <Col span={4} className='footer-col'>
-                        <Title level={4}>Kết nối với chúng tôi</Title>
-                        <ul>
-                            <li><Link href="https://facebook.com" target="_blank">Facebook</Link></li>
-                            <li><Link href="https://twitter.com" target="_blank">Twitter</Link></li>
-                            <li><Link href="https://instagram.com" target="_blank">Instagram</Link></li>
-                        </ul>
-                    </Col>
-                    <Col span={4} className='footer-col'>
-                        <Title level={4}>Thông tin liên hệ</Title>
-                        <Text>Hưng Hà Thái Bình, Việt Nam</Text><br />
-                        <Text>Email: contact@bookstore.vn</Text><br />
-                        <Text>Điện thoại: +84 123 456 789</Text>
-                    </Col>
-                </Row>
-                <div className='footer-bottom'>
-                    <Text>© 2024 Sách Việt Nam. Bảo lưu mọi quyền.</Text>
-                </div>
-            </div>
-
+          <FooterHeader/>
         </div>
 
     );
