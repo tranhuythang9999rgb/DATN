@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './home_index.module.css';
 import { FcHome } from 'react-icons/fc';
-import { Button, Col, Drawer, Dropdown, Image, Input, Menu, message, Modal, Row, Spin, Tooltip, Typography } from 'antd';
+import { Button, Drawer, Dropdown, Image, Input, Menu, message, Modal, Spin, Tooltip, Typography } from 'antd';
 import Login from '../common/Login';
 import { CiLogin, CiSearch } from 'react-icons/ci';
 import { GiArmoredBoomerang } from 'react-icons/gi';
@@ -14,7 +14,6 @@ import ListBookHome from './ListBookHome';
 import ProFile from '../user/Profile';
 import ListCart from '../user/ListCart';
 import { CgProfile } from 'react-icons/cg';
-import Link from 'antd/es/typography/Link';
 import './index.module.css';
 import ChatBot from '../ChatBot/ChatBot';
 import ListPublicSher from './ListPublicSher';
@@ -22,7 +21,7 @@ import AuthorBook from './AuthorBook';
 import SliderCard from '../Test/Pages2';
 import styles from './index_header.module.css';
 import FooterHeader from '../Utils/FooterHeader';
-
+import styleLayout from './layout.module.css';  // Import CSS module
 const { Title, Text } = Typography;
 
 
@@ -167,7 +166,7 @@ function HomePage() {
 
 
     return (
-        <div className='layout-home'>
+        <div className={styleLayout.layoutHome}>
 
             <div className={styles.layoutHeader}>
                 <div className={styles.layoutHeaderStart}>
@@ -197,8 +196,8 @@ function HomePage() {
                         <li>Cuộc thi</li>
                         <li>Thông tin cửa hàng</li>
                         <li className={styles.searchContainer}>
-                            <Input 
-                                placeholder='Tìm kiếm ...' 
+                            <Input
+                                placeholder='Tìm kiếm ...'
                                 className={styles.searchInput}
                             />
                             <Button className={styles.searchButton}>
@@ -250,11 +249,13 @@ function HomePage() {
 
 
             <div className={styles.layoutContentImage}>
-                <Image 
-                    width="30%" 
+                <Image
+                    width="30%"
                     src="https://th.bing.com/th/id/OIG2.gBo1U.SuIE.iiAHhpJnI?w=1024&h=1024&rs=1&pid=ImgDetMain"
+                    alt="Decorative"
                 />
             </div>
+
 
             <span>
                 <ChatBot />
@@ -287,7 +288,7 @@ function HomePage() {
                     <ListPublicSher />
                 </div>
 
-                <FooterHeader/>
+                <FooterHeader />
             </div>
 
         </div>

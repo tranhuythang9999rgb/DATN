@@ -1,0 +1,130 @@
+/* layout.module.css */
+.layout-home {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.layoutHeader {
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.layoutHeaderStart {
+    display: flex;
+    align-items: center;
+}
+
+.iconContainer {
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    font-size: 24px;
+    margin-right: 8px;
+}
+
+.text {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1890ff;
+}
+
+.layoutHeaderCenter ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 15px;
+}
+
+.layoutHeaderCenter li {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.layoutHeaderCenter .searchContainer {
+    display: flex;
+    align-items: center;
+}
+
+.searchInput {
+    width: 200px;
+    margin-right: 8px;
+}
+
+.searchButton {
+    background: #1890ff;
+    color: #fff;
+    border: none;
+}
+
+.userActions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cartIcon {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.layoutContentImage {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    border-bottom: 4px solid #dcdcdc; /* Light grey border for a subtle look */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow for a lifted effect */
+    background-color: #f9f9f9; /* Light background color to contrast with the image */
+}
+
+.layoutContentImage img {
+    border-radius: 8px; /* Rounded corners for the image */
+    max-width: 100%; /* Ensure the image does not overflow its container */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.layout-footer {
+    padding: 20px;
+    background: #fff;
+    border-top: 1px solid #ddd;
+}
+
+.layout-footer-tac-gia,
+.layout-footer-list-bool-well-sell,
+.layout-footer-nhaf-xuatban {
+    margin-bottom: 20px;
+}
+
+.layout-footer-tac-gia h1,
+.layout-footer-list-bool-well-sell h2,
+.layout-footer-nhaf-xuatban h3 {
+    margin-bottom: 10px;
+}
+
+.layout-footer-tac-gia {
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+.layout-footer-list-bool-well-sell,
+.layout-footer-nhaf-xuatban {
+    padding: 20px;
+    background: #f5f5f5;
+    border-radius: 8px;
+}
+
+.layout-footer-list-bool-well-sell {
+    border-top: 2px solid #1890ff;
+    border-bottom: 2px solid #1890ff;
+}

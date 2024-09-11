@@ -3,6 +3,7 @@
 /* Thiết lập container chính cho slider */
 .sliderContainer {
     width: 90%;
+    border: 1px solid black;
   }
   
   /* Thiết lập kiểu cho các slide */
