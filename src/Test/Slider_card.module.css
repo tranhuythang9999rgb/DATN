@@ -1,0 +1,12 @@
+/* Slider_card.module.css */
+
+.sliderContainer {
+    width: 97%;
+    margin: 0 auto;
+    padding-right: 0;
+}
+
+.cardContainer {
+    height: 380px;
+    padding-left: 35px;
+}

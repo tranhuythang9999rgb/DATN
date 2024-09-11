@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Card, Col, Image, Row, Typography, Rate, Button, Input, Tooltip, Modal, Carousel, Space, message, Drawer, Spin } from 'antd';
 import { FaUser, FaBookOpen, FaCalendarAlt, FaBarcode, FaLanguage, FaFileAlt, FaRulerCombined, FaWeightHanging, FaDollarSign, FaPercent, FaBoxes } from 'react-icons/fa';
-import './home_index.css';
+import './home_index.module.css';
 import { CgAdd } from 'react-icons/cg';
 import { FcHome } from 'react-icons/fc';
 import { GiArmoredBoomerang } from 'react-icons/gi';

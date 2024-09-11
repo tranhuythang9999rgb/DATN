@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './home_index.css';
+import './home_index.module.css';
 import { FcHome } from 'react-icons/fc';
 import { Button, Card, Col, Drawer, Dropdown, Image, Input, Menu, message, Modal, Row, Spin, Tooltip, Typography } from 'antd';
 import Login from '../common/Login';
@@ -17,7 +17,7 @@ import ProFile from '../user/Profile';
 import ListCart from '../user/ListCart';
 import { CgProfile } from 'react-icons/cg';
 import Link from 'antd/es/typography/Link';
-import './index.css';
+import './index.module.css';
 import ChatBot from '../ChatBot/ChatBot';
 import ListPublicSher from './ListPublicSher';
 import AuthorBook from './AuthorBook';

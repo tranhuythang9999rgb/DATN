@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import './index.css';
+import './index.module.css';
 
 // Ảnh mặc định khi không có avatar
 const defaultAvatar = 'https://example.com/default-avatar.jpg';
