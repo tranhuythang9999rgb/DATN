@@ -11,6 +11,7 @@ import { BsJournalBookmarkFill } from 'react-icons/bs';
 import InforMationUser from './InforMationUser';
 import ListAddress from './ListAddress';
 import ListOrderUser from './ListOrderUser';
+import Favorite from './Favorite';
 const { Header, Content, Sider } = Layout;
 const clearLocalStorageAndReload = () => {
     window.location.reload(); // Reload lại trang
@@ -88,7 +89,9 @@ const tabsContent = [
                 <BsJournalBookmarkFill style={{ fontSize: '30px' }} className="icon-quan-ly-sach9" />Danh sách sản phẩm yêu thích
             </span>
         ),
-        content: <div></div>,
+        content: <div>
+            <Favorite/>
+        </div>,
     },
 
 ];
