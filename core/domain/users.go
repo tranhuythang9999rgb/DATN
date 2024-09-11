@@ -29,7 +29,7 @@ type RepositoryUser interface {
 	AddAcount(ctx context.Context, req *User) error
 	UpdateAccountById(ctx context.Context, req *User) error
 	FindAccount(ctx context.Context, req *UserReqByForm) ([]*User, error)
-	FindUserByUseName(ctx context.Context, name string) (bool, int, error)
+	FindUserByUseName(ctx context.Context, name string) (bool, int64, int, error)
 	FindUserByEmail(ctx context.Context, email string) (bool, int, error)
 	GetProFile(ctx context.Context, name string) (*User, error)
 }

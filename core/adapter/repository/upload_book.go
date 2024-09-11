@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"shoe_shop_server/common/log"
 	"shoe_shop_server/core/adapter"
@@ -74,13 +75,14 @@ func (c *CollectionBook) Update(ctx context.Context, book *domain.Book) error {
 func (c *CollectionBook) GetBookById(ctx context.Context, id int64) (*domain.Book, error) {
 	var book *domain.Book
 	result := c.book.Where("id = ? and is_active = true", id).First(&book)
-	if result.Error == gorm.ErrRecordNotFound {
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil, nil
 	}
 	return book, result.Error
 }
 
 func (c *CollectionBook) GetListBookSellWell(ctx context.Context) ([]*domain.Book, error) {
+
 	var books []*domain.Book
 	var ordersCount int64
 	var topSellingBooks []*domain.Book
@@ -145,4 +147,14 @@ func (u *CollectionBook) GetListBookByTypeBook(ctx context.Context, typeBook str
 	var books = make([]*domain.Book, 0)
 	result := u.book.Where("genre = ? and  is_active = true", typeBook).Find(&books)
 	return books, result.Error
+}
+
+func (u *CollectionBook) GetBookByName(ctx context.Context, nameBook string) (*domain.Book, error) {
+	var book *domain.Book
+	// Sử dụng toán tử ILIKE trong truy vấn để tìm kiếm không phân biệt chữ hoa chữ thường
+	result := u.book.Where("title ILIKE ? AND is_active = true", "%"+nameBook+"%").First(&book)
+	if result.Error == gorm.ErrRecordNotFound {
+		return nil, nil
+	}
+	return book, result.Error
 }

@@ -26,7 +26,7 @@ func NewApiRouter(
 	deliveryAddress *controllers.ControllerDeliveryAddress,
 	payment *controllers.ControllersPayment,
 	cart *controllers.ControllerCart,
-
+	favorite *controllers.ControllerFavorites,
 ) *ApiRouter {
 	engine := gin.New()
 	gin.DisableConsoleColor()
@@ -122,6 +122,13 @@ func NewApiRouter(
 		cartGroup.DELETE("/delete", cart.DeleteCart)
 		cartGroup.GET("/list", cart.GetListCartByUserId)
 		cartGroup.PATCH("/update", cart.UpdateQuantityCartById)
+	}
+	//favorite
+	favoriteGroup := r.Group("/favorite")
+	{
+		favoriteGroup.POST("/add", favorite.AddFavorites)
+		favoriteGroup.DELETE("/delete", favorite.RemoveFavorites)
+		favoriteGroup.GET("/list", favorite.GetFavorites)
 	}
 	return &ApiRouter{
 		Engine: engine,

@@ -48,7 +48,7 @@ func (c *CollectionUser) UpdateAccountById(ctx context.Context, req *domain.User
 	return result.Error
 }
 
-func (c *CollectionUser) FindUserByUseName(ctx context.Context, name string) (bool, int, error) {
+func (c *CollectionUser) FindUserByUseName(ctx context.Context, name string) (bool, int64, int, error) {
 	var isCheck bool
 
 	var user domain.User
@@ -59,13 +59,13 @@ func (c *CollectionUser) FindUserByUseName(ctx context.Context, name string) (bo
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			isCheck = false
 		} else {
-			return false, 0, err
+			return false, 0, 0, err
 		}
 	} else {
 		isCheck = true
 	}
 
-	return isCheck, user.Role, nil
+	return isCheck, user.ID, user.Role, nil
 }
 func (c *CollectionUser) FindUserByEmail(ctx context.Context, email string) (bool, int, error) {
 	var isCheck bool

@@ -19,7 +19,7 @@ func NewUseCaseUse(user domain.RepositoryUser) *UserCaseUse {
 	}
 }
 func (u *UserCaseUse) AddAcount(ctx context.Context, req *entities.User) errors.Error {
-	isCheck, _, err := u.user.FindUserByUseName(ctx, req.Username)
+	isCheck, _, _, err := u.user.FindUserByUseName(ctx, req.Username)
 	if err != nil {
 		return errors.ErrSystem
 	}
@@ -57,7 +57,7 @@ func (u *UserCaseUse) AddAcount(ctx context.Context, req *entities.User) errors.
 
 func (u *UserCaseUse) Login(ctx context.Context, user_name, password string) (*entities.LoginResp, errors.Error) {
 
-	isCheck, role, err := u.user.FindUserByUseName(ctx, user_name)
+	isCheck, userId, role, err := u.user.FindUserByUseName(ctx, user_name)
 	if err != nil {
 		return nil, errors.ErrSystem
 	}
@@ -67,6 +67,7 @@ func (u *UserCaseUse) Login(ctx context.Context, user_name, password string) (*e
 	return &entities.LoginResp{
 		UserName: user_name,
 		Role:     role,
+		Id:       userId,
 	}, nil
 }
 

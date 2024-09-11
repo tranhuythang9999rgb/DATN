@@ -204,7 +204,7 @@ ALTER TABLE books
 ADD COLUMN create_time timestamp with time zone DEFAULT NOW();
 
 
-CREATE TABLE order_items (
+CREATE TABLE  if not exists  order_items (
     id BIGINT PRIMARY KEY,
     order_id BIGINT,
     book_id BIGINT,
@@ -222,3 +222,10 @@ ALTER TABLE publishers
 ALTER TABLE orders 
   ADD COLUMN address_id BIGINT;
 COMMENT ON COLUMN orders.address_id IS 'thông tin địa chỉ giao hàng';
+
+CREATE TABLE  if not exists  favorites (
+    user_id INT NOT NULL,
+    book_id INT NOT NULL,
+    liked_at TIMESTAMP DEFAULT NOW(),
+    PRIMARY KEY (user_id, book_id)
+);
