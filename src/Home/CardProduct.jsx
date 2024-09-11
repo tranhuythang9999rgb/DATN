@@ -3,30 +3,18 @@ import { FaRegHeart, FaHeart } from 'react-icons/fa';
 import './card_product.css';  // Assuming your styles are correct in this file
 import { Badge, Button, Col, Form, Image, Row, Space } from "antd";
 
-function CardProduct({ onEventClick }) {
-    const [likedBooks, setLikedBooks] = useState({});  // State to store liked status for each book
+function CardProduct({ onEventClick, bookId, title, author_name, publisher, price, discount_price, file_desc_first }) {
+    const [likedBooks, setLikedBooks] = useState({});
     const imageDefault = 'http://placehold.it/300x400';
 
-    // Sample book data
-    const book = {
-        id: 8113677,
-        title: "Sách hay 999",
-        author_name: "Tác giả Nam Cao",
-        publisher: "Nam Cao",
-        price: 328000,
-        discount_price: 15,  // Discount percentage
-        file_desc_first: "http://localhost:8080/manager/shader/thao/4626872.png"
-    };
+    const discountedPrice = price - (price * discount_price / 100);
 
-    const discountedPrice = book.price - (book.price * book.discount_price / 100);
-
-    // Check if the book is in the favorite list when component loads
     useEffect(() => {
         const favoriteBooks = JSON.parse(localStorage.getItem('list_book_favorite')) || [];
         setLikedBooks({
-            [book.id]: favoriteBooks.includes(book.id)  // If bookId is in favorite list, mark it as liked
+            [bookId]: favoriteBooks.includes(bookId)
         });
-    }, [book.id]);
+    }, [bookId]);
 
     const toggleLike = (bookId) => {
         setLikedBooks(prevState => ({
@@ -53,14 +41,12 @@ function CardProduct({ onEventClick }) {
                 let favoriteBooks = JSON.parse(localStorage.getItem('list_book_favorite')) || [];
     
                 if (!favoriteBooks.includes(bookId)) {
-                    favoriteBooks.push(bookId);  // Append the new book ID
+                    favoriteBooks.push(bookId);
                 } else {
-                    // If the book is already in the list, remove it
                     favoriteBooks = favoriteBooks.filter(id => id !== bookId);
                 }
     
                 localStorage.setItem('list_book_favorite', JSON.stringify(favoriteBooks));
-                console.log("Response:", data);
             })
             .catch(error => {
                 console.error("Error:", error);
@@ -85,17 +71,12 @@ function CardProduct({ onEventClick }) {
             .then(data => {
                 if (data.code === 0) {
                     let favoriteBooks = JSON.parse(localStorage.getItem('list_book_favorite')) || [];
-    
                     favoriteBooks = favoriteBooks.filter(id => id !== bookId);
-    
                     localStorage.setItem('list_book_favorite', JSON.stringify(favoriteBooks));
-    
                     setLikedBooks(prevState => ({
                         ...prevState,
                         [bookId]: false
                     }));
-    
-                    console.log("Book removed from favorites:", data);
                 } else {
                     console.error("Failed to remove book from favorites:", data.message);
                 }
@@ -123,21 +104,21 @@ function CardProduct({ onEventClick }) {
                 <Form.Item>
                     <Row className="cart-product-like-v1">
                         <Col>
-                            {book.author_name}
+                            {author_name}
                         </Col>
                         <Col>
-                            {likedBooks[book.id] ? (
-                                <FaHeart onClick={() => unToggleLike(book.id)} style={{ cursor: 'pointer', color: 'red' }} />
+                            {likedBooks[bookId] ? (
+                                <FaHeart onClick={() => unToggleLike(bookId)} style={{ cursor: 'pointer', color: 'red' }} />
                             ) : (
-                                <FaRegHeart onClick={() => toggleLike(book.id)} style={{ cursor: 'pointer' }} />
+                                <FaRegHeart onClick={() => toggleLike(bookId)} style={{ cursor: 'pointer' }} />
                             )}
                         </Col>
                     </Row>
                 </Form.Item>
                 <Form.Item className="cart-product-image-v1">
                     <Space>
-                        <Badge.Ribbon color="red" text={`Giảm giá: ${book.discount_price}%`}>
-                            <Image width={270} src={book.file_desc_first || imageDefault} />
+                        <Badge.Ribbon color="red" text={`Giảm giá: ${discount_price}%`}>
+                            <Image width={270} height={200} src={file_desc_first || imageDefault} />
                         </Badge.Ribbon>
                     </Space>
                 </Form.Item>
@@ -148,7 +129,7 @@ function CardProduct({ onEventClick }) {
                         fontSize: '20px',
                         textTransform: "uppercase",
                     }} className="cart-product-book-titile">
-                        {book.title}
+                        {title}
                     </Row>
 
                     <Row
@@ -167,12 +148,12 @@ function CardProduct({ onEventClick }) {
                                 margin: '0 10px'
                             }}
                         >
-                            {formatPrice(book.price)}₫
+                            {formatPrice(price)}₫
                         </div>
                         <div
                             style={{
-                                fontSize: '24px',   
-                                fontWeight: 'bold', 
+                                fontSize: '24px',
+                                fontWeight: 'bold',
                                 fontFamily: 'Arial, sans-serif',
                                 margin: '0 10px',
                                 color: 'red'
@@ -183,7 +164,7 @@ function CardProduct({ onEventClick }) {
                     </Row>
                 </Form.Item>
                 <Form.Item className="cart-product-submit">
-                    <Button onClick={() => handleClickBuy(book.id)} type="primary">
+                    <Button onClick={() => handleClickBuy(bookId)} type="primary">
                         Mua Ngay
                     </Button>
                 </Form.Item>

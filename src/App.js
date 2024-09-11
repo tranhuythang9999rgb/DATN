@@ -18,6 +18,7 @@ import ListBookHome from "./Home/ListBookHome";
 import ListPublicSher from "./Home/ListPublicSher";
 import SubmitBuyBook from "./Home/SubmitBuyBook";
 import Pages1 from "./Test/Pages1";
+import SliderCard from "./Test/Pages2";
 import Pages2 from "./Test/Pages2";
 import AppRouter from "./Test/Routers/routers";
 import AddAddress from "./user/AddAddress";
@@ -50,26 +51,34 @@ function App() {
       {/* <Pages2/> */}
       {/* <SubmitBuyBook/> */}
       {/* <ListBookHome nameTypeBook={'6'}/> */}
-    {/* <Pages1/> */}
-    {/* <RegisterUser/> */}
-    {/* <ProFile/> */}
-    {/* <AddAddress/> */}
-    {/* <GetTheShippingAddress/> */}
-    {/* <ListCart/> */}
-    {/* <ListOrderUser/> */}
-    {/* <Statistical/> */}
-    {/* <ChatBot/> */}
-    {/* <GetListBookUserBook/> */}
-    {/* <DisPlaySubmitByFromCart/> */}
-    {/* <FormBuyCart/> */}
-    {/* <FormBuyCart/> */}
-    {/* <ListCart/> */}
-    {/* <ListPublicSher/> */}
-    {/* <AuthorBook/> */}
-    {/* <ListPublicSher/> */}
-    {/* <Pages1/> */}
-    <CardProduct/>
-    {/* <BookWellSell title='Sắp xuất bản'/> */}
+      {/* <Pages1/> */}
+      {/* <RegisterUser/> */}
+      {/* <ProFile/> */}
+      {/* <AddAddress/> */}
+      {/* <GetTheShippingAddress/> */}
+      {/* <ListCart/> */}
+      {/* <ListOrderUser/> */}
+      {/* <Statistical/> */}
+      {/* <ChatBot/> */}
+      {/* <GetListBookUserBook/> */}
+      {/* <DisPlaySubmitByFromCart/> */}
+      {/* <FormBuyCart/> */}
+      {/* <FormBuyCart/> */}
+      {/* <ListCart/> */}
+      {/* <ListPublicSher/> */}
+      {/* <AuthorBook/> */}
+      {/* <ListPublicSher/> */}
+      {/* <Pages1/> */}
+      {/* <CardProduct
+        author_name='hi hi'
+        bookId='99'
+        discount_price='12'
+        file_desc_first='http://localhost:8080/manager/shader/thao/6284312.png'
+        price='1000'
+        publisher='hi hi'
+        title='hi hi' /> */}
+      <SliderCard/>
+      {/* <BookWellSell title='Sắp xuất bản'/> */}
     </div>
   );
 }

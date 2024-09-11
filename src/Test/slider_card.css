@@ -1,0 +1,40 @@
+.slider-container {
+    width: 100%;
+    padding: 20px;
+  }
+  
+  .card-container {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .price-section {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .price-original {
+    text-decoration: line-through;
+    color: gray;
+  }
+  
+  .price-discounted {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  .slick-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .slick-prev, .slick-next {
+    z-index: 1;
+    color: #000;
+  }
+  
