@@ -10,6 +10,8 @@ import CheckLogin from "./common/CheckLogin";
 import CheckQrCode from "./common/CheckQrCode";
 import Login from "./common/Login";
 import AuthorBook from "./Home/AuthorBook";
+import BookWellSell from "./Home/BookWellSell";
+import CardProduct from "./Home/CardProduct";
 import DetailBuy from "./Home/DetailBuy";
 import HomePage from "./Home/HomePage";
 import ListBookHome from "./Home/ListBookHome";
@@ -39,7 +41,7 @@ function App() {
       {/* <HomePage/> */}
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
-      <CheckLogin/>
+      {/* <CheckLogin/> */}
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
@@ -66,6 +68,8 @@ function App() {
     {/* <AuthorBook/> */}
     {/* <ListPublicSher/> */}
     {/* <Pages1/> */}
+    <CardProduct/>
+    {/* <BookWellSell title='Sắp xuất bản'/> */}
     </div>
   );
 }

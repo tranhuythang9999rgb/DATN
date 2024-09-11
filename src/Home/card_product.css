@@ -1,0 +1,26 @@
+
+.cart-product-contain{
+    background: white;
+    border-radius: 10px;
+    max-width: 280px;
+    margin:0 0 auto;
+    height: 380px;
+    padding-top: 10px;
+}
+.cart-product-image-v1{
+    display: flex;
+    justify-content: center;
+    margin-top: -50px;
+}
+.cart-product-like-v1{
+    display: flex;
+    justify-content: space-between;
+    padding-right: 30px;
+    cursor: pointer;
+    padding-bottom: 20px;
+    padding-left: 5px;
+}
+.cart-product-submit{
+    display: flex;
+    justify-content: center;
+}

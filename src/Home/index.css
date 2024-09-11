@@ -386,3 +386,11 @@
 /* .slick-slider button{
   background-color: #c9302c;
 } */
+.slider-container-sell{
+  width: 98%;
+  margin: 0 auto;
+  padding: 20px;
+}
+.slider-container-sell .slick-slide div{
+  height: 350px;
+}
