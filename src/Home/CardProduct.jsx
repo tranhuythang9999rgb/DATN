@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaRegHeart, FaHeart } from 'react-icons/fa';
 import './card_product.css';  // Assuming your styles are correct in this file
 import { Badge, Button, Col, Form, Image, Row, Space } from "antd";
@@ -20,15 +20,23 @@ function CardProduct({ onEventClick }) {
 
     const discountedPrice = book.price - (book.price * book.discount_price / 100);
 
+    // Check if the book is in the favorite list when component loads
+    useEffect(() => {
+        const favoriteBooks = JSON.parse(localStorage.getItem('list_book_favorite')) || [];
+        setLikedBooks({
+            [book.id]: favoriteBooks.includes(book.id)  // If bookId is in favorite list, mark it as liked
+        });
+    }, [book.id]);
+
     const toggleLike = (bookId) => {
         setLikedBooks(prevState => ({
             ...prevState,
             [bookId]: !prevState[bookId]
         }));
-
+    
         const userData = JSON.parse(localStorage.getItem('userData'));
         const userId = userData?.id;
-
+    
         if (userId) {
             fetch('http://127.0.0.1:8080/manager/favorite/add', {
                 method: 'POST',
@@ -40,19 +48,66 @@ function CardProduct({ onEventClick }) {
                     book_id: bookId,
                 })
             })
-                .then(response => response.json())
-                .then(data => {
-                    localStorage.setItem('list_book_favorite',[''])
-                    console.log("Response:", data);
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                });
+            .then(response => response.json())
+            .then(data => {
+                let favoriteBooks = JSON.parse(localStorage.getItem('list_book_favorite')) || [];
+    
+                if (!favoriteBooks.includes(bookId)) {
+                    favoriteBooks.push(bookId);  // Append the new book ID
+                } else {
+                    // If the book is already in the list, remove it
+                    favoriteBooks = favoriteBooks.filter(id => id !== bookId);
+                }
+    
+                localStorage.setItem('list_book_favorite', JSON.stringify(favoriteBooks));
+                console.log("Response:", data);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
         } else {
             console.log("User not logged in");
         }
     };
 
+    const unToggleLike = (bookId) => {
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        const userId = userData?.id;
+    
+        if (userId) {
+            fetch(`http://127.0.0.1:8080/manager/favorite/delete?id=${bookId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.code === 0) {
+                    let favoriteBooks = JSON.parse(localStorage.getItem('list_book_favorite')) || [];
+    
+                    favoriteBooks = favoriteBooks.filter(id => id !== bookId);
+    
+                    localStorage.setItem('list_book_favorite', JSON.stringify(favoriteBooks));
+    
+                    setLikedBooks(prevState => ({
+                        ...prevState,
+                        [bookId]: false
+                    }));
+    
+                    console.log("Book removed from favorites:", data);
+                } else {
+                    console.error("Failed to remove book from favorites:", data.message);
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        } else {
+            console.log("User not logged in");
+        }
+    };
+    
     const formatPrice = (price) => {
         return new Intl.NumberFormat('vi-VN').format(price);
     };
@@ -72,7 +127,7 @@ function CardProduct({ onEventClick }) {
                         </Col>
                         <Col>
                             {likedBooks[book.id] ? (
-                                <FaHeart onClick={() => toggleLike(book.id)} style={{ cursor: 'pointer', color: 'red' }} />
+                                <FaHeart onClick={() => unToggleLike(book.id)} style={{ cursor: 'pointer', color: 'red' }} />
                             ) : (
                                 <FaRegHeart onClick={() => toggleLike(book.id)} style={{ cursor: 'pointer' }} />
                             )}
