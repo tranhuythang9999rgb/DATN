@@ -12,10 +12,12 @@
     background: #F5F5F5;
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: end;
     align-items: center;
     height: 50px;
     margin-bottom: 20px;
+    margin-left: 720px;
+    border-radius: 5px;
 }
 
 /* Sorting text and icons */
@@ -47,6 +49,7 @@
     display: block;
     margin-top: 130px;
     margin-left: 50px;
+    width: 300px;
 }
 
 .list-check-box h1 {

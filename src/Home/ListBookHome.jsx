@@ -219,49 +219,139 @@ function ListBookHome({ nameTypeBook }) {
 
     return (
         <div className={styleCart['container']}>
-            <div className={styleCart['order-monoi']}>
-                <Space>
-                    <div className={styleCart['sort-text']}>
-                        <PiSortAscendingFill className={styleCart['sort-icon']} />
-                        Sắp xếp theo
+
+            <div className={styles.layoutHeader}>
+                <div className={styles.layoutHeaderStart}>
+                    <div className={styles.iconContainer}>
+                        <GiArmoredBoomerang className={styles.icon} />
+                        <span className={styles.text}>TS Shop</span>
                     </div>
-                    <Button
-                        type={selectedSort === '1' ? 'primary' : 'default'}
-                        onClick={handleOrderDesc}
-                        className={styleCart['sort-button']}
-                    >
-                        Giá thấp đến cao
-                    </Button>
-                    <Button
-                        type={selectedSort === '2' ? 'primary' : 'default'}
-                        onClick={handleOrderAsc}
-                        className={styleCart['sort-button']}
-                    >
-                        Giá cao đến thấp
-                    </Button>
-                </Space>
+                </div>
+                <div className={styles.layoutHeaderCenter}>
+                    <ul>
+                        <li onClick={() => window.location.reload()}>
+                            <FcHome />Trang chủ
+                        </li>
+                        <li>Tin sách</li>
+                        <li>
+                            {loading ? (
+                                <Spin tip="Loading authors..." />
+                            ) : (
+                                <Dropdown overlay={menu} trigger={['click']}>
+                                    <Button style={{ border: 'none', marginTop: '-10px' }}>
+                                        Thư viện sách
+                                    </Button>
+                                </Dropdown>
+                            )}
+                        </li>
+                        <li>Tác giả</li>
+                        <li>Cuộc thi</li>
+                        <li>Thông tin cửa hàng</li>
+                        <li className={styles.searchContainer}>
+                            <Input
+                                placeholder='Tìm kiếm ...'
+                                className={styles.searchInput}
+                            />
+                            <Button className={styles.searchButton}>
+                                <CiSearch className="icon" />
+                            </Button>
+                        </li>
+                        <li className={styles.userActions}>
+                            {username ? (
+                                <>
+                                    <Button onClick={handleLogoutClick}>Đăng xuất</Button>
+                                    <Button onClick={handleNextProFile}><CgProfile /></Button>
+                                </>
+                            ) : (
+                                <>
+                                    <Tooltip title="Đăng nhập">
+                                        <CiLogin style={{ fontSize: '20px', cursor: 'pointer' }} onClick={handleLoginClick} />
+                                    </Tooltip>
+                                    <Modal
+                                        title="Đăng nhập"
+                                        visible={isModalVisible}
+                                        onCancel={handleModalClose}
+                                        footer={null}
+                                        width={350}
+                                    >
+                                        <Login />
+                                    </Modal>
+                                </>
+                            )}
+                        </li>
+                        <li>
+                            {username && (
+                                <Tooltip title="Giỏ hàng">
+                                    <AiOutlineShoppingCart className={styles.cartIcon} onClick={openDrawerCart} />
+                                    <Drawer
+                                        title="Giỏ hàng của bạn"
+                                        placement="right"
+                                        onClose={closeDrawerCart}
+                                        visible={isDrawerVisibleCart}
+                                        width={800}
+                                    >
+                                        <ListCart ref={cartRef} />
+                                    </Drawer>
+                                </Tooltip>
+                            )}
+                        </li>
+                    </ul>
+                </div>
             </div>
+
 
             <div className={styleCart['col-books']}>
                 <div className={styleCart['list-check-box']}>
                     <h1>Quốc gia</h1>
                     <CountryFilter onFilterChange={handleCountryFilterChange} />
                 </div>
-                <div className={styleCart['books-container']}>
-                    {books.map((item) => (
-                        <div key={item.book.id} className={styleCart['book-card']}>
-                            <CardProduct
-                                bookId={item.book.id}
-                                author_name={item.book.author_name}
-                                discount_price={item.book.discount_price}
-                                file_desc_first={item.files[0]}
-                                price={item.book.price}
-                                publisher={item.book.publisher}
-                                title={item.book.title}
-                            />
-                        </div>
-                    ))}
+
+                <div>
+
+                    <div style={{width:'800px',justifyContent:'end'}} className={styleCart['order-monoi']}>
+                        <Space>
+                            <div className={styleCart['sort-text']}>
+                                <PiSortAscendingFill className={styleCart['sort-icon']} />
+                                Sắp xếp theo
+                            </div>
+                            <Button
+                                type={selectedSort === '1' ? 'primary' : 'default'}
+                                onClick={handleOrderDesc}
+                                className={styleCart['sort-button']}
+                            >
+                                Giá thấp đến cao
+                            </Button>
+                            <Button
+                                type={selectedSort === '2' ? 'primary' : 'default'}
+                                onClick={handleOrderAsc}
+                                className={styleCart['sort-button']}
+                            >
+                                Giá cao đến thấp
+                            </Button>
+                        </Space>
+                    </div>
+
+
+                    <div className={styleCart['books-container']}>
+                        {books.map((item) => (
+                            <div key={item.book.id} className={styleCart['book-card']}>
+                                <CardProduct
+                                    bookId={item.book.id}
+                                    author_name={item.book.author_name}
+                                    discount_price={item.book.discount_price}
+                                    file_desc_first={item.files[0]}
+                                    price={item.book.price}
+                                    publisher={item.book.publisher}
+                                    title={item.book.title}
+                                />
+                            </div>
+                        ))}
+                    </div>
+
                 </div>
+
+
+
             </div>
 
             <div className={styleCart['footer']}>
