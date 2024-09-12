@@ -328,6 +328,10 @@ function ListBookHome({ nameTypeBook }) {
                             >
                                 Giá cao đến thấp
                             </Button>
+                            <div>
+                                <Input/>
+                                <Input/>
+                            </div>
                         </Space>
                     </div>
 

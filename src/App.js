@@ -39,14 +39,14 @@ function App() {
       {/* <Dashboard /> */}
       {/* <UploadBook/> */}
       {/* <ListBooks/> */}
-      <HomePage/>
+      {/* <HomePage/> */}
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
       {/* <CheckLogin/> */}
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
-      {/* <DetailBuy book_id={7861741} /> */}
+      <DetailBuy book_id={7861741} />
       {/* <AppRouter/> */}
       {/* <Pages2/> */}
       {/* <SubmitBuyBook/> */}
@@ -79,6 +79,7 @@ function App() {
         title='hi hi' /> */}
       {/* <SliderCard/> */}
       {/* <BookWellSell title='Sắp xuất bản'/> */}
+      {/* <SubmitBuyBook/> */}
     </div>
   );
 }

@@ -3,7 +3,7 @@
     border-radius: 10px;
     max-width: 280px;
     margin: 0 auto;
-    height: 380px;
+    height: 390px;
     padding-top: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm hiệu ứng bóng để làm nổi bật */
     overflow: hidden; /* Đảm bảo nội dung không tràn ra ngoài khung */
@@ -56,4 +56,20 @@
 .cartProductImage {
     width: 270px;
     height: 200px;
+}
+
+.cartProductPrice {
+    font-size: 16px;
+    color: #000;
+}
+
+.cartProductPriceStrikethrough {
+    font-size: 16px;
+    color: #000;
+    text-decoration: line-through;
+}
+
+.cartProductDiscountedPrice {
+    color: red;
+    font-size: 20px;
 }

@@ -46,13 +46,13 @@ const DetailBuy = ({ book_id }) => {
         try {
             // Add a 2-second delay before loading book_id
             await new Promise((resolve) => setTimeout(resolve, 1500));
-            
+
             const bookId = localStorage.getItem("book_id");
             if (!bookId) {
                 setError('Không tìm thấy mã sách');
                 return;
             }
-            
+
             const response = await axios.get(`http://localhost:8080/manager/book/detail/page?id=${bookId}`);
             if (response.data && response.data.body) {
                 setBook(response.data.body);
@@ -65,11 +65,11 @@ const DetailBuy = ({ book_id }) => {
             setLoading(false);
         }
     };
-    
+
     useEffect(() => {
         fetchBookDetails();
     }, [book_id]); // Ensure the book_id is properly defined
-    
+
     useEffect(() => {
         fetchBookDetails();
     }, [book_id]);
@@ -100,13 +100,13 @@ const DetailBuy = ({ book_id }) => {
         console.log('Current slide:', currentSlide);
     };
 
-    
+
     if (loading) return (
-      <div className="loading-container">
-        <Spin size="large" tip="Đang tải..." />
-      </div>
+        <div className="loading-container">
+            <Spin size="large" tip="Đang tải..." />
+        </div>
     );
-    
+
     if (error) return <div>{error}</div>;
     if (!book) return <div>Không có thông tin sách.</div>;
 
@@ -314,7 +314,7 @@ const DetailBuy = ({ book_id }) => {
 
                     </div>
                     <div>Ảnh mô tả</div>
-                    <Carousel afterChange={onChange} style={{ marginBottom: '20px',border:'1px solid green' }}>
+                    <Carousel afterChange={onChange} style={{ marginBottom: '20px', border: '1px solid green' }}>
                         {book.files && book.files.map((item, index) => (
                             <div key={index}>
                                 <Image
@@ -421,11 +421,20 @@ const DetailBuy = ({ book_id }) => {
 
                             <Row>
                                 <Space>
-                                    <Button onClick={handleNextSubmitBuy} style={{ marginTop: '10px', height: '50px', width: '100px', background: 'red', color: 'white', fontSize: '20px' }}>
-                                        Mua ngay
-                                    </Button>
-                                    <Button onClick={handleAddToCart} style={{ marginTop: '10px', height: '50px', background: '#228b22', color: 'white', fontSize: '20px' }}>
+                                    <Button onClick={handleAddToCart} 
+                                    style={{ marginTop: '10px', height: '50px',
+                                     background: 'white', color: 'green',
+                                     font: 'bold 25px Arial',
+                                      fontSize: '22px' }}>
                                         Thêm vào giỏ hàng
+                                    </Button>
+                                    <Button onClick={handleNextSubmitBuy}
+                                        style={{
+                                            marginTop: '10px', height: '50px', border: '1px solid green', width: '188px',
+                                            background: 'green', color: 'white', fontSize: '22px',
+                                            font: 'bold 25px Arial'
+                                        }}>
+                                        Mua ngay
                                     </Button>
                                 </Space>
                             </Row>

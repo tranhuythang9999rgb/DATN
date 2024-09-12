@@ -21,10 +21,10 @@ function CardProduct({ onEventClick, bookId, title, author_name, publisher, pric
             ...prevState,
             [bookId]: !prevState[bookId]
         }));
-    
+
         const userData = JSON.parse(localStorage.getItem('userData'));
         const userId = userData?.id;
-    
+
         if (userId) {
             fetch('http://127.0.0.1:8080/manager/favorite/add', {
                 method: 'POST',
@@ -36,21 +36,21 @@ function CardProduct({ onEventClick, bookId, title, author_name, publisher, pric
                     book_id: bookId,
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                let favoriteBooks = JSON.parse(localStorage.getItem('list_book_favorite')) || [];
-    
-                if (!favoriteBooks.includes(bookId)) {
-                    favoriteBooks.push(bookId);
-                } else {
-                    favoriteBooks = favoriteBooks.filter(id => id !== bookId);
-                }
-    
-                localStorage.setItem('list_book_favorite', JSON.stringify(favoriteBooks));
-            })
-            .catch(error => {
-                console.error("Error:", error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    let favoriteBooks = JSON.parse(localStorage.getItem('list_book_favorite')) || [];
+
+                    if (!favoriteBooks.includes(bookId)) {
+                        favoriteBooks.push(bookId);
+                    } else {
+                        favoriteBooks = favoriteBooks.filter(id => id !== bookId);
+                    }
+
+                    localStorage.setItem('list_book_favorite', JSON.stringify(favoriteBooks));
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
         } else {
             console.log("User not logged in");
         }
@@ -59,7 +59,7 @@ function CardProduct({ onEventClick, bookId, title, author_name, publisher, pric
     const unToggleLike = (bookId) => {
         const userData = JSON.parse(localStorage.getItem('userData'));
         const userId = userData?.id;
-    
+
         if (userId) {
             fetch(`http://127.0.0.1:8080/manager/favorite/delete?id=${bookId}`, {
                 method: 'DELETE',
@@ -67,28 +67,28 @@ function CardProduct({ onEventClick, bookId, title, author_name, publisher, pric
                     'Content-Type': 'application/json',
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.code === 0) {
-                    let favoriteBooks = JSON.parse(localStorage.getItem('list_book_favorite')) || [];
-                    favoriteBooks = favoriteBooks.filter(id => id !== bookId);
-                    localStorage.setItem('list_book_favorite', JSON.stringify(favoriteBooks));
-                    setLikedBooks(prevState => ({
-                        ...prevState,
-                        [bookId]: false
-                    }));
-                } else {
-                    console.error("Failed to remove book from favorites:", data.message);
-                }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.code === 0) {
+                        let favoriteBooks = JSON.parse(localStorage.getItem('list_book_favorite')) || [];
+                        favoriteBooks = favoriteBooks.filter(id => id !== bookId);
+                        localStorage.setItem('list_book_favorite', JSON.stringify(favoriteBooks));
+                        setLikedBooks(prevState => ({
+                            ...prevState,
+                            [bookId]: false
+                        }));
+                    } else {
+                        console.error("Failed to remove book from favorites:", data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
         } else {
             console.log("User not logged in");
         }
     };
-    
+
     const formatPrice = (price) => {
         return new Intl.NumberFormat('vi-VN').format(price);
     };
@@ -104,7 +104,6 @@ function CardProduct({ onEventClick, bookId, title, author_name, publisher, pric
                 <Form.Item>
                     <Row className={styles.cartProductLikeV1}>
                         <Col>
-                            {author_name}
                         </Col>
                         <Col>
                             {likedBooks[bookId] ? (
@@ -122,19 +121,23 @@ function CardProduct({ onEventClick, bookId, title, author_name, publisher, pric
                         </Badge.Ribbon>
                     </Space>
                 </Form.Item>
+
                 <Form.Item className={styles.cartProductNameBookPrice}>
                     <Row className={styles.cartProductBookTitle}>
                         {title}
                     </Row>
-                    <Row style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <div className={styles.cartProductPrice}>
+
+                    <Row style={{ display: 'block'}}>
+                        <div className={discount_price > 0 ? styles.cartProductPriceStrikethrough : styles.cartProductPrice}>
                             {formatPrice(price)}₫
                         </div>
                         <div className={styles.cartProductDiscountedPrice}>
                             {formatPrice(discountedPrice)}₫
                         </div>
                     </Row>
+
                 </Form.Item>
+
                 <Form.Item className={styles.cartProductSubmit}>
                     <Button onClick={() => handleClickBuy(bookId)} type="primary">
                         Mua Ngay
