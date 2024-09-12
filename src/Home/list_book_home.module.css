@@ -78,10 +78,10 @@
 
 /* Individual book card container */
 .book-card {
-    margin: 10px;
+    margin: 20px;
     width: calc(25% - 20px); /* 25% width for 4 cards per row, minus margins */
     max-width: 250px; /* Maximum width of each card */
-    height: 350px;
+    height: 370px;
     display: flex;
     flex-direction: column;
     border-radius: 10px;

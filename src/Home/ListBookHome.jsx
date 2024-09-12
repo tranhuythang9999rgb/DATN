@@ -334,7 +334,7 @@ function ListBookHome({ nameTypeBook }) {
 
                     <div className={styleCart['books-container']}>
                         {books.map((item) => (
-                            <div key={item.book.id} className={styleCart['book-card']}>
+                            <div  key={item.book.id} className={styleCart['book-card']}>
                                 <CardProduct
                                     bookId={item.book.id}
                                     author_name={item.book.author_name}
