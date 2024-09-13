@@ -60,6 +60,7 @@ func NewApiRouter(
 		bookGroup.GET("/detail/page", book.GetdetailBookByid)
 		bookGroup.GET("/list/type_book", book.GetListBookByTypeBook)
 		bookGroup.PATCH("/update/order/cancel", book.UpdateQuantityBookByOrderId)
+		bookGroup.GET("/list/filter", book.GetBooksByName)
 	}
 	fileGroup := r.Group("/file")
 	{

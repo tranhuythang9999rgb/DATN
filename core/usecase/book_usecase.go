@@ -349,3 +349,12 @@ func (u *UploadBookUseCase) UpdateQuantityBookByOrderId(ctx context.Context, ord
 	tx.Commit()
 	return nil
 }
+
+func (u *UploadBookUseCase) GetBooksByName(ctx context.Context, nameBook string) ([]*domain.Book, errors.Error) {
+	books, err := u.books.GetBookByName(ctx, nameBook)
+	if err != nil {
+		log.Error(err, "error")
+		return nil, errors.ErrSystem
+	}
+	return books, nil
+}
