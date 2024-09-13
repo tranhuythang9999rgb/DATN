@@ -6,7 +6,7 @@ import styles from './Slider_card.module.css'; // Import CSS Module
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const SliderCard = () => {
+const SliderCard = ({ onEventClick }) => {
     const [books, setBooks] = useState([]);
 
     useEffect(() => {
@@ -20,6 +20,8 @@ const SliderCard = () => {
                 console.error('Error fetching data:', error);
             });
     }, []);
+
+
 
     const settings = {
         dots: false,
@@ -36,6 +38,7 @@ const SliderCard = () => {
                     {books.map((book) => (
                         <div key={book.id} className={styles.cardContainer}>
                             <CardProduct
+                                onEventClick={onEventClick}
                                 bookId={book.id}
                                 author_name={book.author_name}
                                 discount_price={book.discount_price}

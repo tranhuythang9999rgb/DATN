@@ -273,12 +273,11 @@ function HomePage() {
                 <div className='layout-footer-list-bool-well-sell'>
                     <div style={{ padding: '20px' }}>
                         <Title level={2}>Top Sản phẩm bán chạy <MdSell /></Title>
-                        <SliderCard />
+                        <SliderCard onEventClick={()=>setIsNextBuy(true)} />
 
                     </div>
                 </div>
                 <div className='layout-footer-list-bool-well-sell'>
-                    {/* <BookWellSell title={'Sắp xuất bản'} onEventClick={() => setIsNextBuyWell(true)}/> */}
                     <Title level={2}>Sách sắp xuất bản</Title>
                     <SliderCard />
                 </div>

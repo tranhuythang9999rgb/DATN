@@ -84,6 +84,7 @@ function App() {
       {/* <SubmitBuyBook/> */}
       {/* <StatisticalFormHeader/> */}
       {/* <CountrySelect/> */}
+      {/* <Pages1/> */}
     </div>
   );
 }

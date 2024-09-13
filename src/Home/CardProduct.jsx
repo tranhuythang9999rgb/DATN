@@ -88,7 +88,8 @@ function CardProduct({ onEventClick, bookId, title, author_name, publisher, pric
             console.log("User not logged in");
         }
     };
-
+   
+ 
     const formatPrice = (price) => {
         return new Intl.NumberFormat('vi-VN').format(price);
     };

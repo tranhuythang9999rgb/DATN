@@ -231,6 +231,8 @@ const DetailBuy = ({ book_id }) => {
 
 
     return (
+
+        
         <div className={styleDetail.body}>
             <Row>
                 <Col xs={6} sm={6} md={6} lg={6} xl={6} className={styleDetail['col-container']}>
