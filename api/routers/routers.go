@@ -95,6 +95,7 @@ func NewApiRouter(
 		orderGroup.GET("/list/order/admin", order.ListOrdersUseTk)
 		orderGroup.POST("/api/orders", order.CreateOrderItem)
 		orderGroup.PATCH("/api/order/offiline", order.UpdateOrderOffline)
+		orderGroup.GET("/api/admin/day", order.GetOrderBuyOneDay)
 	}
 	deliveryAddressGroup := r.Group("/delivery_address")
 	{

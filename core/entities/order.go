@@ -18,3 +18,10 @@ type OrderItemReq struct {
 	TotalAmount float64 `json:"total_amount"`
 	UserName    string  `json:"user_name"`
 }
+
+type GetOrderBuyOneDayResponse struct {
+	CountOrder   int     `json:"count"`
+	CountProduct int     `json:"count_product"`
+	Amount       float64 `json:"amount"`
+	NewCustomer  int     `json:"new_customer"`
+}

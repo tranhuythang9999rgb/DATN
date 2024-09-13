@@ -229,3 +229,8 @@ CREATE TABLE  if not exists  favorites (
     liked_at TIMESTAMP DEFAULT NOW(),
     PRIMARY KEY (user_id, book_id)
 );
+
+
+ALTER TABLE orders 
+  ADD COLUMN items TEXT;
+COMMENT ON COLUMN orders.items IS 'danh sách sản phẩm';

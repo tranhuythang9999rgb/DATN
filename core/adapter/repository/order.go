@@ -7,6 +7,7 @@ import (
 	"shoe_shop_server/common/enums"
 	"shoe_shop_server/core/adapter"
 	"shoe_shop_server/core/domain"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -116,7 +117,7 @@ func (u *CollectionOrder) UpdateStatusOrderSucsess(ctx context.Context, id int64
 		return errors.New("invalid order ID")
 	}
 
-	newStatus := 23
+	newStatus := enums.ORDER_STATUS_SUCESS
 	paymentType := enums.TYPE_PAYMENT_ONLINE
 
 	result := u.db.Model(&domain.Order{}).
@@ -164,4 +165,22 @@ func (u *CollectionOrder) UpdateStatusPaymentOffline(ctx context.Context, id int
 			"type_payment": enums.TYPE_PAYMENT_OFFLINE,
 		})
 	return result.Error
+}
+
+// các đơn hàng trong ngaỳ tính từ 0h ->24h<-
+func (u *CollectionOrder) GetListOrderByTimeOneDay(ctx context.Context, day int64) ([]*domain.Order, error) {
+	t := time.Unix(day, 0)
+
+	startOfDay := time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, time.UTC)
+	endOfDay := startOfDay.Add(24 * time.Hour).Add(-time.Nanosecond)
+
+	var listOrder []*domain.Order
+
+	result := u.db.Where("create_order BETWEEN ? AND ? AND status = ?", startOfDay.Unix(), endOfDay.Unix(), enums.ORDER_STATUS_SUCESS).Find(&listOrder)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return listOrder, nil
 }

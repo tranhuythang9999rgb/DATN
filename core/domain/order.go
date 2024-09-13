@@ -89,4 +89,6 @@ type RepositoryOrder interface {
 	ListOrdersUseTk(ctx context.Context, filter *OrderFormUseTk) ([]*Order, error)
 
 	UpdateStatusPaymentOffline(ctx context.Context, id int64, status int) error
+
+	GetListOrderByTimeOneDay(ctx context.Context, day int64) ([]*Order, error)
 }

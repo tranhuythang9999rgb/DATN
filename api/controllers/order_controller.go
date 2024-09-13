@@ -114,3 +114,13 @@ func (u *ControllerOrder) UpdateOrderOffline(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, nil)
 }
+
+func (u *ControllerOrder) GetOrderBuyOneDay(ctx *gin.Context) {
+	dayOne := ctx.Query("dayOne")
+	resp, err := u.order.GetListOrderBuyOneDay(ctx, dayOne)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, resp)
+}

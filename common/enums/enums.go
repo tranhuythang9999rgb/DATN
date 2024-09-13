@@ -120,6 +120,8 @@ const (
 	ORDER_STATUS_SUBMIT_SEND = 31
 
 	ORDER_STATUS_CANCEL_BY_USER = 33
+
+	ORDER_STATUS_SUCESS = 35
 )
 const (
 	NoSignatureErrorMessage         = "No signature."

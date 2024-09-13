@@ -179,29 +179,11 @@ func (u *UseCaseOrder) ListOrdersUseTk(ctx context.Context, start, end string) (
 		StartTime: startN,
 		EndTime:   endN,
 	})
-	log.Infof("req ", start, end)
 	if err != nil {
-		log.Error(err, "error")
 		return nil, errors.ErrSystem
 	}
-	log.Infof("data ", listOrder)
 	return listOrder, nil
 }
-
-// "cart_id": 2594695,
-// "book_id": 8113677,
-// "book_name": "8",
-// "quantity": 1,
-// "price": 8,
-// "total_amount": 8
-// },
-// {
-// "cart_id": 6114771,
-// "book_id": 9274936,
-// "book_name": "",
-// "quantity": 4,
-// "price": 0,
-// "total_amount": 0
 
 func (u *UseCaseOrder) CreateOrderInCart(ctx context.Context, req []*entities.OrderItemReq) errors.Error {
 	// Tạo Order mới
@@ -257,7 +239,6 @@ func (u *UseCaseOrder) CreateOrderInCart(ctx context.Context, req []*entities.Or
 	}
 
 	if err := u.order.CreateOrder(ctx, order); err != nil {
-		log.Error(err, "error  5")
 		return errors.ErrSystem
 	}
 
@@ -267,9 +248,28 @@ func (u *UseCaseOrder) CreateOrderInCart(ctx context.Context, req []*entities.Or
 func (u *UseCaseOrder) UpdateOrderOffline(ctx context.Context, orderId string) errors.Error {
 
 	idNumber, _ := strconv.ParseInt(orderId, 10, 64)
-	err := u.order.UpdateStatusPaymentOffline(ctx, idNumber, enums.ORDER_PEND)
+	err := u.order.UpdateStatusPaymentOffline(ctx, idNumber, enums.ORDER_WAITING_FOR_SHIPMENT)
 	if err != nil {
 		return errors.NewSystemError(fmt.Sprintf("error system . %v", err))
 	}
 	return nil
+}
+
+func (u *UseCaseOrder) GetListOrderBuyOneDay(ctx context.Context, day string) (*entities.GetOrderBuyOneDayResponse, errors.Error) {
+
+	dayNumber, _ := strconv.ParseInt(day, 10, 64)
+	var amount float64
+	listOrder, err := u.order.GetListOrderByTimeOneDay(ctx, dayNumber)
+	if err != nil {
+		return nil, errors.NewSystemError(fmt.Sprintf("error system . %v", err))
+	}
+	for _, v := range listOrder {
+		amount = v.TotalAmount
+	}
+	return &entities.GetOrderBuyOneDayResponse{
+		CountOrder:   len(listOrder),
+		CountProduct: 0,
+		Amount:       amount,
+		NewCustomer:  0,
+	}, nil
 }
