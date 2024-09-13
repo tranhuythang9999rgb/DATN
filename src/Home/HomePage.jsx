@@ -22,6 +22,7 @@ import SliderCard from '../Test/Pages2';
 import styles from './index_header.module.css';
 import FooterHeader from '../Utils/FooterHeader';
 import styleLayout from './layout.module.css';  // Import CSS module
+import GetListBookByNameBook from './GetListBookByNameBook';
 const { Title, Text } = Typography;
 
 
@@ -39,6 +40,9 @@ function HomePage() {
     const [likedBooks, setLikedBooks] = useState({});  // State to store liked status for each book
     const [isDrawerVisibleCart, setIsDrawerVisibleCart] = useState(false);
     const [isNextBuyWell, setIsNextBuyWell] = useState(false);
+    const [nameBook, setNameBook] = useState('');  // Quản lý state cho input
+    const [isNextFindBook, setIsNextFindBook] = useState(false);
+
     const cartRef = useRef(null);
 
     const openDrawerCart = () => {
@@ -150,7 +154,13 @@ function HomePage() {
             ))}
         </Menu>
     );
+    const handleSearch = () => {
+        // Lưu giá trị nameBook vào local storage
+        localStorage.setItem('book_name', nameBook);
 
+        // Chuyển state để điều hướng đến component hiển thị danh sách sách
+        setIsNextFindBook(true);
+    };
     if (isNext && selectedAuthor) {
         return <ListBookHome nameTypeBook={selectedAuthor.name} />;
     }
@@ -164,6 +174,9 @@ function HomePage() {
         return <ProFile />
     }
 
+    if (isNextFindBook) {
+        return <GetListBookByNameBook nameBook={''} />
+    }
 
     return (
         <div className={styleLayout.layoutHome}>
@@ -199,8 +212,10 @@ function HomePage() {
                             <Input
                                 placeholder='Tìm kiếm ...'
                                 className={styles.searchInput}
+                                value={nameBook}  // Gán giá trị từ state
+                                onChange={(e) => setNameBook(e.target.value)}  // Cập nhật state khi người dùng nhập
                             />
-                            <Button className={styles.searchButton}>
+                            <Button onClick={handleSearch} className={styles.searchButton}>
                                 <CiSearch className="icon" />
                             </Button>
                         </li>

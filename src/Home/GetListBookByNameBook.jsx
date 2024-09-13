@@ -16,9 +16,10 @@ import { CgProfile } from 'react-icons/cg';
 import FooterHeader from '../Utils/FooterHeader';
 import styleCart from './list_book_home.module.css';
 import CardProduct from './CardProduct';
+import ListBookHome from './ListBookHome';
 
 
-function ListBookHome({ nameTypeBook }) {
+function GetListBookByNameBook({ nameTypeBook,nameBook }) {
     const [books, setBooks] = useState([]); // Initialize as an empty array
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -35,7 +36,7 @@ function ListBookHome({ nameTypeBook }) {
     const [selectedSort, setSelectedSort] = useState(null); // Save the selected sort option
     const [isDrawerVisibleCart, setIsDrawerVisibleCart] = useState(false);
     const [isNextProFile, setIsNextProFile] = useState(false);
-
+    const [isNextFindBook,setIsNextFindBook] = useState(false);
     const cartRef = useRef(null);
 
     const openDrawerCart = () => {
@@ -68,10 +69,10 @@ function ListBookHome({ nameTypeBook }) {
             if (orderAsc) {
                 params.append('asc', orderAsc);
             }
-
-            const response = await axios.get(`http://127.0.0.1:8080/manager/book/list/type_book?${params.toString()}`);
+            const name_book = localStorage.getItem('book_name' || '');
+            const response = await axios.get(`http://127.0.0.1:8080/manager/book/list/filter?name=${name_book}`);
             if (response.data.code === 0) {
-                setBooks(response.data.body.book_detail_list || []);
+                setBooks(response.data.body || []);
             } else {
                 message.error('Failed to fetch books');
             }
@@ -140,7 +141,6 @@ function ListBookHome({ nameTypeBook }) {
         setLoading(true);
         try {
             const response = await axios.get('http://127.0.0.1:8080/manager/type_book/list');
-            console.log('Response data:', response.data); // Debugging
             if (response.data.code === 0) {
                 setAuthors(response.data.body);
             } else {
@@ -191,6 +191,10 @@ function ListBookHome({ nameTypeBook }) {
 
     if (isNext && selectedAuthor) {
         return <ListBookHome nameTypeBook={selectedAuthor.name} />;
+    }
+
+    if(isNextFindBook) {
+        return <GetListBookByNameBook/>
     }
 
     const menu = (
@@ -303,7 +307,7 @@ function ListBookHome({ nameTypeBook }) {
 
                 <div>
 
-                    <div style={{width:'800px',justifyContent:'end'}} className={styleCart['order-monoi']}>
+                    <div style={{ width: '800px', justifyContent: 'end' }} className={styleCart['order-monoi']}>
                         <Space>
                             <div className={styleCart['sort-text']}>
                                 <PiSortAscendingFill className={styleCart['sort-icon']} />
@@ -325,8 +329,8 @@ function ListBookHome({ nameTypeBook }) {
                             </Button>
                             <div>
                                 <Space>
-                                <Input/>
-                                <Input/>
+                                    <Input />
+                                    <Input />
                                 </Space>
                             </div>
                         </Space>
@@ -335,15 +339,14 @@ function ListBookHome({ nameTypeBook }) {
 
                     <div className={styleCart['books-container']}>
                         {books.map((item) => (
-                            <div  key={item.book.id} className={styleCart['book-card']}>
+                            <div key={item.book} className={styleCart['book-card']}>
                                 <CardProduct
-                                    bookId={item.book.id}
-                                    author_name={item.book.author_name}
-                                    discount_price={item.book.discount_price}
-                                    file_desc_first={item.files[0]}
-                                    price={item.book.price}
-                                    publisher={item.book.publisher}
-                                    title={item.book.title}
+                                    bookId={item.id}
+                                    author_name={item.author_name}
+                                    discount_price={item.discount_price}
+                                    price={item.price}
+                                    publisher={item.publisher}
+                                    title={item.title}
                                 />
                             </div>
                         ))}
@@ -363,4 +366,4 @@ function ListBookHome({ nameTypeBook }) {
     );
 }
 
-export default ListBookHome;
+export default GetListBookByNameBook;

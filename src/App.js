@@ -15,8 +15,8 @@ import AuthorBook from "./Home/AuthorBook";
 import BookWellSell from "./Home/BookWellSell";
 import CardProduct from "./Home/CardProduct";
 import DetailBuy from "./Home/DetailBuy";
+import GetListBookByNameBook from "./Home/GetListBookByNameBook";
 import HomePage from "./Home/HomePage";
-import ListBookHome from "./Home/ListBookHome";
 import ListPublicSher from "./Home/ListPublicSher";
 import SubmitBuyBook from "./Home/SubmitBuyBook";
 import Pages1 from "./Test/Pages1";
@@ -85,6 +85,7 @@ function App() {
       {/* <StatisticalFormHeader/> */}
       {/* <CountrySelect/> */}
       {/* <Pages1/> */}
+      {/* <GetListBookByNameBook nameBook={'7'}/> */}
     </div>
   );
 }

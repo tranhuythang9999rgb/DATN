@@ -244,7 +244,7 @@ const DetailBuy = ({ book_id }) => {
 
                         <div style={{
                             width: '400px',
-                            height: '500px',
+                            height: '400px',
                             border: '2px solid gray',
                             borderRadius: '15px', // Rounded corners
                             padding: '20px',
@@ -368,6 +368,7 @@ const DetailBuy = ({ book_id }) => {
                             <div style={{ marginTop: '50px' }}>
                                 <Space>
                                     <Button
+                                    onClick={handleNextSubmitBuy}
                                         type="primary"
                                         style={{
                                             padding: '10px 20px',
@@ -387,6 +388,7 @@ const DetailBuy = ({ book_id }) => {
                                         Mua ngay
                                     </Button>
                                     <Button
+                                        onClick={handleAddToCart}
                                         type="default"
                                         style={{
                                             padding: '10px 20px',
@@ -413,7 +415,7 @@ const DetailBuy = ({ book_id }) => {
                     <div>
                         <div style={{
                             marginLeft: '20px',
-                            marginTop: '0px',
+                            marginTop: '10px',
                             color: '#28a745', // Green color
                             fontFamily: 'Arial, sans-serif', // Font family for cleaner appearance
                             fontWeight: 'bold', // Bold for emphasis
@@ -427,7 +429,7 @@ const DetailBuy = ({ book_id }) => {
 
                             <div
                                 style={{
-                                    marginTop: '-100px',
+                                    marginTop: '60px',
                                     padding: '15px',
                                     border: '1px solid #ddd',
                                     borderRadius: '8px',
