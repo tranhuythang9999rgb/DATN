@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import './admin_index.css';
 import { TiDocumentDelete } from "react-icons/ti";
 import DetailBook from "./DetailBook";
+import CountrySelect from "./CountrySelect";
 
 function UploadBook() {
     const [form] = Form.useForm();
@@ -13,6 +14,7 @@ function UploadBook() {
     const [typeBooks, setTypeBooks] = useState([]);
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [selectedCountry, setSelectedCountry] = useState(null);
 
     const onChange = ({ fileList }) => {
         setFileList(fileList);
@@ -119,14 +121,14 @@ function UploadBook() {
             formData.append('isbn', values.isbn);
             formData.append('genre', values.genre);
             formData.append('description', values.description);
-            formData.append('language', values.language);
+            formData.append('language', selectedCountry || ''); // Quốc gia từ CountrySelect
             formData.append('page_count', values.page_count);
             formData.append('dimensions', values.dimensions);
             formData.append('weight', values.weight);
             formData.append('price', values.price);
             formData.append('discount_price', values.discount_price);
             formData.append('quantity', values.quantity);
-            formData.append('opening_status', values.opening_status ? values.opening_status.value : ''); // Handle Select value
+            formData.append('opening_status', values.opening_status ? values.opening_status.value : 15); // Handle Select value
 
             fileList.forEach((file) => {
                 formData.append('file', file.originFileObj);
@@ -144,7 +146,7 @@ function UploadBook() {
 
             if (response.data.code === 0) {
                 fetchBooks();
-                message.success('Book uploaded successfully');
+                message.success('Sách được tải lên thành công');
             } else {
                 message.error('Server error, please try again');
             }
@@ -267,8 +269,8 @@ function UploadBook() {
                     <Form.Item name="description" label="Mô tả" rules={[{ required: true }]}>
                         <Input.TextArea />
                     </Form.Item>
-                    <Form.Item name="language" label="Ngôn ngữ" rules={[{ required: true }]}>
-                        <Input />
+                    <Form.Item name="language" label="Ngôn ngữ" >
+                        <CountrySelect onCountryChange={setSelectedCountry} />
                     </Form.Item>
                     <Form.Item name="page_count" label="Số trang" rules={[{ required: true }]}>
                         <InputNumber min={1} />
@@ -290,7 +292,7 @@ function UploadBook() {
                         <InputNumber min={0} />
                     </Form.Item>
 
-                    <Form.Item name="opening_status" label="Tình trạng mở" rules={[{ required: true }]}>
+                    <Form.Item name="opening_status" label="Tình trạng mở" >
                         <Select
                             defaultValue={15}
                             labelInValue
