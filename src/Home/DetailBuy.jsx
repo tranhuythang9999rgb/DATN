@@ -222,95 +222,101 @@ const DetailBuy = ({ book_id }) => {
 
     return (
         <div>
-
             <Row>
-
-                <Col xs={2} sm={2} md={2} lg={2} xl={2} className={styleDetail['col-container']}>
+                <Col xs={6} sm={6} md={6} lg={6} xl={6} className={styleDetail['col-container']}>
                     {/* Viền */}
                     coll
                 </Col>
 
-                <Col style={{ background: 'white' }} xs={20} sm={20} md={20} lg={20} xl={20}>
+                <Col style={{ background: 'white' }} xs={12} sm={12} md={12} lg={12} xl={12}>
                     <div style={{ display: 'flex' }}>
 
                         <div style={{
-                            width: '700px',
-                            height: '700px',
+                            width: '400px',
+                            height: '500px',
                             border: '2px gray solid',
                             paddingLeft: '20px',
-                            paddingTop: '20px',
+                            paddingTop: '40px',
                             paddingRight: '20px'
                         }} className="slider-container">
                             <Slider {...settings}>
                                 {book.files.map((item, index) => (
                                     <div>
-                                        <Image key={index} src={item} width={700} />
+                                        <Image key={index} src={item} width={400} />
                                     </div>
                                 ))}
 
                             </Slider>
                         </div>
-                        
+
                         <div>
                             <div
                                 style={{ color: 'black', font: 'bold 30px Arial', paddingTop: '70px', paddingLeft: '40px' }}
                             >
-                                {book.title}
+                                {book.title}đ
                             </div>
                             <div
                                 style={{ color: 'gray', fontSize: '19px', font: 'bold 22px Arial', paddingTop: '20px', paddingLeft: '40px' }}
                             >
-                                Tác giả :<span style={{ color: 'black' }}>
+                                Tác giả :<span style={{ color: 'black', fontSize: '17px', fontWeight: 'bold' }}>
                                     {book.author_name}
                                 </span>
                             </div>
 
                             <div className={styleDetail.priceContainer}>
-                                <span className={styleDetail.currentPrice}>{book.price}</span>
-                                <span className={styleDetail.originalPrice}>{book.price - book.price * (book.dimensions / 100)}</span>
+                                <span className={styleDetail.currentPrice}>{book.price}đ</span>
+                                <span className={styleDetail.originalPrice}>{book.price - book.price * (book.dimensions / 100)}đ</span>
                                 {book.discount_price && (
                                     <span style={{ marginLeft: '40px', font: 'bold 30px Arial', color: 'red' }} className={book.price - book.price * (book.dimensions / 100)}>-{book.discount_price}%</span>
                                 )}
                             </div>
 
-                            <div>
-                                {/* Nút giảm, bị vô hiệu hóa nếu số lượng count bằng 0 */}
-                                <button
-                                    style={{ background: 'white' }}
-                                    onClick={() => setCount(count - 1)}
-                                    disabled={count === 1}
-                                >
-                                    <MinusOutlined />
-                                </button>
+                            <Space>
+                                <div style={{ marginLeft: '38px', marginTop: '20px' }}>
+                                    <button
+                                        style={{ background: 'white' }}
+                                        onClick={() => setCount(count - 1)}
+                                        disabled={count === 1}
+                                    >
+                                        <MinusOutlined />
+                                    </button>
+                                    <button style={{ backgroundColor: 'white', color: 'black' }}>
+                                        {count}
+                                    </button>
+                                    <button
+                                        style={{ background: 'white', marginRight: '20px' }}
+                                        onClick={() => setCount(count + 1)}
+                                        disabled={count === book.quantity}
+                                    >
+                                        <PlusOutlined />
+                                    </button>
+                                    còn lại trong kho :{book.quantity}
+                                </div>
 
-                                {/* Hiển thị số lượng hiện tại */}
-                                <button style={{ backgroundColor: 'white', color: 'black' }}>
-                                    {count}
-                                </button>
+                            </Space>
 
-                                {/* Nút tăng, bị vô hiệu hóa nếu số lượng count bằng số lượng sách có sẵn */}
-                                <button
-                                    style={{ background: 'white' }}
-                                    onClick={() => setCount(count + 1)}
-                                    disabled={count === book.quantity}
-                                >
-                                    <PlusOutlined />
-                                </button>
+                            <div style={{ marginTop: '50px', marginLeft: '40px' }}>
+                                <Space>
+                                    <Button>
+                                        Mua ngay
+                                    </Button>
+                                    <Button>
+                                        thêm vào giỏ hàng
+                                    </Button>
+                                </Space>
                             </div>
-
-
-                            <div></div>
                         </div>
                     </div>
                 </Col>
 
-                <Col xs={2} sm={2} md={2} lg={2} xl={2} className={styleDetail['col-container']}>
+                <Col xs={6} sm={6} md={6} lg={6} xl={6} className={styleDetail['col-container']}>
                     {/* Viền */}
                     coll
                 </Col>
             </Row>
-
         </div>
+
+
     );
 };
 

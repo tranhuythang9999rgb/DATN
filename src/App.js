@@ -38,7 +38,7 @@ import RegisterUser from "./user/RegisterUser";
 function App() {
   return (
     <div>
-      <Dashboard />
+      {/* <Dashboard /> */}
       {/* <UploadBook/> */}
       {/* <ListBooks/> */}
       {/* <HomePage/> */}
@@ -48,7 +48,7 @@ function App() {
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
-      {/* <DetailBuy book_id={7861741} /> */}
+      <DetailBuy  />
       {/* <AppRouter/> */}
       {/* <Pages2/> */}
       {/* <SubmitBuyBook/> */}
