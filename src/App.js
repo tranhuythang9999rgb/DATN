@@ -2,6 +2,7 @@ import Dashboard from "./admin/Dashboard";
 import ListBooks from "./admin/ListBooks";
 import Publishers from "./admin/Publishers";
 import Statistical from "./admin/Statistical";
+import StatisticalFormHeader from "./admin/StatisticalFormHeader";
 import TypeBook from "./admin/TypeBook";
 import UploadBook from "./admin/UploadBook";
 import ChatBot from "./ChatBot/ChatBot";
@@ -36,7 +37,7 @@ import RegisterUser from "./user/RegisterUser";
 function App() {
   return (
     <div>
-      {/* <Dashboard /> */}
+      <Dashboard />
       {/* <UploadBook/> */}
       {/* <ListBooks/> */}
       {/* <HomePage/> */}
@@ -46,7 +47,7 @@ function App() {
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
-      <DetailBuy book_id={7861741} />
+      {/* <DetailBuy book_id={7861741} /> */}
       {/* <AppRouter/> */}
       {/* <Pages2/> */}
       {/* <SubmitBuyBook/> */}
@@ -80,6 +81,7 @@ function App() {
       {/* <SliderCard/> */}
       {/* <BookWellSell title='Sắp xuất bản'/> */}
       {/* <SubmitBuyBook/> */}
+      {/* <StatisticalFormHeader/> */}
     </div>
   );
 }

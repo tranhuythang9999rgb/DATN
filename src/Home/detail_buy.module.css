@@ -1,0 +1,45 @@
+.slider-container {
+
+    width: 700px;
+}
+
+.col-container {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+    height: 100%; /* Make sure the column takes up full height */
+}
+
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-image{
+    display: flex;
+    margin-left: 200px;
+}
+.priceContainer {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    padding-left: 40px;
+    padding-top: 20px;
+  }
+  
+  .currentPrice {
+    color: #2e8b57;  /* Green color */
+  }
+  
+  .originalPrice {
+    text-decoration: line-through;
+    color: #888;  /* Grey color */
+    margin-left: 12px;
+    font-weight: normal;
+    padding-left: 20px;
+  }
+  
+  .discountBadge {
+    background-color: #ff6b6b;  /* Red background */
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-left: 40px;
+  }

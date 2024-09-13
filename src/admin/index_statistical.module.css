@@ -1,0 +1,58 @@
+/* index_statistical.module.css */
+
+.container {
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 50px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Space between columns */
+}
+
+.col {
+    flex: 1;
+    padding: 60px; /* Reduced padding for better spacing */
+    text-align: center;
+    border-radius: 70px; /* Adjusted radius for a subtler look */
+    background-color: #ffffff; /* White background for contrast */
+    border: 1px solid #e0e0e0; /* Light border for definition */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Subtle shadow for depth */
+}
+
+.col div:first-child {
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 14px; /* Adjusted font size for labels */
+    color: #666; /* Subtle gray for labels */
+}
+
+.col div:last-child {
+    font-size: 24px; /* Larger font size for values */
+    font-weight: bold; /* Make values stand out */
+    color: #333; /* Dark gray color for better readability */
+}
+
+/* Color classes for values */
+.col_value_product {
+    color: #FFD700; /* Gold for products */
+    font-size: 28px; /* Slightly larger font size for emphasis */
+}
+
+.col_value_count_order {
+    color: #1E90FF; /* Dodger blue for orders */
+    font-size: 28px;
+}
+
+.col_value_count_new_customer {
+    color: #FFA500; /* Orange for new customers */
+    font-size: 28px;
+}
+
+.col_value_amount {
+    color: #20B2AA; /* Light sea green for amount */
+    font-size: 28px;
+}

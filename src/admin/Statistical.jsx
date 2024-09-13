@@ -3,6 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Responsive
 import axios from 'axios';
 import { Button, DatePicker, Space, Select } from 'antd';
 import moment from 'moment';
+import StatisticalFormHeader from './StatisticalFormHeader';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -80,6 +81,7 @@ const Statistical = () => {
 
     return (
         <div>
+            <StatisticalFormHeader/>
             <h1>Thống Kê Top {topN} Sản Phẩm Bán Chạy</h1>
             <Space direction="vertical" size="middle" style={{ marginBottom: 20 }}>
                 <Space>
