@@ -161,6 +161,7 @@ func (u *UploadBookUseCase) UpdateBookById(ctx context.Context, req *entities.Bo
 	return nil
 }
 func (u *UploadBookUseCase) GetListBookSellWell(ctx context.Context) (*entities.BookSellWells, errors.Error) {
+
 	var booksResp = make([]*entities.BookRespSellWell, 0)
 	books, err := u.books.GetListBookSellWell(ctx)
 	if err != nil {
@@ -177,34 +178,36 @@ func (u *UploadBookUseCase) GetListBookSellWell(ctx context.Context) (*entities.
 			// Nếu listFile là nil hoặc rỗng, gán URL là chuỗi rỗng
 			fileURL = ""
 		}
-
-		booksResp = append(booksResp, &entities.BookRespSellWell{
-			ID:            v.ID,
-			Title:         v.Title,
-			AuthorName:    v.AuthorName,
-			Publisher:     v.Publisher,
-			PublishedDate: v.PublishedDate,
-			ISBN:          v.ISBN,
-			Genre:         v.Genre,
-			Description:   v.Description,
-			Language:      v.Language,
-			PageCount:     v.PageCount,
-			Dimensions:    v.Dimensions,
-			Weight:        v.Weight,
-			Price:         v.Price,
-			DiscountPrice: v.DiscountPrice,
-			Quantity:      v.Quantity,
-			Notes:         v.Notes,
-			IsActive:      v.IsActive,
-			OpeningStatus: v.OpeningStatus,
-			FileDescFirst: fileURL,
-		})
+		if v.IsActive {
+			booksResp = append(booksResp, &entities.BookRespSellWell{
+				ID:            v.ID,
+				Title:         v.Title,
+				AuthorName:    v.AuthorName,
+				Publisher:     v.Publisher,
+				PublishedDate: v.PublishedDate,
+				ISBN:          v.ISBN,
+				Genre:         v.Genre,
+				Description:   v.Description,
+				Language:      v.Language,
+				PageCount:     v.PageCount,
+				Dimensions:    v.Dimensions,
+				Weight:        v.Weight,
+				Price:         v.Price,
+				DiscountPrice: v.DiscountPrice,
+				Quantity:      v.Quantity,
+				Notes:         v.Notes,
+				IsActive:      v.IsActive,
+				OpeningStatus: v.OpeningStatus,
+				FileDescFirst: fileURL,
+			})
+		}
 
 	}
 	return &entities.BookSellWells{
 		Books: booksResp,
 	}, nil
 }
+
 func (u *UploadBookUseCase) GetdetailBookByid(ctx context.Context, id string) (*entities.BookRespDetail, errors.Error) {
 	id_number, _ := strconv.ParseInt(id, 10, 64)
 	var listUrl = make([]string, 0)
