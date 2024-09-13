@@ -1,4 +1,7 @@
 
+body{
+  background-color: white;
+}
 .col-container {
     display: flex;
     justify-content: center; /* Centers horizontally */
