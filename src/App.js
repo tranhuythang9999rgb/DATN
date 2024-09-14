@@ -35,6 +35,7 @@ import ListOrderUser from "./user/ListOrderUser";
 import ProFile from "./user/Profile";
 import RegisterUser from "./user/RegisterUser";
 import DetailAuthorBook from "./Home/DetailAuthorBook";
+import ListCartUseNext from "./Home/ListCartUseNext";
 
 
 
@@ -92,6 +93,8 @@ function App() {
       {/* <ListPublicSherSelect/> */}
       {/* <CustomDropdown/> */}
       {/* <DetailAuthorBook/> */}
+      {/* <ListCart/> */}
+      {/* <ListCartUseNext/> */}
     </div>
   );
 }

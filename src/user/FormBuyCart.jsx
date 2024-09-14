@@ -3,10 +3,10 @@ import { Form, Button, notification, Spin } from 'antd';
 import axios from 'axios'; // Make sure axios is installed
 import ProductCard from './ProductCard';
 import HomePage from '../Home/HomePage';
+import { RiSecurePaymentLine } from 'react-icons/ri';
+import ListCart from './ListCart';
+import { TiArrowBack } from 'react-icons/ti';
 
-const Context = React.createContext({
-    name: 'Default',
-});
 
 function FormBuyCart() {
     const [listCartJson, setListCartJson] = useState([]);
@@ -15,6 +15,7 @@ function FormBuyCart() {
     const [nextHomePage, setNextHomePage] = useState(false);
     const [buttonLoading, setButtonLoading] = useState(false); // New state for button loading
     const shippingFee = 30000; // Default shipping fee
+    const [goback, setGoBack] = useState(false);
 
     const openNotification = (placement, message, description) => {
         api.success({
@@ -91,12 +92,20 @@ function FormBuyCart() {
     const totalAmount = listCartJson.reduce((total, item) => total + item.total_amount, 0);
     const totalWithShipping = totalAmount + shippingFee;
 
+    if (goback) {
+        return (
+            <ListCart />
+        )
+    }
+
     if (nextHomePage) {
         window.location.reload();
     }
 
     return (
         <Spin spinning={loading} tip="Đang tải..." size="large">
+            <TiArrowBack style={{ fontSize: '50px', cursor: 'pointer' }} onClick={() => setGoBack(true)} />
+
             <div>
                 {contextHolder}
                 <Form className="form-cart">
@@ -142,7 +151,7 @@ function FormBuyCart() {
 
                     <Form.Item className="form-item-button">
                         <Button type="primary" onClick={handleBuyNow} className="form-button">
-                            Mua ngay
+                            Mua ngay  <RiSecurePaymentLine />
                         </Button>
                     </Form.Item>
                     <Form.Item>

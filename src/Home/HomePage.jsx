@@ -26,6 +26,8 @@ import GetListBookByNameBook from './GetListBookByNameBook';
 import ListPublicSherSelect from './ListAuthorBookSelect';
 import DetailAuthorBook from './DetailAuthorBook';
 import ListAuthorBookButton from './ListAuthorBookSelect';
+import ListCartUseNext from './ListCartUseNext';
+import FormBuyCart from '../user/FormBuyCart';
 const { Title, Text } = Typography;
 
 
@@ -195,7 +197,7 @@ function HomePage() {
 
     if(isNextCart) {
         return (
-            <ListCart/>
+            <FormBuyCart/>
         )
     }
 
@@ -296,7 +298,7 @@ function HomePage() {
                                         visible={isDrawerVisibleCart}
                                         width={800}
                                     >
-                                        <ListCart ref={cartRef} onClick={handlerNextCart}/>
+                                        <ListCart ref={cartRef} onEventClick={handlerNextCart}/>
                                     </Drawer>
                                 </Tooltip>
                             )}

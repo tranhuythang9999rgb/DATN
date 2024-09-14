@@ -2,16 +2,18 @@ import React, { useEffect, useState, useImperativeHandle, forwardRef } from 'rea
 import axios from 'axios';
 import { List, Typography, Spin, Alert, Button, Modal, Checkbox, Tooltip, Space } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
-import FormBuyCart from './FormBuyCart';
+import { RiSecurePaymentLine } from 'react-icons/ri';
+import HomePage from '../Home/HomePage';
+import { TiArrowBack } from 'react-icons/ti';
 
 const { Title, Text } = Typography;
 
-const ListCart = forwardRef((props, ref) => {
+const ListCart = forwardRef(({ onEventClick }, ref) => {
     const [carts, setCarts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [checkedItems, setCheckedItems] = useState([]);
-    const [isNextReturnBuy, setIsNextReturnBuy] = useState(false);
+    const [isNextHome,setIsNextHome] = useState(false);
 
     const fetchCartList = async () => {
         setLoading(true);
@@ -80,10 +82,7 @@ const ListCart = forwardRef((props, ref) => {
         const selectedItems = carts.filter(item => checkedItems.includes(item.cart_id));
         const selectedItemsJSON = JSON.stringify(selectedItems);
         localStorage.setItem('list_cart', selectedItemsJSON);
-        setIsNextReturnBuy(true);
-        if (props.onEventClick) {
-            props.onEventClick();
-        }
+        if (onEventClick) onEventClick(); // Call the onEventClick function if provided
     };
 
     if (loading) {
@@ -94,16 +93,15 @@ const ListCart = forwardRef((props, ref) => {
         return <Alert message="Lỗi" description={error} type="error" />;
     }
 
-    if (isNextReturnBuy) {
+    if(isNextHome) {
         return (
-            <div>
-                <FormBuyCart />
-            </div>
-        );
+            <HomePage/>
+        )
     }
 
     return (
         <div>
+            <TiArrowBack style={{ fontSize: '50px', cursor: 'pointer' }} onClick={() => setIsNextHome(true)} />
             <Title level={2}>Giỏ hàng của bạn</Title>
             {carts.length > 0 ? (
                 <div>
