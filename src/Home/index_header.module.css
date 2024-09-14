@@ -3,18 +3,23 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #f0f2f5;
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0.9) 0%,
+            rgba(230, 230, 255, 1) 35%,
+            rgba(200, 240, 255, 1) 100%);
     border-bottom: 1px solid #ccc;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
-    height: 90px; /* Adjust this value based on your design */
+    height: 90px;
+    /* Adjust this value based on your design */
 }
 
 body {
-    padding-top: 60px; /* Should match the height of the header */
+    padding-top: 60px;
+    /* Should match the height of the header */
 }
 
 .layoutHeaderStart {
@@ -112,7 +117,8 @@ body {
     cursor: pointer;
 }
 
-button, input {
+button,
+input {
     margin: 0 5px;
 }
 
