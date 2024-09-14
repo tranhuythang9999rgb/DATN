@@ -80,7 +80,10 @@ const ListCart = forwardRef((props, ref) => {
         const selectedItems = carts.filter(item => checkedItems.includes(item.cart_id));
         const selectedItemsJSON = JSON.stringify(selectedItems);
         localStorage.setItem('list_cart', selectedItemsJSON);
-        setIsNextReturnBuy(true)
+        setIsNextReturnBuy(true);
+        if (props.onEventClick) {
+            props.onEventClick();
+        }
     };
 
     if (loading) {
@@ -90,11 +93,14 @@ const ListCart = forwardRef((props, ref) => {
     if (error) {
         return <Alert message="Lỗi" description={error} type="error" />;
     }
-    if (isNextReturnBuy) return (
-        <div>
-            <FormBuyCart />
-        </div>
-    )
+
+    if (isNextReturnBuy) {
+        return (
+            <div>
+                <FormBuyCart />
+            </div>
+        );
+    }
 
     return (
         <div>

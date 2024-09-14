@@ -47,7 +47,7 @@ function HomePage() {
     const [isNextFindBook, setIsNextFindBook] = useState(false);
     const [isNextAuthorBook, setIsNextAuthorBook] = useState(false);
     const [nameAuthorBook, setNameAuthorBook] = useState(null);
-
+    const [isNextCart,setIsNextCart] = useState(false);
     const cartRef = useRef(null);
 
     const openDrawerCart = () => {
@@ -84,7 +84,9 @@ function HomePage() {
         setIsModalVisible(false);
     };
     //
-
+    const handlerNextCart = () => {
+        setIsNextCart(true);
+    }
 
     useEffect(() => {
         // Fetch data from API
@@ -191,6 +193,12 @@ function HomePage() {
         return <DetailAuthorBook authorBooName={nameAuthorBook} />
     }
 
+    if(isNextCart) {
+        return (
+            <ListCart/>
+        )
+    }
+
     return (
         <div className={styleLayout.layoutHome}>
 
@@ -288,7 +296,7 @@ function HomePage() {
                                         visible={isDrawerVisibleCart}
                                         width={800}
                                     >
-                                        <ListCart ref={cartRef} />
+                                        <ListCart ref={cartRef} onClick={handlerNextCart}/>
                                     </Drawer>
                                 </Tooltip>
                             )}
