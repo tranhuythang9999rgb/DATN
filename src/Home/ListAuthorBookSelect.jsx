@@ -4,38 +4,38 @@ import { LoadingOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
 function ListAuthorBookButton({ onAuthorNameChange, onEventClick }) {
-    const [publishers, setPublishers] = useState([]);
+    const [authors, setAuthors] = useState([]); // Correct variable name
     const [loading, setLoading] = useState(false);
-    const [selectedPublisher, setSelectedPublisher] = useState(null);
+    const [selectedAuthor, setSelectedAuthor] = useState(null); // Correct variable name
 
-    // Function to fetch publishers from the API
-    const fetchPublishers = async () => {
+    // Function to fetch authors from the API
+    const fetchAuthors = async () => {
         setLoading(true);
         try {
             const response = await axios.get('http://127.0.0.1:8080/manager/author_book/list');
             if (response.data.code === 0) {
-                setPublishers(response.data.body);
+                setAuthors(response.data.body);
             } else {
-                message.error('Failed to load publishers.');
+                message.error('Failed to load authors.');
             }
         } catch (error) {
-            console.error('Error fetching publishers:', error);
-            message.error('Error fetching publishers.');
+            console.error('Error fetching authors:', error);
+            message.error('Error fetching authors.');
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchPublishers();
+        fetchAuthors();
     }, []);
 
     // Handle menu item click
     const handleMenuClick = (e) => {
-        const selected = publishers.find(publisher => publisher.id === e.key);
+        const selected = authors.find(author => author.id === parseInt(e.key, 10)); // Ensure ID comparison is correct
         if (selected) {
-            setSelectedPublisher(selected);
-            onAuthorNameChange(selected.name); // Notify parent with selected publisher's name
+            setSelectedAuthor(selected);
+            onAuthorNameChange(selected.name); // Notify parent with selected author's name
             if (onEventClick) onEventClick(); // Call the onEventClick function if provided
         }
     };
@@ -48,9 +48,9 @@ function ListAuthorBookButton({ onAuthorNameChange, onEventClick }) {
                     <Spin indicator={<LoadingOutlined style={{ fontSize: 16 }} spin />} />
                 </Menu.Item>
             ) : (
-                publishers.map((publisher) => (
-                    <Menu.Item key={publisher.id}>
-                        {publisher.name}
+                authors.map((author) => (
+                    <Menu.Item key={author.id}>
+                        {author.name}
                     </Menu.Item>
                 ))
             )}
@@ -71,10 +71,10 @@ function ListAuthorBookButton({ onAuthorNameChange, onEventClick }) {
                         fontSize: '15px'
                     }}
                 >
-                    {selectedPublisher ? selectedPublisher.name : 'Tác giả'}
+                    {selectedAuthor ? selectedAuthor.name : 'Tác giả'}
                 </Button>
             </Dropdown>
-            {selectedPublisher && (
+            {selectedAuthor && (
                 <Button
                     style={{
                         marginLeft: 10,
@@ -85,7 +85,7 @@ function ListAuthorBookButton({ onAuthorNameChange, onEventClick }) {
                         cursor: 'pointer'
                     }}
                     onClick={() => {
-                        setSelectedPublisher(null);
+                        setSelectedAuthor(null);
                         onAuthorNameChange(null); // Notify parent that selection is cleared
                     }}
                 >
