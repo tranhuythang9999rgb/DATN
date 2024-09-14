@@ -19,7 +19,7 @@ import CardProduct from './CardProduct';
 import ListBookHome from './ListBookHome';
 
 
-function GetListBookByNameBook({ nameTypeBook,nameBook }) {
+function GetListBookByNameBook({ nameTypeBook, nameBook }) {
     const [books, setBooks] = useState([]); // Initialize as an empty array
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -36,7 +36,7 @@ function GetListBookByNameBook({ nameTypeBook,nameBook }) {
     const [selectedSort, setSelectedSort] = useState(null); // Save the selected sort option
     const [isDrawerVisibleCart, setIsDrawerVisibleCart] = useState(false);
     const [isNextProFile, setIsNextProFile] = useState(false);
-    const [isNextFindBook,setIsNextFindBook] = useState(false);
+    const [isNextFindBook, setIsNextFindBook] = useState(false);
     const cartRef = useRef(null);
 
     const openDrawerCart = () => {
@@ -55,7 +55,11 @@ function GetListBookByNameBook({ nameTypeBook,nameBook }) {
         // This might involve calling your API with the new filter
         console.log('Selected countries:', selectedCountries);
     };
-    // Function to fetch books data
+    // Hàm sleep sử dụng Promise để trì hoãn
+    const sleep = (ms) => {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+    };
+
     const fetchBooks = async () => {
         setLoading(true);
         setError(null);
@@ -69,7 +73,13 @@ function GetListBookByNameBook({ nameTypeBook,nameBook }) {
             if (orderAsc) {
                 params.append('asc', orderAsc);
             }
-            const name_book = localStorage.getItem('book_name' || '');
+
+            // Thêm sleep trước khi lấy book_name từ localStorage (ví dụ 500ms)
+            await sleep(500);
+
+            const name_book = localStorage.getItem('book_name') || '';
+            console.log(`Book name fetched from localStorage: ${name_book}`);
+
             const response = await axios.get(`http://127.0.0.1:8080/manager/book/list/filter?name=${name_book}`);
             if (response.data.code === 0) {
                 setBooks(response.data.body || []);
@@ -83,6 +93,7 @@ function GetListBookByNameBook({ nameTypeBook,nameBook }) {
             setLoading(false);
         }
     };
+
 
     useEffect(() => {
         // Check for the username in local storage
@@ -193,8 +204,8 @@ function GetListBookByNameBook({ nameTypeBook,nameBook }) {
         return <ListBookHome nameTypeBook={selectedAuthor.name} />;
     }
 
-    if(isNextFindBook) {
-        return <GetListBookByNameBook/>
+    if (isNextFindBook) {
+        return <GetListBookByNameBook />
     }
 
     const menu = (
