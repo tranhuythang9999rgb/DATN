@@ -57,11 +57,11 @@ function StatisticalFormHeader() {
                     </div>
                     <div className={style.col}>
                         <div>Số khách hàng mới trong tháng</div>
-                        <div style={{ color: '#FFA500' }} className={style.col_value_count_new_customer}>{order.amount}</div>
+                        <div style={{ color: '#FFA500' }} className={style.col_value_count_new_customer}>{order.new_customer}</div>
                     </div>
                     <div className={style.col}>
                         <div>Doanh thu hôm nay</div>
-                        <div style={{ color: '#20B2AA' }} className={style.col_value_amount}>{order.new_customer}</div>
+                        <div style={{ color: '#20B2AA' }} className={style.col_value_amount}>{order.amount}</div>
                     </div>
                 </div>
             </div>

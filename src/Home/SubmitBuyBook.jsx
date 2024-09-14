@@ -216,7 +216,6 @@ const SubmitBuyBook = () => {
     return (
         <div>
             {contextHolder}
-            <Header />
             <Row>
                 <IoReturnUpBackOutline onClick={() => setIsGoback(true)} style={{ fontSize: '25px', cursor: 'pointer' }} />
             </Row>
@@ -312,9 +311,7 @@ const SubmitBuyBook = () => {
 
                             {(() => {
                                 if (paymentMethod === 2) {
-                                    // Case 1: Payment Method is 2
-                                    if (valueAddress === 2 || status_address === null) {
-                                        // Case 1.1: valueAddress is 2 or status_address is null
+                                    if (valueAddress === 2) {
                                         return (
                                             <Button
                                                 onClick={handleCreatePayment && form.submit}
@@ -325,24 +322,21 @@ const SubmitBuyBook = () => {
                                             </Button>
                                         );
                                     } else {
-                                        // Case 1.2: Other cases when paymentMethod is 2 but different address conditions
                                         return (
                                             <div>
                                                 <Button
-                                                    onClick={handleCreatePayment && form.submit}
+                                                    onClick={handleCreatePayment}
                                                     loading={loadingPayment}
                                                     style={{ height: '50px', fontSize: '20px', width: '100%' }}
                                                 >
-                                                    {loadingPayment ? 'Đang xử lý...' : <>Thanh toán <RiSecurePaymentLine style={{ marginLeft: '8px' }} /></>}
+                                                    {loadingPayment ? 'Đang xử lý...' : <>Thanh toán<RiSecurePaymentLine style={{ marginLeft: '8px' }} /></>}
                                                 </Button>
                                             </div>
 
                                         );
                                     }
                                 } else {
-                                    // Case 2: Payment Method is not 2
                                     if (valueAddress === 2) {
-                                        // Case 2.1: valueAddress is 2
                                         return (
                                             <div>
                                                 <Button

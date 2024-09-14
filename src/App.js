@@ -18,6 +18,8 @@ import DetailBuy from "./Home/DetailBuy";
 import GetListBookByNameBook from "./Home/GetListBookByNameBook";
 import HomePage from "./Home/HomePage";
 import ListPublicSher from "./Home/ListPublicSher";
+import CustomDropdown from "./Home/ListAuthorBookSelect";
+import ListPublicSherSelect from "./Home/ListAuthorBookSelect";
 import SubmitBuyBook from "./Home/SubmitBuyBook";
 import Pages1 from "./Test/Pages1";
 import SliderCard from "./Test/Pages2";
@@ -32,6 +34,7 @@ import ListCart from "./user/ListCart";
 import ListOrderUser from "./user/ListOrderUser";
 import ProFile from "./user/Profile";
 import RegisterUser from "./user/RegisterUser";
+import DetailAuthorBook from "./Home/DetailAuthorBook";
 
 
 
@@ -86,6 +89,9 @@ function App() {
       {/* <CountrySelect/> */}
       {/* <Pages1/> */}
       {/* <GetListBookByNameBook nameBook={'7'}/> */}
+      {/* <ListPublicSherSelect/> */}
+      {/* <CustomDropdown/> */}
+      {/* <DetailAuthorBook/> */}
     </div>
   );
 }

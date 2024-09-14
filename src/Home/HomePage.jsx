@@ -23,6 +23,9 @@ import styles from './index_header.module.css';
 import FooterHeader from '../Utils/FooterHeader';
 import styleLayout from './layout.module.css';  // Import CSS module
 import GetListBookByNameBook from './GetListBookByNameBook';
+import ListPublicSherSelect from './ListAuthorBookSelect';
+import DetailAuthorBook from './DetailAuthorBook';
+import ListAuthorBookButton from './ListAuthorBookSelect';
 const { Title, Text } = Typography;
 
 
@@ -42,6 +45,8 @@ function HomePage() {
     const [isNextBuyWell, setIsNextBuyWell] = useState(false);
     const [nameBook, setNameBook] = useState('');  // Quản lý state cho input
     const [isNextFindBook, setIsNextFindBook] = useState(false);
+    const [isNextAuthorBook, setIsNextAuthorBook] = useState(false);
+    const [nameAuthorBook, setNameAuthorBook] = useState(null);
 
     const cartRef = useRef(null);
 
@@ -104,9 +109,6 @@ function HomePage() {
     };
 
 
-
-
-    // Function to fetch the list of authors
     const fetchAuthors = async () => {
         setLoading(true);
         try {
@@ -126,12 +128,9 @@ function HomePage() {
     };
 
 
-    // Fetch authors when the component mounts
     useEffect(() => {
         fetchAuthors();
     }, []);
-
-    // Create Menu items for Dropdown with custom styles
 
     useEffect(() => {
         fetchAuthors();
@@ -155,12 +154,22 @@ function HomePage() {
         </Menu>
     );
     const handleSearch = () => {
-        // Lưu giá trị nameBook vào local storage
         localStorage.setItem('book_name', nameBook);
-
-        // Chuyển state để điều hướng đến component hiển thị danh sách sách
         setIsNextFindBook(true);
     };
+
+    // Handle the author name change event from ListAuthorBookButton
+    const handleAuthorNameChange = (name) => {
+        setNameAuthorBook(name);
+        setIsNextAuthorBook(true); // Set to true when an author name is selected
+    };
+
+    // Handle item click event from ListAuthorBookButton
+    const handleItemClick = () => {
+        // Perform additional actions if needed
+        setIsNextAuthorBook(true);
+    };
+
     if (isNext && selectedAuthor) {
         return <ListBookHome nameTypeBook={selectedAuthor.name} />;
     }
@@ -176,6 +185,10 @@ function HomePage() {
 
     if (isNextFindBook) {
         return <GetListBookByNameBook nameBook={''} />
+    }
+
+    if (isNextAuthorBook) {
+        return <DetailAuthorBook authorBooName={nameAuthorBook} />
     }
 
     return (
@@ -199,13 +212,35 @@ function HomePage() {
                                 <Spin tip="Loading authors..." />
                             ) : (
                                 <Dropdown overlay={menu} trigger={['click']}>
-                                    <Button style={{ border: 'none', marginTop: '-10px' }}>
+                                    <Button
+
+
+                                        style={{
+                                            border: 'none',           // Remove border
+                                            background: 'none',        // Remove background
+                                            boxShadow: 'none',         // Remove any shadow
+                                            padding: 0,                // Optional: adjust padding for button size
+                                            color: '#1890ff',          // Text color (you can customize)
+                                            cursor: 'pointer',          // Pointer for hover effect
+                                            fontSize: '15px',
+                                            color: 'black'
+                                        }}
+                                    >
                                         Thư viện sách
                                     </Button>
                                 </Dropdown>
                             )}
                         </li>
-                        <li>Tác giả</li>
+                        <li>
+                            {isNextAuthorBook && nameAuthorBook ? (
+                                <DetailAuthorBook authorBooName={nameAuthorBook} />
+                            ) : (
+                                <ListAuthorBookButton
+                                    onAuthorNameChange={handleAuthorNameChange}
+                                    onEventClick={handleItemClick}
+                                />
+                            )}
+                        </li>
                         <li>Cuộc thi</li>
                         <li>Thông tin cửa hàng</li>
                         <li className={styles.searchContainer}>
