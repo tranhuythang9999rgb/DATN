@@ -68,3 +68,14 @@ func (u *ControllersPublisher) DeletePublisher(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, nil)
 }
+
+func (u *ControllersPublisher) GetPublisherByUserName(ctx *gin.Context) {
+
+	name := ctx.Query("name")
+	publishher, err := u.publisher.GetPubSherByUserName(ctx, name)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, publishher)
+}

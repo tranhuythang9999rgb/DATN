@@ -59,3 +59,11 @@ func (u *AuthorBookCaseUse) DeleteAuthorBookById(ctx context.Context, id string)
 	}
 	return nil
 }
+
+func (u *AuthorBookCaseUse) GetAuthorBook(ctx context.Context, name string) (*domain.Author, errors.Error) {
+	authorBook, err := u.authorBook.GetNameAuthorBook(ctx, name)
+	if err != nil {
+		return nil, errors.ErrSystem
+	}
+	return authorBook, nil
+}

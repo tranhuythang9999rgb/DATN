@@ -62,3 +62,11 @@ func (u *PublisherUseCase) DeletePublisherById(ctx context.Context, id string) e
 	}
 	return nil
 }
+
+func (u *PublisherUseCase) GetPubSherByUserName(ctx context.Context, userName string) (*domain.Publisher, errors.Error) {
+	publ, err := u.pbs.GetName(ctx, userName)
+	if err != nil {
+		return nil, errors.NewSystemError("error system")
+	}
+	return publ, nil
+}

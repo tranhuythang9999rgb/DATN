@@ -64,3 +64,13 @@ func (u *ControllersAuthorBook) DeleteAuthorBookById(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, nil)
 }
+
+func (u *ControllersAuthorBook) GetAuthorBookByUserName(ctx *gin.Context) {
+	name := ctx.Query("name")
+	author, err := u.auBook.GetAuthorBook(ctx, name)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, author)
+}
