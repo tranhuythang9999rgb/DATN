@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Button, Col, Drawer, Dropdown, Image, Input, Menu, message, Modal, Row, Space, Spin, Tooltip, Typography } from 'antd';
+import { Button, Col, Drawer, Dropdown, Image, Input, Menu, message, Modal, Rate, Row, Space, Spin, Tooltip, Typography } from 'antd';
 import './home_index.module.css';
 import { MinusOutlined, PlusOutlined, QuestionOutlined } from '@ant-design/icons';
 
@@ -232,7 +232,7 @@ const DetailBuy = ({ book_id }) => {
 
     return (
 
-        
+
         <div className={styleDetail.body}>
             <Row>
                 <Col xs={6} sm={6} md={6} lg={6} xl={6} className={styleDetail['col-container']}>
@@ -261,14 +261,21 @@ const DetailBuy = ({ book_id }) => {
                         </div>
 
                         <div style={{ paddingLeft: '40px', flex: 1 }}>
-                            <div style={{
-                                color: 'black',
-                                fontWeight: 'bold',
-                                fontSize: '30px',
-                                paddingTop: '40px'
-                            }}>
-                                {book.title}
-                            </div>
+
+                            <Space>
+                                <div style={{
+                                    color: 'black',
+                                    fontWeight: 'bold',
+                                    fontSize: '30px',
+                                    paddingTop: '40px'
+                                }}>
+                                    {book.title}
+                                </div>
+                                <div style={{marginTop:'40px',marginLeft:'50px'}}>
+                                    <Rate count={5}/>
+                                </div>
+                            </Space>
+
                             <div style={{
                                 color: 'gray',
                                 fontSize: '19px',
@@ -368,7 +375,7 @@ const DetailBuy = ({ book_id }) => {
                             <div style={{ marginTop: '50px' }}>
                                 <Space>
                                     <Button
-                                    onClick={handleNextSubmitBuy}
+                                        onClick={handleNextSubmitBuy}
                                         type="primary"
                                         style={{
                                             padding: '10px 20px',
@@ -454,7 +461,6 @@ const DetailBuy = ({ book_id }) => {
                                             <tbody>
                                                 {[
                                                     { label: "Tác giả", value: book.author_name },
-                                                    { label: "Dịch giả", value: book.translator },
                                                     { label: "Nhà xuất bản", value: book.publisher },
                                                     { label: "Kích thước", value: book.dimensions },
                                                     { label: "Số trang", value: book.page_count },

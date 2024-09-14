@@ -269,7 +269,7 @@ function UploadBook() {
                     <Form.Item name="description" label="Mô tả" rules={[{ required: true }]}>
                         <Input.TextArea />
                     </Form.Item>
-                    <Form.Item name="language" label="Ngôn ngữ" >
+                    <Form.Item name="language" label="Quốc gia" >
                         <CountrySelect onCountryChange={setSelectedCountry} />
                     </Form.Item>
                     <Form.Item name="page_count" label="Số trang" rules={[{ required: true }]}>

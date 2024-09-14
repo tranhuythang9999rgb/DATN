@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Button, DatePicker, Space, Select } from 'antd';
 import moment from 'moment';
 import StatisticalFormHeader from './StatisticalFormHeader';
+import CircularChart from './CircularChart';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -82,7 +83,7 @@ const Statistical = () => {
     return (
         <div>
             <StatisticalFormHeader/>
-            <h1>Thống Kê Top {topN} Sản Phẩm Bán Chạy</h1>
+            <h1>Thống Kê doanh thu</h1>
             <Space direction="vertical" size="middle" style={{ marginBottom: 20 }}>
                 <Space>
                     <RangePicker
@@ -117,6 +118,7 @@ const Statistical = () => {
                     <Bar yAxisId="right" dataKey="amount" fill="#82ca9d" name="Doanh thu" barSize={20} />
                 </BarChart>
             </ResponsiveContainer>
+            <CircularChart/>
         </div>
     );
 }
