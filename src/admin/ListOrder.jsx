@@ -25,6 +25,7 @@ const ListOrder = () => {
     const [searchQuantity, setSearchQuantity] = useState('');
     const [searchTotalAmount, setSearchTotalAmount] = useState('');
 
+    // Fetch orders function
     const fetchOrders = async () => {
         try {
             setLoading(true);
@@ -32,12 +33,12 @@ const ListOrder = () => {
                 params: {
                     page: currentPage,
                     size: pageSize,
-                    id: searchOrderId,
-                    customer_name: searchCustomerName,
-                    book_title: searchBookTitle,
-                    book_price: searchBookPrice,
-                    quantity: searchQuantity,
-                    total_amount: searchTotalAmount,
+                    id: searchOrderId.trim(),
+                    customer_name: searchCustomerName.trim(), // Trim whitespace
+                    book_title: searchBookTitle.trim(), // Trim whitespace
+                    book_price: searchBookPrice.trim(), // Trim whitespace
+                    quantity: searchQuantity.trim(), // Trim whitespace
+                    total_amount: searchTotalAmount.trim(), // Trim whitespace
                 },
             });
             setOrders(response.data.body);
@@ -201,9 +202,9 @@ const ListOrder = () => {
                         onChange={(e) => setSearchTotalAmount(e.target.value)}
                         style={{ width: 200 }}
                     />
-                    <Button type="primary" onClick={fetchOrders}>
+                    {/* <Button type="primary" onClick={() => fetchOrders()}>
                         Tìm kiếm
-                    </Button>
+                    </Button> */}
                 </Space>
             </Space>
             <Table
@@ -241,7 +242,7 @@ const ListOrder = () => {
                         <p><b>Địa chỉ:</b> {userProfile.address}</p>
                     </div>
                 ) : (
-                    <p>Đang tải thông tin...</p>
+                    <Spin />
                 )}
             </Drawer>
         </div>
