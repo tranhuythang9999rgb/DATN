@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Typography, Pagination, Spin, Alert, Modal, Button, Drawer } from 'antd';
+import { Table, Typography, Pagination, Spin, Alert, Modal, Button, Drawer, Input, Space } from 'antd';
 import axios from 'axios';
 
 const { Title } = Typography;
+const { Search } = Input;
 
 const ListOrder = () => {
     const [orders, setOrders] = useState([]);
@@ -16,6 +17,14 @@ const ListOrder = () => {
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
     const [userProfile, setUserProfile] = useState(null);
 
+    // Search input states
+    const [searchOrderId, setSearchOrderId] = useState('');
+    const [searchCustomerName, setSearchCustomerName] = useState('');
+    const [searchBookTitle, setSearchBookTitle] = useState('');
+    const [searchBookPrice, setSearchBookPrice] = useState('');
+    const [searchQuantity, setSearchQuantity] = useState('');
+    const [searchTotalAmount, setSearchTotalAmount] = useState('');
+
     const fetchOrders = async () => {
         try {
             setLoading(true);
@@ -23,6 +32,12 @@ const ListOrder = () => {
                 params: {
                     page: currentPage,
                     size: pageSize,
+                    id: searchOrderId,
+                    customer_name: searchCustomerName,
+                    book_title: searchBookTitle,
+                    book_price: searchBookPrice,
+                    quantity: searchQuantity,
+                    total_amount: searchTotalAmount,
                 },
             });
             setOrders(response.data.body);
@@ -36,7 +51,7 @@ const ListOrder = () => {
 
     useEffect(() => {
         fetchOrders();
-    }, [currentPage, pageSize]);
+    }, [currentPage, pageSize, searchOrderId, searchCustomerName, searchBookTitle, searchBookPrice, searchQuantity, searchTotalAmount]);
 
     const handlePageChange = (page, pageSize) => {
         setCurrentPage(page);
@@ -112,7 +127,6 @@ const ListOrder = () => {
                 }
             }
         },
-        
         {
             title: 'Loại Thanh Toán',
             dataIndex: 'type_payment',
@@ -149,6 +163,49 @@ const ListOrder = () => {
     return (
         <div>
             <Title level={2}>Danh Sách Đơn Hàng</Title>
+            <Space direction="vertical" style={{ width: '100%', marginBottom: 16 }}>
+                <Space>
+                    <Input
+                        placeholder="Tìm kiếm theo mã đơn hàng"
+                        value={searchOrderId}
+                        onChange={(e) => setSearchOrderId(e.target.value)}
+                        style={{ width: 200 }}
+                    />
+                    <Input
+                        placeholder="Tìm kiếm theo tên khách hàng"
+                        value={searchCustomerName}
+                        onChange={(e) => setSearchCustomerName(e.target.value)}
+                        style={{ width: 200 }}
+                    />
+                    <Input
+                        placeholder="Tìm kiếm theo tên sách"
+                        value={searchBookTitle}
+                        onChange={(e) => setSearchBookTitle(e.target.value)}
+                        style={{ width: 200 }}
+                    />
+                    <Input
+                        placeholder="Tìm kiếm theo giá sách"
+                        value={searchBookPrice}
+                        onChange={(e) => setSearchBookPrice(e.target.value)}
+                        style={{ width: 200 }}
+                    />
+                    <Input
+                        placeholder="Tìm kiếm theo số lượng"
+                        value={searchQuantity}
+                        onChange={(e) => setSearchQuantity(e.target.value)}
+                        style={{ width: 200 }}
+                    />
+                    <Input
+                        placeholder="Tìm kiếm theo tổng số tiền"
+                        value={searchTotalAmount}
+                        onChange={(e) => setSearchTotalAmount(e.target.value)}
+                        style={{ width: 200 }}
+                    />
+                    <Button type="primary" onClick={fetchOrders}>
+                        Tìm kiếm
+                    </Button>
+                </Space>
+            </Space>
             <Table
                 dataSource={orders}
                 columns={columns}
@@ -181,13 +238,10 @@ const ListOrder = () => {
                         <p><b>Tên người dùng:</b> {userProfile.user_name}</p>
                         <p><b>Email:</b> {userProfile.email}</p>
                         <p><b>Số điện thoại:</b> {userProfile.phone_number}</p>
-                        <p><b>Tỉnh:</b> {userProfile.province}</p>
-                        <p><b>Huyện:</b> {userProfile.district}</p>
-                        <p><b>Xã:</b> {userProfile.commune}</p>
-                        <p><b>Địa chỉ chi tiết:</b> {userProfile.detailed}</p>
+                        <p><b>Địa chỉ:</b> {userProfile.address}</p>
                     </div>
                 ) : (
-                    <Spin size="large" />
+                    <p>Đang tải thông tin...</p>
                 )}
             </Drawer>
         </div>
