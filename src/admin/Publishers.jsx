@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input, Button, message, Form, Popconfirm, Upload, Avatar } from 'antd';
+import { Table, Input, Button, message, Form, Popconfirm, Upload, Avatar, Space } from 'antd';
 import axios from 'axios';
 import './admin_index.css'; // Import your custom CSS
 
@@ -8,6 +8,12 @@ function Publishers() {
     const [publishers, setPublishers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [imageFile, setImageFile] = useState(null);
+    const [searchParams, setSearchParams] = useState({
+        name: '',
+        address: '',
+        contact_number: '',
+        website: '',
+    });
 
     // Function to fetch the list of publishers
     const fetchPublishers = async () => {
@@ -75,6 +81,14 @@ function Publishers() {
         fetchPublishers();
     }, []);
 
+    // Filter publishers based on search parameters
+    const filteredPublishers = publishers.filter(publisher =>
+        publisher.name.toLowerCase().includes(searchParams.name.toLowerCase()) &&
+        publisher.address.toLowerCase().includes(searchParams.address.toLowerCase()) &&
+        publisher.contact_number.toLowerCase().includes(searchParams.contact_number.toLowerCase()) &&
+        publisher.website.toLowerCase().includes(searchParams.website.toLowerCase())
+    );
+
     const columns = [
         {
             title: 'STT',
@@ -133,7 +147,7 @@ function Publishers() {
                 </span>
             ),
         }
-        
+
     ];
 
     return (
@@ -198,9 +212,37 @@ function Publishers() {
                     </Form.Item>
                 </div>
             </Form>
+            <div style={{ marginBottom: 20 }}>
+                <Space>
+                    <Input
+                        placeholder="Tìm kiếm theo tên"
+                        style={{ marginBottom: '10px', width: 200 }}
+                        value={searchParams.name}
+                        onChange={(e) => setSearchParams({ ...searchParams, name: e.target.value })}
+                    />
+                    <Input
+                        placeholder="Tìm kiếm theo địa chỉ"
+                        style={{ marginBottom: '10px', width: 200 }}
+                        value={searchParams.address}
+                        onChange={(e) => setSearchParams({ ...searchParams, address: e.target.value })}
+                    />
+                    <Input
+                        placeholder="Tìm kiếm theo số điện thoại"
+                        style={{ marginBottom: '10px', width: 200 }}
+                        value={searchParams.contact_number}
+                        onChange={(e) => setSearchParams({ ...searchParams, contact_number: e.target.value })}
+                    />
+                    <Input
+                        placeholder="Tìm kiếm theo website"
+                        style={{ marginBottom: '10px', width: 200 }}
+                        value={searchParams.website}
+                        onChange={(e) => setSearchParams({ ...searchParams, website: e.target.value })}
+                    />
+                </Space>
+            </div>
             <Table
                 columns={columns}
-                dataSource={publishers}
+                dataSource={filteredPublishers}
                 rowKey="id"
                 loading={loading}
                 pagination={{ pageSize: 10 }}
