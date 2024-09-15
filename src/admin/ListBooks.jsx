@@ -188,7 +188,9 @@ function ListBooks() {
                     placeholder="Tìm kiếm theo thể loại"
                     onChange={handleGenreChange}
                 />
-                <Button onClick={() => {
+                <Button style={{
+                    height:'40px'
+                }} onClick={() => {
                     setSearchTitle('');
                     setSearchAuthor('');
                     setSearchPublisher('');

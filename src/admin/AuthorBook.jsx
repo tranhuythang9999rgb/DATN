@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input, Button, message, Form, DatePicker, Popconfirm, Upload, Avatar } from 'antd';
+import { Table, Input, Button, message, Form, DatePicker, Popconfirm, Upload, Avatar, Space } from 'antd';
 import axios from 'axios';
 
 function AuthorBook() {
     const [authors, setAuthors] = useState([]);
+    const [filteredAuthors, setFilteredAuthors] = useState([]);
     const [loading, setLoading] = useState(false);
     const [imageFile, setImageFile] = useState(null);
+    const [searchName, setSearchName] = useState('');
+    const [searchBiography, setSearchBiography] = useState('');
+    const [searchNationality, setSearchNationality] = useState('');
 
     // Function to fetch the list of authors
     const fetchAuthors = async () => {
@@ -14,6 +18,7 @@ function AuthorBook() {
             const response = await axios.get('http://127.0.0.1:8080/manager/author_book/list');
             if (response.data.code === 0) {
                 setAuthors(response.data.body);
+                setFilteredAuthors(response.data.body);
             }
         } catch (error) {
             console.error('Error fetching authors:', error);
@@ -62,6 +67,16 @@ function AuthorBook() {
         }
     };
 
+    // Function to filter authors based on search criteria
+    const filterAuthors = () => {
+        const filtered = authors.filter(author =>
+            author.name.toLowerCase().includes(searchName.toLowerCase()) &&
+            author.biography.toLowerCase().includes(searchBiography.toLowerCase()) &&
+            author.nationality.toLowerCase().includes(searchNationality.toLowerCase())
+        );
+        setFilteredAuthors(filtered);
+    };
+
     // Fetch authors when the component mounts
     useEffect(() => {
         fetchAuthors();
@@ -97,7 +112,6 @@ function AuthorBook() {
                 <Avatar src={avatar} size={64} />
             ),
         },
-
         {
             title: 'Hành Động',
             key: 'action',
@@ -137,45 +151,34 @@ function AuthorBook() {
                 <div style={{ display: 'flex' }}>
                     <Form.Item
                         name="name"
-                        rules={[{ required: true, message: 'Vui lòng nhập tên tác giả' }]}
                         style={{
                             marginBottom: '10px'
                         }}
                     >
-                        <Input placeholder="Tên Tác Giả" style={{ height: '40px' }} />
+                        <Input
+                            placeholder="Tên Tác Giả"
+                            style={{ height: '40px' }}
+                            onChange={(e) => setSearchName(e.target.value)}
+                        />
                     </Form.Item>
                     <Form.Item
                         name="biography"
-                        rules={[{ required: true, message: 'Vui lòng nhập tiểu sử' }]}
                     >
-                        <Input placeholder="Tiểu Sử" style={{ height: '40px' }} />
-                    </Form.Item>
-                    <Form.Item
-                        name="birth_date"
-                        rules={[{ required: true, message: 'Vui lòng chọn ngày sinh' }]}
-                    >
-                        <DatePicker placeholder="Ngày Sinh" style={{ height: '40px', width: '195px' }} />
+                        <Input
+                            placeholder="Tiểu Sử"
+                            style={{ height: '40px' }}
+                            onChange={(e) => setSearchBiography(e.target.value)}
+                        />
                     </Form.Item>
                     <Form.Item
                         name="nationality"
-                        rules={[{ required: true, message: 'Vui lòng nhập quốc tịch' }]}
                     >
-                        <Input placeholder="Quốc Tịch" style={{ height: '40px' }} />
+                        <Input
+                            placeholder="Quốc Tịch"
+                            style={{ height: '40px' }}
+                            onChange={(e) => setSearchNationality(e.target.value)}
+                        />
                     </Form.Item>
-                    <Upload
-                        maxCount={1}
-                        listType="picture"
-                        accept="image/jpeg,image/png"
-                        beforeUpload={(file) => {
-                            setImageFile(file);
-                            return false;  // Ngăn upload tự động
-                        }}
-                        onRemove={() => {
-                            setImageFile(null);
-                        }}
-                    >
-                        +Upload
-                    </Upload>
                     <Form.Item>
                         <Button
                             type="primary"
@@ -192,9 +195,12 @@ function AuthorBook() {
                     </Form.Item>
                 </div>
             </Form>
+            <Space style={{ marginBottom: 16 }}>
+                <Button style={{height:'42px'}} type="default" onClick={filterAuthors}>Tìm kiếm</Button>
+            </Space>
             <Table
                 columns={columns}
-                dataSource={authors}
+                dataSource={filteredAuthors}
                 rowKey="id"
                 loading={loading}
                 pagination={{ pageSize: 10 }}
