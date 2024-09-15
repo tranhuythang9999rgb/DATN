@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"shoe_shop_server/common/enums"
 	errors "shoe_shop_server/common/error"
@@ -272,4 +273,67 @@ func (u *UseCaseOrder) GetListOrderBuyOneDay(ctx context.Context, day string) (*
 		Amount:       amount,
 		NewCustomer:  0,
 	}, nil
+}
+
+// {
+//     "cart_id": 2594695,
+//     "book_id": 8113677,
+//     "book_name": "8",
+//     "quantity": 1,
+//     "price": 8,
+//     "total_amount": 8,
+//     "url": "http://localhost:8080/manager/shader/thao/6284312.png"
+// }
+
+func (u *UseCaseOrder) CreateOrderWhenBuyCart(ctx context.Context, req *entities.OrderRequestSubmitBuyFromCart) (int64, float64, errors.Error) {
+
+	var orderItems []*domain.OrderItem
+	var count int
+	var priceToal float64
+	orderId := utils.GenerateUniqueKey()
+
+	err := json.Unmarshal([]byte(req.Items), &orderItems)
+	if err != nil {
+		log.Error(err, "Error unmarshalling JSON: %v")
+		return 0, 0, errors.ErrSystem
+	}
+
+	orderDate := time.Now()
+	orderDateString := orderDate.Format("2006-01-02 15:04:05")
+	for _, v := range orderItems {
+		count += v.Quantity
+		priceToal += v.Price
+	}
+	err = u.order.CreateOrder(ctx, &domain.Order{
+		ID:           orderId,
+		CustomerName: req.CustomerName,
+		OrderDate:    orderDateString,
+		// BookID:            0,
+		// BookTitle:         "",
+		// BookAuthor:        "",
+		// BookPublisher:     "",
+		// BookPublishedDate: "",
+		// BookISBN:          "",
+		// BookGenre:         "",
+		// BookDescription:   "",
+		// BookLanguage:      "",
+		// BookPageCount:     0,
+		// BookDimensions:    "",
+		// BookWeight:        "",
+		// BookPrice:         0,
+		Quantity:    count,
+		TotalAmount: priceToal,
+		Status:      enums.ORDER_ARE_PAYING,
+		TypePayment: enums.TYPE_PAYMENT_ONLINE,
+		CreateTime:  time.Now(),
+		CreateOrder: utils.GenerateTimestamp(),
+		AddressId:   0,
+		Items:       req.Items,
+	})
+	if err != nil {
+		log.Error(err, "Error unmarshalling JSON: %v")
+		return 0, 0, errors.ErrSystem
+	}
+
+	return orderId, priceToal, nil
 }

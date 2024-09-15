@@ -30,6 +30,7 @@ type Order struct {
 	CreateTime        time.Time `json:"create_time"`
 	CreateOrder       int64     `json:"create_order"`
 	AddressId         int64     `json:"address_id"`
+	Items             string    `json:"items"`
 }
 
 type OrderForm struct {

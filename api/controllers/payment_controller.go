@@ -127,3 +127,34 @@ func (u *ControllersPayment) CreatePaymentCart(ctx *gin.Context) {
 	u.baseController.Success(ctx, resp)
 
 }
+
+// func (u *ControllersPayment) CreatePaymentWhenCart(ctx *gin.Context) {
+
+// 	var req entities.OrderRequestSubmitBuyFromCart
+
+// 	if err := ctx.ShouldBind(&req); err != nil {
+// 		ctx.JSON(http.StatusBadRequest, err)
+// 		return
+// 	}
+// 	orderId, amount, _ := u.order.CreateOrderWhenBuyCart(ctx, &req)
+// 	description := "Xin Cam on"
+// 	cancelUrl := "http://localhost:8080/manager/payment/return/calcel/payment"
+// 	returnUrl := "http://127.0.0.1:8080/manager/payment/return/create/payment"
+
+// 	ctx.SetCookie("order_id", orderId, 3600, "/", "127.0.0.1", false, true)
+// 	resp, err := u.pay.CreatePayment(ctx, entities.CheckoutRequestType{
+// 		OrderCode:   order.ID,
+// 		Amount:      order.TotalAmount,
+// 		Description: description,
+// 		CancelUrl:   cancelUrl,
+// 		ReturnUrl:   returnUrl,
+// 		ExpiredAt:   utils.GenerateTimestampExpiredAt(15), //Thời gian tồn tại của QR code
+// 		OrderId:     order.ID,
+// 	})
+// 	if err != nil {
+// 		log.Error(err, "error server")
+// 		u.baseController.ErrorData(ctx, errors.ErrSystem)
+// 		return
+// 	}
+// 	u.baseController.Success(ctx, resp)
+// }

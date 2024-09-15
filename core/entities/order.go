@@ -25,3 +25,9 @@ type GetOrderBuyOneDayResponse struct {
 	Amount       float64 `json:"amount"`
 	NewCustomer  int     `json:"new_customer"`
 }
+type OrderRequestSubmitBuyFromCart struct {
+	CustomerName string `form:"customer_name"` // Tên khách hàng
+	OrderDate    string `form:"order_date"`    // Ngày đặt hàng
+
+	Items string `form:"items"`
+}
