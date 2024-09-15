@@ -40,13 +40,13 @@ const InforMationUser = () => {
     if (error) return <div>Error: {error}</div>;
     if (!userData) return <div>No user data available</div>;
 
-    const { username, email, full_name, phone_number, avatar } = userData;
+    const { username, email, full_name, phone_number, avatar ,loyalty_points} = userData;
 
     const userInfo = [
         { title: 'Tên đăng nhập', value: username },
         { title: 'Email', value: email },
-        { title: 'Họ và tên', value: full_name || 'Chưa có thông tin' },
-        { title: 'Số điện thoại', value: phone_number },
+        { title: 'Họ và tên', value: full_name || username },
+        { title: 'Số điểm tích lũy', value: loyalty_points },
     ];
 
     return (

@@ -23,10 +23,8 @@ import styles from './index_header.module.css';
 import FooterHeader from '../Utils/FooterHeader';
 import styleLayout from './layout.module.css';  // Import CSS module
 import GetListBookByNameBook from './GetListBookByNameBook';
-import ListPublicSherSelect from './ListAuthorBookSelect';
 import DetailAuthorBook from './DetailAuthorBook';
 import ListAuthorBookButton from './ListAuthorBookSelect';
-import ListCartUseNext from './ListCartUseNext';
 import FormBuyCart from '../user/FormBuyCart';
 const { Title, Text } = Typography;
 
