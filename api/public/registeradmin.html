@@ -41,15 +41,15 @@
                         alert("Submission successful!");
                     } else if (result.code === 5) {
                         // Specific error code
-                        alert("Username already exists or email is invalid.");
+                        alert("Tên người dùng đã tồn tại hoặc email không hợp lệ.");
                     } else {
                         // General error
-                        alert("An error occurred: " + result.message);
+                        alert("Đã xảy ra lỗi: " + result.message);
                     }
                 })
                 .catch((error) => {
                     console.error(error);
-                    alert("An error occurred while submitting the form.");
+                    alert("Đã xảy ra lỗi khi gửi biểu mẫu.");
                 });
         }
     </script>
@@ -59,12 +59,12 @@
         <h1 class="mb-4">Đăng ký tài khoản quản trị viên</h1>
         <form id="registrationForm" onsubmit="submitForm(event)">
             <div class="form-group">
-                <label for="username">Username:</label>
+                <label for="username">Tên người dùng:</label>
                 <input type="text" id="username" name="username" class="form-control" required>
             </div>
             
             <div class="form-group">
-                <label for="password">Password:</label>
+                <label for="password">Mật khẩu:</label>
                 <input type="password" id="password" name="password" class="form-control" required>
             </div>
 
@@ -74,26 +74,26 @@
             </div>
 
             <div class="form-group">
-                <label for="full_name">Full Name:</label>
+                <label for="full_name">Họ và tên:</label>
                 <input type="text" id="full_name" name="full_name" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label for="address">Address:</label>
+                <label for="address">Địa chỉ:</label>
                 <input type="text" id="address" name="address" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label for="phone_number">Phone Number:</label>
+                <label for="phone_number">Số điện thoại:</label>
                 <input type="text" id="phone_number" name="phone_number" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label for="file">Upload File:</label>
+                <label for="file">Tải lên tệp:</label>
                 <input type="file" id="file" name="file" class="form-control-file" required>
             </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Gửi</button>
         </form>
     </div>
 
