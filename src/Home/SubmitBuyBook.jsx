@@ -11,6 +11,7 @@ import { BsBackpack2 } from 'react-icons/bs';
 import GetTheShippingAddress from '../user/GetTheShippingAddress';
 import Header from '../Utils/Header';
 import Footer from '../Utils/Footer';
+import HomePage from './HomePage';
 
 const { Title } = Typography;
 
@@ -203,7 +204,6 @@ const SubmitBuyBook = () => {
         }
     };
 
-    const status_address = localStorage.getItem('status_address');
     const storedUsername = localStorage.getItem('userData');
 
     if (isGoback) {
@@ -211,7 +211,8 @@ const SubmitBuyBook = () => {
     }
 
     if (redirect) {
-        return <DetailBuy book_id={localStorage.getItem('book_id')} />;
+        // return <DetailBuy book_id={localStorage.getItem('book_id')} />;
+        return <HomePage/>
     }
     return (
         <div>
