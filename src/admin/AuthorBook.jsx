@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Input, Button, message, Form, DatePicker, Popconfirm, Upload, Avatar, Space } from 'antd';
 import axios from 'axios';
+import moment from 'moment';
 
 function AuthorBook() {
     const [authors, setAuthors] = useState([]);
@@ -10,6 +11,7 @@ function AuthorBook() {
     const [searchName, setSearchName] = useState('');
     const [searchBiography, setSearchBiography] = useState('');
     const [searchNationality, setSearchNationality] = useState('');
+    const [birthDate, setBirthDate] = useState(null); // Add state for birth date
 
     // Function to fetch the list of authors
     const fetchAuthors = async () => {
@@ -34,9 +36,14 @@ function AuthorBook() {
             const formData = new FormData();
             formData.append('name', values.name);
             formData.append('biography', values.biography);
-            formData.append('birth_date', values.birth_date.format('YYYY-MM-DD'));
             formData.append('nationality', values.nationality);
-            formData.append('file', imageFile);  // Đảm bảo đính kèm đúng file
+
+            // Handle the birth date formatting
+            if (birthDate) {
+                formData.append('birth_date', birthDate.format('YYYY-MM-DD'));
+            }
+
+            formData.append('file', imageFile);  // Ensure the correct file is attached
 
             const response = await axios.post('http://127.0.0.1:8080/manager/author_book/add', formData);
             if (response.data.code === 0) {
@@ -103,6 +110,7 @@ function AuthorBook() {
             title: 'Ngày Sinh',
             dataIndex: 'birth_date',
             key: 'birth_date',
+            render: (birth_date) => birth_date ? moment(birth_date).format('YYYY-MM-DD') : 'N/A',
         },
         {
             title: 'Ảnh Đại Diện',
@@ -151,9 +159,7 @@ function AuthorBook() {
                 <div style={{ display: 'flex' }}>
                     <Form.Item
                         name="name"
-                        style={{
-                            marginBottom: '10px'
-                        }}
+                        style={{ marginBottom: '10px' }}
                     >
                         <Input
                             placeholder="Tên Tác Giả"
@@ -180,6 +186,25 @@ function AuthorBook() {
                         />
                     </Form.Item>
                     <Form.Item>
+                        <DatePicker style={{height:'40px'}} onChange={(date) => setBirthDate(date)} />
+                    </Form.Item>
+                    <Form.Item>
+                        <Upload
+                            maxCount={1}
+                            listType='picture-card'
+                            accept="image/jpeg,image/png"
+                            beforeUpload={(file) => {
+                                setImageFile(file);
+                                return false;  // Ngăn upload tự động
+                            }}
+                            onRemove={() => {
+                                setImageFile(null);
+                            }}
+                        >
+                            +Upload
+                        </Upload>
+                    </Form.Item>
+                    <Form.Item>
                         <Button
                             type="primary"
                             htmlType="submit"
@@ -193,10 +218,11 @@ function AuthorBook() {
                             Thêm Tác Giả
                         </Button>
                     </Form.Item>
+
                 </div>
             </Form>
             <Space style={{ marginBottom: 16 }}>
-                <Button style={{height:'42px'}} type="default" onClick={filterAuthors}>Tìm kiếm</Button>
+                <Button style={{ height: '42px' }} type="default" onClick={filterAuthors}>Tìm kiếm</Button>
             </Space>
             <Table
                 columns={columns}
