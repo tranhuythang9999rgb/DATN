@@ -305,7 +305,7 @@ function ListBookHome({ nameTypeBook }) {
 
                     <div style={{width:'800px',justifyContent:'end'}} className={styleCart['order-monoi']}>
                         <Space>
-                            <div className={styleCart['sort-text']}>
+                            <div style={{width:'220px'}} className={styleCart['sort-text']}>
                                 <PiSortAscendingFill className={styleCart['sort-icon']} />
                                 Sắp xếp theo
                             </div>

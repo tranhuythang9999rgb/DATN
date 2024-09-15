@@ -36,6 +36,7 @@ import ProFile from "./user/Profile";
 import RegisterUser from "./user/RegisterUser";
 import DetailAuthorBook from "./Home/DetailAuthorBook";
 import ListCartUseNext from "./Home/ListCartUseNext";
+import ListBookHome from "./Home/ListBookHome";
 
 
 
@@ -48,7 +49,7 @@ function App() {
       {/* <HomePage/> */}
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
-      <CheckLogin/>
+      {/* <CheckLogin/> */}
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
@@ -56,7 +57,7 @@ function App() {
       {/* <AppRouter/> */}
       {/* <Pages2/> */}
       {/* <SubmitBuyBook/> */}
-      {/* <ListBookHome nameTypeBook={'6'}/> */}
+      <ListBookHome nameTypeBook={'6'}/>
       {/* <Pages1/> */}
       {/* <RegisterUser/> */}
       {/* <ProFile/> */}
