@@ -193,7 +193,6 @@ const SubmitBuyBook = () => {
 
             if (response.data.code === 0) {
                 openNotification('Đặt hàng thành công', 'Đơn hàng của bạn đã được đặt thành công.');
-                message.success('Order updated successfully.');
                 setIsGobackOrderOff(true)
             } else {
                 message.error(`Error: ${response.data.message}`);
