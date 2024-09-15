@@ -4,6 +4,7 @@ import (
 	"context"
 	"shoe_shop_server/common/enums"
 	errors "shoe_shop_server/common/error"
+	"shoe_shop_server/common/log"
 	"shoe_shop_server/common/utils"
 	"shoe_shop_server/core/domain"
 	"shoe_shop_server/core/entities"
@@ -11,11 +12,13 @@ import (
 
 type UserCaseUse struct {
 	user domain.RepositoryUser
+	loy  domain.RepositoryLoyaltyPoints
 }
 
-func NewUseCaseUse(user domain.RepositoryUser) *UserCaseUse {
+func NewUseCaseUse(user domain.RepositoryUser, loy domain.RepositoryLoyaltyPoints) *UserCaseUse {
 	return &UserCaseUse{
 		user: user,
+		loy:  loy,
 	}
 }
 func (u *UserCaseUse) AddAcount(ctx context.Context, req *entities.User) errors.Error {
@@ -71,12 +74,24 @@ func (u *UserCaseUse) Login(ctx context.Context, user_name, password string) (*e
 	}, nil
 }
 
-func (u *UserCaseUse) GetProFile(ctx context.Context, name string) (*domain.User, errors.Error) {
+func (u *UserCaseUse) GetProFile(ctx context.Context, name string) (*entities.UserProFile, errors.Error) {
 	user, err := u.user.GetProFile(ctx, name)
 	if err != nil {
 		return nil, errors.ErrSystem
 	}
-	return user, nil
+	point, _ := u.loy.GetLoyaltyPointsByUserid(ctx, user.ID)
+
+	return &entities.UserProFile{
+		ID:            user.ID,
+		Username:      name,
+		Email:         user.Email,
+		FullName:      user.FullName,
+		Address:       user.Address,
+		PhoneNumber:   user.PhoneNumber,
+		Avatar:        user.Avatar,
+		Role:          user.Role,
+		LoyaltyPoints: point.Points,
+	}, nil
 }
 
 func (u *UserCaseUse) AddAcountAdmin(ctx context.Context, req *entities.User) errors.Error {
@@ -114,4 +129,26 @@ func (u *UserCaseUse) AddAcountAdmin(ctx context.Context, req *entities.User) er
 		return errors.ErrSystem
 	}
 	return nil
+}
+
+func (u *UserCaseUse) GetListAccount(ctx context.Context) ([]*entities.UserRespGetList, errors.Error) {
+	var listUser = make([]*entities.UserRespGetList, 0)
+	users, err := u.user.FindAccount(ctx, &domain.UserReqByForm{})
+	if err != nil {
+		log.Error(err, "error server")
+		return nil, errors.ErrSystem
+	}
+	for _, v := range users {
+		listUser = append(listUser, &entities.UserRespGetList{
+			ID:          v.ID,
+			Username:    v.Username,
+			Email:       v.Email,
+			FullName:    v.FullName,
+			Address:     v.Address,
+			PhoneNumber: v.PhoneNumber,
+			Avatar:      v.Avatar,
+			Role:        v.Role,
+		})
+	}
+	return listUser, nil
 }

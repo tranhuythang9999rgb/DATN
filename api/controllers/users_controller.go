@@ -106,5 +106,12 @@ func (c *ControllersUser) RegisterAdmin(ctx *gin.Context) {
 
 	// Trả về trang HTML
 	ctx.Data(http.StatusOK, "text/html; charset=utf-8", htmlBytes)
+}
 
+func (u *ControllersUser) GetListAccount(ctx *gin.Context) {
+	resp, err := u.user.GetListAccount(ctx)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+	}
+	u.baseController.Success(ctx, resp)
 }

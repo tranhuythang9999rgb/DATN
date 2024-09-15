@@ -234,3 +234,11 @@ CREATE TABLE  if not exists  favorites (
 ALTER TABLE orders 
   ADD COLUMN items TEXT;
 COMMENT ON COLUMN orders.items IS 'danh sách sản phẩm';
+
+
+CREATE TABLE loyalty_points (
+  loyalty_id BIGINT PRIMARY KEY,
+  user_id BIGINT NOT NULL,
+  points INT NOT NULL DEFAULT 0,
+  last_updated INTEGER
+);

@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"errors"
+	"shoe_shop_server/common/enums"
 	"shoe_shop_server/core/adapter"
 	"shoe_shop_server/core/configs"
 	"shoe_shop_server/core/domain"
@@ -38,6 +39,7 @@ func (c *CollectionUser) FindAccount(ctx context.Context, req *domain.UserReqByF
 		Address:     req.Address,
 		PhoneNumber: req.PhoneNumber,
 		Avatar:      req.Avatar,
+		Role:        enums.ROLE_CUSTOMER,
 	}).Find(&listuser)
 	return listuser, result.Error
 }

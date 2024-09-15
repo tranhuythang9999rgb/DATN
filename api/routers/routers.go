@@ -27,6 +27,7 @@ func NewApiRouter(
 	payment *controllers.ControllersPayment,
 	cart *controllers.ControllerCart,
 	favorite *controllers.ControllerFavorites,
+	loypoint *controllers.ControllerLoyPoint,
 ) *ApiRouter {
 	engine := gin.New()
 	gin.DisableConsoleColor()
@@ -50,6 +51,7 @@ func NewApiRouter(
 		userGroup.GET("/profile", user.GetProFile)
 		userGroup.POST("/admin", user.AddUserAdmin)
 		userGroup.GET("/register/admin", user.RegisterAdmin)
+		userGroup.GET("/list/use/admin", user.GetListAccount)
 	}
 	bookGroup := r.Group("/book")
 	{
@@ -135,6 +137,13 @@ func NewApiRouter(
 		favoriteGroup.POST("/add", favorite.AddFavorites)
 		favoriteGroup.DELETE("/delete", favorite.RemoveFavorites)
 		favoriteGroup.GET("/list", favorite.GetFavorites)
+	}
+	//loypoint
+	loypointGroup := r.Group("/loypoint")
+	{
+		loypointGroup.POST("/add", loypoint.AddLoyPoint)
+		loypointGroup.GET("/list", loypoint.GetLoyaltyPointsByUserid)
+		loypointGroup.GET("/list/loys", loypoint.GetListPoint)
 	}
 	return &ApiRouter{
 		Engine: engine,

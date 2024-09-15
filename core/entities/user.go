@@ -21,3 +21,26 @@ type LoginResp struct {
 	Role     int    `json:"role"`
 	Id       int64  `json:"id"`
 }
+type UserRespGetList struct {
+	ID          int64  `json:"id"`
+	Username    string `json:"username"`
+	Email       string `json:"email"`
+	FullName    string `json:"full_name"`
+	Address     string `json:"address"`
+	PhoneNumber string `json:"phone_number"`
+	Avatar      string `json:"avatar"`
+	Role        int    `json:"role"`
+}
+
+type UserProFile struct {
+	ID            int64  `json:"id"`
+	Username      string `json:"username"`
+	Password      string `json:"password"`
+	Email         string `json:"email"`
+	FullName      string `json:"full_name"`
+	Address       string `json:"address"`
+	PhoneNumber   string `json:"phone_number"`
+	Avatar        string `json:"avatar"`
+	Role          int    `json:"role"`
+	LoyaltyPoints int    `json:"loyalty_points"`
+}
