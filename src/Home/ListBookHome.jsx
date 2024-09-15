@@ -35,7 +35,8 @@ function ListBookHome({ nameTypeBook }) {
     const [selectedSort, setSelectedSort] = useState(null); // Save the selected sort option
     const [isDrawerVisibleCart, setIsDrawerVisibleCart] = useState(false);
     const [isNextProFile, setIsNextProFile] = useState(false);
-
+    const [minPrice, setMinPrice] = useState('');
+    const [maxPrice, setMaxPrice] = useState('');
     const cartRef = useRef(null);
 
     const openDrawerCart = () => {
@@ -68,6 +69,8 @@ function ListBookHome({ nameTypeBook }) {
             if (orderAsc) {
                 params.append('asc', orderAsc);
             }
+            if (minPrice) params.append('start', minPrice);
+            if (maxPrice) params.append('end', maxPrice);
 
             const response = await axios.get(`http://127.0.0.1:8080/manager/book/list/type_book?${params.toString()}`);
             if (response.data.code === 0) {
@@ -178,6 +181,12 @@ function ListBookHome({ nameTypeBook }) {
         setOrderDesc('');
         fetchBooks();
         setSelectedSort('2')
+    }
+
+    const handlePriceSearch = () =>{
+        setOrderAsc('');
+        setOrderDesc('');
+        fetchBooks();
     }
 
     if (loading) {
@@ -303,9 +312,9 @@ function ListBookHome({ nameTypeBook }) {
 
                 <div>
 
-                    <div style={{width:'800px',justifyContent:'end'}} className={styleCart['order-monoi']}>
+                    <div style={{ width: '1000px', justifyContent: 'end' }} className={styleCart['order-monoi']}>
                         <Space>
-                            <div style={{width:'220px'}} className={styleCart['sort-text']}>
+                            <div style={{ width: '220px' }} className={styleCart['sort-text']}>
                                 <PiSortAscendingFill className={styleCart['sort-icon']} />
                                 Sắp xếp theo
                             </div>
@@ -325,8 +334,17 @@ function ListBookHome({ nameTypeBook }) {
                             </Button>
                             <div>
                                 <Space>
-                                <Input/>
-                                <Input/>
+                                    <Input
+                                        placeholder="Giá thấp nhất"
+                                        value={minPrice}
+                                        onChange={(e) => setMinPrice(e.target.value)}
+                                    />
+                                    <Input
+                                        placeholder="Giá cao nhất"
+                                        value={maxPrice}
+                                        onChange={(e) => setMaxPrice(e.target.value)}
+                                    />
+                                    <Button onClick={handlePriceSearch}>Tìm kiếm</Button>
                                 </Space>
                             </div>
                         </Space>
@@ -335,7 +353,7 @@ function ListBookHome({ nameTypeBook }) {
 
                     <div className={styleCart['books-container']}>
                         {books.map((item) => (
-                            <div  key={item.book.id} className={styleCart['book-card']}>
+                            <div key={item.book.id} className={styleCart['book-card']}>
                                 <CardProduct
                                     bookId={item.book.id}
                                     author_name={item.book.author_name}
