@@ -48,6 +48,8 @@ func NewApiRouter(
 		userGroup.POST("/register", user.AddUser)
 		userGroup.POST("/login", user.Login)
 		userGroup.GET("/profile", user.GetProFile)
+		userGroup.POST("/admin", user.AddUserAdmin)
+		userGroup.GET("/register/admin", user.RegisterAdmin)
 	}
 	bookGroup := r.Group("/book")
 	{

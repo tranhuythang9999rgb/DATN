@@ -4,8 +4,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng ký tài khoản cá nhân</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+        function submitForm(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Create a FormData object
+            const formdata = new FormData();
+            formdata.append("username", document.getElementById("username").value);
+            formdata.append("password", document.getElementById("password").value);
+            formdata.append("email", document.getElementById("email").value);
+            formdata.append("full_name", document.getElementById("full_name").value);
+            formdata.append("address", document.getElementById("address").value);
+            formdata.append("phone_number", document.getElementById("phone_number").value);
+
+            // Append the file from the file input
+            const fileInput = document.getElementById("file");
+            if (fileInput.files.length > 0) {
+                formdata.append("file", fileInput.files[0], fileInput.files[0].name);
+            }
+
+            // Set up the request options
+            const requestOptions = {
+                method: "POST",
+                body: formdata,
+                redirect: "follow"
+            };
+
+            // Perform the fetch request
+            fetch("http://127.0.0.1:8080/manager/user/admin", requestOptions)
+                .then((response) => response.json()) // Parse the response as JSON
+                .then((result) => {
+                    if (result.code === 0) {
+                        // Success
+                        alert("Submission successful!");
+                    } else if (result.code === 5) {
+                        // Specific error code
+                        alert("Username already exists or email is invalid.");
+                    } else {
+                        // General error
+                        alert("An error occurred: " + result.message);
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                    alert("An error occurred while submitting the form.");
+                });
+        }
+    </script>
 </head>
 <body>
-    
+    <div class="container mt-5">
+        <h1 class="mb-4">Đăng ký tài khoản quản trị viên</h1>
+        <form id="registrationForm" onsubmit="submitForm(event)">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="full_name">Full Name:</label>
+                <input type="text" id="full_name" name="full_name" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone_number">Phone Number:</label>
+                <input type="text" id="phone_number" name="phone_number" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="file">Upload File:</label>
+                <input type="file" id="file" name="file" class="form-control-file" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

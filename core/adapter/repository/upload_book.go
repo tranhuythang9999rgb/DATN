@@ -142,9 +142,22 @@ func (u *CollectionBook) UpdateQuantity(ctx context.Context, id int64, quantity 
 	return result.Error
 }
 
-func (u *CollectionBook) GetListBookByTypeBook(ctx context.Context, typeBook string) ([]*domain.Book, error) {
+func (u *CollectionBook) GetListBookByTypeBook(ctx context.Context, typeBook string, startPrice, endPrice float64) ([]*domain.Book, error) {
+	// Đặt giá trị mặc định cho startPrice và endPrice nếu chúng bằng 0
+	if startPrice == 0 {
+		startPrice = 0 // Giá trị mặc định nếu không có startPrice
+	}
+	if endPrice == 0 {
+		endPrice = 9999999999999999 // Giá trị tối đa cho endPrice nếu không có
+	}
+
+	// Tạo mảng chứa kết quả
 	var books = make([]*domain.Book, 0)
-	result := u.book.Where("genre = ? and  is_active = true", typeBook).Find(&books)
+
+	// Thực hiện truy vấn để tìm các sách dựa theo loại sách và khoảng giá
+	result := u.book.Where("genre = ? AND is_active = true AND price BETWEEN ? AND ?", typeBook, startPrice, endPrice).Find(&books)
+
+	// Trả về danh sách sách và lỗi nếu có
 	return books, result.Error
 }
 

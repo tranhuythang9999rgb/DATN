@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"os"
 	"shoe_shop_server/core/entities"
 	"shoe_shop_server/core/usecase"
 
@@ -68,4 +69,42 @@ func (u *ControllersUser) GetProFile(ctx *gin.Context) {
 		return
 	}
 	u.baseController.Success(ctx, user)
+}
+
+func (u *ControllersUser) AddUserAdmin(ctx *gin.Context) {
+	file, err := ctx.FormFile("file")
+
+	var req entities.User
+	if err := ctx.ShouldBind(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	if err != nil && err != http.ErrMissingFile && err != http.ErrNotMultipart {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": "Không thể tải ảnh lên.",
+		})
+		return
+	}
+	req.File = file
+
+	if err := u.user.AddAcount(ctx, &req); err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+
+	u.baseController.Success(ctx, nil)
+}
+
+func (c *ControllersUser) RegisterAdmin(ctx *gin.Context) {
+	path := "api/public/registeradmin.html"
+	htmlBytes, err := os.ReadFile(path)
+	if err != nil {
+		// Xử lý lỗi nếu có
+		ctx.String(http.StatusInternalServerError, "Lỗi khi đọc tệp HTML")
+		return
+	}
+
+	// Trả về trang HTML
+	ctx.Data(http.StatusOK, "text/html; charset=utf-8", htmlBytes)
+
 }

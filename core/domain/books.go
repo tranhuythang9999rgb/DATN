@@ -62,6 +62,6 @@ type RepositoryBook interface {
 	GetListBookSellWell(ctx context.Context) ([]*Book, error)
 	GetBookByIdTopSell(ctx context.Context, id int64) (*Book, error)
 	UpdateQuantity(ctx context.Context, id int64, quantity int) error
-	GetListBookByTypeBook(ctx context.Context, authorName string) ([]*Book, error)
+	GetListBookByTypeBook(ctx context.Context, authorName string, startPrice, endPrice float64) ([]*Book, error)
 	GetBookByName(ctx context.Context, nameBook string) ([]*Book, error)
 }

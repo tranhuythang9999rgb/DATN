@@ -78,3 +78,40 @@ func (u *UserCaseUse) GetProFile(ctx context.Context, name string) (*domain.User
 	}
 	return user, nil
 }
+
+func (u *UserCaseUse) AddAcountAdmin(ctx context.Context, req *entities.User) errors.Error {
+	isCheck, _, _, err := u.user.FindUserByUseName(ctx, req.Username)
+	if err != nil {
+		return errors.ErrSystem
+	}
+	if isCheck {
+		return errors.ErrConflict
+	}
+	isCheckEmail, _, err := u.user.FindUserByEmail(ctx, req.Email)
+	if err != nil {
+		return errors.ErrSystem
+	}
+	if isCheckEmail {
+		return errors.ErrConflict
+	}
+	respFile, err := utils.SetByCurlImage(ctx, req.File)
+	if respFile.Result.Code != 0 || err != nil {
+		return errors.ErrSystem
+	}
+	user := &domain.User{
+		ID:          utils.GenerateUniqueKey(),
+		Username:    req.Username,
+		Password:    req.Password,
+		Email:       req.Email,
+		FullName:    req.FullName,
+		Address:     req.Address,
+		PhoneNumber: req.PhoneNumber,
+		Avatar:      respFile.URL,
+		Role:        enums.ROLE_ADMIN,
+	}
+	err = u.user.AddAcount(ctx, user)
+	if err != nil {
+		return errors.ErrSystem
+	}
+	return nil
+}

@@ -262,11 +262,13 @@ func (u *UploadBookUseCase) GetdetailBookByid(ctx context.Context, id string) (*
 	}, nil
 }
 
-func (u *UploadBookUseCase) GetListBookByTypeBook(ctx context.Context, typeBook, desc, asc string) (*entities.BookRespDetailList, errors.Error) {
+func (u *UploadBookUseCase) GetListBookByTypeBook(ctx context.Context, typeBook, desc, asc, startPrice, EndPrice string) (*entities.BookRespDetailList, errors.Error) {
 	var bookDetails []*entities.BookDetailList
 
+	startPriceNum, _ := strconv.ParseFloat(startPrice, 64)
+	endPrice, _ := strconv.ParseFloat(EndPrice, 64)
 	// Lấy danh sách sách theo loại sách
-	respListBook, err := u.books.GetListBookByTypeBook(ctx, typeBook)
+	respListBook, err := u.books.GetListBookByTypeBook(ctx, typeBook, startPriceNum, endPrice)
 	if err != nil {
 		return nil, errors.NewSystemError("system error occurred while fetching books")
 	}

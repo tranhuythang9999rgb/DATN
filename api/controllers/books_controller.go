@@ -120,7 +120,9 @@ func (u *ControllersUploadBooks) GetListBookByTypeBook(ctx *gin.Context) {
 	name := ctx.Query("name")
 	orderDesc := ctx.Query("desc")
 	orderAsc := ctx.Query("asc")
-	books, err := u.books.GetListBookByTypeBook(ctx, name, orderDesc, orderAsc)
+	start := ctx.Query("start")
+	end := ctx.Query("end")
+	books, err := u.books.GetListBookByTypeBook(ctx, name, orderDesc, orderAsc, start, end)
 	if err != nil {
 		u.baseController.ErrorData(ctx, err)
 		return
