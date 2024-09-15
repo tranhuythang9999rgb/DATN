@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Table, Tag, Button, message, Tooltip } from 'antd';
+import { Table, Tag, Button, message, Tooltip, Space, Input } from 'antd';
 import { TiDocumentDelete } from 'react-icons/ti';
 import DetailBook from './DetailBook';
 
 function ListBooks() {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [searchTitle, setSearchTitle] = useState('');
+    const [searchAuthor, setSearchAuthor] = useState('');
+    const [searchPublisher, setSearchPublisher] = useState('');
+    const [searchGenre, setSearchGenre] = useState('');
 
     // Fetch books data
     const fetchBooks = async () => {
@@ -45,7 +49,30 @@ function ListBooks() {
         }
     };
 
+    // Handle search input changes
+    const handleTitleChange = (event) => {
+        setSearchTitle(event.target.value.trim());
+    };
 
+    const handleAuthorChange = (event) => {
+        setSearchAuthor(event.target.value.trim());
+    };
+
+    const handlePublisherChange = (event) => {
+        setSearchPublisher(event.target.value.trim());
+    };
+
+    const handleGenreChange = (event) => {
+        setSearchGenre(event.target.value.trim());
+    };
+
+    // Filter books based on search criteria
+    const filteredBooks = books.filter(book =>
+        book.title.toLowerCase().includes(searchTitle.toLowerCase()) &&
+        book.author_name.toLowerCase().includes(searchAuthor.toLowerCase()) &&
+        book.publisher.toLowerCase().includes(searchPublisher.toLowerCase()) &&
+        book.genre.toLowerCase().includes(searchGenre.toLowerCase())
+    );
 
     // Columns for books table
     const columns = [
@@ -95,11 +122,6 @@ function ListBooks() {
             key: 'discount_price',
         },
         {
-            title: 'Giá mua',
-            dataIndex: 'price',
-            key: 'price',
-        },
-        {
             title: 'Số lượng sách',
             dataIndex: 'quantity',
             key: 'quantity',
@@ -133,7 +155,6 @@ function ListBooks() {
                             <TiDocumentDelete style={{ fontSize: '30px' }} />
                         </Button>
                     </Tooltip>
-                   
                 </div>
             ),
         },
@@ -150,9 +171,33 @@ function ListBooks() {
 
     return (
         <div>
+            <Space style={{ marginBottom: 16 }}>
+                <Input
+                    placeholder="Tìm kiếm theo tên sách"
+                    onChange={handleTitleChange}
+                />
+                <Input
+                    placeholder="Tìm kiếm theo tác giả"
+                    onChange={handleAuthorChange}
+                />
+                <Input
+                    placeholder="Tìm kiếm theo nhà xuất bản"
+                    onChange={handlePublisherChange}
+                />
+                <Input
+                    placeholder="Tìm kiếm theo thể loại"
+                    onChange={handleGenreChange}
+                />
+                <Button onClick={() => {
+                    setSearchTitle('');
+                    setSearchAuthor('');
+                    setSearchPublisher('');
+                    setSearchGenre('');
+                }}>Xóa tìm kiếm</Button>
+            </Space>
             <Table
                 columns={columns}
-                dataSource={books}
+                dataSource={filteredBooks}
                 loading={loading}
                 pagination={{
                     pageSize: 10,
@@ -162,7 +207,6 @@ function ListBooks() {
                 }}
                 rowKey="id"
             />
-         
         </div>
     );
 }

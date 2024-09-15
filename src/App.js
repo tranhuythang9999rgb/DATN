@@ -43,7 +43,7 @@ import ListBookHome from "./Home/ListBookHome";
 function App() {
   return (
     <div>
-      {/* <Dashboard /> */}
+      <Dashboard />
       {/* <UploadBook/> */}
       {/* <ListBooks/> */}
       {/* <HomePage/> */}
@@ -57,7 +57,7 @@ function App() {
       {/* <AppRouter/> */}
       {/* <Pages2/> */}
       {/* <SubmitBuyBook/> */}
-      <ListBookHome nameTypeBook={'6'}/>
+      {/* <ListBookHome nameTypeBook={'6'}/> */}
       {/* <Pages1/> */}
       {/* <RegisterUser/> */}
       {/* <ProFile/> */}
