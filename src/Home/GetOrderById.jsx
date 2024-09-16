@@ -5,12 +5,11 @@ import ProductCard from '../user/ProductCard';
 import { RiSecurePaymentLine } from 'react-icons/ri';
 
 const GetOrderById = () => {
-    const [error, setError] = useState(null);
     const [listBookJson, setListBookJson] = useState([]);
     const shippingFee = 30000; // Default shipping fee
     const [api, contextHolder] = notification.useNotification();
     const [buttonLoading, setButtonLoading] = useState(false); // State for button loading
-
+    const [addres_id,set_address_id] = useState(0)
     const openNotification = (placement, message, description) => {
         api.success({
             message,
@@ -25,6 +24,10 @@ const GetOrderById = () => {
         const storedList = localStorage.getItem('listbook');
         if (storedList) {
             setListBookJson(JSON.parse(storedList));
+        }
+        const addresId  = localStorage.getItem('delivery_address')
+        if(addresId) {
+            set_address_id(addresId);
         }
     }, []);
 
@@ -59,7 +62,8 @@ const GetOrderById = () => {
             console.log(items);
             const paymentData = {
                 customer_name: userName,
-                items: JSON.stringify(items)
+                items: JSON.stringify(items),
+                addres_id:addres_id,
             };
 
             const response = await axios.post('http://127.0.0.1:8080/manager/payment/create/payment', paymentData, {
@@ -102,7 +106,8 @@ const GetOrderById = () => {
             console.log(items);
             const paymentData = {
                 customer_name: userName,
-                items: JSON.stringify(items)
+                items: JSON.stringify(items),
+                addres_id:addres_id
             };
 
             const response = await axios.post('http://127.0.0.1:8080/manager/order/api/pend/offline', paymentData, {
@@ -132,8 +137,6 @@ const GetOrderById = () => {
         }
     };
 
-
-    if (error) return <Alert message="Lỗi" description={error} type="error" />;
 
     return (
         <div>

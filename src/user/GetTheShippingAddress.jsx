@@ -60,6 +60,7 @@ function GetTheShippingAddress() {
                 params: { name: userName, id }
             });
             if (response.data.code === 0) {
+                localStorage.setItem('delivery_address',id)
                 message.success('Địa chỉ mặc định đã được cập nhật thành công');
                 fetchData();
                 fetchAddress();
