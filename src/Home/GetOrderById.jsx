@@ -52,11 +52,15 @@ const GetOrderById = () => {
         }
     }, []);
 
-    const handleDeleteItem = (cartId) => {
+
+    const handleDeleteItem = (bookId) => {
         if (listBookJson.length > 1) { // Ensure at least one item remains
-            const updatedCart = listBookJson.filter(item => item.cart_id !== cartId);
+            const updatedCart = listBookJson.filter(item => item.id !== bookId);
             setListBookJson(updatedCart);
             localStorage.setItem('listbook', JSON.stringify(updatedCart)); // Update localStorage after deletion
+        } else {
+            alert('Không thể xóa mục vì danh sách chỉ còn lại một mục');
+            return;    
         }
     };
 
