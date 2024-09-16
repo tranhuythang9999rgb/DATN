@@ -29,10 +29,6 @@ function FormBuyCart() {
     const userData = JSON.parse(localStorage.getItem('userData'));
     const userName = userData ? userData.user_name : '';
 
-    const handleBuyNow = () => {
-        console.log('Mua ngay');
-    };
-
     const handleOrder = async () => {
         // Add user_name to each item in listCartJson
         const updatedCartJson = listCartJson.map(item => ({
@@ -92,6 +88,49 @@ function FormBuyCart() {
     const totalAmount = listCartJson.reduce((total, item) => total + item.total_amount, 0);
     const totalWithShipping = totalAmount + shippingFee;
 
+
+    const handlePaymentOnline = async () => {
+        setButtonLoading(true);
+        try {
+            const items = listCartJson.map(item => ({
+                cart_id: item.cart_id,
+                book_id: item.book_id,
+                book_name: item.book_name,
+                quantity: item.quantity,
+                price: item.price,
+                total_amount: item.total_amount,
+                url: item.url
+            }));
+
+            const paymentData = {
+                customer_name: userName,
+                items: JSON.stringify(items)
+            };
+
+            const response = await axios.post('http://127.0.0.1:8080/manager/payment/create/payment', paymentData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cookie': `order_id=${Math.floor(Math.random() * 10000000)}` // Generate a random order_id
+                }
+            });
+
+            if (response.data.code === 0 && response.data.body && response.data.body.checkoutUrl) {
+                openNotification('topRight', 'Chuyển hướng đến trang thanh toán', 'Bạn sẽ được chuyển đến trang thanh toán trong giây lát.');
+                setTimeout(() => {
+                    window.location.href = response.data.body.checkoutUrl;
+                }, 2000);
+            } else {
+                openNotification('topRight', 'Lỗi thanh toán', 'Có lỗi xảy ra trong quá trình tạo liên kết thanh toán. Vui lòng thử lại.');
+            }
+        } catch (error) {
+            console.error('Có lỗi xảy ra khi thanh toán:', error);
+            openNotification('topRight', 'Lỗi', 'Có lỗi xảy ra trong quá trình thanh toán. Vui lòng thử lại.');
+        } finally {
+            setTimeout(() => setButtonLoading(false), 3000);
+        }
+    };
+    
+
     if (goback) {
         return (
             <ListCart />
@@ -150,7 +189,7 @@ function FormBuyCart() {
                     </Form.Item>
 
                     <Form.Item className="form-item-button">
-                        <Button type="primary" onClick={handleBuyNow} className="form-button">
+                        <Button type="primary" onClick={handlePaymentOnline} className="form-button">
                             Mua ngay  <RiSecurePaymentLine />
                         </Button>
                     </Form.Item>
