@@ -220,7 +220,7 @@ function GetListBookByNameBook({ nameTypeBook, nameBook }) {
     if (books.length === 0) {
 
         return <div>
-            <Typography.Text>Chưa có sách nào.</Typography.Text>;
+            <Typography.Text>loading .....</Typography.Text>;
         </div>
     }
     if (isNextBuy) {
