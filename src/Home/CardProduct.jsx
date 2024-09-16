@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { FaRegHeart, FaHeart } from 'react-icons/fa';
 import { Badge, Button, Col, Form, Image, Row, Space } from "antd";
 import styles from './card_product.module.css'; // Import CSS module
-//dung slide late , sell
+//dung slide late , sell mua tu card
 function CardProduct({ onEventClick, bookId, title, author_name, publisher, price, discount_price, file_desc_first }) {
     const [likedBooks, setLikedBooks] = useState({});
     const imageDefault = 'http://placehold.it/300x400';

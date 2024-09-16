@@ -4,7 +4,6 @@ import axios from 'axios'; // Make sure axios is installed
 import ProductCard from './ProductCard';
 import HomePage from '../Home/HomePage';
 import { RiSecurePaymentLine } from 'react-icons/ri';
-import ListCart from './ListCart';
 import { TiArrowBack } from 'react-icons/ti';
 
 //todo xin
@@ -15,6 +14,8 @@ function FormBuyCart() {
     const [nextHomePage, setNextHomePage] = useState(false);
     const [buttonLoading, setButtonLoading] = useState(false); // New state for button loading
     const shippingFee = 30000; // Default shipping fee
+    const [addres_id,set_address_id] = useState(0)
+
     const [goback, setGoBack] = useState(false);
 
     const openNotification = (placement, message, description) => {
@@ -28,37 +29,6 @@ function FormBuyCart() {
 
     const userData = JSON.parse(localStorage.getItem('userData'));
     const userName = userData ? userData.user_name : '';
-
-    const handleOrder = async () => {
-        // Add user_name to each item in listCartJson
-        const updatedCartJson = listCartJson.map(item => ({
-            ...item,
-            user_name: userName, // Include user_name here
-        }));
-
-        setButtonLoading(true); // Show spinner on button
-        try {
-            const response = await axios.post('http://127.0.0.1:8080/manager/order/api/orders', updatedCartJson);
-
-            if (response.data.code === 0) {
-                openNotification('topRight', 'Đặt hàng thành công!', 'Cảm ơn bạn đã đặt hàng! Đơn hàng của bạn đã được ghi nhận.');
-                // Delay before redirecting
-                setTimeout(() => {
-                    setNextHomePage(true);
-                }, 3000);
-            } else if (response.data.code === 10) {
-                openNotification('topRight', 'Hàng đã hết');
-            } else {
-                openNotification('topRight', 'Lỗi đặt hàng', 'Có lỗi xảy ra trong quá trình đặt hàng. Vui lòng thử lại.');
-            }
-        } catch (error) {
-            console.error('Có lỗi xảy ra khi đặt hàng:', error);
-            openNotification('topRight', 'Lỗi', 'Có lỗi xảy ra trong quá trình đặt hàng. Vui lòng thử lại.');
-        } finally {
-            // Hide spinner after 3 seconds
-            setTimeout(() => setButtonLoading(false), 3000);
-        }
-    };
 
     const handleDeleteItem = (cartId) => {
         if (listCartJson.length > 1) { // Ensure at least one item remains
@@ -75,6 +45,10 @@ function FormBuyCart() {
     };
 
     useEffect(() => {
+        const addresId  = localStorage.getItem('delivery_address')
+        if(addresId) {
+            set_address_id(addresId);
+        }
         const timer = setTimeout(() => {
             const listCart = localStorage.getItem('list_cart');
             const parsedData = JSON.parse(listCart || '[]');
@@ -98,13 +72,14 @@ function FormBuyCart() {
                 book_name: item.book_name,
                 quantity: item.quantity,
                 price: item.price,
-                total_amount: item.total_amount,
+                total_amount: totalWithShipping,
                 url: item.url
             }));
 
             const paymentData = {
                 customer_name: userName,
-                items: JSON.stringify(items)
+                items: JSON.stringify(items),
+                addres_id:addres_id
             };
 
             const response = await axios.post('http://127.0.0.1:8080/manager/payment/create/payment', paymentData, {
@@ -119,6 +94,46 @@ function FormBuyCart() {
                 setTimeout(() => {
                     window.location.href = response.data.body.checkoutUrl;
                 }, 2000);
+            } else {
+                openNotification('topRight', 'Lỗi thanh toán', 'Có lỗi xảy ra trong quá trình tạo liên kết thanh toán. Vui lòng thử lại.');
+            }
+        } catch (error) {
+            console.error('Có lỗi xảy ra khi thanh toán:', error);
+            openNotification('topRight', 'Lỗi', 'Có lỗi xảy ra trong quá trình thanh toán. Vui lòng thử lại.');
+        } finally {
+            setTimeout(() => setButtonLoading(false), 3000);
+        }
+    };
+
+    const handlePaymentOfline = async () => {
+        setButtonLoading(true);
+        try {
+            const items = listCartJson.map(item => ({
+                cart_id: item.cart_id,
+                book_id: item.book_id,
+                book_name: item.book_name,
+                quantity: item.quantity,
+                price: item.price,
+                total_amount: totalWithShipping,
+                url: item.url
+            }));
+
+            const paymentData = {
+                customer_name: userName,
+                items: JSON.stringify(items),
+                addres_id:addres_id
+            };
+
+            const response = await axios.post('http://127.0.0.1:8080/manager/order/api/pend/offline', paymentData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cookie': `order_id=${Math.floor(Math.random() * 10000000)}` // Generate a random order_id
+                }
+            });
+
+            if (response.data.code === 0) {
+                openNotification('topRight', 'Chuyển hướng đến trang thanh toán', 'Bạn sẽ được chuyển đến trang thanh toán trong giây lát.');
+               
             } else {
                 openNotification('topRight', 'Lỗi thanh toán', 'Có lỗi xảy ra trong quá trình tạo liên kết thanh toán. Vui lòng thử lại.');
             }
@@ -196,7 +211,7 @@ function FormBuyCart() {
                     <Form.Item>
                         <Button
                             type="default"
-                            onClick={handleOrder}
+                            onClick={handlePaymentOfline}
                             className="form-button"
                             loading={buttonLoading} // Show spinner on button
                         >
