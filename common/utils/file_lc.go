@@ -249,6 +249,14 @@ func SaveImage2(file *multipart.FileHeader) (*request.InforFileResp, error) {
 	fileName := newFileName + fileExt
 	filePath := filepath.Join(baseDir, fileName)
 
+	// Check if the "shader" directory exists, if not, create it
+	if _, err := os.Stat(baseDir); os.IsNotExist(err) {
+		err := os.MkdirAll(baseDir, os.ModePerm) // Create the directory with appropriate permissions
+		if err != nil {
+			return nil, fmt.Errorf("failed to create directory: %v", err)
+		}
+	}
+
 	if err := SaveFile(file, filePath); err != nil {
 		return nil, err
 	}
