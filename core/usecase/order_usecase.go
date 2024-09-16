@@ -286,7 +286,7 @@ func (u *UseCaseOrder) GetListOrderBuyOneDay(ctx context.Context, day string) (*
 // }
 
 func (u *UseCaseOrder) CreateOrderWhenBuyCart(ctx context.Context, req *entities.OrderRequestSubmitBuyFromCart) (int64, float64, errors.Error) {
-
+	log.Infof("req ", req)
 	var orderItems []*entities.Items
 	var count int
 	var priceToal float64
@@ -302,7 +302,6 @@ func (u *UseCaseOrder) CreateOrderWhenBuyCart(ctx context.Context, req *entities
 	orderDateString := orderDate.Format("2006-01-02 15:04:05")
 	for _, v := range orderItems {
 		count += v.Quantity
-		priceToal += v.Price
 		book, _ := u.book.GetBookById(ctx, v.BookID)
 		u.book.UpdateQuantity(ctx, v.BookID, book.Quantity-v.Quantity)
 		u.orderItem.CreateOrderItem(ctx, &domain.OrderItem{
@@ -318,7 +317,7 @@ func (u *UseCaseOrder) CreateOrderWhenBuyCart(ctx context.Context, req *entities
 		CustomerName: req.CustomerName,
 		OrderDate:    orderDateString,
 		Quantity:     count,
-		TotalAmount:  priceToal,
+		TotalAmount:  float64(orderItems[0].TotalAmount),
 		Status:       enums.ORDER_ARE_PAYING,
 		TypePayment:  enums.TYPE_PAYMENT_ONLINE,
 		CreateTime:   time.Now(),
@@ -331,6 +330,6 @@ func (u *UseCaseOrder) CreateOrderWhenBuyCart(ctx context.Context, req *entities
 		log.Error(err, "Error unmarshalling JSON: %v")
 		return 0, 0, errors.ErrSystem
 	}
-
-	return orderId, priceToal, nil
+	log.Infof("data ", priceToal)
+	return orderId, float64(orderItems[0].TotalAmount), nil
 }

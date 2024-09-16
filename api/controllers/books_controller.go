@@ -149,3 +149,12 @@ func (u *ControllersUploadBooks) GetBooksByName(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, books)
 }
+
+func (u *ControllersUploadBooks) GetListFiveLatestBooks(ctx *gin.Context) {
+	books, err := u.books.GetListBookLasterNew(ctx)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, books)
+}

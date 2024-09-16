@@ -130,7 +130,7 @@ func (c *CollectionBook) GetListBookSellWell(ctx context.Context) ([]*domain.Boo
 	return topSellingBooks, nil
 }
 
-// todo
+// todo ko dung
 // GetFourBook lấy 4 sản phẩm bán chạy nhất dựa trên bảng orders, nếu bảng orders chưa có dữ liệu thì lấy 4 bản sách đầu tiên
 func (c *CollectionBook) GetBookByIdTopSell(ctx context.Context, id int64) (*domain.Book, error) {
 	var book *domain.Book
@@ -177,5 +177,14 @@ func (u *CollectionBook) GetBookByName(ctx context.Context, bookName string) ([]
 		return []*domain.Book{}, nil
 	}
 
+	return books, nil
+}
+
+func (u *CollectionBook) GetListFiveLatestBooks(ctx context.Context) ([]*domain.Book, error) {
+	var books = make([]*domain.Book, 0)
+	result := u.book.Order("create_time DESC").Limit(7).Find(&books)
+	if result.Error != nil {
+		return nil, result.Error
+	}
 	return books, nil
 }

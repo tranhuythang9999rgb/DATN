@@ -64,4 +64,5 @@ type RepositoryBook interface {
 	UpdateQuantity(ctx context.Context, id int64, quantity int) error
 	GetListBookByTypeBook(ctx context.Context, authorName string, startPrice, endPrice float64) ([]*Book, error)
 	GetBookByName(ctx context.Context, nameBook string) ([]*Book, error)
+	GetListFiveLatestBooks(ctx context.Context) ([]*Book, error)
 }
