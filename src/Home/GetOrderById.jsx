@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Spin, Alert, Form, Button, notification } from 'antd'; // Import Button from Ant Design
 import ProductCard from '../user/ProductCard';
 import { RiSecurePaymentLine } from 'react-icons/ri';
-//form cuoi
+
 const GetOrderById = () => {
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -13,7 +13,7 @@ const GetOrderById = () => {
     const orderId = localStorage.getItem('order_id') || 0;
     const shippingFee = 30000; // Default shipping fee
     const [api, contextHolder] = notification.useNotification();
-    const [buttonLoading, setButtonLoading] = useState(false); // New state for button loading
+    const [buttonLoading, setButtonLoading] = useState(false); // State for button loading
 
     const openNotification = (placement, message, description) => {
         api.success({
@@ -46,13 +46,11 @@ const GetOrderById = () => {
             }
         };
 
-        // Simulate a delay before checking local storage and fetching data
         const timer = setTimeout(() => {
             setLocalLoading(false);
             fetchOrder();
         }, 2000); // Delay of 2 seconds
 
-        // Cleanup timer on component unmount
         return () => clearTimeout(timer);
     }, [orderId]);
 
@@ -69,10 +67,10 @@ const GetOrderById = () => {
     const userName = userData ? userData.user_name : '';
 
     const handleDeleteItem = (bookId) => {
-        if (listBookJson.length > 1) { // Ensure at least one item remains
+        if (listBookJson.length > 1) {
             const updatedCart = listBookJson.filter(item => item.id !== bookId);
             setListBookJson(updatedCart);
-            localStorage.setItem('listbook', JSON.stringify(updatedCart)); // Update localStorage after deletion
+            localStorage.setItem('listbook', JSON.stringify(updatedCart));
         } else {
             alert('Không thể xóa mục vì danh sách chỉ còn lại một mục');
             return;    
@@ -80,7 +78,7 @@ const GetOrderById = () => {
     };
 
     const handlePaymentOnline = async () => {
-        setButtonLoading(true);
+        setButtonLoading(true); // Set loading state to true
         try {
             const items = listBookJson.map(item => ({
                 cart_id: item.book_id,
@@ -100,7 +98,7 @@ const GetOrderById = () => {
             const response = await axios.post('http://127.0.0.1:8080/manager/payment/create/payment', paymentData, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Cookie': `order_id=${Math.floor(Math.random() * 10000000)}` // Generate a random order_id
+                    'Cookie': `order_id=${Math.floor(Math.random() * 10000000)}`
                 }
             });
 
@@ -116,11 +114,9 @@ const GetOrderById = () => {
             console.error('Có lỗi xảy ra khi thanh toán:', error);
             openNotification('topRight', 'Lỗi', 'Có lỗi xảy ra trong quá trình thanh toán. Vui lòng thử lại.');
         } finally {
-            setTimeout(() => setButtonLoading(false), 3000);
+            setButtonLoading(false); // Set loading state to false after completion
         }
     };
-
-
 
     if (localLoading) return <Spin size="large" tip="Đang tải dữ liệu từ bộ nhớ..." />;
     if (loading) return <Spin size="large" tip="Đang tải..." />;
@@ -134,13 +130,13 @@ const GetOrderById = () => {
                         <Form.Item>
                             {listBookJson.map(item => (
                                 <ProductCard
-                                    key={item.id} // Changed from item.cart_id to item.id
-                                    imageUrl={item.files[0]} // Assuming files[0] is the image URL
+                                    key={item.id}
+                                    imageUrl={item.files[0]}
                                     title={item.title}
                                     price={item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
                                     quantity={item.quantity}
                                     sell="15"
-                                    onDelete={() => handleDeleteItem(item.id)} // Changed from item.cart_id to item.id
+                                    onDelete={() => handleDeleteItem(item.id)}
                                 />
                             ))}
                         </Form.Item>
@@ -172,16 +168,20 @@ const GetOrderById = () => {
                         </Form.Item>
 
                         <Form.Item className="form-item-button">
-                            <Button onClick={handlePaymentOnline} type="primary" className="form-button">
+                            <Button
+                                onClick={handlePaymentOnline}
+                                type="primary"
+                                className="form-button"
+                                loading={buttonLoading} // Add the loading prop
+                            >
                                 Mua ngay <RiSecurePaymentLine />
                             </Button>
                         </Form.Item>
                         <Form.Item>
                             <Button
                                 type="default"
-                                // onClick={handleOrder} // Uncomment and implement handleOrder if needed
+                                // onClick={handleOrder}
                                 className="form-button"
-                                // loading={buttonLoading} // Uncomment and handle buttonLoading if needed
                             >
                                 Đặt hàng
                             </Button>
