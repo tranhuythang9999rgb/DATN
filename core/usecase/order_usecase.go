@@ -287,7 +287,7 @@ func (u *UseCaseOrder) GetListOrderBuyOneDay(ctx context.Context, day string) (*
 
 func (u *UseCaseOrder) CreateOrderWhenBuyCart(ctx context.Context, req *entities.OrderRequestSubmitBuyFromCart) (int64, float64, errors.Error) {
 
-	var orderItems []*domain.OrderItem
+	var orderItems []*entities.Items
 	var count int
 	var priceToal float64
 	orderId := utils.GenerateUniqueKey()
@@ -303,32 +303,29 @@ func (u *UseCaseOrder) CreateOrderWhenBuyCart(ctx context.Context, req *entities
 	for _, v := range orderItems {
 		count += v.Quantity
 		priceToal += v.Price
+		book, _ := u.book.GetBookById(ctx, v.BookID)
+		u.book.UpdateQuantity(ctx, v.BookID, book.Quantity-v.Quantity)
+		u.orderItem.CreateOrderItem(ctx, &domain.OrderItem{
+			ID:       utils.GenerateUniqueKey(),
+			OrderID:  orderId,
+			BookID:   v.BookID,
+			Quantity: v.Quantity,
+			Price:    v.Price,
+		})
 	}
 	err = u.order.CreateOrder(ctx, &domain.Order{
 		ID:           orderId,
 		CustomerName: req.CustomerName,
 		OrderDate:    orderDateString,
-		// BookID:            0,
-		// BookTitle:         "",
-		// BookAuthor:        "",
-		// BookPublisher:     "",
-		// BookPublishedDate: "",
-		// BookISBN:          "",
-		// BookGenre:         "",
-		// BookDescription:   "",
-		// BookLanguage:      "",
-		// BookPageCount:     0,
-		// BookDimensions:    "",
-		// BookWeight:        "",
-		// BookPrice:         0,
-		Quantity:    count,
-		TotalAmount: priceToal,
-		Status:      enums.ORDER_ARE_PAYING,
-		TypePayment: enums.TYPE_PAYMENT_ONLINE,
-		CreateTime:  time.Now(),
-		CreateOrder: utils.GenerateTimestamp(),
-		AddressId:   0,
-		Items:       req.Items,
+		Quantity:     count,
+		TotalAmount:  priceToal,
+		Status:       enums.ORDER_ARE_PAYING,
+		TypePayment:  enums.TYPE_PAYMENT_ONLINE,
+		CreateTime:   time.Now(),
+		CreateOrder:  utils.GenerateTimestamp(),
+		AddressId:    0,
+
+		Items: req.Items,
 	})
 	if err != nil {
 		log.Error(err, "Error unmarshalling JSON: %v")

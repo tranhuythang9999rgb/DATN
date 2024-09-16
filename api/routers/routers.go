@@ -118,6 +118,7 @@ func NewApiRouter(
 		paymentGroup.PATCH("/add", payment.CreatePayment)
 		paymentGroup.GET("/return/create/payment", payment.ReturnUrlAfterPayment)
 		paymentGroup.GET("/return/calcel/payment/", payment.ReturnUrlAftercanCelPayment)
+		paymentGroup.POST("/create/payment", payment.CreatePaymentWhenCart)
 	}
 	// address public
 	r.GET("/public/customer/cities", addresPublic.GetAllCity)
