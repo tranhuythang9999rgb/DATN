@@ -31,6 +31,7 @@ type Order struct {
 	CreateOrder       int64     `json:"create_order"`
 	AddressId         int64     `json:"address_id"`
 	Items             string    `json:"items"`
+	StatusCancel      int       `json:"status_cancel"`
 }
 
 type OrderForm struct {

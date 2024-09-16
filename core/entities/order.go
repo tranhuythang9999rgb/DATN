@@ -1,5 +1,7 @@
 package entities
 
+import "shoe_shop_server/core/domain"
+
 type Order struct {
 	CustomerName string `form:"customer_name"` // Tên khách hàng
 	BookID       int64  `form:"book_id"`       // ID sách
@@ -28,6 +30,7 @@ type GetOrderBuyOneDayResponse struct {
 type OrderRequestSubmitBuyFromCart struct {
 	CustomerName string `json:"customer_name"` // Tên khách hàng
 	Items        string `json:"items"`
+	AddresId     string `json:"addres_id"`
 }
 type Items struct {
 	CartID      int64   `json:"cart_id"`      // ID của giỏ hàng
@@ -37,4 +40,13 @@ type Items struct {
 	Price       float64 `json:"price"`        // Giá của sách
 	TotalAmount float64 `json:"total_amount"` // Tổng số tiền
 	URL         string  `json:"url"`          // URL ảnh sách
+}
+
+type OrderDetails struct {
+	OrderID       int64                   `json:"order_id"`
+	CreateTime    string                  `json:"create_time"`
+	Address       *domain.DeliveryAddress `json:"address"`
+	Amount        string                  `json:"amount"`
+	EstimatedDate string                  `json:"estimated_date"` // Dự kiến ngày nhận
+	Items         []Item                  `json:"items"`          // Danh sách các item
 }

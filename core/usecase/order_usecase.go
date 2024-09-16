@@ -290,7 +290,7 @@ func (u *UseCaseOrder) CreateOrderWhenBuyCart(ctx context.Context, req *entities
 	var count int
 	var priceToal float64
 	orderId := utils.GenerateUniqueKey()
-
+	addressIdNum, _ := strconv.ParseInt(req.AddresId, 10, 64)
 	err := json.Unmarshal([]byte(req.Items), &orderItems)
 	if err != nil {
 		log.Error(err, "Error unmarshalling JSON: %v")
@@ -321,7 +321,7 @@ func (u *UseCaseOrder) CreateOrderWhenBuyCart(ctx context.Context, req *entities
 		TypePayment:  enums.TYPE_PAYMENT_ONLINE,
 		CreateTime:   time.Now(),
 		CreateOrder:  utils.GenerateTimestamp(),
-		AddressId:    0,
+		AddressId:    addressIdNum,
 
 		Items: req.Items,
 	})
@@ -334,7 +334,8 @@ func (u *UseCaseOrder) CreateOrderWhenBuyCart(ctx context.Context, req *entities
 }
 
 func (u *UseCaseOrder) CreateOrderWhenBuyOffLine(ctx context.Context, req *entities.OrderRequestSubmitBuyFromCart) errors.Error {
-	log.Infof("req ", req)
+	addressIdNum, _ := strconv.ParseInt(req.AddresId, 10, 64)
+
 	var orderItems []*entities.Items
 	var count int
 	var priceToal float64
@@ -370,7 +371,7 @@ func (u *UseCaseOrder) CreateOrderWhenBuyOffLine(ctx context.Context, req *entit
 		TypePayment:  enums.TYPE_PAYMENT_ONLINE,
 		CreateTime:   time.Now(),
 		CreateOrder:  utils.GenerateTimestamp(),
-		AddressId:    0,
+		AddressId:    addressIdNum,
 
 		Items: req.Items,
 	})
