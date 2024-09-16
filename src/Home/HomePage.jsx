@@ -336,7 +336,7 @@ function HomePage() {
                     </div>
                 </div>
                 <div className='layout-footer-list-bool-well-sell'>
-                    <Title level={2}>Sách sắp xuất bản</Title>
+                    <Title level={2}>Sách mới</Title>
                     <SliderCard onEventClick={() => setIsNextBuy(true)} />
                 </div>
 

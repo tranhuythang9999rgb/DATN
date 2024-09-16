@@ -133,7 +133,7 @@ function FormBuyCart() {
 
     if (goback) {
         return (
-            <ListCart />
+            <HomePage />
         )
     }
 
