@@ -155,7 +155,7 @@ const DetailBuy = ({ book_id }) => {
 
     const handleNextSubmitBuy = () => {
         setIsBuy(true);
-        initOrder();
+        initOrder();//
     }
 
     const handleMenuClick = (e) => {
@@ -178,30 +178,32 @@ const DetailBuy = ({ book_id }) => {
     );
 
     const initOrder = async () => {
-        const userData = JSON.parse(localStorage.getItem('userData'));
-        const customerName = userData ? userData.user_name : '';
-        const orderId = localStorage.getItem('order_id') || 0;
-        const bookId = localStorage.getItem("book_id");
-        const formData = new FormData();
-        formData.append('customer_name', customerName);
-        formData.append('book_id', bookId); // Ensure book_id is a string
-        formData.append('quantity', items.toString()); // Ensure quantity is a string
-        formData.append('order_id', orderId);
-
         try {
-            const response = await axios.post('http://127.0.0.1:8080/manager/order/add', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-
-            if (response.data.code === 0) {
-                localStorage.setItem('order_id', response.data.body);
+            // Fetch existing books from local storage
+            const existingBooksJSON = localStorage.getItem('listbook');
+            let existingBooks = existingBooksJSON ? JSON.parse(existingBooksJSON) : [];
+    
+            // Update the quantity of the current book
+            book.quantity = count;
+    
+            // Check if the book already exists in the list
+            const bookIndex = existingBooks.findIndex(b => b.id === book.id);
+    
+            if (bookIndex > -1) {
+                // If book exists, update it
+                existingBooks[bookIndex] = book;
+            } else {
+                // If book does not exist, add it
+                existingBooks.push(book);
             }
+    
+            // Save the updated list back to local storage
+            localStorage.setItem('listbook', JSON.stringify(existingBooks));
         } catch (error) {
-            message.error('error server');
+            console.error('Error updating book list in local storage:', error);
         }
-    }
+    };
+    
 
 
     if (isBuy) {
@@ -220,14 +222,6 @@ const DetailBuy = ({ book_id }) => {
         slidesToShow: 1,
         slidesToScroll: 1
     };
-    const data = [
-        { label: "Tác giả", value: book.author_name },
-        { label: "Dịch giả", value: book.translator },
-        { label: "Nhà xuất bản", value: book.publisher },
-        { label: "Kích thước", value: book.dimensions },
-        { label: "Số trang", value: book.page_count },
-        { label: "Ngày phát hành", value: book.published_date }
-    ];
 
 
     return (

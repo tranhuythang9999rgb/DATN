@@ -4,7 +4,7 @@ import { DeleteOutlined } from '@ant-design/icons';
 import './user_index.css';
 
 const DEFAULT_IMAGE_URL = 'http://example.com/default-image.png'; // Thay đổi URL này thành URL hình ảnh mặc định của bạn
-
+//cho cart
 const ProductCard = ({ imageUrl, title, price, quantity, sell, onDelete }) => {
     const imageToDisplay = imageUrl ? imageUrl : DEFAULT_IMAGE_URL;
 
