@@ -1,0 +1,42 @@
+.container {
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  .back-button {
+    font-size: 25px;
+    cursor: pointer;
+    color: #1890ff; /* Màu sắc hợp với Ant Design */
+    margin-bottom: 16px;
+  }
+  
+  .form-container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-item {
+    margin-bottom: 16px;
+  }
+  
+  .form-item .ant-form-item-control-input {
+    border-radius: 4px;
+  }
+  
+  .title {
+    margin-bottom: 24px;
+  }
+  
+  .column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .footer {
+    margin-top: 24px;
+    text-align: center;
+  }
+  

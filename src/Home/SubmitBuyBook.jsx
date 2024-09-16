@@ -12,6 +12,7 @@ import GetTheShippingAddress from '../user/GetTheShippingAddress';
 import Header from '../Utils/Header';
 import Footer from '../Utils/Footer';
 import HomePage from './HomePage';
+import {style} from './submit_buy.module.css';
 
 const { Title } = Typography;
 
@@ -283,84 +284,10 @@ const SubmitBuyBook = () => {
                             )}
                         </Col>
                         <Col span={8} style={{ marginTop: '16px' }}>
-                            <Radio.Group onChange={e => setPaymentMethod(e.target.value)} value={paymentMethod}>
-                                <Space direction='vertical' style={{ width: '100%' }}>
-                                    <Button
-                                        style={{ height: '50px', fontSize: '20px', width: '100%' }}
-                                        onClick={form.submit}
-                                    >
-                                        <Radio value={1} /> Thanh toán khi giao hàng
-                                    </Button>
-                                    <Button
-                                        style={{ height: '50px', fontSize: '20px', width: '100%' }}
-                                    >
-                                        <Radio value={2} /> Thanh toán trực tuyến <GrPaypal />
-                                    </Button>
-
-
-                                    <Radio.Group onChange={onChangeAddress} value={valueAddress}>
-                                        <Radio value={1}>Địa chỉ hiện tại</Radio>
-                                        <Radio value={2}>Địa chỉ mới</Radio>
-                                    </Radio.Group>
-
-                                </Space>
-                            </Radio.Group>
+                           
                         </Col>
                         <Col span={8}>
                             <GetOrderById />
-
-                            {(() => {
-                                if (paymentMethod === 2) {
-                                    if (valueAddress === 2) {
-                                        return (
-                                            <Button
-                                                onClick={handleCreatePayment && form.submit}
-                                                loading={loadingPayment}
-                                                style={{ height: '50px', fontSize: '20px', width: '100%' }}
-                                            >
-                                                {loadingPayment ? 'Đang xử lý...' : <>Thanh toán <RiSecurePaymentLine style={{ marginLeft: '8px' }} /></>}
-                                            </Button>
-                                        );
-                                    } else {
-                                        return (
-                                            <div>
-                                                <Button
-                                                    onClick={handleCreatePayment}
-                                                    loading={loadingPayment}
-                                                    style={{ height: '50px', fontSize: '20px', width: '100%' }}
-                                                >
-                                                    {loadingPayment ? 'Đang xử lý...' : <>Thanh toán<RiSecurePaymentLine style={{ marginLeft: '8px' }} /></>}
-                                                </Button>
-                                            </div>
-
-                                        );
-                                    }
-                                } else {
-                                    if (valueAddress === 2) {
-                                        return (
-                                            <div>
-                                                <Button
-                                                    onClick={() => { handleOrderBook(); form.submit(); }}
-                                                    style={{ height: '50px', fontSize: '20px', width: '100%' }}
-                                                >
-                                                    {"" ? 'Đang xử lý...' : <>Đặt hàng <BsBackpack2 style={{ marginLeft: '8px' }} /></>}
-                                                </Button>
-                                            </div>
-                                        );
-                                    } else {
-                                        // Case 2.2: Other cases when paymentMethod is not 2 and different address conditions
-                                        return (
-                                            <Button
-                                                onClick={handleOrderBook}
-                                                style={{ height: '50px', fontSize: '20px', width: '100%' }}
-                                            >
-                                                {"" ? 'Đang xử lý...' : <>Đặt hàng <BsBackpack2 style={{ marginLeft: '8px' }} /></>}
-                                            </Button>
-                                        );
-                                    }
-                                }
-                            })()}
-
                         </Col>
                     </Row>
                 </Col>

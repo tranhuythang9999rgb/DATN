@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Spin, Alert, Form, Button } from 'antd'; // Import Button from Ant Design
+import { Spin, Alert, Form, Button, notification } from 'antd'; // Import Button from Ant Design
 import ProductCard from '../user/ProductCard';
 import { RiSecurePaymentLine } from 'react-icons/ri';
-
+//form cuoi
 const GetOrderById = () => {
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -12,6 +12,17 @@ const GetOrderById = () => {
     const [listBookJson, setListBookJson] = useState([]);
     const orderId = localStorage.getItem('order_id') || 0;
     const shippingFee = 30000; // Default shipping fee
+    const [api, contextHolder] = notification.useNotification();
+    const [buttonLoading, setButtonLoading] = useState(false); // New state for button loading
+
+    const openNotification = (placement, message, description) => {
+        api.success({
+            message,
+            description,
+            placement,
+            duration: 3,
+        });
+    };
 
     useEffect(() => {
         const fetchOrder = async () => {
@@ -52,6 +63,10 @@ const GetOrderById = () => {
         }
     }, []);
 
+    const totalAmount = listBookJson.reduce((total, item) => total + item.price * item.quantity, 0);
+    const totalWithShipping = totalAmount + shippingFee;
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    const userName = userData ? userData.user_name : '';
 
     const handleDeleteItem = (bookId) => {
         if (listBookJson.length > 1) { // Ensure at least one item remains
@@ -64,8 +79,48 @@ const GetOrderById = () => {
         }
     };
 
-    const totalAmount = listBookJson.reduce((total, item) => total + item.price * item.quantity, 0);
-    const totalWithShipping = totalAmount + shippingFee;
+    const handlePaymentOnline = async () => {
+        setButtonLoading(true);
+        try {
+            const items = listBookJson.map(item => ({
+                cart_id: item.book_id,
+                book_id: item.id,
+                book_name: item.title,
+                quantity: item.quantity,
+                price: item.price,
+                total_amount: totalAmount,
+                url: item.url
+            }));
+            console.log(items);
+            const paymentData = {
+                customer_name: userName,
+                items: JSON.stringify(items)
+            };
+
+            const response = await axios.post('http://127.0.0.1:8080/manager/payment/create/payment', paymentData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cookie': `order_id=${Math.floor(Math.random() * 10000000)}` // Generate a random order_id
+                }
+            });
+
+            if (response.data.code === 0 && response.data.body && response.data.body.checkoutUrl) {
+                openNotification('topRight', 'Chuyển hướng đến trang thanh toán', 'Bạn sẽ được chuyển đến trang thanh toán trong giây lát.');
+                setTimeout(() => {
+                    window.location.href = response.data.body.checkoutUrl;
+                }, 2000);
+            } else {
+                openNotification('topRight', 'Lỗi thanh toán', 'Có lỗi xảy ra trong quá trình tạo liên kết thanh toán. Vui lòng thử lại.');
+            }
+        } catch (error) {
+            console.error('Có lỗi xảy ra khi thanh toán:', error);
+            openNotification('topRight', 'Lỗi', 'Có lỗi xảy ra trong quá trình thanh toán. Vui lòng thử lại.');
+        } finally {
+            setTimeout(() => setButtonLoading(false), 3000);
+        }
+    };
+
+
 
     if (localLoading) return <Spin size="large" tip="Đang tải dữ liệu từ bộ nhớ..." />;
     if (loading) return <Spin size="large" tip="Đang tải..." />;
@@ -117,7 +172,7 @@ const GetOrderById = () => {
                         </Form.Item>
 
                         <Form.Item className="form-item-button">
-                            <Button type="primary" className="form-button">
+                            <Button onClick={handlePaymentOnline} type="primary" className="form-button">
                                 Mua ngay <RiSecurePaymentLine />
                             </Button>
                         </Form.Item>
