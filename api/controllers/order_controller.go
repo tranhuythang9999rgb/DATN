@@ -124,3 +124,17 @@ func (u *ControllerOrder) GetOrderBuyOneDay(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, resp)
 }
+
+func (u *ControllerOrder) CreateOrderWhenBuyOffLine(ctx *gin.Context) {
+	var req entities.OrderRequestSubmitBuyFromCart
+	if err := ctx.ShouldBind(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	err := u.order.CreateOrderWhenBuyOffLine(ctx, &req)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, nil)
+}

@@ -286,7 +286,6 @@ func (u *UseCaseOrder) GetListOrderBuyOneDay(ctx context.Context, day string) (*
 // }
 
 func (u *UseCaseOrder) CreateOrderWhenBuyCart(ctx context.Context, req *entities.OrderRequestSubmitBuyFromCart) (int64, float64, errors.Error) {
-	log.Infof("req ", req)
 	var orderItems []*entities.Items
 	var count int
 	var priceToal float64
@@ -332,4 +331,53 @@ func (u *UseCaseOrder) CreateOrderWhenBuyCart(ctx context.Context, req *entities
 	}
 	log.Infof("data ", priceToal)
 	return orderId, float64(orderItems[0].TotalAmount), nil
+}
+
+func (u *UseCaseOrder) CreateOrderWhenBuyOffLine(ctx context.Context, req *entities.OrderRequestSubmitBuyFromCart) errors.Error {
+	log.Infof("req ", req)
+	var orderItems []*entities.Items
+	var count int
+	var priceToal float64
+	orderId := utils.GenerateUniqueKey()
+
+	err := json.Unmarshal([]byte(req.Items), &orderItems)
+	if err != nil {
+		log.Error(err, "Error unmarshalling JSON: %v")
+		return errors.ErrSystem
+	}
+
+	orderDate := time.Now()
+	orderDateString := orderDate.Format("2006-01-02 15:04:05")
+	for _, v := range orderItems {
+		count += v.Quantity
+		book, _ := u.book.GetBookById(ctx, v.BookID)
+		u.book.UpdateQuantity(ctx, v.BookID, book.Quantity-v.Quantity)
+		u.orderItem.CreateOrderItem(ctx, &domain.OrderItem{
+			ID:       utils.GenerateUniqueKey(),
+			OrderID:  orderId,
+			BookID:   v.BookID,
+			Quantity: v.Quantity,
+			Price:    v.Price,
+		})
+	}
+	err = u.order.CreateOrder(ctx, &domain.Order{
+		ID:           orderId,
+		CustomerName: req.CustomerName,
+		OrderDate:    orderDateString,
+		Quantity:     count,
+		TotalAmount:  float64(orderItems[0].TotalAmount),
+		Status:       enums.ORDER_ARE_PAYING,
+		TypePayment:  enums.TYPE_PAYMENT_ONLINE,
+		CreateTime:   time.Now(),
+		CreateOrder:  utils.GenerateTimestamp(),
+		AddressId:    0,
+
+		Items: req.Items,
+	})
+	if err != nil {
+		log.Error(err, "Error unmarshalling JSON: %v")
+		return errors.ErrSystem
+	}
+	log.Infof("data ", priceToal)
+	return nil
 }
