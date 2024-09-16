@@ -88,7 +88,7 @@ const GetOrderById = () => {
                 book_name: item.title,
                 quantity: item.quantity,
                 price: item.price,
-                total_amount: totalAmount,
+                total_amount: totalWithShipping,
                 url: item.url
             }));
             console.log(items);
