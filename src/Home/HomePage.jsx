@@ -26,6 +26,7 @@ import GetListBookByNameBook from './GetListBookByNameBook';
 import DetailAuthorBook from './DetailAuthorBook';
 import ListAuthorBookButton from './ListAuthorBookSelect';
 import FormBuyCart from '../user/FormBuyCart';
+import ListBookLate from './ListBookLate';
 const { Title, Text } = Typography;
 
 
@@ -337,7 +338,7 @@ function HomePage() {
                 </div>
                 <div className='layout-footer-list-bool-well-sell'>
                     <Title level={2}>Sách mới</Title>
-                    <SliderCard onEventClick={() => setIsNextBuy(true)} />
+                    <ListBookLate onEventClick={() => setIsNextBuy(true)} />
                 </div>
 
                 <div className='layout-footer-nhaf-xuatban'>

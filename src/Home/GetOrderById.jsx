@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { List, Typography, Spin, Alert } from 'antd'; // Import Button from Ant Design
+import ProductCard from '../user/ProductCard';
 
 const { Title } = Typography;
 
@@ -52,6 +53,7 @@ const GetOrderById = () => {
         <div>
             {order ? (
                 <div>
+                    <ProductCard/>
                     <Title level={2}>Thông tin đơn hàng</Title>
                     <div style={{ maxHeight: '1000px', overflowY: 'auto' }}>
                         <List

@@ -361,7 +361,6 @@ const SubmitBuyBook = () => {
                                 }
                             })()}
 
-
                         </Col>
                     </Row>
                 </Col>
