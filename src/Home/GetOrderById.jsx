@@ -103,10 +103,12 @@ const GetOrderById = () => {
             });
 
             if (response.data.code === 0 && response.data.body && response.data.body.checkoutUrl) {
+                setListBookJson([]); // Clear the list of books
+                localStorage.setItem('listbook', JSON.stringify([])); // 
                 openNotification('topRight', 'Chuyển hướng đến trang thanh toán', 'Bạn sẽ được chuyển đến trang thanh toán trong giây lát.');
                 setTimeout(() => {
                     window.location.href = response.data.body.checkoutUrl;
-                }, 2000);
+                }, 1000);
             } else {
                 openNotification('topRight', 'Lỗi thanh toán', 'Có lỗi xảy ra trong quá trình tạo liên kết thanh toán. Vui lòng thử lại.');
             }
