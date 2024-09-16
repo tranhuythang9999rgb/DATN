@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Spin, Alert, Form, Button, notification } from 'antd'; // Import Button from Ant Design
+import { Spin, Alert, Form, Button, notification, message } from 'antd'; // Import Button from Ant Design
 import ProductCard from '../user/ProductCard';
 import { RiSecurePaymentLine } from 'react-icons/ri';
 
@@ -114,9 +114,15 @@ const GetOrderById = () => {
 
             if (response.data.code === 0) {
                 setListBookJson([]); // Clear the list of books
-                localStorage.setItem('listbook', JSON.stringify([])); //
-                openNotification('topRight', 'Chuyển hướng đến trang thanh toán', 'Bạn sẽ được chuyển đến trang thanh toán trong giây lát.');
-               
+                localStorage.setItem('listbook', JSON.stringify([]));
+                message.success("Bạn sẽ được chuyển về trang chủ trong giây lát")
+                openNotification('topRight', 'Đặt hàng thành công', 'Bạn sẽ được chuyển về trang chủ trong giây lát.');
+                // Delay for 0.5 seconds before redirecting to the homepage
+                setTimeout(() => {
+                    window.location.href = '/homePage';
+                }, 2000); // 500 milliseconds delay
+            } else {
+                openNotification('topRight', 'Lỗi đặt hàng', 'Có lỗi xảy ra trong quá trình đặt hàng. Vui lòng thử lại.');
             }
         } catch (error) {
             console.error('Có lỗi xảy ra khi thanh toán:', error);
@@ -131,6 +137,8 @@ const GetOrderById = () => {
 
     return (
         <div>
+            {contextHolder} {/* Render the notification context */}
+
             <div>
                 <Form className="form-cart">
                     <Form.Item>
