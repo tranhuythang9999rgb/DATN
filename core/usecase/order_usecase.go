@@ -36,95 +36,6 @@ func NewUseCaseOrder(order domain.RepositoryOrder,
 	}
 }
 
-// ko dungf
-func (u *UseCaseOrder) CreateOrder(ctx context.Context, req *entities.Order) (int64, errors.Error) {
-	orderId := utils.GenerateUniqueKey()
-	orderDate := time.Now()
-	orderDateString := orderDate.Format("2006-01-02 15:04:05")
-
-	// Fetch the book details
-	book, err := u.book.GetBookById(ctx, req.BookID)
-	if err != nil {
-		return 0, errors.NewSystemError("error system 1")
-	}
-
-	// Check if requested quantity is available
-	if req.Quantity > book.Quantity {
-		return 0, errors.NewCustomHttpError(200, 0, "Requested quantity exceeds available stock")
-	}
-
-	// Check if the order already exists
-	checkorderExists, err := u.order.GetInforMationBook(ctx, req.OrderId, req.BookID)
-	if err != nil {
-		return 0, errors.NewSystemError("error system 2")
-	}
-
-	if checkorderExists != nil {
-		// Update existing order
-		err = u.order.UpdateOrder(ctx, &domain.Order{
-			ID:                req.OrderId,
-			CustomerName:      req.CustomerName,
-			OrderDate:         checkorderExists.OrderDate,
-			BookID:            req.BookID,
-			BookTitle:         checkorderExists.BookTitle,
-			BookAuthor:        checkorderExists.BookAuthor,
-			BookPublisher:     checkorderExists.BookPublisher,
-			BookPublishedDate: checkorderExists.BookPublishedDate,
-			BookISBN:          checkorderExists.BookISBN,
-			BookGenre:         checkorderExists.BookGenre,
-			BookDescription:   checkorderExists.BookDescription,
-			BookLanguage:      checkorderExists.BookLanguage,
-			BookPageCount:     checkorderExists.BookPageCount,
-			BookDimensions:    checkorderExists.BookDimensions,
-			BookWeight:        checkorderExists.BookWeight,
-			BookPrice:         checkorderExists.BookPrice,
-			Quantity:          req.Quantity,
-			TotalAmount:       checkorderExists.BookPrice * float64(req.Quantity),
-			Status:            enums.ORDER_INIT,
-			CreateOrder:       utils.GenerateTimestamp(),
-			CreateTime:        time.Now(),
-			AddressId:         int64(req.AddressId),
-		})
-		if err != nil {
-			return 0, errors.NewSystemError("error system")
-		}
-		// log.Infof("id ", checkorderExists.Quantity, "req ", req.Quantity, "count : ", book.Quantity-(checkorderExists.Quantity-req.Quantity))
-		// Update book quantity
-
-		return req.OrderId, nil
-	} else {
-		// Create a new order
-		err = u.order.CreateOrder(ctx, &domain.Order{
-			ID:                orderId,
-			CustomerName:      req.CustomerName,
-			OrderDate:         orderDateString,
-			BookID:            req.BookID,
-			BookTitle:         book.Title,
-			BookAuthor:        book.AuthorName,
-			BookPublisher:     book.Publisher,
-			BookPublishedDate: book.PublishedDate,
-			BookISBN:          book.ISBN,
-			BookGenre:         book.Genre,
-			BookDescription:   book.Description,
-			BookLanguage:      book.Language,
-			BookPageCount:     book.PageCount,
-			BookDimensions:    book.Dimensions,
-			BookWeight:        book.Weight,
-			BookPrice:         book.Price,
-			Quantity:          req.Quantity,
-			TotalAmount:       book.Price * float64(req.Quantity),
-			Status:            enums.ORDER_INIT,
-			CreateOrder:       utils.GenerateTimestamp(),
-			AddressId:         int64(req.AddressId),
-		})
-		if err != nil {
-			return 0, errors.NewSystemError("error system 5")
-		}
-
-		return orderId, nil
-	}
-}
-
 func (u *UseCaseOrder) GetOrderById(ctx context.Context, id string) (*domain.Order, errors.Error) {
 	idNumber, _ := strconv.ParseInt(id, 10, 64)
 	resp, err := u.order.GetOrderByID(ctx, idNumber)
@@ -191,71 +102,23 @@ func (u *UseCaseOrder) ListOrdersUseTk(ctx context.Context, start, end string) (
 	return listOrder, nil
 }
 
-// ko dung
-func (u *UseCaseOrder) CreateOrderInCart(ctx context.Context, req []*entities.OrderItemReq) errors.Error {
-	// Tạo Order mới
-
-	orderId := utils.GenerateUniqueKey()
-
-	var totalAmount float64
-	for _, item := range req {
-		// Lấy thông tin sách
-		book, err := u.book.GetBookById(ctx, item.BookId)
-		if err != nil {
-			log.Error(err, "error 1")
-			return errors.ErrSystem
-		}
-		// Kiểm tra số lượng tồn kho
-		if book.Quantity < item.Quantity {
-			log.Error(err, "ko du san pham")
-			return errors.NewCustomHttpError(200, 10, "ko du san pham")
-		}
-
-		// Tạo OrderItem mới
-		orderItem := &domain.OrderItem{
-			ID:       utils.GenerateUniqueKey(),
-			OrderID:  orderId,
-			BookID:   item.BookId,
-			Quantity: item.Quantity,
-			Price:    item.Price,
-		}
-
-		if err := u.orderItem.CreateOrderItem(ctx, orderItem); err != nil {
-			log.Error(err, "error 3")
-			return errors.ErrSystem
-		}
-
-		// Cập nhật số lượng sách trong kho
-		if err := u.book.UpdateQuantity(ctx, book.ID, int(book.Quantity)-int(item.Quantity)); err != nil {
-			log.Error(err, "error 4")
-			return errors.ErrSystem
-		}
-
-		// Cập nhật tổng số tiền của đơn hàng
-		totalAmount += item.TotalAmount
-	}
-
-	order := &domain.Order{
-		ID:           orderId,
-		CustomerName: req[0].UserName, // Giả sử tất cả các mục đều có cùng tên khách hàng
-		OrderDate:    time.Now().Format("2006-01-02"),
-		Status:       enums.ORDER_INIT,           // Giả sử đây là trạng thái mặc định
-		TypePayment:  enums.TYPE_PAYMENT_OFFLINE, // Giả sử đây là loại thanh toán mặc định
-		BookPrice:    totalAmount,
-		CreateTime:   time.Now(),
-	}
-
-	if err := u.order.CreateOrder(ctx, order); err != nil {
-		return errors.ErrSystem
-	}
-
-	return nil
-}
-
 func (u *UseCaseOrder) UpdateOrderOffline(ctx context.Context, orderId string) errors.Error {
 
 	idNumber, _ := strconv.ParseInt(orderId, 10, 64)
 	err := u.order.UpdateStatusPaymentOffline(ctx, idNumber, enums.ORDER_WAITING_FOR_SHIPMENT)
+	if err != nil {
+		return errors.NewSystemError(fmt.Sprintf("error system . %v", err))
+	}
+	return nil
+}
+
+func (u *UseCaseOrder) UpdateOrderCanCel(ctx context.Context, orderId string) errors.Error {
+
+	idNumber, _ := strconv.ParseInt(orderId, 10, 64)
+	err := u.order.UpdateOrder(ctx, &domain.Order{
+		ID:     idNumber,
+		Status: enums.ORDER_CANCEL,
+	})
 	if err != nil {
 		return errors.NewSystemError(fmt.Sprintf("error system . %v", err))
 	}

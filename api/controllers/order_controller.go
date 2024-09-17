@@ -22,20 +22,6 @@ func NewControllerControllerOrder(order *usecase.UseCaseOrder, base *baseControl
 	}
 }
 
-func (u *ControllerOrder) CreateOrder(ctx *gin.Context) {
-	var req entities.Order
-	if err := ctx.ShouldBind(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	resp, err := u.order.CreateOrder(ctx, &req)
-	if err != nil {
-		u.baseController.ErrorData(ctx, err)
-		return
-	}
-	u.baseController.Success(ctx, resp)
-}
-
 func (u *ControllerOrder) GetOrderById(ctx *gin.Context) {
 	id := ctx.Query("id")
 	resp, err := u.order.GetOrderById(ctx, id)
@@ -92,20 +78,6 @@ func (u *ControllerOrder) ListOrdersUseTk(ctx *gin.Context) {
 	u.baseController.Success(ctx, resp)
 }
 
-func (u *ControllerOrder) CreateOrderItem(ctx *gin.Context) {
-	var req []*entities.OrderItemReq
-	if err := ctx.ShouldBindJSON(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	err := u.order.CreateOrderInCart(ctx, req)
-	if err != nil {
-		u.baseController.ErrorData(ctx, err)
-		return
-	}
-	u.baseController.Success(ctx, nil)
-}
-
 func (u *ControllerOrder) UpdateOrderOffline(ctx *gin.Context) {
 	id := ctx.Query("id")
 	err := u.order.UpdateOrderOffline(ctx, id)
@@ -148,4 +120,14 @@ func (u *ControllerOrder) GetListOrderForuser(ctx *gin.Context) {
 		return
 	}
 	u.baseController.Success(ctx, listOrder)
+}
+
+func (u *ControllerOrder) UpdateOrderWhenCanCel(ctx *gin.Context) {
+	id := ctx.Query("id")
+	err := u.order.UpdateOrderCanCel(ctx, id)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, nil)
 }

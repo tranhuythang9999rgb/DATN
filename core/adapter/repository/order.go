@@ -86,10 +86,8 @@ func (c *CollectionOrder) ListOrders(ctx context.Context, filter *domain.OrderFo
 
 // UpdateOrder cập nhật thông tin của đơn hàng
 func (c *CollectionOrder) UpdateOrder(ctx context.Context, order *domain.Order) error {
-	if err := c.db.Save(order).Error; err != nil {
-		return fmt.Errorf("failed to update order: %w", err)
-	}
-	return nil
+	result := c.db.Where("id  = ?", order.ID).Updates(&order)
+	return result.Error
 }
 
 func (c *CollectionOrder) GetInforMationBook(ctx context.Context, order_id, book_id int64) (*domain.Order, error) {
