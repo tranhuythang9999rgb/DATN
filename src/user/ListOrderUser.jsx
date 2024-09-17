@@ -133,7 +133,20 @@ const ListOrderUser = () => {
       render: paymentType => paymentType === 25 ? 'Thanh Toán Online' : 'Thanh Toán Khi Nhận Hàng',
     },
     {
-      title: 'Hành Động',
+      title: 'Danh Sách Mặt Hàng',
+      key: 'items',
+      render: (text, record) => (
+        <div>
+          {record.items.map(item => (
+            <div key={item.name}>
+              <strong>{item.name}</strong> - Số lượng: {item.quantity} - Giá: ${item.price / 100}
+            </div>
+          ))}
+        </div>
+      ),
+    },
+    {
+      title: ' ',
       key: 'action',
       render: (text, record) => {
         const { status, order_id } = record;
