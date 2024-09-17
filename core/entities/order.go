@@ -55,3 +55,14 @@ type OrderDetailsInterNal struct {
 	Status        int                     `json:"status"`
 	PaymentType   int                     `json:"payment_type"`
 }
+type OrderDetailsAdmin struct {
+	UserName      string                  `json:"user_name"`
+	OrderID       int64                   `json:"order_id"`
+	CreateTime    time.Time               `json:"create_time"`
+	Address       *domain.DeliveryAddress `json:"address"`
+	Amount        float64                 `json:"amount"`
+	EstimatedDate time.Time               `json:"estimated_date"` // Dự kiến ngày nhận
+	Items         []Item                  `json:"items"`          // Danh sách các item
+	Status        int                     `json:"status"`
+	PaymentType   int                     `json:"payment_type"`
+}

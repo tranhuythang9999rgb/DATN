@@ -131,3 +131,12 @@ func (u *ControllerOrder) UpdateOrderWhenCanCel(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, nil)
 }
+
+func (u *ControllerOrder) GetListOrderForAdmin(ctx *gin.Context) {
+	listOrder, err := u.order.GetListOrderAdmin(ctx)
+	if err != nil {
+		u.baseController.ErrorData(ctx, errors.ErrConflict)
+		return
+	}
+	u.baseController.Success(ctx, listOrder)
+}
