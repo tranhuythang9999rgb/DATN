@@ -14,7 +14,7 @@ function FormBuyCart() {
     const [nextHomePage, setNextHomePage] = useState(false);
     const [buttonLoading, setButtonLoading] = useState(false); // New state for button loading
     const shippingFee = 30000; // Default shipping fee
-    const [addres_id,set_address_id] = useState(0)
+    const [addres_id, set_address_id] = useState(0)
 
     const [goback, setGoBack] = useState(false);
 
@@ -45,8 +45,8 @@ function FormBuyCart() {
     };
 
     useEffect(() => {
-        const addresId  = localStorage.getItem('delivery_address')
-        if(addresId) {
+        const addresId = localStorage.getItem('delivery_address')
+        if (addresId) {
             set_address_id(addresId);
         }
         const timer = setTimeout(() => {
@@ -79,7 +79,7 @@ function FormBuyCart() {
             const paymentData = {
                 customer_name: userName,
                 items: JSON.stringify(items),
-                addres_id:addres_id
+                addres_id: addres_id
             };
 
             const response = await axios.post('http://127.0.0.1:8080/manager/payment/create/payment', paymentData, {
@@ -93,7 +93,7 @@ function FormBuyCart() {
                 openNotification('topRight', 'Chuyển hướng đến trang thanh toán', 'Bạn sẽ được chuyển đến trang thanh toán trong giây lát.');
                 setTimeout(() => {
                     window.location.href = response.data.body.checkoutUrl;
-                }, 2000);
+                }, 700);
             } else {
                 openNotification('topRight', 'Lỗi thanh toán', 'Có lỗi xảy ra trong quá trình tạo liên kết thanh toán. Vui lòng thử lại.');
             }
@@ -121,7 +121,7 @@ function FormBuyCart() {
             const paymentData = {
                 customer_name: userName,
                 items: JSON.stringify(items),
-                addres_id:addres_id
+                addres_id: addres_id
             };
 
             const response = await axios.post('http://127.0.0.1:8080/manager/order/api/pend/offline', paymentData, {
@@ -133,7 +133,10 @@ function FormBuyCart() {
 
             if (response.data.code === 0) {
                 openNotification('topRight', 'Chuyển hướng đến trang thanh toán', 'Bạn sẽ được chuyển đến trang thanh toán trong giây lát.');
-               
+                // Redirect to the payment page
+                setTimeout(() => {
+                    setNextHomePage(true);
+                }, 1000); // Redirect after 1 second
             } else {
                 openNotification('topRight', 'Lỗi thanh toán', 'Có lỗi xảy ra trong quá trình tạo liên kết thanh toán. Vui lòng thử lại.');
             }
@@ -144,13 +147,14 @@ function FormBuyCart() {
             setTimeout(() => setButtonLoading(false), 3000);
         }
     };
-    
 
-    if (goback) {
-        return (
-            <HomePage />
-        )
+
+    if (nextHomePage) {
+        setTimeout(() => {
+            window.location.href = '/'; // Replace '/' with your actual homepage route if necessary
+        }, 1000); // Redirect after 1 second
     }
+    
 
     if (nextHomePage) {
         window.location.reload();
