@@ -14,7 +14,25 @@ const ListOrderUser = () => {
 
   // Fetch data when component mounts
   useEffect(() => {
-    axios.get('http://127.0.0.1:8080/manager/order/api/getlist/user?name=thangth7')
+    // Get username from localStorage
+    const userData = localStorage.getItem('userData');
+    let username = '';
+
+    try {
+      const parsedUserData = JSON.parse(userData);
+      if (parsedUserData && parsedUserData.user_name) {
+        username = parsedUserData.user_name;
+      } else {
+        throw new Error('User data is missing or invalid');
+      }
+    } catch (err) {
+      setError('Error parsing user data from localStorage');
+      setLoading(false);
+      return;
+    }
+
+    // Fetch orders for the user
+    axios.get(`http://127.0.0.1:8080/manager/order/api/getlist/user?name=${username}`)
       .then(response => {
         setData(response.data.body);
         setFilteredData(response.data.body);

@@ -1,252 +1,213 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Typography, Pagination, Spin, Alert, Modal, Button, Drawer, Input, Space } from 'antd';
+import { Table, Typography, Pagination, Spin, Alert, Modal, Button, Drawer, Input, Space, message } from 'antd';
 import axios from 'axios';
 
 const { Title } = Typography;
 const { Search } = Input;
 
 const ListOrder = () => {
-    const [orders, setOrders] = useState([]);
+    const [data, setData] = useState([]);
+    const [filteredData, setFilteredData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
-    const [total, setTotal] = useState(0);
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [selectedOrderId, setSelectedOrderId] = useState(null);
-    const [isDrawerVisible, setIsDrawerVisible] = useState(false);
-    const [userProfile, setUserProfile] = useState(null);
+    const [searchText, setSearchText] = useState('');
 
-    // Search input states
-    const [searchOrderId, setSearchOrderId] = useState('');
-    const [searchCustomerName, setSearchCustomerName] = useState('');
-    const [searchBookTitle, setSearchBookTitle] = useState('');
-    const [searchBookPrice, setSearchBookPrice] = useState('');
-    const [searchQuantity, setSearchQuantity] = useState('');
-    const [searchTotalAmount, setSearchTotalAmount] = useState('');
-
-    // Fetch orders function
-    const fetchOrders = async () => {
-        try {
-            setLoading(true);
-            const response = await axios.get('http://127.0.0.1:8080/manager/order/list/admin', {
-                params: {
-                    page: currentPage,
-                    size: pageSize,
-                    id: searchOrderId.trim(),
-                    customer_name: searchCustomerName.trim(), // Trim whitespace
-                    book_title: searchBookTitle.trim(), // Trim whitespace
-                    book_price: searchBookPrice.trim(), // Trim whitespace
-                    quantity: searchQuantity.trim(), // Trim whitespace
-                    total_amount: searchTotalAmount.trim(), // Trim whitespace
-                },
-            });
-            setOrders(response.data.body);
-            setTotal(response.data.total);
-        } catch (err) {
-            setError(err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
+    // Fetch data when component mounts
     useEffect(() => {
-        fetchOrders();
-    }, [currentPage, pageSize, searchOrderId, searchCustomerName, searchBookTitle, searchBookPrice, searchQuantity, searchTotalAmount]);
+        // Get username from localStorage
+        const userData = localStorage.getItem('userData');
+        let username = '';
 
-    const handlePageChange = (page, pageSize) => {
-        setCurrentPage(page);
-        setPageSize(pageSize);
-    };
-
-    const showModal = (id) => {
-        setSelectedOrderId(id);
-        setIsModalVisible(true);
-    };
-
-    const handleOk = async () => {
         try {
-            const response = await axios.patch(`http://127.0.0.1:8080/manager/order/update/admin/submit`, null, {
-                params: { id: selectedOrderId },
-            });
-
-            if (response.data.code === 0) {
-                Modal.success({ title: 'Success', content: 'Order updated successfully!' });
-                setIsModalVisible(false);
-                fetchOrders(); // refresh the orders list
+            const parsedUserData = JSON.parse(userData);
+            if (parsedUserData && parsedUserData.user_name) {
+                username = parsedUserData.user_name;
             } else {
-                Modal.error({ title: 'Error', content: response.data.message });
+                throw new Error('User data is missing or invalid');
             }
         } catch (err) {
-            Modal.error({ title: 'Error', content: 'An error occurred during the update.' });
+            setError('Error parsing user data from localStorage');
+            setLoading(false);
+            return;
         }
-    };
 
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
-
-    const showDrawer = async (userName) => {
-        try {
-            const response = await axios.get('http://127.0.0.1:8080/manager/delivery_address/infor/profile', {
-                params: { name: userName },
+        // Fetch orders for the user
+        axios.get(`http://127.0.0.1:8080/manager/order/api/getlist/user?name=${username}`)
+            .then(response => {
+                setData(response.data.body);
+                setFilteredData(response.data.body);
+                setLoading(false);
+            })
+            .catch(err => {
+                setError(err.message);
+                setLoading(false);
             });
-            setUserProfile(response.data.body);
-            setIsDrawerVisible(true);
-        } catch (err) {
-            setError(err);
-        }
+    }, []);
+
+    // Handle search input
+    const handleSearch = (value) => {
+        setSearchText(value);
+        const lowercasedValue = value.toLowerCase();
+        const numericValue = parseFloat(value);
+
+        const filtered = data.filter(order => {
+            const orderIdMatches = order.order_id.toString().includes(value);
+            const addressMatches =
+                order.address.district.toLowerCase().includes(lowercasedValue) ||
+                order.address.commune.toLowerCase().includes(lowercasedValue) ||
+                order.address.detailed.toLowerCase().includes(lowercasedValue);
+            const amountMatches =
+                !isNaN(numericValue) && (order.amount / 100).toFixed(2).includes(numericValue.toString());
+
+            return orderIdMatches || addressMatches || amountMatches;
+        });
+        setFilteredData(filtered);
     };
 
-    const handleDrawerClose = () => {
-        setIsDrawerVisible(false);
-        setUserProfile(null);
+    // Handle cancellation of an order
+    const handleCancel = (id) => {
+        axios.patch(`http://127.0.0.1:8080/manager/order/api/update/calcel?id=${id}`)
+            .then(response => {
+                if (response.data.code === 0) {
+                    message.success('Đơn hàng đã được hủy thành công');
+                    // Update the status of the canceled order
+                    setData(prevData => {
+                        return prevData.map(order =>
+                            order.order_id === id
+                                ? { ...order, status: 11 } // Assuming 11 is the status code for canceled
+                                : order
+                        );
+                    });
+                    setFilteredData(prevData => {
+                        return prevData.map(order =>
+                            order.order_id === id
+                                ? { ...order, status: 11 } // Assuming 11 is the status code for canceled
+                                : order
+                        );
+                    });
+                } else {
+                    message.error('Không thể hủy đơn hàng');
+                }
+            })
+            .catch(err => {
+                message.error(`Lỗi: ${err.message}`);
+            });
     };
 
     const columns = [
-        { title: 'Mã Đơn Hàng', dataIndex: 'id', key: 'id' },
-        { title: 'Tên Khách Hàng', dataIndex: 'customer_name', key: 'customer_name' },
-        { title: 'Ngày Đặt Hàng', dataIndex: 'order_date', key: 'order_date' },
-        { title: 'Tên sách', dataIndex: 'book_title', key: 'book_title' },
-        { title: 'Giá Sách', dataIndex: 'book_price', key: 'book_price' },
-        { title: 'Số Lượng', dataIndex: 'quantity', key: 'quantity' },
-        { title: 'Tổng Số Tiền', dataIndex: 'total_amount', key: 'total_amount' },
+        {
+            title: 'Mã Đơn Hàng',
+            dataIndex: 'order_id',
+            key: 'order_id',
+        },
+        {
+            title: 'Thời Gian Tạo',
+            dataIndex: 'create_time',
+            key: 'create_time',
+            render: text => new Date(text).toLocaleString(),
+        },
+        {
+            title: 'Địa Chỉ',
+            key: 'address',
+            render: (text, record) => (
+                <>
+                    <div>{record.address.district}</div>
+                    <div>{record.address.commune}</div>
+                    <div>{record.address.detailed}</div>
+                </>
+            ),
+        },
+        {
+            title: 'Số Tiền',
+            dataIndex: 'amount',
+            key: 'amount',
+            render: text => `$${(text / 100).toFixed(2)}`, // Assuming amount is in cents
+        },
+        {
+            title: 'Ngày Dự Đoán',
+            dataIndex: 'estimated_date',
+            key: 'estimated_date',
+            render: text => new Date(text).toLocaleString(),
+        },
         {
             title: 'Trạng Thái',
             dataIndex: 'status',
             key: 'status',
-            render: (status) => {
+            render: status => {
                 switch (status) {
-                    case 31:
-                        return 'Đơn hàng đã giao thành công và nhận tiền';
-                    case 33:
-                        return 'Đơn hàng đã bị hủy';
-                    case 19:
-                        return 'Chờ giao hàng';
-                    default:
-                        return 'Đang chờ';
+                    case 21: return 'Đang Chờ Thanh Toán Online';
+                    case 19: return 'Đang Chờ Gửi Hàng';
+                    case 23: return 'Đang Giao';
+                    case 11: return 'Đơn Hàng Đã Hủy';
+                    case 9: return 'Đã Giao Hàng và Thanh Toán';
+                    default: return 'Trạng Thái Không Xác Định';
                 }
-            }
+            },
         },
         {
             title: 'Loại Thanh Toán',
-            dataIndex: 'type_payment',
-            key: 'type_payment',
-            render: (type_payment) => {
-                if (type_payment === 25) {
-                    return 'Đã thanh toán online';
-                } else if (type_payment === 27) {
-                    return 'Thanh toán khi nhận hàng';
-                } else {
-                    return 'Thanh toán khi nhận hàng'; // Default case if needed
-                }
-            }
+            dataIndex: 'payment_type',
+            key: 'payment_type',
+            render: paymentType => paymentType === 25 ? 'Thanh Toán Online' : 'Thanh Toán Khi Nhận Hàng',
         },
         {
-            title: 'Hành Động',
+            title: 'Danh Sách Mặt Hàng',
+            key: 'items',
+            render: (text, record) => (
+                <div>
+                    {record.items.map(item => (
+                        <div key={item.name}>
+                            <strong>{item.name}</strong> - Số lượng: {item.quantity} - Giá: ${item.price / 100}
+                        </div>
+                    ))}
+                </div>
+            ),
+        },
+        {
+            title: ' ',
             key: 'action',
-            render: (_, record) => (
-                <>
-                    <Button type="primary" onClick={() => showModal(record.id)}>
-                        Cập Nhật Đơn Hàng
+            render: (text, record) => {
+                const { status, order_id } = record;
+                const canCancel = [19, 23].includes(status); // Status codes for orders that can be canceled
+
+                return canCancel ? (
+                    <Button
+                        type="primary"
+                        danger
+                        onClick={() => handleCancel(order_id)}
+                    >
+                        Hủy Đơn Hàng
                     </Button>
-                    <Button type="link" onClick={() => showDrawer(record.customer_name)}>
-                        Xem Thông Tin Khách Hàng
-                    </Button>
-                </>
-            )
-        }
+                ) : null;
+            },
+        },
     ];
 
-    if (loading) return <Spin size="large" />;
-    if (error) return <Alert message="Đã xảy ra lỗi" description={error.message} type="error" />;
+    if (loading) return <Spin tip="Đang Tải..." />;
+    if (error) return <Alert message="Lỗi" description={error} type="error" />;
 
     return (
         <div>
             <Title level={2}>Danh Sách Đơn Hàng</Title>
-            <Space direction="vertical" style={{ width: '100%', marginBottom: 16 }}>
-                <Space>
-                    <Input
-                        placeholder="Tìm kiếm theo mã đơn hàng"
-                        value={searchOrderId}
-                        onChange={(e) => setSearchOrderId(e.target.value)}
-                        style={{ width: 200 }}
-                    />
-                    <Input
-                        placeholder="Tìm kiếm theo tên khách hàng"
-                        value={searchCustomerName}
-                        onChange={(e) => setSearchCustomerName(e.target.value)}
-                        style={{ width: 200 }}
-                    />
-                    <Input
-                        placeholder="Tìm kiếm theo tên sách"
-                        value={searchBookTitle}
-                        onChange={(e) => setSearchBookTitle(e.target.value)}
-                        style={{ width: 200 }}
-                    />
-                    <Input
-                        placeholder="Tìm kiếm theo giá sách"
-                        value={searchBookPrice}
-                        onChange={(e) => setSearchBookPrice(e.target.value)}
-                        style={{ width: 200 }}
-                    />
-                    <Input
-                        placeholder="Tìm kiếm theo số lượng"
-                        value={searchQuantity}
-                        onChange={(e) => setSearchQuantity(e.target.value)}
-                        style={{ width: 200 }}
-                    />
-                    <Input
-                        placeholder="Tìm kiếm theo tổng số tiền"
-                        value={searchTotalAmount}
-                        onChange={(e) => setSearchTotalAmount(e.target.value)}
-                        style={{ width: 200 }}
-                    />
-                    {/* <Button type="primary" onClick={() => fetchOrders()}>
-                        Tìm kiếm
-                    </Button> */}
-                </Space>
-            </Space>
+            <Search
+                placeholder="Tìm kiếm theo mã đơn hàng, địa chỉ, hoặc giá tiền"
+                allowClear
+                enterButton="Tìm kiếm"
+                size="large"
+                onSearch={handleSearch}
+                style={{ marginBottom: 16 }}
+            />
             <Table
-                dataSource={orders}
+                dataSource={filteredData}
                 columns={columns}
-                rowKey="id"
-                pagination={false}
+                rowKey="order_id"
+                pagination={10}
             />
-            <Pagination
-                current={currentPage}
-                pageSize={pageSize}
-                total={total}
-                onChange={handlePageChange}
-                showSizeChanger
-            />
-            <Modal
-                title="Xác Nhận Cập Nhật"
-                visible={isModalVisible}
-                onOk={handleOk}
-                onCancel={handleCancel}
-            >
-                <p>Bạn có chắc chắn muốn cập nhật đơn hàng {selectedOrderId} không?</p>
-            </Modal>
-            <Drawer
-                title="Thông Tin Khách Hàng"
-                width={400}
-                onClose={handleDrawerClose}
-                visible={isDrawerVisible}
-            >
-                {userProfile ? (
-                    <div>
-                        <p><b>Tên người dùng:</b> {userProfile.user_name}</p>
-                        <p><b>Email:</b> {userProfile.email}</p>
-                        <p><b>Số điện thoại:</b> {userProfile.phone_number}</p>
-                        <p><b>Địa chỉ:</b> {userProfile.address}</p>
-                    </div>
-                ) : (
-                    <Spin />
-                )}
-            </Drawer>
         </div>
     );
 };
+
+
+
 
 export default ListOrder;
