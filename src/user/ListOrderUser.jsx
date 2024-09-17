@@ -1,102 +1,131 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Typography, Pagination, Spin, Alert } from 'antd';
+import { Table, Typography, Spin, Alert, Input } from 'antd';
 import axios from 'axios';
 
 const { Title } = Typography;
+const { Search } = Input;
 
 const ListOrderUser = () => {
-    const [orders, setOrders] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
-    const [total, setTotal] = useState(0);
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchText, setSearchText] = useState('');
 
-    useEffect(() => {
-        const fetchOrders = async () => {
-            const userData = JSON.parse(localStorage.getItem('userData'));
-            const customerName = userData?.user_name || '';
+  // Fetch data when component mounts
+  useEffect(() => {
+    axios.get('http://127.0.0.1:8080/manager/order/api/getlist/user?name=thangth7')
+      .then(response => {
+        setData(response.data.body);
+        setFilteredData(response.data.body);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
 
-            try {
-                setLoading(true);
-                const response = await axios.get('http://127.0.0.1:8080/manager/order/list/admin', {
-                    params: {
-                        page: currentPage,
-                        size: pageSize,
-                        customer_name: customerName,
-                    },
-                });
-                setOrders(response.data.body);
-                setTotal(response.data.total); // Ensure your API returns the total count of items
-            } catch (err) {
-                setError(err);
-            } finally {
-                setLoading(false);
-            }
-        };
+  // Handle search input
+  const handleSearch = (value) => {
+    setSearchText(value);
+    const lowercasedValue = value.toLowerCase();
+    const numericValue = parseFloat(value);
 
-        fetchOrders();
-    }, [currentPage, pageSize]);
+    const filtered = data.filter(order => {
+      const orderIdMatches = order.order_id.toString().includes(value);
+      const addressMatches = 
+        order.address.district.toLowerCase().includes(lowercasedValue) ||
+        order.address.commune.toLowerCase().includes(lowercasedValue) ||
+        order.address.detailed.toLowerCase().includes(lowercasedValue);
+      const amountMatches = 
+        !isNaN(numericValue) && (order.amount / 100).toFixed(2).includes(numericValue.toString());
 
-    const handlePageChange = (page, pageSize) => {
-        setCurrentPage(page);
-        setPageSize(pageSize);
-    };
+      return orderIdMatches || addressMatches || amountMatches;
+    });
+    setFilteredData(filtered);
+  };
 
-    const columns = [
-        { title: 'Mã Đơn Hàng', dataIndex: 'id', key: 'id' },
-        { title: 'Ngày Đặt Hàng', dataIndex: 'order_date', key: 'order_date' },
-        { title: 'Tên sách', dataIndex: 'book_title', key: 'book_title' },
-        { title: 'Tác Giả Sách', dataIndex: 'book_author', key: 'book_author' },
-        { title: 'Nhà Xuất Bản', dataIndex: 'book_publisher', key: 'book_publisher' },
-        { title: 'Ngôn Ngữ Sách', dataIndex: 'book_language', key: 'book_language' },
-        { title: 'Số Trang', dataIndex: 'book_page_count', key: 'book_page_count' },
-        { title: 'Giá Sách', dataIndex: 'book_price', key: 'book_price' },
-        { title: 'Số Lượng', dataIndex: 'quantity', key: 'quantity' },
-        { title: 'Tổng Số Tiền', dataIndex: 'total_amount', key: 'total_amount' },
-        {
-            title: 'Trạng Thái',
-            dataIndex: 'status',
-            key: 'status',
-            render: (status) => {
-                switch (status) {
-                    case 31:
-                        return 'Đơn hàng đã giao thành công và nhận tiền';
-                    case 33:
-                        return 'Đơn hàng đã bị hủy';
-                    case 19:
-                        return 'Chờ giao hàng';
-                    case 21:
-                        return 'Chờ thanh toán online';
-                    default:
-                        return 'Đang chờ';
-                }
-            }
-        },
-    ];
+  const columns = [
+    {
+      title: 'Mã Đơn Hàng',
+      dataIndex: 'order_id',
+      key: 'order_id',
+    },
+    {
+      title: 'Thời Gian Tạo',
+      dataIndex: 'create_time',
+      key: 'create_time',
+      render: text => new Date(text).toLocaleString(),
+    },
+    {
+      title: 'Địa Chỉ',
+      key: 'address',
+      render: (text, record) => (
+        <>
+          <div>{record.address.district}</div>
+          <div>{record.address.commune}</div>
+          <div>{record.address.detailed}</div>
+        </>
+      ),
+    },
+    {
+      title: 'Số Tiền',
+      dataIndex: 'amount',
+      key: 'amount',
+      render: text => `$${(text / 100).toFixed(2)}`, // Assuming amount is in cents
+    },
+    {
+      title: 'Ngày Dự Đoán',
+      dataIndex: 'estimated_date',
+      key: 'estimated_date',
+      render: text => new Date(text).toLocaleString(),
+    },
+    {
+      title: 'Trạng Thái',
+      dataIndex: 'status',
+      key: 'status',
+      render: status => {
+        switch (status) {
+          case 21: return 'Đang Chờ Thanh Toán Online';
+          case 19: return 'Đang Chờ Gửi Hàng';
+          case 23: return 'Đang Giao';
+          case 11: return 'Đơn Hàng Đã Hủy';
+          case 9: return 'Đã Giao Hàng và Thanh Toán';
+          default: return 'Trạng Thái Không Xác Định';
+        }
+      },
+    },
+    {
+      title: 'Loại Thanh Toán',
+      dataIndex: 'payment_type',
+      key: 'payment_type',
+      render: paymentType => paymentType === 25 ? 'Thanh Toán Online' : 'Thanh Toán Khi Nhận Hàng',
+    },
+  ];
 
-    if (loading) return <Spin size="large" />;
-    if (error) return <Alert message="Đã xảy ra lỗi" description={error.message} type="error" />;
+  if (loading) return <Spin tip="Đang Tải..." />;
+  if (error) return <Alert message="Lỗi" description={error} type="error" />;
 
-    return (
-        <div>
-            <Title level={2}>Danh Sách Đơn Hàng</Title>
-            <Table
-                dataSource={orders}
-                columns={columns}
-                rowKey="id"
-                pagination={false}
-            />
-            <Pagination
-                current={currentPage}
-                pageSize={pageSize}
-                total={total}
-                onChange={handlePageChange}
-                showSizeChanger
-                style={{ marginTop: '16px' }}
-            />
-        </div>
-    );
+  return (
+    <div>
+      <Title level={2}>Danh Sách Đơn Hàng</Title>
+      <Search
+        placeholder="Tìm kiếm theo mã đơn hàng, địa chỉ, hoặc giá tiền"
+        allowClear
+        enterButton="Tìm kiếm"
+        size="large"
+        onSearch={handleSearch}
+        style={{ marginBottom: 16 }}
+      />
+      <Table
+        dataSource={filteredData}
+        columns={columns}
+        rowKey="order_id"
+        pagination={{ pageSize: 10, showSizeChanger: true, showQuickJumper: true }}
+      />
+    </div>
+  );
 };
 
 export default ListOrderUser;
