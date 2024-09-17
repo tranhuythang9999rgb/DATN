@@ -56,9 +56,9 @@ type PayOSResponseType struct {
 }
 
 type Item struct {
-	Name     string `json:"name"`
-	Quantity int    `json:"quantity"`
-	Price    int    `json:"price"`
+	Name     string  `json:"name"`
+	Quantity int     `json:"quantity"`
+	Price    float64 `json:"price"`
 }
 
 type CheckoutRequestType struct {

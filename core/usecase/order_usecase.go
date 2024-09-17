@@ -19,19 +19,24 @@ type UseCaseOrder struct {
 	book      domain.RepositoryBook
 	trans     domain.RepositoryTransaction
 	orderItem domain.RepositoryOrderItem
+	address   domain.RepositoryDeliveryAddress
 }
 
-func NewUseCaseOrder(order domain.RepositoryOrder, book domain.RepositoryBook,
+func NewUseCaseOrder(order domain.RepositoryOrder,
+	book domain.RepositoryBook,
 	orderItem domain.RepositoryOrderItem,
+	address domain.RepositoryDeliveryAddress,
 	trans domain.RepositoryTransaction) *UseCaseOrder {
 	return &UseCaseOrder{
 		order:     order,
 		book:      book,
 		trans:     trans,
 		orderItem: orderItem,
+		address:   address,
 	}
 }
 
+// ko dungf
 func (u *UseCaseOrder) CreateOrder(ctx context.Context, req *entities.Order) (int64, errors.Error) {
 	orderId := utils.GenerateUniqueKey()
 	orderDate := time.Now()
@@ -186,6 +191,7 @@ func (u *UseCaseOrder) ListOrdersUseTk(ctx context.Context, start, end string) (
 	return listOrder, nil
 }
 
+// ko dung
 func (u *UseCaseOrder) CreateOrderInCart(ctx context.Context, req []*entities.OrderItemReq) errors.Error {
 	// Tạo Order mới
 
@@ -275,16 +281,6 @@ func (u *UseCaseOrder) GetListOrderBuyOneDay(ctx context.Context, day string) (*
 	}, nil
 }
 
-// {
-//     "cart_id": 2594695,
-//     "book_id": 8113677,
-//     "book_name": "8",
-//     "quantity": 1,
-//     "price": 8,
-//     "total_amount": 8,
-//     "url": "http://localhost:8080/manager/shader/thao/6284312.png"
-// }
-
 func (u *UseCaseOrder) CreateOrderWhenBuyCart(ctx context.Context, req *entities.OrderRequestSubmitBuyFromCart) (int64, float64, errors.Error) {
 	var orderItems []*entities.Items
 	var count int
@@ -317,7 +313,7 @@ func (u *UseCaseOrder) CreateOrderWhenBuyCart(ctx context.Context, req *entities
 		OrderDate:    orderDateString,
 		Quantity:     count,
 		TotalAmount:  float64(orderItems[0].TotalAmount),
-		Status:       enums.ORDER_ARE_PAYING,
+		Status:       enums.ORDER_PEND,
 		TypePayment:  enums.TYPE_PAYMENT_ONLINE,
 		CreateTime:   time.Now(),
 		CreateOrder:  utils.GenerateTimestamp(),
@@ -367,7 +363,7 @@ func (u *UseCaseOrder) CreateOrderWhenBuyOffLine(ctx context.Context, req *entit
 		OrderDate:    orderDateString,
 		Quantity:     count,
 		TotalAmount:  float64(orderItems[0].TotalAmount),
-		Status:       enums.ORDER_ARE_PAYING,
+		Status:       enums.ORDER_PEND,
 		TypePayment:  enums.TYPE_PAYMENT_ONLINE,
 		CreateTime:   time.Now(),
 		CreateOrder:  utils.GenerateTimestamp(),
@@ -376,9 +372,70 @@ func (u *UseCaseOrder) CreateOrderWhenBuyOffLine(ctx context.Context, req *entit
 		Items: req.Items,
 	})
 	if err != nil {
-		log.Error(err, "Error unmarshalling JSON: %v")
+		log.Error(err, "Error system: %v")
 		return errors.ErrSystem
 	}
 	log.Infof("data ", priceToal)
 	return nil
+}
+
+func (u *UseCaseOrder) GetListOrderByUserProFile(ctx context.Context, name string) ([]*entities.OrderDetailsInterNal, error) {
+
+	now := time.Now()
+	estimatedDate := now.Add(3 * 24 * time.Hour)
+	var listItemOrder = make([]entities.Item, 0)
+	var detailListorder = make([]*entities.OrderDetailsInterNal, 0)
+	listOrder, err := u.order.GetListorderByUser(ctx, name)
+	if err != nil {
+		log.Error(err, "Error unmarshalling JSON: %v")
+		return nil, errors.ErrSystem
+	}
+	for _, v := range listOrder {
+
+		orderItem, err := u.orderItem.GetOrderByOrderId(ctx, v.ID)
+		if err != nil {
+			log.Error(err, "Error system: %v")
+			return nil, errors.ErrSystem
+		}
+		getaddress, err := u.address.GetAddressByUserName(ctx, name)
+		if err != nil {
+			log.Error(err, "Error system: %v")
+			return nil, errors.ErrSystem
+		}
+		for _, v := range orderItem {
+			book, _ := u.book.GetBookById(ctx, v.BookID)
+			listItemOrder = append(listItemOrder, entities.Item{
+				Name:     book.Title,
+				Quantity: v.Quantity,
+				Price:    v.Price,
+			})
+		}
+
+		if orderItem != nil {
+			detailListorder = append(detailListorder, &entities.OrderDetailsInterNal{
+				OrderID:    v.ID,
+				CreateTime: v.CreateTime,
+				Address: &domain.DeliveryAddress{
+					ID:          getaddress.ID,
+					OrderID:     getaddress.OrderID,
+					Email:       getaddress.Email,
+					UserName:    name,
+					PhoneNumber: getaddress.PhoneNumber,
+					Province:    getaddress.PhoneNumber,
+					District:    getaddress.District,
+					Commune:     getaddress.Commune,
+					Detailed:    getaddress.Detailed,
+					NickName:    getaddress.NickName,
+				},
+				Amount:        v.TotalAmount,
+				EstimatedDate: estimatedDate,
+				Items:         listItemOrder,
+				Status:        v.Status,
+				PaymentType:   v.TypePayment,
+			})
+		}
+
+	}
+
+	return detailListorder, nil
 }

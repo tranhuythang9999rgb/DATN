@@ -93,4 +93,6 @@ type RepositoryOrder interface {
 	UpdateStatusPaymentOffline(ctx context.Context, id int64, status int) error
 
 	GetListOrderByTimeOneDay(ctx context.Context, day int64) ([]*Order, error)
+
+	GetListorderByUser(ctx context.Context, username string) ([]*Order, error)
 }

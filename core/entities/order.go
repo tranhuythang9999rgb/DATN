@@ -1,6 +1,9 @@
 package entities
 
-import "shoe_shop_server/core/domain"
+import (
+	"shoe_shop_server/core/domain"
+	"time"
+)
 
 type Order struct {
 	CustomerName string `form:"customer_name"` // Tên khách hàng
@@ -42,11 +45,13 @@ type Items struct {
 	URL         string  `json:"url"`          // URL ảnh sách
 }
 
-type OrderDetails struct {
+type OrderDetailsInterNal struct {
 	OrderID       int64                   `json:"order_id"`
-	CreateTime    string                  `json:"create_time"`
+	CreateTime    time.Time               `json:"create_time"`
 	Address       *domain.DeliveryAddress `json:"address"`
-	Amount        string                  `json:"amount"`
-	EstimatedDate string                  `json:"estimated_date"` // Dự kiến ngày nhận
+	Amount        float64                 `json:"amount"`
+	EstimatedDate time.Time               `json:"estimated_date"` // Dự kiến ngày nhận
 	Items         []Item                  `json:"items"`          // Danh sách các item
+	Status        int                     `json:"status"`
+	PaymentType   int                     `json:"payment_type"`
 }

@@ -105,6 +105,7 @@ func NewApiRouter(
 		orderGroup.PATCH("/api/order/offiline", order.UpdateOrderOffline)
 		orderGroup.GET("/api/admin/day", order.GetOrderBuyOneDay)
 		orderGroup.POST("/api/pend/offline", order.CreateOrderWhenBuyOffLine)
+		orderGroup.GET("/api/getlist/user", order.GetListOrderForuser)
 	}
 	deliveryAddressGroup := r.Group("/delivery_address")
 	{

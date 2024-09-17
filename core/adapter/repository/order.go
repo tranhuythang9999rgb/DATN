@@ -184,3 +184,9 @@ func (u *CollectionOrder) GetListOrderByTimeOneDay(ctx context.Context, day int6
 
 	return listOrder, nil
 }
+
+func (u *CollectionOrder) GetListorderByUser(ctx context.Context, username string) ([]*domain.Order, error) {
+	var orders = make([]*domain.Order, 0)
+	result := u.db.Where("customer_name = ?", username).Find(&orders)
+	return orders, result.Error
+}

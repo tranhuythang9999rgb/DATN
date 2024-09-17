@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	errors "shoe_shop_server/common/error"
 	"shoe_shop_server/core/domain"
 	"shoe_shop_server/core/entities"
 	"shoe_shop_server/core/usecase"
@@ -137,4 +138,14 @@ func (u *ControllerOrder) CreateOrderWhenBuyOffLine(ctx *gin.Context) {
 		return
 	}
 	u.baseController.Success(ctx, nil)
+}
+
+func (u *ControllerOrder) GetListOrderForuser(ctx *gin.Context) {
+	name := ctx.Query("name")
+	listOrder, err := u.order.GetListOrderByUserProFile(ctx, name)
+	if err != nil {
+		u.baseController.ErrorData(ctx, errors.ErrConflict)
+		return
+	}
+	u.baseController.Success(ctx, listOrder)
 }
