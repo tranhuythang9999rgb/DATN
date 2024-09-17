@@ -32,7 +32,7 @@ const ListOrder = () => {
         }
 
         // Fetch orders for the user
-        axios.get(`http://127.0.0.1:8080/manager/order/api/getlist/user?name=${username}`)
+        axios.get("http://127.0.0.1:8080/manager/order/api/listorder/admin")
             .then(response => {
                 setData(response.data.body);
                 setFilteredData(response.data.body);
@@ -99,6 +99,11 @@ const ListOrder = () => {
             title: 'Mã Đơn Hàng',
             dataIndex: 'order_id',
             key: 'order_id',
+        },
+        {
+            title: 'Người mua',
+            dataIndex: 'user_name',
+            key: 'user_name'
         },
         {
             title: 'Thời Gian Tạo',
