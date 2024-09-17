@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Typography, Spin, Alert, Input } from 'antd';
+import { Table, Typography, Spin, Alert, Input, Button, message } from 'antd';
 import axios from 'axios';
 
 const { Title } = Typography;
@@ -44,6 +44,36 @@ const ListOrderUser = () => {
       return orderIdMatches || addressMatches || amountMatches;
     });
     setFilteredData(filtered);
+  };
+
+  // Handle cancellation of an order
+  const handleCancel = (id) => {
+    axios.patch(`http://127.0.0.1:8080/manager/order/api/update/calcel?id=${id}`)
+      .then(response => {
+        if (response.data.code === 0) {
+          message.success('Đơn hàng đã được hủy thành công');
+          // Update the status of the canceled order
+          setData(prevData => {
+            return prevData.map(order =>
+              order.order_id === id
+                ? { ...order, status: 11 } // Assuming 11 is the status code for canceled
+                : order
+            );
+          });
+          setFilteredData(prevData => {
+            return prevData.map(order =>
+              order.order_id === id
+                ? { ...order, status: 11 } // Assuming 11 is the status code for canceled
+                : order
+            );
+          });
+        } else {
+          message.error('Không thể hủy đơn hàng');
+        }
+      })
+      .catch(err => {
+        message.error(`Lỗi: ${err.message}`);
+      });
   };
 
   const columns = [
@@ -102,6 +132,24 @@ const ListOrderUser = () => {
       key: 'payment_type',
       render: paymentType => paymentType === 25 ? 'Thanh Toán Online' : 'Thanh Toán Khi Nhận Hàng',
     },
+    {
+      title: 'Hành Động',
+      key: 'action',
+      render: (text, record) => {
+        const { status, order_id } = record;
+        const canCancel = [19, 23].includes(status); // Status codes for orders that can be canceled
+
+        return canCancel ? (
+          <Button 
+            type="primary" 
+            danger 
+            onClick={() => handleCancel(order_id)}
+          >
+            Hủy Đơn Hàng
+          </Button>
+        ) : null;
+      },
+    },
   ];
 
   if (loading) return <Spin tip="Đang Tải..." />;
@@ -122,7 +170,7 @@ const ListOrderUser = () => {
         dataSource={filteredData}
         columns={columns}
         rowKey="order_id"
-        pagination={{ pageSize: 10, showSizeChanger: true, showQuickJumper: true }}
+        pagination={10}
       />
     </div>
   );
