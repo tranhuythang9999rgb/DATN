@@ -27,6 +27,8 @@ import DetailAuthorBook from './DetailAuthorBook';
 import ListAuthorBookButton from './ListAuthorBookSelect';
 import FormBuyCart from '../user/FormBuyCart';
 import ListBookLate from './ListBookLate';
+import ListBookByAuthorName from './ListBookByAuthorName';
+import ListBookByPublicsher from './ListBookByPublicsher';
 const { Title, Text } = Typography;
 
 
@@ -49,6 +51,9 @@ function HomePage() {
     const [isNextAuthorBook, setIsNextAuthorBook] = useState(false);
     const [nameAuthorBook, setNameAuthorBook] = useState(null);
     const [isNextCart,setIsNextCart] = useState(false);
+    const [nextListBookByAuthor, setNextListBookByAuthor] = useState(false);
+    const [nextListBookByPublicSher, setNextListBookByPublicSher] = useState(false);
+
     const cartRef = useRef(null);
 
     const openDrawerCart = () => {
@@ -200,6 +205,15 @@ function HomePage() {
         )
     }
 
+    if(nextListBookByAuthor) {
+        return <ListBookByAuthorName/>
+    }
+
+    if (nextListBookByPublicSher) {
+        return <ListBookByPublicsher />;
+    }
+
+
     return (
         <div className={styleLayout.layoutHome}>
 
@@ -326,7 +340,7 @@ function HomePage() {
                     <span style={{ display: 'flex', marginLeft: '10px' }}>
                         <h1>Tác giả</h1>
                     </span>
-                    <AuthorBook />
+                    <AuthorBook eventOnClick={()=>setNextListBookByAuthor(true)}/>
                 </div>
 
                 <div className='layout-footer-list-bool-well-sell'>
@@ -343,8 +357,8 @@ function HomePage() {
 
                 <div className='layout-footer-nhaf-xuatban'>
                     <h3>Nhà xuất bản</h3>
-                    <ListPublicSher />
-                </div>
+                    <ListPublicSher eventOnClick={() => setNextListBookByPublicSher(true)} />
+                    </div>
 
                 <FooterHeader />
             </div>
