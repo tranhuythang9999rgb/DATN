@@ -1,0 +1,13 @@
+.books-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 4 cards per row */
+}
+
+.book-card {
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+
+.book-card:hover {
+    transform: scale(1.05); /* Slightly enlarge the card on hover */
+}

@@ -37,6 +37,8 @@ import RegisterUser from "./user/RegisterUser";
 import DetailAuthorBook from "./Home/DetailAuthorBook";
 import ListCartUseNext from "./Home/ListCartUseNext";
 import ListBookHome from "./Home/ListBookHome";
+import ListBookByAuthorName from "./Home/ListBookByAuthorName";
+import ListBookByPublicsher from "./Home/ListBookByPublicsher";
 
 
 
@@ -96,6 +98,8 @@ function App() {
       {/* <DetailAuthorBook/> */}
       {/* <ListCart/> */}
       {/* <ListCartUseNext/> */}
+      {/* <ListBookByAuthorName/> */}
+      {/* <ListBookByPublicsher/> */}
     </div>
   );
 }
