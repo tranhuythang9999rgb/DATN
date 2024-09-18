@@ -65,4 +65,7 @@ type RepositoryBook interface {
 	GetListBookByTypeBook(ctx context.Context, authorName string, startPrice, endPrice float64) ([]*Book, error)
 	GetBookByName(ctx context.Context, nameBook string) ([]*Book, error)
 	GetListFiveLatestBooks(ctx context.Context) ([]*Book, error)
+
+	GetListBookByAuthor(ctx context.Context, authorname string) ([]*Book, error)
+	GetListBookByPublicSher(ctx context.Context, authorname string) ([]*Book, error)
 }

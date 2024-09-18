@@ -242,7 +242,7 @@ func (u *UseCaseOrder) CreateOrderWhenBuyOffLine(ctx context.Context, req *entit
 		Quantity:     count,
 		TotalAmount:  float64(orderItems[0].TotalAmount),
 		Status:       enums.ORDER_PEND,
-		TypePayment:  enums.TYPE_PAYMENT_ONLINE,
+		TypePayment:  enums.TYPE_PAYMENT_OFFLINE,
 		CreateTime:   time.Now(),
 		CreateOrder:  utils.GenerateTimestamp(),
 		AddressId:    addressIdNum,

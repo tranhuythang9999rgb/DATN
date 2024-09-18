@@ -182,7 +182,25 @@ func (u *CollectionBook) GetBookByName(ctx context.Context, bookName string) ([]
 
 func (u *CollectionBook) GetListFiveLatestBooks(ctx context.Context) ([]*domain.Book, error) {
 	var books = make([]*domain.Book, 0)
-	result := u.book.Order("create_time DESC").Limit(7).Find(&books)
+	result := u.book.Order("create_time DESC").Limit(5).Find(&books)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return books, nil
+}
+
+func (u *CollectionBook) GetListBookByAuthor(ctx context.Context, authorname string) ([]*domain.Book, error) {
+	var books = make([]*domain.Book, 0)
+	result := u.book.Where("author_name = ?", authorname).Find(&books)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return books, nil
+}
+
+func (u *CollectionBook) GetListBookByPublicSher(ctx context.Context, publciname string) ([]*domain.Book, error) {
+	var books = make([]*domain.Book, 0)
+	result := u.book.Where("publisher = ?", publciname).Find(&books)
 	if result.Error != nil {
 		return nil, result.Error
 	}

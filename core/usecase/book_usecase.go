@@ -408,3 +408,96 @@ func (u *UploadBookUseCase) GetListBookLasterNew(ctx context.Context) (*entities
 		Books: booksResp,
 	}, nil
 }
+
+func (u *UploadBookUseCase) GetListBookByAuthor(ctx context.Context, name string) (*entities.BookSellWells, errors.Error) {
+	var booksResp = make([]*entities.BookRespSellWell, 0)
+	books, err := u.books.GetListBookByAuthor(ctx, name)
+	if err != nil {
+		return nil, errors.NewCustomHttpErrorWithCode(enums.DB_ERR_CODE, enums.DB_ERR_MESS, "500")
+	}
+	for _, v := range books {
+		var fileURL string
+		listFile, _ := u.fie_lc.GetListFileById(ctx, v.ID)
+
+		if listFile != nil && len(listFile) > 0 {
+			// Nếu listFile có giá trị và không rỗng, gán URL của file đầu tiên
+			fileURL = listFile[0].URL
+		} else {
+			// Nếu listFile là nil hoặc rỗng, gán URL là chuỗi rỗng
+			fileURL = ""
+		}
+		if v.IsActive {
+			booksResp = append(booksResp, &entities.BookRespSellWell{
+				ID:            v.ID,
+				Title:         v.Title,
+				AuthorName:    v.AuthorName,
+				Publisher:     v.Publisher,
+				PublishedDate: v.PublishedDate,
+				ISBN:          v.ISBN,
+				Genre:         v.Genre,
+				Description:   v.Description,
+				Language:      v.Language,
+				PageCount:     v.PageCount,
+				Dimensions:    v.Dimensions,
+				Weight:        v.Weight,
+				Price:         v.Price,
+				DiscountPrice: v.DiscountPrice,
+				Quantity:      v.Quantity,
+				Notes:         v.Notes,
+				IsActive:      v.IsActive,
+				OpeningStatus: v.OpeningStatus,
+				FileDescFirst: fileURL,
+			})
+		}
+
+	}
+	return &entities.BookSellWells{
+		Books: booksResp,
+	}, nil
+}
+func (u *UploadBookUseCase) GetListBookByPublicSher(ctx context.Context, name string) (*entities.BookSellWells, errors.Error) {
+	var booksResp = make([]*entities.BookRespSellWell, 0)
+	books, err := u.books.GetListBookByPublicSher(ctx, name)
+	if err != nil {
+		return nil, errors.NewCustomHttpErrorWithCode(enums.DB_ERR_CODE, enums.DB_ERR_MESS, "500")
+	}
+	for _, v := range books {
+		var fileURL string
+		listFile, _ := u.fie_lc.GetListFileById(ctx, v.ID)
+
+		if listFile != nil && len(listFile) > 0 {
+			// Nếu listFile có giá trị và không rỗng, gán URL của file đầu tiên
+			fileURL = listFile[0].URL
+		} else {
+			// Nếu listFile là nil hoặc rỗng, gán URL là chuỗi rỗng
+			fileURL = ""
+		}
+		if v.IsActive {
+			booksResp = append(booksResp, &entities.BookRespSellWell{
+				ID:            v.ID,
+				Title:         v.Title,
+				AuthorName:    v.AuthorName,
+				Publisher:     v.Publisher,
+				PublishedDate: v.PublishedDate,
+				ISBN:          v.ISBN,
+				Genre:         v.Genre,
+				Description:   v.Description,
+				Language:      v.Language,
+				PageCount:     v.PageCount,
+				Dimensions:    v.Dimensions,
+				Weight:        v.Weight,
+				Price:         v.Price,
+				DiscountPrice: v.DiscountPrice,
+				Quantity:      v.Quantity,
+				Notes:         v.Notes,
+				IsActive:      v.IsActive,
+				OpeningStatus: v.OpeningStatus,
+				FileDescFirst: fileURL,
+			})
+		}
+
+	}
+	return &entities.BookSellWells{
+		Books: booksResp,
+	}, nil
+}

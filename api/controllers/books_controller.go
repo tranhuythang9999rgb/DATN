@@ -158,3 +158,23 @@ func (u *ControllersUploadBooks) GetListFiveLatestBooks(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, books)
 }
+
+func (u *ControllersUploadBooks) GetListBookByAuthorName(ctx *gin.Context) {
+	name := ctx.Query("name")
+	books, err := u.books.GetListBookByAuthor(ctx, name)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, books)
+}
+
+func (u *ControllersUploadBooks) GetListBookByPublicSherName(ctx *gin.Context) {
+	name := ctx.Query("name")
+	books, err := u.books.GetListBookByPublicSher(ctx, name)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, books)
+}
