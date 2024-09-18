@@ -43,13 +43,13 @@ import ListBookHome from "./Home/ListBookHome";
 function App() {
   return (
     <div>
-      <Dashboard />
+      {/* <Dashboard /> */}
       {/* <UploadBook/> */}
       {/* <ListBooks/> */}
       {/* <HomePage/> */}
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
-      {/* <CheckLogin/> */}
+      <CheckLogin/>
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}

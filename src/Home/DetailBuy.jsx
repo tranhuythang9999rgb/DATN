@@ -20,6 +20,8 @@ import styleDetail from './detail_buy.module.css';
 import ButtonGroup from 'antd/es/button/button-group';
 import { BsFileMinus } from 'react-icons/bs';
 import BookWellSell from './BookWellSell';
+import { TiArrowBackOutline } from 'react-icons/ti';
+import HomePage from './HomePage';
 const { Title, Text, Paragraph } = Typography;
 
 const DetailBuy = ({ book_id }) => {
@@ -37,6 +39,7 @@ const DetailBuy = ({ book_id }) => {
     const [authors, setAuthors] = useState([]);
     const [isNext, setIsNext] = useState(false);
     const [count, setCount] = useState(1);
+    const [backGohomePage, setBackGohomePage] = useState(false);
 
     const cartRef = useRef(null);
 
@@ -204,13 +207,6 @@ const DetailBuy = ({ book_id }) => {
         }
     };
     
-
-
-    if (isBuy) {
-        return (
-            <SubmitBuyBook />
-        )
-    }
     const handlerGoBack = () => {
         window.location.reload()
     }
@@ -224,13 +220,30 @@ const DetailBuy = ({ book_id }) => {
     };
 
 
+
+    if (isBuy) {
+        return (
+            <SubmitBuyBook />
+        )
+    }
+   
+    if(backGohomePage){
+        return (
+            <HomePage/>
+        )
+    }
+
     return (
 
 
         <div className={styleDetail.body}>
+            <div>moi moi</div>
             <Row>
                 <Col xs={6} sm={6} md={6} lg={6} xl={6} className={styleDetail['col-container']}>
                     {/* Viền */}
+                    <div>
+                    <TiArrowBackOutline onClick={()=>setBackGohomePage(true)} style={{fontSize:'30px'}} />
+                    </div>
                 </Col>
 
                 <Col style={{ background: 'white' }} xs={12} sm={12} md={12} lg={12} xl={12}>

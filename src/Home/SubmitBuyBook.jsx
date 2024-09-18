@@ -207,7 +207,8 @@ const SubmitBuyBook = () => {
     const storedUsername = localStorage.getItem('userData');
 
     if (isGoback) {
-        return <DetailBuy book_id={localStorage.getItem('book_id')} />;
+        // return <DetailBuy book_id={localStorage.getItem('book_id')} />;
+        return <HomePage/>
     }
 
     if (redirect) {
