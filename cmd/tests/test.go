@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"shoe_shop_server/common/utils"
 	"time"
 )
 
@@ -13,7 +14,8 @@ func main() {
 	// fmt.Println(startOfDay.Unix())
 	// fmt.Println(reflect.ValueOf(startOfDay).Type())
 	// fmt.Println(reflect.ValueOf(endOfDay).Type())
-	fmt.Println(GenerateTimestamp())
+	// fmt.Println(utils.GenerateTimestamp())
+	fmt.Println(utils.ConvertTimestampToDateTime(1726703999))
 }
 
 func GenerateTimestamp() int64 {

@@ -12,6 +12,7 @@ type User struct {
 	PhoneNumber string `json:"phone_number"`
 	Avatar      string `json:"avatar"`
 	Role        int    `json:"role"`
+	CreateTime  int    `json:"create_time"`
 }
 
 type UserReqByForm struct {
@@ -32,4 +33,5 @@ type RepositoryUser interface {
 	FindUserByUseName(ctx context.Context, name string) (bool, int64, int, error)
 	FindUserByEmail(ctx context.Context, email string) (bool, int, error)
 	GetProFile(ctx context.Context, name string) (*User, error)
+	GetNewUsersInMonth() ([]*User, error)
 }

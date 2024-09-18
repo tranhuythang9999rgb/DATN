@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"shoe_shop_server/common/enums"
+	"shoe_shop_server/common/log"
 	"shoe_shop_server/core/adapter"
 	"shoe_shop_server/core/domain"
 	"time"
@@ -171,15 +172,15 @@ func (u *CollectionOrder) GetListOrderByTimeOneDay(ctx context.Context, day int6
 
 	startOfDay := time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, time.UTC)
 	endOfDay := startOfDay.Add(24 * time.Hour).Add(-time.Nanosecond)
-
+	log.Infof("daye", startOfDay.Unix(), endOfDay.Unix())
 	var listOrder []*domain.Order
 
-	result := u.db.Where("create_order BETWEEN ? AND ? AND status = ?", startOfDay.Unix(), endOfDay.Unix(), enums.ORDER_STATUS_SUCESS).Find(&listOrder)
+	result := u.db.Where("create_order BETWEEN ? AND ? AND status = ?", startOfDay.Unix(), endOfDay.Unix(), enums.ORDER_SUCESS).Find(&listOrder)
 
 	if result.Error != nil {
 		return nil, result.Error
 	}
-
+	log.Infof("data ", listOrder)
 	return listOrder, nil
 }
 

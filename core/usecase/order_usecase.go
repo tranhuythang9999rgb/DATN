@@ -20,12 +20,14 @@ type UseCaseOrder struct {
 	trans     domain.RepositoryTransaction
 	orderItem domain.RepositoryOrderItem
 	address   domain.RepositoryDeliveryAddress
+	user      domain.RepositoryUser
 }
 
 func NewUseCaseOrder(order domain.RepositoryOrder,
 	book domain.RepositoryBook,
 	orderItem domain.RepositoryOrderItem,
 	address domain.RepositoryDeliveryAddress,
+	user domain.RepositoryUser,
 	trans domain.RepositoryTransaction) *UseCaseOrder {
 	return &UseCaseOrder{
 		order:     order,
@@ -33,6 +35,7 @@ func NewUseCaseOrder(order domain.RepositoryOrder,
 		trans:     trans,
 		orderItem: orderItem,
 		address:   address,
+		user:      user,
 	}
 }
 
@@ -133,14 +136,26 @@ func (u *UseCaseOrder) GetListOrderBuyOneDay(ctx context.Context, day string) (*
 	if err != nil {
 		return nil, errors.NewSystemError(fmt.Sprintf("error system . %v", err))
 	}
+	listIdItemm := make([]int64, 0)
+	users, err := u.user.GetNewUsersInMonth()
+	if err != nil {
+		return nil, errors.NewSystemError(fmt.Sprintf("error system . %v", err))
+	}
 	for _, v := range listOrder {
 		amount = v.TotalAmount
+		listItem, err := u.orderItem.GetOrderByOrderId(ctx, v.ID)
+		if err != nil {
+			return nil, errors.NewSystemError(fmt.Sprintf("error system . %v", err))
+		}
+		for _, v := range listItem {
+			listIdItemm = append(listIdItemm, v.ID)
+		}
 	}
 	return &entities.GetOrderBuyOneDayResponse{
-		CountOrder:   len(listOrder),
-		CountProduct: 0,
+		CountOrder:   len(listIdItemm),
+		CountProduct: len(listOrder),
 		Amount:       amount,
-		NewCustomer:  0,
+		NewCustomer:  len(users),
 	}, nil
 }
 

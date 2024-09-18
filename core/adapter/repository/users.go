@@ -7,6 +7,7 @@ import (
 	"shoe_shop_server/core/adapter"
 	"shoe_shop_server/core/configs"
 	"shoe_shop_server/core/domain"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -92,4 +93,21 @@ func (c *CollectionUser) GetProFile(ctx context.Context, name string) (*domain.U
 	var user *domain.User
 	result := c.us.Where("username = ?", name).First(&user)
 	return user, result.Error
+}
+
+func (u *CollectionUser) GetNewUsersInMonth() ([]*domain.User, error) {
+	timeNow := time.Now()
+
+	startOfMonth := time.Date(timeNow.Year(), timeNow.Month(), 1, 0, 0, 0, 0, time.UTC)
+	endOfMonth := startOfMonth.AddDate(0, 1, 0).Add(-time.Nanosecond)
+
+	var listUser []*domain.User
+
+	result := u.us.Where("create_time BETWEEN ? AND ?", startOfMonth.Unix(), endOfMonth.Unix()).Find(&listUser)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return listUser, nil
 }

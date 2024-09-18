@@ -50,6 +50,7 @@ func (u *UserCaseUse) AddAcount(ctx context.Context, req *entities.User) errors.
 		PhoneNumber: req.PhoneNumber,
 		Avatar:      respFile.URL,
 		Role:        enums.ROLE_CUSTOMER,
+		CreateTime:  int(utils.GenerateTimestamp()),
 	}
 	err = u.user.AddAcount(ctx, user)
 	if err != nil {
@@ -123,6 +124,7 @@ func (u *UserCaseUse) AddAcountAdmin(ctx context.Context, req *entities.User) er
 		PhoneNumber: req.PhoneNumber,
 		Avatar:      respFile.URL,
 		Role:        enums.ROLE_ADMIN,
+		CreateTime:  int(utils.GenerateTimestamp()),
 	}
 	err = u.user.AddAcount(ctx, user)
 	if err != nil {

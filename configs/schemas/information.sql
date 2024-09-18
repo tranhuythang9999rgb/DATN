@@ -242,3 +242,6 @@ CREATE TABLE loyalty_points (
   points INT NOT NULL DEFAULT 0,
   last_updated INTEGER
 );
+
+ALTER TABLE users 
+  ADD COLUMN create_time INT;
