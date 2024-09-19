@@ -5,15 +5,16 @@ import moment from 'moment';
 import UpdateAuthorModal from './UpdateAuthorModal';  // Import modal
 
 function AuthorBook() {
-    const [authors, setAuthors] = useState([]);
-    const [filteredAuthors, setFilteredAuthors] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [searchName, setSearchName] = useState('');
-    const [searchBiography, setSearchBiography] = useState('');
-    const [searchNationality, setSearchNationality] = useState('');
-    const [birthDate, setBirthDate] = useState(null);
-    const [selectedAuthor, setSelectedAuthor] = useState(null);  // State cho tác giả được chọn để cập nhật
-    const [isUpdateModalVisible, setUpdateModalVisible] = useState(false);  // State để hiển thị modal cập nhật
+    const [authors, setAuthors] = useState([]);  // List of authors
+    const [filteredAuthors, setFilteredAuthors] = useState([]);  // Filtered list of authors
+    const [loading, setLoading] = useState(false);  // Loading state
+    const [searchName, setSearchName] = useState('');  // Search by name
+    const [searchNationality, setSearchNationality] = useState('');  // Search by nationality
+    const [birthDate, setBirthDate] = useState(null);  // Birth date filter
+    const [searchBiography, setSearchBiography] = useState('');  // Search by biography
+    const [selectedAuthor, setSelectedAuthor] = useState(null);  // Selected author for update
+    const [isUpdateModalVisible, setUpdateModalVisible] = useState(false);  // Modal visibility
+    const [imageFile, setImageFile] = useState(null);  // Avatar image upload state
 
     const fetchAuthors = async () => {
         setLoading(true);
@@ -28,6 +29,33 @@ function AuthorBook() {
             message.error('Error fetching authors');
         } finally {
             setLoading(false);
+        }
+    };
+    // Function to add a new author
+    const addAuthor = async (values) => {
+        try {
+            const formData = new FormData();
+            formData.append('name', values.name);
+            formData.append('biography', values.biography);
+            formData.append('nationality', values.nationality);
+
+            // Handle the birth date formatting
+            if (birthDate) {
+                formData.append('birth_date', birthDate.format('YYYY-MM-DD'));
+            }
+
+            formData.append('file', imageFile);  // Ensure the correct file is attached
+
+            const response = await axios.post('http://127.0.0.1:8080/manager/author_book/add', formData);
+            if (response.data.code === 0) {
+                message.success('Author added successfully!');
+                fetchAuthors(); // Refresh the list
+            } else if (response.data.code === 2) {
+                message.error('Author name already exists.');
+            }
+        } catch (error) {
+            console.error('Error adding author:', error);
+            message.error('Unable to add author.');
         }
     };
 
@@ -108,6 +136,76 @@ function AuthorBook() {
     return (
         <div style={{ padding: '10px' }}>
             <h1>Quản Lý Tác Giả</h1>
+            <Form
+                layout="inline"
+                onFinish={addAuthor}
+                style={{ marginBottom: 10, maxWidth: 800 }}
+            >
+                <div style={{ display: 'flex' }}>
+                    <Form.Item
+                        name="name"
+                        style={{ marginBottom: '10px' }}
+                    >
+                        <Input
+                            placeholder="Tên Tác Giả"
+                            style={{ height: '40px' }}
+                            onChange={(e) => setSearchName(e.target.value)}
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        name="biography"
+                    >
+                        <Input
+                            placeholder="Tiểu Sử"
+                            style={{ height: '40px' }}
+                            onChange={(e) => setSearchBiography(e.target.value)}
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        name="nationality"
+                    >
+                        <Input
+                            placeholder="Quốc Tịch"
+                            style={{ height: '40px' }}
+                            onChange={(e) => setSearchNationality(e.target.value)}
+                        />
+                    </Form.Item>
+                    <Form.Item>
+                        <DatePicker style={{ height: '40px' }} onChange={(date) => setBirthDate(date)} />
+                    </Form.Item>
+                    <Form.Item>
+                        <Upload
+                            maxCount={1}
+                            listType='picture-card'
+                            accept="image/jpeg,image/png"
+                            beforeUpload={(file) => {
+                                setImageFile(file);
+                                return false;  // Ngăn upload tự động
+                            }}
+                            onRemove={() => {
+                                setImageFile(null);
+                            }}
+                        >
+                            +Upload
+                        </Upload>
+                    </Form.Item>
+                    <Form.Item>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            style={{
+                                height: '40px',
+                                marginLeft: 8,
+                                width: '195px',
+                                paddingTop: '5px',
+                            }}
+                        >
+                            Thêm Tác Giả
+                        </Button>
+                    </Form.Item>
+
+                </div>
+            </Form>
             <Table
                 columns={columns}
                 dataSource={filteredAuthors}

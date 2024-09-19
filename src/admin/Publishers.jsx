@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input, Button, message, Form, Popconfirm, Upload, Avatar, Space } from 'antd';
+import { Table, Input, Button, message, Form, Popconfirm, Avatar, Space, Upload } from 'antd';
 import axios from 'axios';
-import './admin_index.css'; // Import your custom CSS
+import './admin_index.css';
+import PublisherUpdateModal from './PublisherUpdateModal'; // Import the modal component
 
 // Nhà Xuất Bản
 function Publishers() {
@@ -14,8 +15,9 @@ function Publishers() {
         contact_number: '',
         website: '',
     });
+    const [selectedPublisher, setSelectedPublisher] = useState(null); // Track selected publisher
+    const [isModalVisible, setModalVisible] = useState(false); // Modal visibility
 
-    // Function to fetch the list of publishers
     const fetchPublishers = async () => {
         setLoading(true);
         try {
@@ -30,6 +32,20 @@ function Publishers() {
             setLoading(false);
         }
     };
+
+    // Handle edit button click
+    const handleEdit = (record) => {
+        setSelectedPublisher(record);
+        setModalVisible(true); // Show the modal
+    };
+
+    const handleUpdateSuccess = () => {
+        fetchPublishers();
+    };
+
+    useEffect(() => {
+        fetchPublishers();
+    }, []);
 
     // Function to add a new publisher
     const addPublisher = async (values) => {
@@ -54,13 +70,12 @@ function Publishers() {
         }
     };
 
-    // Function to delete a publisher by ID
     const handleDelete = async (id) => {
         try {
             const response = await axios.delete(`http://127.0.0.1:8080/manager/publisher/delete?id=${id}`);
             if (response.data.code === 0) {
                 message.success('Publisher deleted successfully!');
-                fetchPublishers(); // Refresh the list
+                fetchPublishers();
             } else {
                 message.error('Failed to delete publisher.');
             }
@@ -70,44 +85,27 @@ function Publishers() {
         }
     };
 
-    // Function to handle edit action
-    const handleEdit = (record) => {
-        console.log('Edit:', record);
-        // Add your edit logic here, such as opening a modal or redirecting to an edit page
-    };
-
-    // Fetch publishers when the component mounts
-    useEffect(() => {
-        fetchPublishers();
-    }, []);
-
-    // Filter publishers based on search parameters
-    const filteredPublishers = publishers.filter(publisher =>
-        publisher.name.toLowerCase().includes(searchParams.name.toLowerCase()) &&
-        publisher.address.toLowerCase().includes(searchParams.address.toLowerCase()) &&
-        publisher.contact_number.toLowerCase().includes(searchParams.contact_number.toLowerCase()) &&
-        publisher.website.toLowerCase().includes(searchParams.website.toLowerCase())
-    );
-
     const columns = [
         {
-            title: 'STT',
-            dataIndex: 'index',
-            key: 'index',
-            render: (text, record, index) => index + 1,
+            title: 'Avatar',
+            dataIndex: 'avatar',
+            key: 'avatar',
+            render: (text, record) => (
+                <Avatar src={record.avatar} />
+            ),
         },
         {
-            title: 'Tên nhà xuất bản',
+            title: 'Name',
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: 'Địa chỉ',
+            title: 'Address',
             dataIndex: 'address',
             key: 'address',
         },
         {
-            title: 'Số điện thoại liên hệ',
+            title: 'Contact Number',
             dataIndex: 'contact_number',
             key: 'contact_number',
         },
@@ -115,44 +113,46 @@ function Publishers() {
             title: 'Website',
             dataIndex: 'website',
             key: 'website',
-        },
-        {
-            title: 'Ảnh Đại Diện',
-            dataIndex: 'avatar',
-            key: 'avatar',
-            render: (avatar) => (
-                <Avatar src={avatar} size={64} />
+            render: (text) => (
+                <a href={text} target="_blank" rel="noopener noreferrer">{text}</a>
             ),
         },
         {
-            title: '',
+            title: 'Created At',
+            dataIndex: 'created_at',
+            key: 'created_at',
+            render: (text) => new Date(text).toLocaleString(),
+        },
+        {
+            title: 'Updated At',
+            dataIndex: 'updated_at',
+            key: 'updated_at',
+            render: (text) => new Date(text).toLocaleString(),
+        },
+        {
+            title: 'Actions',
             key: 'action',
             render: (text, record) => (
-                <span>
-                    <Button
-                        type="primary"
-                        onClick={() => handleEdit(record)}
-                        style={{ marginRight: 8 }}
-                    >
-                        Sửa
+                <Space size="middle">
+                    <Button type="primary" onClick={() => handleEdit(record)}>
+                        Edit
                     </Button>
                     <Popconfirm
-                        title="Bạn có chắc chắn muốn xóa nhà xuất bản này không?"
+                        title="Are you sure you want to delete this publisher?"
                         onConfirm={() => handleDelete(record.id)}
-                        okText="Xóa"
-                        cancelText="Hủy"
+                        okText="Delete"
+                        cancelText="Cancel"
                     >
-                        <Button type="dashed">Xóa</Button>
+                        <Button type="danger">Delete</Button>
                     </Popconfirm>
-                </span>
+                </Space>
             ),
-        }
-
+        },
     ];
 
     return (
         <div style={{ padding: 10 }}>
-            <h1>Nhà Xuất Bản</h1>
+            <h1>Publishers</h1>
             <Form
                 layout="inline"
                 onFinish={addPublisher}
@@ -211,42 +211,23 @@ function Publishers() {
                         </Button>
                     </Form.Item>
                 </div>
-            </Form>
-            <div style={{ marginBottom: 20 }}>
-                <Space>
-                    <Input
-                        placeholder="Tìm kiếm theo tên"
-                        style={{ marginBottom: '10px', width: 200 }}
-                        value={searchParams.name}
-                        onChange={(e) => setSearchParams({ ...searchParams, name: e.target.value })}
-                    />
-                    <Input
-                        placeholder="Tìm kiếm theo địa chỉ"
-                        style={{ marginBottom: '10px', width: 200 }}
-                        value={searchParams.address}
-                        onChange={(e) => setSearchParams({ ...searchParams, address: e.target.value })}
-                    />
-                    <Input
-                        placeholder="Tìm kiếm theo số điện thoại"
-                        style={{ marginBottom: '10px', width: 200 }}
-                        value={searchParams.contact_number}
-                        onChange={(e) => setSearchParams({ ...searchParams, contact_number: e.target.value })}
-                    />
-                    <Input
-                        placeholder="Tìm kiếm theo website"
-                        style={{ marginBottom: '10px', width: 200 }}
-                        value={searchParams.website}
-                        onChange={(e) => setSearchParams({ ...searchParams, website: e.target.value })}
-                    />
-                </Space>
-            </div>
-            <Table
+            </Form>            <Table
                 columns={columns}
-                dataSource={filteredPublishers}
+                dataSource={publishers}
                 rowKey="id"
                 loading={loading}
                 pagination={{ pageSize: 10 }}
             />
+
+            {/* Modal for updating publisher */}
+            {selectedPublisher && (
+                <PublisherUpdateModal
+                    visible={isModalVisible}
+                    onClose={() => setModalVisible(false)}
+                    publisher={selectedPublisher}
+                    onUpdate={handleUpdateSuccess}
+                />
+            )}
         </div>
     );
 }
