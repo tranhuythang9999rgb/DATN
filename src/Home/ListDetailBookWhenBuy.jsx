@@ -38,6 +38,8 @@ function ListDetailBookWhenBuy({ nameTypeBook }) {
     const [isNextProFile, setIsNextProFile] = useState(false);
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
+    const [hideBookmark, setHideBookmark] = useState(false);
+
     const cartRef = useRef(null);
 
     const openDrawerCart = () => {
@@ -51,7 +53,7 @@ function ListDetailBookWhenBuy({ nameTypeBook }) {
     const closeDrawerCart = () => {
         setIsDrawerVisibleCart(false);
     };
-  
+
     // Function to fetch books data
     const fetchBooks = async () => {
         setLoading(true);
@@ -127,12 +129,7 @@ function ListDetailBookWhenBuy({ nameTypeBook }) {
         loadLikedBooks();
     }, [nameTypeBook]);
 
-    function truncateText(text, maxLength) {
-        if (text.length > maxLength) {
-            return text.substring(0, maxLength) + '...';
-        }
-        return text;
-    }
+
     const handleLoginClick = () => {
         setIsModalVisible(true);
     };
@@ -165,7 +162,6 @@ function ListDetailBookWhenBuy({ nameTypeBook }) {
             setIsNext(true);
         }
     };
-
 
 
     if (loading) {
@@ -282,31 +278,38 @@ function ListDetailBookWhenBuy({ nameTypeBook }) {
                 </div>
             </div>
             <div>
-                <ChitietSanPhamKhiMuaHang/>{/**/}
+                <ChitietSanPhamKhiMuaHang onEventClick={() => setHideBookmark(true)} />
             </div>
-            <div className={styleCart['col-books']}>
-                <div>
-                    <div className={styleCart['books-container']}>
-                        {books.map((item) => (
-                            <div key={item.book.id} className={styleCart['book-card']}>
-                                <CardProduct
-                                    bookId={item.book.id}
-                                    author_name={item.book.author_name}
-                                    discount_price={item.book.discount_price}
-                                    file_desc_first={item.files[0]}
-                                    price={item.book.price}
-                                    publisher={item.book.publisher}
-                                    title={item.book.title}
-                                />
-                            </div>
-                        ))}
+            {/**o day*/}
+
+            {hideBookmark ? null : (
+                <div className={styleCart['col-books']}>
+                    <div>
+                        <div className={styleCart['books-container']}>
+                            {books.map((item) => (
+                                <div key={item.book.id} className={styleCart['book-card']}>
+                                    <CardProduct
+                                        bookId={item.book.id}
+                                        author_name={item.book.author_name}
+                                        discount_price={item.book.discount_price}
+                                        file_desc_first={item.files[0]}
+                                        price={item.book.price}
+                                        publisher={item.book.publisher}
+                                        title={item.book.title}
+                                    />
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
+
+
+
             <div className={styleCart['footer']}>
                 <FooterHeader />
             </div>
-        </div>
+        </div >
 
     );
 }

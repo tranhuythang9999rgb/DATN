@@ -37,7 +37,7 @@ const Footer = () => {
                     </ul>
                 </Col>
                 <Col span={5} className='footer-col-home-page'>
-                    <Title level={4}>Kết nối với chúng tôi</Title>
+                    <Title level={4}>Kết nối với chúng tôi 6666</Title>
                     <ul>
                         <li><Link href="https://facebook.com" target="_blank">Facebook</Link></li>
                         <li><Link href="https://twitter.com" target="_blank">Twitter</Link></li>

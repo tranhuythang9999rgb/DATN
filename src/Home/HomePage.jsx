@@ -38,7 +38,6 @@ function HomePage() {
     const [username, setUsername] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isNextBuy, setIsNextBuy] = useState(false);
-    const [selectedBookId, setSelectedBookId] = useState(null);  // Add state to manage selected book ID
     const [authors, setAuthors] = useState([]);
     const [isNext, setIsNext] = useState(false);
     const [selectedAuthor, setSelectedAuthor] = useState(null);
@@ -47,7 +46,6 @@ function HomePage() {
     const [books, setBooks] = useState([]);
     const [likedBooks, setLikedBooks] = useState({});  // State to store liked status for each book
     const [isDrawerVisibleCart, setIsDrawerVisibleCart] = useState(false);
-    const [isNextBuyWell, setIsNextBuyWell] = useState(false);
     const [nameBook, setNameBook] = useState('');  // Quản lý state cho input
     const [isNextFindBook, setIsNextFindBook] = useState(false);
     const [isNextAuthorBook, setIsNextAuthorBook] = useState(false);

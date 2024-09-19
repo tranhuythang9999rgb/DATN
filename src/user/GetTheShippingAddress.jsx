@@ -120,7 +120,7 @@ function GetTheShippingAddress() {
     ];
 
     return (
-        <div>
+        <div style={{width:'700px',marginRight:'400px'}}>
             <h1>Thông tin địa chỉ giao hàng mặc định</h1>
             {loading ? (
                 <p>Đang tải dữ liệu...</p>
@@ -147,7 +147,9 @@ function GetTheShippingAddress() {
             )}
 
             <Button onClick={showModal}>Thay đổi địa chỉ</Button>
+            <div style={{color:'green',marginTop:'50px'}}>
             
+            </div>
             <Modal
                 title="Quản lý địa chỉ giao hàng"
                 visible={isModalVisible}

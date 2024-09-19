@@ -23,9 +23,9 @@ import BookWellSell from './BookWellSell';
 import { TiArrowBackOutline } from 'react-icons/ti';
 import HomePage from './HomePage';
 const { Title, Text, Paragraph } = Typography;
-//màn đì têu book
 
-const ChitietSanPhamKhiMuaHang = ({ book_id }) => {
+//màn đì têu book
+const ChitietSanPhamKhiMuaHang = ({ book_id,onEventClick }) => {
 
     const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -45,9 +45,6 @@ const ChitietSanPhamKhiMuaHang = ({ book_id }) => {
             setUsername(storedUsername);
         }
     }, []);
-
-
-
 
     const fetchBookDetails = async () => {
         try {
@@ -90,9 +87,6 @@ const ChitietSanPhamKhiMuaHang = ({ book_id }) => {
         }
     }, []);
 
-
-
-
     if (loading) return (
         <div className="loading-container">
             <Spin size="large" tip="Đang tải..." />
@@ -120,6 +114,7 @@ const ChitietSanPhamKhiMuaHang = ({ book_id }) => {
     const handleNextSubmitBuy = () => {
         setIsBuy(true);
         initOrder();//
+        if (onEventClick) onEventClick();
     }
 
 
@@ -158,8 +153,6 @@ const ChitietSanPhamKhiMuaHang = ({ book_id }) => {
         slidesToShow: 1,
         slidesToScroll: 1
     };
-
-
 
     if (isBuy) {
         return (

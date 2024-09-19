@@ -9,11 +9,10 @@ import Cookies from 'js-cookie';
 import { RiSecurePaymentLine } from 'react-icons/ri';
 import { BsBackpack2 } from 'react-icons/bs';
 import GetTheShippingAddress from '../user/GetTheShippingAddress';
-import Header from '../Utils/Header';
-import Footer from '../Utils/Footer';
 import HomePage from './HomePage';
 import {style} from './submit_buy.module.css';
 
+//màn thanh toán
 const { Title } = Typography;
 
 const SubmitBuyBook = () => {
@@ -32,25 +31,17 @@ const SubmitBuyBook = () => {
     const [isGobackOrderOff, setIsGobackOrderOff] = useState(false);
     const [redirect, setRedirect] = useState(false);
 
-    const onChangeAddress = (e) => {
-        console.log('radio checked', e.target.value);
-        setValueAddress(e.target.value);
-    };
-
     useEffect(() => {
         if (isGobackOrderOff) {
-            // Set a delay of 3 seconds (3000 milliseconds)
             const timer = setTimeout(() => {
                 setRedirect(true);
             }, 3000);
 
-            // Cleanup timer if the component unmounts or if `isGobackOrderOff` changes
             return () => clearTimeout(timer);
         }
     }, [isGobackOrderOff]);
 
     useEffect(() => {
-        // Fetch list of cities on mount
         fetchCities();
     }, []);
 
@@ -179,30 +170,6 @@ const SubmitBuyBook = () => {
         });
     };
 
-    const handleOrderBook = async () => {
-        const orderId = localStorage.getItem('order_id') || 0;
-
-        if (!orderId) {
-            message.error('Order ID not found in local storage.');
-            return;
-        }
-
-        try {
-            const response = await axios.patch(`http://127.0.0.1:8080/manager/order/api/order/offiline`, null, {
-                params: { id: orderId }
-            });
-
-            if (response.data.code === 0) {
-                openNotification('Đặt hàng thành công', 'Đơn hàng của bạn đã được đặt thành công.');
-                setIsGobackOrderOff(true)
-            } else {
-                message.error(`Error: ${response.data.message}`);
-            }
-        } catch (error) {
-            console.error('Error updating order:', error);
-            message.error('Failed to update order.');
-        }
-    };
 
     const storedUsername = localStorage.getItem('userData');
 
@@ -216,7 +183,7 @@ const SubmitBuyBook = () => {
         return <HomePage/>
     }
     return (
-        <div>
+        <div style={{marginTop:'90px'}}>
             {contextHolder}
             <Row>
                 <IoReturnUpBackOutline onClick={() => setIsGoback(true)} style={{ fontSize: '25px', cursor: 'pointer' }} />
@@ -292,9 +259,7 @@ const SubmitBuyBook = () => {
                         </Col>
                     </Row>
                 </Col>
-
             </Row>
-            <Footer />
         </div>
     );
 };

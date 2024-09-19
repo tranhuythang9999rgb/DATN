@@ -36,7 +36,7 @@ const FooterHeader = () => {
           </ul>
         </Col>
         <Col xs={24} sm={12} md={6} className={styles['footer-col-home-page']}>
-          <Title level={4}>Thông tin liên hệ</Title>
+          <Title level={4}>Thông tin liên hệ  77777</Title>
           <Text>Hưng Hà Thái Bình, Việt Nam</Text><br />
           <Text>Email: contact@bookstore.vn</Text><br />
           <Text>Điện thoại: +84 123 456 789</Text>
