@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	errors "shoe_shop_server/common/error"
+	"shoe_shop_server/common/log"
 	"shoe_shop_server/common/utils"
 	"shoe_shop_server/core/domain"
 	"shoe_shop_server/core/entities"
@@ -69,6 +70,7 @@ func (u *AuthorBookCaseUse) GetAuthorBook(ctx context.Context, name string) (*do
 }
 
 func (u *AuthorBookCaseUse) UpdateAuthorBookById(ctx context.Context, req *entities.AuthorUpdate) errors.Error {
+
 	err := u.authorBook.Update(ctx, &domain.Author{
 		ID:          req.ID,
 		Name:        req.Name,
@@ -77,6 +79,7 @@ func (u *AuthorBookCaseUse) UpdateAuthorBookById(ctx context.Context, req *entit
 		Nationality: req.Nationality,
 	})
 	if err != nil {
+		log.Error(err, "error")
 		return errors.NewSystemError("error system")
 	}
 	return nil

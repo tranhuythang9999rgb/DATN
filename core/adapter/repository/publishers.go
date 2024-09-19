@@ -53,7 +53,7 @@ func (c *CollectionPublisher) List(ctx context.Context) ([]*domain.Publisher, er
 
 // Update cập nhật thông tin của một nhà xuất bản
 func (c *CollectionPublisher) Update(ctx context.Context, publisher *domain.Publisher) error {
-	result := c.db.Save(publisher)
+	result := c.db.Where("id = ?", publisher.ID).Updates(publisher)
 	return result.Error
 }
 func (c *CollectionPublisher) GetName(ctx context.Context, name string) (*domain.Publisher, error) {

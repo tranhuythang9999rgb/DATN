@@ -96,6 +96,7 @@ func NewApiRouter(
 		publisherGroup.GET("/list", publicer.ListPublisher)
 		publisherGroup.DELETE("/delete", publicer.DeletePublisher)
 		publisherGroup.GET("/user_name", publicer.GetPublisherByUserName)
+		publisherGroup.PATCH("/update", publicer.UpdatePublisher)
 	}
 	orderGroup := r.Group("/order")
 	{

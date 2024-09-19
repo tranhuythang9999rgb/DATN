@@ -79,3 +79,27 @@ func (u *ControllersPublisher) GetPublisherByUserName(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, publishher)
 }
+
+func (u *ControllersPublisher) UpdatePublisher(ctx *gin.Context) {
+
+	file, err := ctx.FormFile("file")
+
+	var req entities.PublisherReqUpdate
+	if err := ctx.ShouldBind(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	if err != nil && err != http.ErrMissingFile && err != http.ErrNotMultipart {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": "Không thể tải ảnh lên.",
+		})
+		return
+	}
+	req.File = file
+	err = u.publisher.UpdatePublicSherById(ctx, &req)
+	if err != nil {
+		u.baseController.ErrorData(ctx, errors.NewCustomHttpError(500, 10, fmt.Sprintf("%s", err)))
+		return
+	}
+	u.baseController.Success(ctx, nil)
+}

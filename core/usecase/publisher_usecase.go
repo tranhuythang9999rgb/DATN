@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	errors "shoe_shop_server/common/error"
+	"shoe_shop_server/common/log"
 	"shoe_shop_server/common/utils"
 	"shoe_shop_server/core/domain"
 	"shoe_shop_server/core/entities"
@@ -69,4 +70,21 @@ func (u *PublisherUseCase) GetPubSherByUserName(ctx context.Context, userName st
 		return nil, errors.NewSystemError("error system")
 	}
 	return publ, nil
+}
+
+func (u *PublisherUseCase) UpdatePublicSherById(ctx context.Context, req *entities.PublisherReqUpdate) errors.Error {
+
+	err := u.pbs.Update(ctx, &domain.Publisher{
+		ID:            req.ID,
+		Name:          req.Name,
+		Address:       req.Address,
+		ContactNumber: req.ContactNumber,
+		Website:       req.Website,
+		IsActive:      true,
+	})
+	if err != nil {
+		log.Error(err, "error")
+		return errors.NewSystemError("error system")
+	}
+	return nil
 }
