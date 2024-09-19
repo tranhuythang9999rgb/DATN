@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Spin, Alert, Form, Button, notification, message } from 'antd'; // Import Button from Ant Design
 import ProductCard from '../user/ProductCard';
 import { RiSecurePaymentLine } from 'react-icons/ri';
+import { Link } from 'lucide-react';
 
 const GetOrderById = () => {
     const [listBookJson, setListBookJson] = useState([]);
@@ -156,6 +157,9 @@ const GetOrderById = () => {
                                 onDelete={() => handleDeleteItem(item.id)}
                             />
                         ))}
+                    </Form.Item>
+                    <Form.Item>
+                        <a href="" target="_blank">Thêm sản phẩm</a>
                     </Form.Item>
                     <Form.Item>
                         <div className="form-item-total">
