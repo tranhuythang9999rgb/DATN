@@ -45,7 +45,7 @@ function DetailAuthorBook({authorBooName}) {
                 <div>
                     <div className={styles.authorDetails}>
                         <Col className={styles.column}>
-                            <Image width={400} src={author.avatar} />
+                            <Image width={600} height={400} src={author.avatar} />
                         </Col>
                         <Col className={styles.column}>
                             <h1>Chi tiết Tác giả</h1>

@@ -30,6 +30,7 @@ import ListBookLate from './ListBookLate';
 import ListBookByAuthorName from './ListBookByAuthorName';
 import ListBookByPublicsher from './ListBookByPublicsher';
 import ListDetailBookWhenBuy from './ListDetailBookWhenBuy';
+import ChiTiettacGiaVaTheoSach from './ChiTiettacGiaVaTheoSach';
 const { Title, Text } = Typography;
 
 
@@ -59,7 +60,6 @@ function HomePage() {
 
     const openDrawerCart = () => {
         setIsDrawerVisibleCart(true);
-        // Optional: Reload the cart data when the drawer opens
         if (cartRef.current) {
             cartRef.current.reloadCart();
         }
@@ -69,7 +69,6 @@ function HomePage() {
         setIsDrawerVisibleCart(false);
     };
     useEffect(() => {
-        // Check for the username in local storage
         const storedUsername = localStorage.getItem('userData');
         if (storedUsername) {
             setUsername(storedUsername);
@@ -90,13 +89,11 @@ function HomePage() {
     const handleModalClose = () => {
         setIsModalVisible(false);
     };
-    //
     const handlerNextCart = () => {
         setIsNextCart(true);
     }
 
     useEffect(() => {
-        // Fetch data from API
         axios.get('http://localhost:8080/manager/book/sell/well')
             .then(response => {
                 if (response.data && response.data.body && response.data.body.books) {
@@ -208,7 +205,7 @@ function HomePage() {
     }
 
     if (nextListBookByAuthor) {
-        return <ListBookByAuthorName />
+        return <ChiTiettacGiaVaTheoSach/>
     }
 
     if (nextListBookByPublicSher) {

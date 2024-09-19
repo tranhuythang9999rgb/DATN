@@ -41,6 +41,7 @@ import ListBookByAuthorName from "./Home/ListBookByAuthorName";
 import ListBookByPublicsher from "./Home/ListBookByPublicsher";
 import Blog from "./Home/Blog";
 import ListDetailBookWhenBuy from "./Home/ListDetailBookWhenBuy";
+import ChiTiettacGiaVaTheoSach from "./Home/ChiTiettacGiaVaTheoSach";
 
 
 
@@ -104,6 +105,7 @@ function App() {
       {/* <Blog/> */}
       <CheckLogin/>
       {/* <ListDetailBookWhenBuy/> */}
+      {/* <ChiTiettacGiaVaTheoSach/> */}
     </div>
   );
 }

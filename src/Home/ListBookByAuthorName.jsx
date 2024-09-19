@@ -9,13 +9,17 @@ function ListBookByAuthorName() {
 
     const handleGetListBookByAuthorName = async () => {
         try {
+            // Simulate a 3-second delay
+            await new Promise(resolve => setTimeout(resolve, 3000));
+
             const author = localStorage.getItem('author');
             if (!author) {
                 console.error('No author found in localStorage');
+                setNoBooksFound(true);
                 return;
             }
             
-            const response = await fetch(`http://127.0.0.1:8080/manager/book/list/by/author?name=${author}`);
+            const response = await fetch(`http://127.0.0.1:8080/manager/book/list/by/author?name=${encodeURIComponent(author)}`);
             const data = await response.json();
 
             if (data.code === 0 && data.body) {
@@ -25,9 +29,12 @@ function ListBookByAuthorName() {
                 } else {
                     setNoBooksFound(true); // If books array is empty
                 }
+            } else {
+                setNoBooksFound(true); // Handle cases where response code is not 0
             }
         } catch (error) {
             console.error('Error fetching books:', error);
+            setNoBooksFound(true); // Set noBooksFound in case of error
         } finally {
             setIsLoading(false);  // Stop loading after the fetch completes
         }
@@ -40,7 +47,7 @@ function ListBookByAuthorName() {
     return (
         <div>
             {isLoading ? (
-                <p>Loading books...</p>
+                <p>...</p>
             ) : (
                 <div>
                     {noBooksFound ? (
