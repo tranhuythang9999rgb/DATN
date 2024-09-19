@@ -25,7 +25,7 @@ import HomePage from './HomePage';
 const { Title, Text, Paragraph } = Typography;
 //màn đì têu book
 
-const DetailBuy = ({ book_id }) => {
+const ChitietSanPhamKhiMuaHang = ({ book_id }) => {
 
     const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -33,28 +33,11 @@ const DetailBuy = ({ book_id }) => {
     const [items, setItems] = useState(1);
     const [isBuy, setIsBuy] = useState(false);
     const [username, setUsername] = useState(null);
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [isDrawerVisibleCart, setIsDrawerVisibleCart] = useState(false);
-    const [isNextProFile, setIsNextProFile] = useState(false);
-    const [selectedAuthor, setSelectedAuthor] = useState(null);
-    const [authors, setAuthors] = useState([]);
-    const [isNext, setIsNext] = useState(false);
     const [count, setCount] = useState(1);
     const [backGohomePage, setBackGohomePage] = useState(false);
 
     const cartRef = useRef(null);
 
-    const openDrawerCart = () => {
-        setIsDrawerVisibleCart(true);
-        // Optional: Reload the cart data when the drawer opens
-        if (cartRef.current) {
-            cartRef.current.reloadCart();
-        }
-    };
-
-    const closeDrawerCart = () => {
-        setIsDrawerVisibleCart(false);
-    };
     useEffect(() => {
         // Check for the username in local storage
         const storedUsername = localStorage.getItem('userData');
@@ -63,20 +46,7 @@ const DetailBuy = ({ book_id }) => {
         }
     }, []);
 
-    const handleLoginClick = () => {
-        setIsModalVisible(true);
-    };
 
-    const handleLogoutClick = () => {
-        localStorage.removeItem('userData');
-        setUsername(null);
-    };
-    const handleNextProFile = () => {
-        setIsNextProFile(true);
-    };
-    const handleModalClose = () => {
-        setIsModalVisible(false);
-    };
 
 
     const fetchBookDetails = async () => {
@@ -121,9 +91,6 @@ const DetailBuy = ({ book_id }) => {
     }, []);
 
 
-    const onChange = (currentSlide) => {
-        console.log('Current slide:', currentSlide);
-    };
 
 
     if (loading) return (
@@ -155,37 +122,19 @@ const DetailBuy = ({ book_id }) => {
         initOrder();//
     }
 
-    const handleMenuClick = (e) => {
-        const selectedAuthor = authors.find(author => author.id === parseInt(e.key, 10));
-        if (selectedAuthor) {
-            setSelectedAuthor(selectedAuthor);
-            setIsNext(true);
-        }
-    };
-
-
-    const menu = (
-        <Menu onClick={handleMenuClick}>
-            {authors.map(author => (
-                <Menu.Item key={author.id}>
-                    {author.name}
-                </Menu.Item>
-            ))}
-        </Menu>
-    );
 
     const initOrder = async () => {
         try {
             // Fetch existing books from local storage
             const existingBooksJSON = localStorage.getItem('listbook');
             let existingBooks = existingBooksJSON ? JSON.parse(existingBooksJSON) : [];
-    
+
             // Update the quantity of the current book
             book.quantity = count;
-    
+
             // Check if the book already exists in the list
             const bookIndex = existingBooks.findIndex(b => b.id === book.id);
-    
+
             if (bookIndex > -1) {
                 // If book exists, update it
                 existingBooks[bookIndex] = book;
@@ -193,17 +142,14 @@ const DetailBuy = ({ book_id }) => {
                 // If book does not exist, add it
                 existingBooks.push(book);
             }
-    
+
             // Save the updated list back to local storage
             localStorage.setItem('listbook', JSON.stringify(existingBooks));
         } catch (error) {
             console.error('Error updating book list in local storage:', error);
         }
     };
-    
-    const handlerGoBack = () => {
-        window.location.reload()
-    }
+
 
     const settings = {
         dots: true,
@@ -220,11 +166,9 @@ const DetailBuy = ({ book_id }) => {
             <SubmitBuyBook />
         )
     }
-   
-    if(backGohomePage){
-        return (
-            <HomePage/>
-        )
+
+    if (backGohomePage) {
+        window.location.reload();
     }
 
     return (
@@ -235,7 +179,7 @@ const DetailBuy = ({ book_id }) => {
                 <Col xs={6} sm={6} md={6} lg={6} xl={6} className={styleDetail['col-container']}>
                     {/* Viền */}
                     <div>
-                    <TiArrowBackOutline onClick={()=>setBackGohomePage(true)} style={{fontSize:'30px'}} />
+                        <TiArrowBackOutline onClick={() => setBackGohomePage(true)} style={{ fontSize: '30px' }} />
                     </div>
                 </Col>
 
@@ -243,7 +187,7 @@ const DetailBuy = ({ book_id }) => {
                     <div style={{ display: 'flex', padding: '20px' }}>
 
                         <div style={{
-                            width: '400px',
+                            width: '1700px',
                             height: '400px',
                             border: '2px solid gray',
                             borderRadius: '15px', // Rounded corners
@@ -254,7 +198,7 @@ const DetailBuy = ({ book_id }) => {
                             <Slider {...settings}>
                                 {book.files.map((item, index) => (
                                     <div key={index}>
-                                        <Image src={item} width={400} style={{ borderRadius: '10px' }} /> {/* Rounded image */}
+                                        <Image src={item} width={600} style={{ borderRadius: '10px' }} /> {/* Rounded image */}
                                     </div>
                                 ))}
                             </Slider>
@@ -271,8 +215,8 @@ const DetailBuy = ({ book_id }) => {
                                 }}>
                                     {book.title}
                                 </div>
-                                <div style={{marginTop:'40px',marginLeft:'50px'}}>
-                                    <Rate count={5}/>
+                                <div style={{ marginTop: '40px', marginLeft: '50px' }}>
+                                    <Rate count={5} />
                                 </div>
                             </Space>
 
@@ -517,4 +461,4 @@ const DetailBuy = ({ book_id }) => {
     );
 };
 
-export default DetailBuy;
+export default ChitietSanPhamKhiMuaHang;

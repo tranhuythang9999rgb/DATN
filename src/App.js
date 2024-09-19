@@ -40,6 +40,7 @@ import ListBookHome from "./Home/ListBookHome";
 import ListBookByAuthorName from "./Home/ListBookByAuthorName";
 import ListBookByPublicsher from "./Home/ListBookByPublicsher";
 import Blog from "./Home/Blog";
+import ListDetailBookWhenBuy from "./Home/ListDetailBookWhenBuy";
 
 
 
@@ -52,7 +53,6 @@ function App() {
       {/* <HomePage/> */}
       {/* <CheckQrCode/> */}
       {/* <Login/> */}
-      {/* <CheckLogin/> */}
       {/* <TypeBook/> */}
       {/* <Publishers/> */}
       {/* <AuthorBook/> */}
@@ -101,7 +101,9 @@ function App() {
       {/* <ListCartUseNext/> */}
       {/* <ListBookByAuthorName/> */}
       {/* <ListBookByPublicsher/> */}
-      <Blog/>
+      {/* <Blog/> */}
+      <CheckLogin/>
+      {/* <ListDetailBookWhenBuy/> */}
     </div>
   );
 }

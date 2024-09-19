@@ -29,6 +29,7 @@ import FormBuyCart from '../user/FormBuyCart';
 import ListBookLate from './ListBookLate';
 import ListBookByAuthorName from './ListBookByAuthorName';
 import ListBookByPublicsher from './ListBookByPublicsher';
+import ListDetailBookWhenBuy from './ListDetailBookWhenBuy';
 const { Title, Text } = Typography;
 
 
@@ -184,7 +185,8 @@ function HomePage() {
 
 
     if (isNextBuy) {
-        return <DetailBuy book_id={selectedBookId} />;
+        // return <DetailBuy book_id={selectedBookId} />;
+        return <ListDetailBookWhenBuy/>
     }
 
     if (isNextProFile) {

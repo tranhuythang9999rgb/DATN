@@ -48,6 +48,7 @@ const SliderCard = ({ onEventClick }) => {
                                 price={book.price}
                                 publisher={book.publisher}
                                 title={book.title}
+                                typeBook={book.genre}
                             />
                         </div>
                     ))}

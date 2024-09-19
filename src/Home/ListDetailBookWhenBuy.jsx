@@ -16,9 +16,11 @@ import { CgProfile } from 'react-icons/cg';
 import FooterHeader from '../Utils/FooterHeader';
 import styleCart from './list_book_home.module.css';
 import CardProduct from './CardProduct';
+import ListBookHome from './ListBookHome';
+import ChitietSanPhamKhiMuaHang from './ChitietSanPhamKhiMuaHang';
 
 
-function ListBookHome({ nameTypeBook }) {
+function ListDetailBookWhenBuy({ nameTypeBook }) {
     const [books, setBooks] = useState([]); // Initialize as an empty array
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -32,7 +34,6 @@ function ListBookHome({ nameTypeBook }) {
     const [username, setUsername] = useState(null);
     const [orderDesc, setOrderDesc] = useState('');
     const [orderAsc, setOrderAsc] = useState('');
-    const [selectedSort, setSelectedSort] = useState(null); // Save the selected sort option
     const [isDrawerVisibleCart, setIsDrawerVisibleCart] = useState(false);
     const [isNextProFile, setIsNextProFile] = useState(false);
     const [minPrice, setMinPrice] = useState('');
@@ -50,11 +51,7 @@ function ListBookHome({ nameTypeBook }) {
     const closeDrawerCart = () => {
         setIsDrawerVisibleCart(false);
     };
-    const handleCountryFilterChange = (selectedCountries) => {
-        // Update your book list based on the selected countries
-        // This might involve calling your API with the new filter
-        console.log('Selected countries:', selectedCountries);
-    };
+  
     // Function to fetch books data
     const fetchBooks = async () => {
         setLoading(true);
@@ -62,7 +59,7 @@ function ListBookHome({ nameTypeBook }) {
         try {
             // Construct query params based on the active sort order
             const params = new URLSearchParams();
-            params.append('name', nameTypeBook);
+            params.append('name', localStorage.getItem('typebook'));
             if (orderDesc) {
                 params.append('desc', orderDesc);
             }
@@ -111,7 +108,18 @@ function ListBookHome({ nameTypeBook }) {
     const handleNextProFile = () => {
         setIsNextProFile(true);
     };
-    
+    // Toggle like status for a book
+    const toggleLike = (bookId) => {
+        setLikedBooks((prevLikedBooks) => {
+            const updatedLikedBooks = {
+                ...prevLikedBooks,
+                [bookId]: !prevLikedBooks[bookId],
+            };
+            // Save updated liked books to cookies
+            Cookies.set('likedBooks', JSON.stringify(updatedLikedBooks), { expires: 7 });
+            return updatedLikedBooks;
+        });
+    };
 
     // Fetch books and load liked books when the component mounts or nameTypeBook changes
     useEffect(() => {
@@ -119,7 +127,12 @@ function ListBookHome({ nameTypeBook }) {
         loadLikedBooks();
     }, [nameTypeBook]);
 
-    
+    function truncateText(text, maxLength) {
+        if (text.length > maxLength) {
+            return text.substring(0, maxLength) + '...';
+        }
+        return text;
+    }
     const handleLoginClick = () => {
         setIsModalVisible(true);
     };
@@ -153,25 +166,7 @@ function ListBookHome({ nameTypeBook }) {
         }
     };
 
-    const handleOrderDesc = () => {
-        setOrderDesc('1');
-        setOrderAsc('');
-        fetchBooks();
-        setSelectedSort('1')
 
-    }
-    const handleOrderAsc = () => {
-        setOrderAsc('2');
-        setOrderDesc('');
-        fetchBooks();
-        setSelectedSort('2')
-    }
-
-    const handlePriceSearch = () =>{
-        setOrderAsc('');
-        setOrderDesc('');
-        fetchBooks();
-    }
 
     if (loading) {
         return <Spin tip="Loading books..." />;
@@ -286,55 +281,11 @@ function ListBookHome({ nameTypeBook }) {
                     </ul>
                 </div>
             </div>
-
-
+            <div>
+                <ChitietSanPhamKhiMuaHang/>{/**/}
+            </div>
             <div className={styleCart['col-books']}>
-                <div className={styleCart['list-check-box']}>
-                    <h1>Quốc gia</h1>
-                    <CountryFilter onFilterChange={handleCountryFilterChange} />
-                </div>
-
                 <div>
-
-                    <div style={{ width: '1000px', justifyContent: 'end' }} className={styleCart['order-monoi']}>
-                        <Space>
-                            <div style={{ width: '220px' }} className={styleCart['sort-text']}>
-                                <PiSortAscendingFill className={styleCart['sort-icon']} />
-                                Sắp xếp theo
-                            </div>
-                            <Button
-                                type={selectedSort === '1' ? 'primary' : 'default'}
-                                onClick={handleOrderDesc}
-                                className={styleCart['sort-button']}
-                            >
-                                Giá thấp đến cao
-                            </Button>
-                            <Button
-                                type={selectedSort === '2' ? 'primary' : 'default'}
-                                onClick={handleOrderAsc}
-                                className={styleCart['sort-button']}
-                            >
-                                Giá cao đến thấp
-                            </Button>
-                            <div>
-                                <Space>
-                                    <Input
-                                        placeholder="Giá thấp nhất"
-                                        value={minPrice}
-                                        onChange={(e) => setMinPrice(e.target.value)}
-                                    />
-                                    <Input
-                                        placeholder="Giá cao nhất"
-                                        value={maxPrice}
-                                        onChange={(e) => setMaxPrice(e.target.value)}
-                                    />
-                                    <Button onClick={handlePriceSearch}>Tìm kiếm</Button>
-                                </Space>
-                            </div>
-                        </Space>
-                    </div>
-
-
                     <div className={styleCart['books-container']}>
                         {books.map((item) => (
                             <div key={item.book.id} className={styleCart['book-card']}>
@@ -346,18 +297,12 @@ function ListBookHome({ nameTypeBook }) {
                                     price={item.book.price}
                                     publisher={item.book.publisher}
                                     title={item.book.title}
-                                    typeBook={nameTypeBook}
                                 />
                             </div>
                         ))}
                     </div>
-
                 </div>
-
-
-
             </div>
-
             <div className={styleCart['footer']}>
                 <FooterHeader />
             </div>
@@ -366,4 +311,4 @@ function ListBookHome({ nameTypeBook }) {
     );
 }
 
-export default ListBookHome;
+export default ListDetailBookWhenBuy;
