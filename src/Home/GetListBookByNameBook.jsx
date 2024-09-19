@@ -312,8 +312,7 @@ function GetListBookByNameBook({ nameTypeBook, nameBook }) {
 
             <div className={styleCart['col-books']}>
                 <div className={styleCart['list-check-box']}>
-                    <h1>Quốc gia</h1>
-                    <CountryFilter onFilterChange={handleCountryFilterChange} />
+        
                 </div>
 
                 <div>

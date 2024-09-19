@@ -196,10 +196,9 @@ function ListBookHome({ nameTypeBook }) {
         </Menu>
     );
     if (books.length === 0) {
-
-        return <div>
-            <Typography.Text>Chưa có sách nào.</Typography.Text>;
-        </div>
+        setOrderAsc('2');
+        setOrderDesc('');
+        fetchBooks();
     }
     if (isNextBuy) {
         return <DetailBuy book_id={selectedBookId} />;
@@ -290,8 +289,7 @@ function ListBookHome({ nameTypeBook }) {
 
             <div className={styleCart['col-books']}>
                 <div className={styleCart['list-check-box']}>
-                    <h1>Quốc gia</h1>
-                    <CountryFilter onFilterChange={handleCountryFilterChange} />
+                  
                 </div>
 
                 <div>

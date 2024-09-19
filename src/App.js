@@ -48,7 +48,6 @@ import ChiTiettacGiaVaTheoSach from "./Home/ChiTiettacGiaVaTheoSach";
 function App() {
   return (
     <div>
-      {/* <Dashboard /> */}
       {/* <UploadBook/> */}
       {/* <ListBooks/> */}
       {/* <HomePage/> */}
@@ -104,6 +103,7 @@ function App() {
       {/* <ListBookByPublicsher/> */}
       {/* <Blog/> */}
       <CheckLogin/>
+      {/* <Dashboard /> */}
       {/* <ListDetailBookWhenBuy/> */}
       {/* <ChiTiettacGiaVaTheoSach/> */}
     </div>
