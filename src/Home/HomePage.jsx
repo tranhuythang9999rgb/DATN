@@ -32,6 +32,7 @@ import ListBookByPublicsher from './ListBookByPublicsher';
 import ListDetailBookWhenBuy from './ListDetailBookWhenBuy';
 import ChiTiettacGiaVaTheoSach from './ChiTiettacGiaVaTheoSach';
 import ManSubmirMuaHangTuGioHang from './ManSubmirMuaHangTuGioHang';
+import ListBlogCustomer from './ListBlogCustomer';
 const { Title, Text } = Typography;
 
 
@@ -54,6 +55,7 @@ function HomePage() {
     const [isNextCart, setIsNextCart] = useState(false);
     const [nextListBookByAuthor, setNextListBookByAuthor] = useState(false);
     const [nextListBookByPublicSher, setNextListBookByPublicSher] = useState(false);
+    const [nextBlog,setNextBlog] = useState(false);
 
     const cartRef = useRef(null);
 
@@ -205,10 +207,15 @@ function HomePage() {
         return <ListBookByPublicsher />;
     }
 
-
     if (isNextCart) {
         return (
             <ManSubmirMuaHangTuGioHang/>
+        )
+    }
+
+    if(nextBlog) {
+        return (
+            <ListBlogCustomer/>
         )
     }
 
@@ -261,7 +268,7 @@ function HomePage() {
                                 />
                             )}
                         </li>
-                        <li>Blog</li>
+                        <li onClick={()=>setNextBlog(true)}>Blog</li>
                         <li>Giới thiệu</li>
                         <li className={styles.searchContainer}>
                             <Input

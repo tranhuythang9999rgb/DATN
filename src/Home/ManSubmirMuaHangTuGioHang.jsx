@@ -22,6 +22,8 @@ import DetailAuthorBook from './DetailAuthorBook';
 import FormBuyCart from '../user/FormBuyCart';
 import GetTheShippingAddress from '../user/GetTheShippingAddress';
 import ProFile from '../user/Profile';
+import ListBlogUtils from '../Utils/ListBlogUtils';
+import ListBlogCustomer from './ListBlogCustomer';
 
 
 function ManSubmirMuaHangTuGioHang({ nameTypeBook }) {
@@ -147,6 +149,9 @@ function ManSubmirMuaHangTuGioHang({ nameTypeBook }) {
         <Profiler/>
        )
     }
+    if(isNextBlog) {
+        return <ListBlogCustomer/>
+    }
  
     return (
         <div className={styleCart['container']}>
@@ -175,7 +180,7 @@ function ManSubmirMuaHangTuGioHang({ nameTypeBook }) {
                                 </Dropdown>
                             )}
                         </li>
-                        <li>Blog</li>
+                        <li onClick={()=>setIsNextBlog(true)}>Blog</li>
                         <li>Giới thiệu</li>
                         <li className={styles.searchContainer}>
                             <Input
