@@ -1,36 +1,84 @@
 import React from 'react';
-import { Row, Col, Typography, Menu, Button } from 'antd';
-import { IoReturnUpBackOutline } from 'react-icons/io5';
-
-const { Title } = Typography;
 
 const Header = () => {
+    const headerStyle = {
+        padding: '10px',
+        backgroundColor: '#ffffff',
+        boxShadow: '0 1px 4px rgba(0,0,0,0.1)',
+        position: 'sticky',
+        top: 0,
+        zIndex: 1000,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center', // Center the content horizontally
+    };
+
+    const navStyle = {
+        display: 'flex',
+        justifyContent: 'center', // Center the nav items horizontally
+        listStyle: 'none',
+        margin: 0,
+        padding: 0,
+    };
+
+    const navItemStyle = {
+        margin: '0 15px', // Adjust spacing between items
+        fontSize: '16px',
+        fontWeight: 500,
+    };
+
+    const linkStyle = {
+        textDecoration: 'none',
+        color: '#333',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '5px',
+        transition: 'color 0.3s',
+    };
+
+    const iconStyle = {
+        fontSize: '18px',
+        marginRight: '5px',
+    };
+
     return (
-        <Row justify="space-between" align="middle" style={{ padding: '16px', backgroundColor: '#f5f5f5', borderBottom: '1px solid #dcdcdc' }}>
-            <Col>
-                <Title level={3} style={{ margin: 0 }}></Title>
-            </Col>
-            <Col>
-                <Menu mode="horizontal" style={{ lineHeight: '64px' }}>
-                    <Menu.Item key="1">
-                        <a href="/home" >Trang Chủ</a>
-                    </Menu.Item>
-                    <Menu.Item key="2">
-                        <a href="/products">Sản Phẩm</a>
-                    </Menu.Item>
-                    <Menu.Item key="3">
-                        <a href="/services">Dịch Vụ</a>
-                    </Menu.Item>
-                    <Menu.Item key="4">
-                        <a href="/about">Giới Thiệu</a>
-                    </Menu.Item>
-                    <Menu.Item key="5">
-                        <a href="/contact">Liên Hệ</a>
-                    </Menu.Item>
-                </Menu>
-            </Col>
-           
-        </Row>
+        <div style={headerStyle}>
+            <nav>
+                <ul style={navStyle}>
+                    <li style={navItemStyle}>
+                        <a href="/home" style={linkStyle}>
+                            <span style={iconStyle}>🏠</span>
+                            Trang Chủ
+                        </a>
+                    </li>
+                    <li style={navItemStyle}>
+                        <a href="/products" style={linkStyle}>
+                            <span style={iconStyle}>🛒</span>
+                            Sản Phẩm
+                        </a>
+                    </li>
+                    <li style={navItemStyle}>
+                        <a href="/services" style={linkStyle}>
+                            <span style={iconStyle}>🛠️</span>
+                            Dịch Vụ
+                        </a>
+                    </li>
+                    <li style={navItemStyle}>
+                        <a href="/about" style={linkStyle}>
+                            <span style={iconStyle}>ℹ️</span>
+                            Giới Thiệu
+                        </a>
+                    </li>
+                    <li style={navItemStyle}>
+                        <a href="/contact" style={linkStyle}>
+                            <span style={iconStyle}>📧</span>
+                            Liên Hệ
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     );
 };
 

@@ -1,0 +1,85 @@
+/* index_header.module.css */
+.layoutHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0.9) 0%,
+            rgba(230, 230, 255, 1) 35%,
+            rgba(200, 240, 255, 1) 100%);
+    border-bottom: 1px solid #ccc;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: 90px;
+}
+
+.layoutHeaderStart {
+    display: flex;
+    align-items: center;
+}
+
+.iconContainer {
+    display: flex;
+    align-items: center;
+}
+
+.text {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.layoutHeaderCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.layoutHeaderCenter ul {
+    display: flex;
+    list-style: none;
+}
+
+.layoutHeaderCenter li {
+    margin: 0 15px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+}
+
+.layoutHeaderCenter li a {
+    text-decoration: none;
+    color: black;
+}
+
+.layoutHeaderCenter li a:hover {
+    color: #1890ff; /* Change color on hover */
+}
+
+.layoutContentImage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+    border-bottom: solid 1px black;
+}
+
+.layoutContentImage img {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    margin-top: 10px;
+}
+
+.layoutContentImage img:hover {
+    transform: scale(1.05);
+}
+
+.layoutFooter {
+    margin-top: 20px;
+}
