@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input, Button, message, Popconfirm, Space } from 'antd';
+import { Table, Input, Button, message, Popconfirm, Space, Modal, Form } from 'antd';
 import axios from 'axios';
 
 function TypeBook() {
@@ -8,6 +8,9 @@ function TypeBook() {
     const [newTypeName, setNewTypeName] = useState('');
     const [loading, setLoading] = useState(false);
     const [searchText, setSearchText] = useState('');
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [editingBook, setEditingBook] = useState(null); // Loại sách đang sửa
+    const [editForm] = Form.useForm(); // Form để update loại sách
 
     const fetchTypeBooks = async () => {
         setLoading(true);
@@ -68,6 +71,33 @@ function TypeBook() {
         }
     };
 
+    const handleEdit = (record) => {
+        setEditingBook(record); // Lưu thông tin sách đang chỉnh sửa
+        setIsModalVisible(true); // Mở modal
+        editForm.setFieldsValue({ name: record.name }); // Điền tên sách hiện tại vào form
+    };
+
+    const handleUpdate = async () => {
+        try {
+            const values = await editForm.validateFields();
+            const formData = new FormData();
+            formData.append('id', editingBook.id);
+            formData.append('name', values.name);
+
+            const response = await axios.patch('http://127.0.0.1:8080/manager/type_book/update', formData);
+            if (response.data.code === 0) {
+                message.success('Cập nhật loại sách thành công!');
+                fetchTypeBooks();
+                setIsModalVisible(false); // Đóng modal
+            } else {
+                message.error('Không thể cập nhật loại sách.');
+            }
+        } catch (error) {
+            console.error('Lỗi khi cập nhật loại sách:', error);
+            message.error('Lỗi kết nối.');
+        }
+    };
+
     useEffect(() => {
         fetchTypeBooks();
     }, []);
@@ -90,39 +120,27 @@ function TypeBook() {
             dataIndex: 'name',
             key: 'name',
         },
-        {
-            title: 'Trạng thái',
-            dataIndex: 'is_active',
-            key: 'is_active',
-            render: (is_active) => (is_active ? 'Hoạt động' : 'Không hoạt động'),
-        },
+
         {
             title: 'Hành động',
             key: 'action',
             render: (text, record) => (
                 <Space size="middle">
-                    <a onClick={() => handleEdit(record)}>Sửa</a>
+                    <Button type="primary" onClick={() => handleEdit(record)}>
+                        Sửa
+                    </Button>
                     <Popconfirm
                         title="Bạn có chắc chắn muốn xóa loại sách này không?"
                         onConfirm={() => handleDelete(record)}
                         okText="Có"
                         cancelText="Không"
                     >
-                        <a>Xóa</a>
+                        <Button type='dashed'>Xóa</Button>
                     </Popconfirm>
                 </Space>
             ),
         },
     ];
-
-    const handleEdit = (record) => {
-        console.log('Edit:', record);
-        // Implement edit logic here
-    };
-
-    const handleSearch = () => {
-        setSearchText(searchText);
-    };
 
     return (
         <div>
@@ -146,7 +164,6 @@ function TypeBook() {
                         onChange={(e) => setSearchText(e.target.value)}
                         style={{ width: 300 }}
                     />
-                    {/* <Button onClick={handleSearch}>Tìm kiếm</Button> */}
                 </Space>
             </Space>
             <Table
@@ -156,6 +173,24 @@ function TypeBook() {
                 loading={loading}
                 pagination={{ pageSize: 10 }}
             />
+            
+            {/* Modal for editing */}
+            <Modal
+                title="Cập nhật loại sách"
+                visible={isModalVisible}
+                onCancel={() => setIsModalVisible(false)}
+                onOk={handleUpdate}
+            >
+                <Form form={editForm} layout="vertical">
+                    <Form.Item
+                        label="Tên loại sách"
+                        name="name"
+                        rules={[{ required: true, message: 'Vui lòng nhập tên loại sách' }]}
+                    >
+                        <Input placeholder="Nhập tên loại sách" />
+                    </Form.Item>
+                </Form>
+            </Modal>
         </div>
     );
 }

@@ -23,8 +23,8 @@ import LoyPoints from './LoyPoints';
 
 const { Header, Content, Sider } = Layout;
 const clearLocalStorageAndReload = () => {
-    localStorage.clear(); // Xóa hết dữ liệu trong localStorage
-    window.location.reload(); // Reload lại trang
+    localStorage.clear();
+    window.location.reload();
 };
 
 const items1 = [

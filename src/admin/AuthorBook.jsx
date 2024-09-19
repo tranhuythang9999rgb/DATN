@@ -128,7 +128,6 @@ function AuthorBook() {
                     <Button type="primary" onClick={() => handleUpdate(record)}>
                         Sửa
                     </Button>
-                    <span style={{ margin: '0 8px' }}>|</span>
                     <Popconfirm
                         title="Bạn có chắc chắn muốn xóa tác giả này không?"
                         onConfirm={() => handleDeleteBook(record.id)}
