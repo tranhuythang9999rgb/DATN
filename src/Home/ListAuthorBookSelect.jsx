@@ -68,7 +68,7 @@ function ListAuthorBookButton({ onAuthorNameChange, onEventClick }) {
                         padding: 0,
                         color: 'black',
                         cursor: 'pointer',
-                        fontSize: '15px'
+                        fontSize: '17px'
                     }}
                 >
                     {selectedAuthor ? selectedAuthor.name : 'Tác giả'}

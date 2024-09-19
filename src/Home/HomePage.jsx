@@ -50,7 +50,7 @@ function HomePage() {
     const [isNextFindBook, setIsNextFindBook] = useState(false);
     const [isNextAuthorBook, setIsNextAuthorBook] = useState(false);
     const [nameAuthorBook, setNameAuthorBook] = useState(null);
-    const [isNextCart,setIsNextCart] = useState(false);
+    const [isNextCart, setIsNextCart] = useState(false);
     const [nextListBookByAuthor, setNextListBookByAuthor] = useState(false);
     const [nextListBookByPublicSher, setNextListBookByPublicSher] = useState(false);
 
@@ -199,14 +199,14 @@ function HomePage() {
         return <DetailAuthorBook authorBooName={nameAuthorBook} />
     }
 
-    if(isNextCart) {
+    if (isNextCart) {
         return (
-            <FormBuyCart/>
+            <FormBuyCart />
         )
     }
 
-    if(nextListBookByAuthor) {
-        return <ListBookByAuthorName/>
+    if (nextListBookByAuthor) {
+        return <ListBookByAuthorName />
     }
 
     if (nextListBookByPublicSher) {
@@ -229,7 +229,6 @@ function HomePage() {
                         <li onClick={() => window.location.reload()}>
                             <FcHome />Trang chủ
                         </li>
-                        <li>Tin sách</li>
                         <li>
                             {loading ? (
                                 <Spin tip="Loading authors..." />
@@ -245,7 +244,7 @@ function HomePage() {
                                             padding: 0,                // Optional: adjust padding for button size
                                             color: '#1890ff',          // Text color (you can customize)
                                             cursor: 'pointer',          // Pointer for hover effect
-                                            fontSize: '15px',
+                                            fontSize: '17px',
                                             color: 'black'
                                         }}
                                     >
@@ -264,8 +263,8 @@ function HomePage() {
                                 />
                             )}
                         </li>
-                        <li>Cuộc thi</li>
-                        <li>Thông tin cửa hàng</li>
+                        <li>Blog</li>
+                        <li>Giới thiệu</li>
                         <li className={styles.searchContainer}>
                             <Input
                                 placeholder='Tìm kiếm ...'
@@ -311,7 +310,7 @@ function HomePage() {
                                         visible={isDrawerVisibleCart}
                                         width={800}
                                     >
-                                        <ListCart ref={cartRef} onEventClick={handlerNextCart}/>
+                                        <ListCart ref={cartRef} onEventClick={handlerNextCart} />
                                     </Drawer>
                                 </Tooltip>
                             )}
@@ -337,10 +336,11 @@ function HomePage() {
             <div className="layout-footer">
 
                 <div className='layout-footer-tac-gia'>
-                    <span style={{ display: 'flex', marginLeft: '10px' }}>
-                        <h1>Tác giả</h1>
-                    </span>
-                    <AuthorBook eventOnClick={()=>setNextListBookByAuthor(true)}/>
+                    <span style={{ fontSize: '300px' }}></span>
+                    <h1>
+                    Tác giả
+                    </h1>
+                    <AuthorBook eventOnClick={() => setNextListBookByAuthor(true)} />
                 </div>
 
                 <div className='layout-footer-list-bool-well-sell'>
@@ -358,7 +358,7 @@ function HomePage() {
                 <div className='layout-footer-nhaf-xuatban'>
                     <h3>Nhà xuất bản</h3>
                     <ListPublicSher eventOnClick={() => setNextListBookByPublicSher(true)} />
-                    </div>
+                </div>
 
                 <FooterHeader />
             </div>
