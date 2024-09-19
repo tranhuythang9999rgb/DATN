@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Form, Button, notification, Spin } from 'antd';
 import axios from 'axios'; // Make sure axios is installed
 import ProductCard from './ProductCard';
-import HomePage from '../Home/HomePage';
 import { RiSecurePaymentLine } from 'react-icons/ri';
 import { TiArrowBack } from 'react-icons/ti';
 
@@ -159,11 +158,12 @@ function FormBuyCart() {
     if (nextHomePage) {
         window.location.reload();
     }
+    if(goback){
+        window.location.reload();
+    }
 
     return (
         <Spin spinning={loading} tip="Đang tải..." size="large">
-            <TiArrowBack style={{ fontSize: '50px', cursor: 'pointer' }} onClick={() => setGoBack(true)} />
-
             <div>
                 {contextHolder}
                 <Form className="form-cart">

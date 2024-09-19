@@ -19,7 +19,7 @@ const IconText = ({ icon, text }) => (
     </Space>
 );
 
-function ListBlog() {
+function ListBlogUtils() {
     return (
         <div>
             <List
@@ -66,4 +66,4 @@ function ListBlog() {
     );
 }
 
-export default ListBlog;
+export default ListBlogUtils;

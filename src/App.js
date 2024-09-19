@@ -39,7 +39,6 @@ import ListCartUseNext from "./Home/ListCartUseNext";
 import ListBookHome from "./Home/ListBookHome";
 import ListBookByAuthorName from "./Home/ListBookByAuthorName";
 import ListBookByPublicsher from "./Home/ListBookByPublicsher";
-import Blog from "./Home/Blog";
 import ListDetailBookWhenBuy from "./Home/ListDetailBookWhenBuy";
 import ChiTiettacGiaVaTheoSach from "./Home/ChiTiettacGiaVaTheoSach";
 

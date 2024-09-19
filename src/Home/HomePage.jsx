@@ -31,6 +31,7 @@ import ListBookByAuthorName from './ListBookByAuthorName';
 import ListBookByPublicsher from './ListBookByPublicsher';
 import ListDetailBookWhenBuy from './ListDetailBookWhenBuy';
 import ChiTiettacGiaVaTheoSach from './ChiTiettacGiaVaTheoSach';
+import ManSubmirMuaHangTuGioHang from './ManSubmirMuaHangTuGioHang';
 const { Title, Text } = Typography;
 
 
@@ -196,12 +197,6 @@ function HomePage() {
         return <DetailAuthorBook authorBooName={nameAuthorBook} />
     }
 
-    if (isNextCart) {
-        return (
-            <FormBuyCart />
-        )
-    }
-
     if (nextListBookByAuthor) {
         return <ChiTiettacGiaVaTheoSach/>
     }
@@ -210,6 +205,12 @@ function HomePage() {
         return <ListBookByPublicsher />;
     }
 
+
+    if (isNextCart) {
+        return (
+            <ManSubmirMuaHangTuGioHang/>
+        )
+    }
 
     return (
         <div className={styleLayout.layoutHome}>
