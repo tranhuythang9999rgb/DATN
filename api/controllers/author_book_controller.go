@@ -74,3 +74,18 @@ func (u *ControllersAuthorBook) GetAuthorBookByUserName(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, author)
 }
+
+func (u *ControllersAuthorBook) UpdateAuthorBookById(ctx *gin.Context) {
+	var req entities.AuthorUpdate
+	if err := ctx.ShouldBind(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err := u.auBook.UpdateAuthorBookById(ctx, &req)
+	if err != nil {
+		u.baseController.ErrorData(ctx, errors.NewCustomHttpError(500, 2, fmt.Sprintf("%s", err)))
+		return
+	}
+	u.baseController.Success(ctx, nil)
+}

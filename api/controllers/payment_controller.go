@@ -71,6 +71,7 @@ func (c *ControllersPayment) ReturnUrlAfterPayment(ctx *gin.Context) {
 	ctx.Data(http.StatusOK, "text/html; charset=utf-8", htmlBytes)
 
 }
+
 func (c *ControllersPayment) ReturnUrlAftercanCelPayment(ctx *gin.Context) {
 	orderId := ctx.Query("order_id")
 	log.Info(orderId)
@@ -85,6 +86,8 @@ func (c *ControllersPayment) ReturnUrlAftercanCelPayment(ctx *gin.Context) {
 	// Trả về trang HTML
 	ctx.Data(http.StatusOK, "text/html; charset=utf-8", htmlBytes)
 }
+
+//api/public/chotFree Website Template - Free-CSS.com/pride-and-prejudice/index.html
 
 // {
 //     "code": 0,

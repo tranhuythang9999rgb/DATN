@@ -67,3 +67,17 @@ func (u *AuthorBookCaseUse) GetAuthorBook(ctx context.Context, name string) (*do
 	}
 	return authorBook, nil
 }
+
+func (u *AuthorBookCaseUse) UpdateAuthorBookById(ctx context.Context, req *entities.AuthorUpdate) errors.Error {
+	err := u.authorBook.Update(ctx, &domain.Author{
+		ID:          req.ID,
+		Name:        req.Name,
+		Biography:   req.Biography,
+		BirthDate:   req.BirthDate,
+		Nationality: req.Nationality,
+	})
+	if err != nil {
+		return errors.NewSystemError("error system")
+	}
+	return nil
+}

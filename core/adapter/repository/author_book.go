@@ -53,7 +53,7 @@ func (c *CollectionAuthorBook) List(ctx context.Context) ([]*domain.Author, erro
 
 // Update cập nhật thông tin của một tác giả
 func (c *CollectionAuthorBook) Update(ctx context.Context, author *domain.Author) error {
-	result := c.db.Save(author)
+	result := c.db.Where("id = ?", author.ID).Updates(&author)
 	return result.Error
 }
 

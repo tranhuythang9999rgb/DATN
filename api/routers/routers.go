@@ -80,6 +80,7 @@ func NewApiRouter(
 		typeBookGroup.POST("/add", typeBook.AddTypeBook)
 		typeBookGroup.GET("/list", typeBook.GetListTypeBook)
 		typeBookGroup.DELETE("/delete", typeBook.DeleteTypeBookById)
+		typeBookGroup.PATCH("/update", typeBook.UpdateTypeBookById)
 	}
 	authorBookGroup := r.Group("/author_book")
 	{
@@ -87,6 +88,7 @@ func NewApiRouter(
 		authorBookGroup.GET("/list", authorBook.GetAllAuthorBook)
 		authorBookGroup.DELETE("/delete", authorBook.DeleteAuthorBookById)
 		authorBookGroup.GET("/details", authorBook.GetAuthorBookByUserName)
+		authorBookGroup.PATCH("/update", authorBook.UpdateAuthorBookById)
 	}
 	publisherGroup := r.Group("/publisher")
 	{

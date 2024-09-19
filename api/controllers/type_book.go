@@ -56,3 +56,17 @@ func (u *ControllersTypeBook) DeleteTypeBookById(ctx *gin.Context) {
 	}
 	u.baseController.Success(ctx, nil)
 }
+
+func (u *ControllersTypeBook) UpdateTypeBookById(ctx *gin.Context) {
+	var req entities.TypeBooksUpdate
+	if err := ctx.ShouldBind(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	err := u.typeBook.UpdateTypeBookById(ctx, &req)
+	if err != nil {
+		u.baseController.ErrorData(ctx, err)
+		return
+	}
+	u.baseController.Success(ctx, nil)
+}

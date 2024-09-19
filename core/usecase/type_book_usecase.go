@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	errors "shoe_shop_server/common/error"
+	"shoe_shop_server/common/log"
 	"shoe_shop_server/common/utils"
 	"shoe_shop_server/core/domain"
 	"shoe_shop_server/core/entities"
@@ -43,6 +44,7 @@ func (u *TypeBookUseCase) GetListTypeBook(ctx context.Context) ([]*domain.TypeBo
 	if err != nil {
 		return nil, errors.NewSystemError("error system")
 	}
+	log.Infof("list book", typeBooks)
 	return typeBooks, nil
 }
 
@@ -50,6 +52,19 @@ func (u *TypeBookUseCase) DeleteTypeBookById(ctx context.Context, id string) err
 	numberId, _ := strconv.ParseInt(id, 10, 64)
 	err := u.book.Delete(ctx, numberId)
 	if err != nil {
+		return errors.NewSystemError("error system")
+	}
+	return nil
+}
+
+func (u *TypeBookUseCase) UpdateTypeBookById(ctx context.Context, req *entities.TypeBooksUpdate) errors.Error {
+	err := u.book.Update(ctx, &domain.TypeBooks{
+		ID:       req.ID,
+		Name:     req.Name,
+		IsActive: true,
+	})
+	if err != nil {
+		log.Error(err, "error")
 		return errors.NewSystemError("error system")
 	}
 	return nil
