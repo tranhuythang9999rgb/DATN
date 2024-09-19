@@ -88,7 +88,7 @@ function Blog() {
     return (
         <div>
 
-            <div className={styles.layoutHeader}>
+            <div  className={styles.layoutHeader}>
                 <div className={styles.layoutHeaderStart}>
                     <div className={styles.iconContainer}>
                         <GiArmoredBoomerang className={styles.icon} />

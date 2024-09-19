@@ -41,7 +41,8 @@
 
 .layoutHeaderCenter ul {
     display: flex;
-    list-style: none;
+    justify-content: center;
+    align-items: center;    list-style: none;
 }
 
 .layoutHeaderCenter li {
