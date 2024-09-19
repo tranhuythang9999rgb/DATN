@@ -31,6 +31,22 @@ function AuthorBook() {
             setLoading(false);
         }
     };
+
+    const handleSearch = () => {
+        const filtered = authors.filter(author =>
+            author.name.toLowerCase().includes(searchName.toLowerCase())
+        );
+        setFilteredAuthors(filtered);
+    };
+
+    useEffect(() => {
+        fetchAuthors();
+    }, []);
+
+    useEffect(() => {
+        handleSearch(); // Apply search filter whenever searchName changes
+    }, [searchName]);
+
     // Function to add a new author
     const addAuthor = async (values) => {
         try {
@@ -39,7 +55,6 @@ function AuthorBook() {
             formData.append('biography', values.biography);
             formData.append('nationality', values.nationality);
 
-            // Handle the birth date formatting
             if (birthDate) {
                 formData.append('birth_date', birthDate.format('YYYY-MM-DD'));
             }
@@ -129,10 +144,6 @@ function AuthorBook() {
         },
     ];
 
-    useEffect(() => {
-        fetchAuthors();
-    }, []);
-
     return (
         <div style={{ padding: '10px' }}>
             <h1>Quản Lý Tác Giả</h1>
@@ -142,6 +153,7 @@ function AuthorBook() {
                 style={{ marginBottom: 10, maxWidth: 800 }}
             >
                 <div style={{ display: 'flex' }}>
+
                     <Form.Item
                         name="name"
                         style={{ marginBottom: '10px' }}
@@ -149,7 +161,6 @@ function AuthorBook() {
                         <Input
                             placeholder="Tên Tác Giả"
                             style={{ height: '40px' }}
-                            onChange={(e) => setSearchName(e.target.value)}
                         />
                     </Form.Item>
                     <Form.Item
@@ -158,7 +169,6 @@ function AuthorBook() {
                         <Input
                             placeholder="Tiểu Sử"
                             style={{ height: '40px' }}
-                            onChange={(e) => setSearchBiography(e.target.value)}
                         />
                     </Form.Item>
                     <Form.Item
@@ -167,7 +177,6 @@ function AuthorBook() {
                         <Input
                             placeholder="Quốc Tịch"
                             style={{ height: '40px' }}
-                            onChange={(e) => setSearchNationality(e.target.value)}
                         />
                     </Form.Item>
                     <Form.Item>
@@ -203,9 +212,13 @@ function AuthorBook() {
                             Thêm Tác Giả
                         </Button>
                     </Form.Item>
-
                 </div>
             </Form>
+            <Input
+                placeholder="Tìm theo Tên Tác Giả"
+                style={{ height: '40px', marginRight: '8px',width:'200px' }}
+                onChange={(e) => setSearchName(e.target.value)}
+            />
             <Table
                 columns={columns}
                 dataSource={filteredAuthors}

@@ -4,17 +4,11 @@ import axios from 'axios';
 import './admin_index.css';
 import PublisherUpdateModal from './PublisherUpdateModal'; // Import the modal component
 
-// Nhà Xuất Bản
 function Publishers() {
     const [publishers, setPublishers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [imageFile, setImageFile] = useState(null);
-    const [searchParams, setSearchParams] = useState({
-        name: '',
-        address: '',
-        contact_number: '',
-        website: '',
-    });
+    const [searchName, setSearchName] = useState(''); // State for search input
     const [selectedPublisher, setSelectedPublisher] = useState(null); // Track selected publisher
     const [isModalVisible, setModalVisible] = useState(false); // Modal visibility
 
@@ -27,13 +21,12 @@ function Publishers() {
             }
         } catch (error) {
             console.error('Error fetching publishers:', error);
-            message.error('Error fetching publishers');
+            message.error('Lỗi khi lấy danh sách nhà xuất bản');
         } finally {
             setLoading(false);
         }
     };
 
-    // Handle edit button click
     const handleEdit = (record) => {
         setSelectedPublisher(record);
         setModalVisible(true); // Show the modal
@@ -47,7 +40,6 @@ function Publishers() {
         fetchPublishers();
     }, []);
 
-    // Function to add a new publisher
     const addPublisher = async (values) => {
         try {
             const formData = new FormData();
@@ -55,18 +47,18 @@ function Publishers() {
             formData.append('address', values.address);
             formData.append('contact_number', values.contact_number);
             formData.append('website', values.website);
-            formData.append('file', imageFile);  // Đảm bảo đính kèm đúng file
+            formData.append('file', imageFile);  // Ensure the correct file is attached
 
             const response = await axios.post('http://127.0.0.1:8080/manager/publisher/add', formData);
             if (response.data.code === 0) {
-                message.success('Publisher added successfully!');
+                message.success('Thêm nhà xuất bản thành công!');
                 fetchPublishers(); // Refresh the list
-            } else if (response.data.code === 2) {
-                message.error('Tên nhà xuất bản đã tồn tại');
+            } else {
+                message.warning('lỗi máy chủ  vui lòng kiểm tra lại thiết bị và kết nối mạng');
             }
         } catch (error) {
             console.error('Error adding publisher:', error);
-            message.error('Tên nhà xuất bản đã tồn tại.');
+            message.warning('Tên nhà xuất bản đã tồn tại');
         }
     };
 
@@ -74,20 +66,22 @@ function Publishers() {
         try {
             const response = await axios.delete(`http://127.0.0.1:8080/manager/publisher/delete?id=${id}`);
             if (response.data.code === 0) {
-                message.success('Publisher deleted successfully!');
+                message.success('Xóa nhà xuất bản thành công!');
                 fetchPublishers();
-            } else {
-                message.error('Failed to delete publisher.');
+            }
+             
+            else {
+                message.error('Không thể xóa nhà xuất bản.');
             }
         } catch (error) {
             console.error('Error deleting publisher:', error);
-            message.error('Unable to delete publisher.');
+            message.error('Lỗi khi xóa nhà xuất bản.');
         }
     };
 
     const columns = [
         {
-            title: 'Avatar',
+            title: 'Ảnh Đại Diện',
             dataIndex: 'avatar',
             key: 'avatar',
             render: (text, record) => (
@@ -95,17 +89,17 @@ function Publishers() {
             ),
         },
         {
-            title: 'Name',
+            title: 'Tên',
             dataIndex: 'name',
             key: 'name',
         },
         {
-            title: 'Address',
+            title: 'Địa Chỉ',
             dataIndex: 'address',
             key: 'address',
         },
         {
-            title: 'Contact Number',
+            title: 'Số Điện Thoại',
             dataIndex: 'contact_number',
             key: 'contact_number',
         },
@@ -118,41 +112,47 @@ function Publishers() {
             ),
         },
         {
-            title: 'Created At',
+            title: 'Ngày Tạo',
             dataIndex: 'created_at',
             key: 'created_at',
             render: (text) => new Date(text).toLocaleString(),
         },
         {
-            title: 'Updated At',
+            title: 'Ngày Cập Nhật',
             dataIndex: 'updated_at',
             key: 'updated_at',
             render: (text) => new Date(text).toLocaleString(),
         },
         {
-            title: 'Actions',
+            title: 'Hành Động',
             key: 'action',
             render: (text, record) => (
                 <Space size="middle">
                     <Button type="primary" onClick={() => handleEdit(record)}>
-                        Edit
+                        Sửa
                     </Button>
                     <Popconfirm
-                        title="Are you sure you want to delete this publisher?"
+                        title="Bạn có chắc chắn muốn xóa nhà xuất bản này không?"
                         onConfirm={() => handleDelete(record.id)}
-                        okText="Delete"
-                        cancelText="Cancel"
+                        okText="Xóa"
+                        cancelText="Hủy"
                     >
-                        <Button type="danger">Delete</Button>
+                        <Button type="danger">Xóa</Button>
                     </Popconfirm>
                 </Space>
             ),
         },
     ];
 
+    // Filter publishers based on the search input
+    const filteredPublishers = publishers.filter(publisher => 
+        publisher.name.toLowerCase().includes(searchName.toLowerCase())
+    );
+
     return (
         <div style={{ padding: 10 }}>
-            <h1>Publishers</h1>
+            <h1>Nhà Xuất Bản</h1>
+          
             <Form
                 layout="inline"
                 onFinish={addPublisher}
@@ -164,24 +164,24 @@ function Publishers() {
                         rules={[{ required: true, message: 'Vui lòng nhập tên nhà xuất bản' }]}
                         style={{ marginBottom: '10px' }}
                     >
-                        <Input className="custom-input" placeholder="Tên nhà xuất bản" />
+                        <Input placeholder="Tên nhà xuất bản" />
                     </Form.Item>
                     <Form.Item
                         name="address"
                         rules={[{ required: true, message: 'Vui lòng nhập địa chỉ' }]}
                     >
-                        <Input className="custom-input" placeholder="Địa chỉ" />
+                        <Input placeholder="Địa chỉ" />
                     </Form.Item>
                     <Form.Item
                         name="contact_number"
                         rules={[{ required: true, message: 'Vui lòng nhập số điện thoại liên hệ' }]}
                     >
-                        <Input className="custom-input" placeholder="Số điện thoại liên hệ" />
+                        <Input placeholder="Số điện thoại liên hệ" />
                     </Form.Item>
                     <Form.Item
                         name="website"
                     >
-                        <Input className="custom-input" placeholder="Website" />
+                        <Input placeholder="Website" />
                     </Form.Item>
                     <Upload
                         maxCount={1}
@@ -189,19 +189,18 @@ function Publishers() {
                         accept="image/jpeg,image/png"
                         beforeUpload={(file) => {
                             setImageFile(file);
-                            return false;  // Ngăn upload tự động
+                            return false;  // Prevent auto-upload
                         }}
                         onRemove={() => {
                             setImageFile(null);
                         }}
                     >
-                        +Upload
+                        +Tải Ảnh
                     </Upload>
                     <Form.Item>
                         <Button
                             type="primary"
                             htmlType="submit"
-                            className="custom-button"
                             style={{
                                 padding: '20px',
                                 width: '200px'
@@ -211,15 +210,23 @@ function Publishers() {
                         </Button>
                     </Form.Item>
                 </div>
-            </Form>            <Table
+            </Form>
+
+            <Input 
+                placeholder="Tìm kiếm theo tên nhà xuất bản" 
+                style={{ marginBottom: 20, width: 300 }} 
+                value={searchName}
+                onChange={(e) => setSearchName(e.target.value)}
+            />
+
+            <Table
                 columns={columns}
-                dataSource={publishers}
+                dataSource={filteredPublishers}
                 rowKey="id"
                 loading={loading}
                 pagination={{ pageSize: 10 }}
             />
 
-            {/* Modal for updating publisher */}
             {selectedPublisher && (
                 <PublisherUpdateModal
                     visible={isModalVisible}
