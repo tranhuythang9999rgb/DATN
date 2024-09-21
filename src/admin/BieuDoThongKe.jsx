@@ -57,6 +57,24 @@ function BieuDoThongKe() {
         fetchDataOrder();
     }, []);
 
+    // Hàm tùy chỉnh cho tooltip
+    const CustomTooltip = ({ active, payload }) => {
+        if (active && payload && payload.length) {
+            return (
+                <div className="custom-tooltip">
+                    <h4>{payload[0].payload.date}</h4>
+                    {payload.map((entry, index) => {
+                        const value = entry.value;
+                        return value > 0 ? (
+                            <p key={`item-${index}`}>{`${entry.name}: ${value}`}</p>
+                        ) : null;
+                    })}
+                </div>
+            );
+        }
+        return null;
+    };
+
     return (
         <div>
             <h2>Thống kê số lượng bán từng loại sách theo ngày</h2>
@@ -65,7 +83,7 @@ function BieuDoThongKe() {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="date" />
                     <YAxis />
-                    <Tooltip />
+                    <Tooltip content={<CustomTooltip />} />
                     <Legend />
                     {bookTypes.map((book, index) => (
                         <Bar key={index} dataKey={book} fill={getColor(index)} name={book} />
