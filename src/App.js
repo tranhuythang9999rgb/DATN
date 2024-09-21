@@ -41,6 +41,7 @@ import ListBookByAuthorName from "./Home/ListBookByAuthorName";
 import ListBookByPublicsher from "./Home/ListBookByPublicsher";
 import ListDetailBookWhenBuy from "./Home/ListDetailBookWhenBuy";
 import ChiTiettacGiaVaTheoSach from "./Home/ChiTiettacGiaVaTheoSach";
+import ManLayRaListSachTheoLoai from "./Home/ManLayRaListSachTheoLoai";
 
 
 
@@ -105,6 +106,7 @@ function App() {
       {/* <Dashboard /> */}
       {/* <ListDetailBookWhenBuy/> */}
       {/* <ChiTiettacGiaVaTheoSach/> */}
+      {/* <ManLayRaListSachTheoLoai nameTypeBook={'sách người lớn'}/> */}
     </div>
   );
 }

@@ -248,7 +248,7 @@ const ChitietSanPhamKhiMuaHang = ({ book_id,onEventClick }) => {
                                     marginLeft: '20px',
                                     fontSize: '22px'
                                 }}>
-                                    {book.price - book.price * (book.dimensions / 100)}đ
+                                    {book.price - book.price * (book.discount_price / 100)}đ
                                 </span>
                                 {book.discount_price && (
                                     <span style={{

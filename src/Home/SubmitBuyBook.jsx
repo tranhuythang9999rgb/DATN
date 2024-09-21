@@ -185,9 +185,7 @@ const SubmitBuyBook = () => {
     return (
         <div style={{marginTop:'90px'}}>
             {contextHolder}
-            <Row>
-                <IoReturnUpBackOutline onClick={() => setIsGoback(true)} style={{ fontSize: '25px', cursor: 'pointer' }} />
-            </Row>
+           
             <Row justify="center">
                 <Col span={16}>
                     <Row gutter={16}>

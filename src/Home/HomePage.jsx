@@ -55,7 +55,7 @@ function HomePage() {
     const [isNextCart, setIsNextCart] = useState(false);
     const [nextListBookByAuthor, setNextListBookByAuthor] = useState(false);
     const [nextListBookByPublicSher, setNextListBookByPublicSher] = useState(false);
-    const [nextBlog,setNextBlog] = useState(false);
+    const [nextBlog, setNextBlog] = useState(false);
 
     const cartRef = useRef(null);
 
@@ -147,6 +147,7 @@ function HomePage() {
         const selectedAuthor = authors.find(author => author.id === parseInt(e.key, 10));
         if (selectedAuthor) {
             setSelectedAuthor(selectedAuthor);
+            localStorage.setItem('typebook',selectedAuthor.name);
             setIsNext(true);
         }
     };
@@ -184,7 +185,7 @@ function HomePage() {
 
     if (isNextBuy) {
         // return <DetailBuy book_id={selectedBookId} />;
-        return <ListDetailBookWhenBuy/>
+        return <ListDetailBookWhenBuy />
     }
 
     if (isNextProFile) {
@@ -200,7 +201,7 @@ function HomePage() {
     }
 
     if (nextListBookByAuthor) {
-        return <ChiTiettacGiaVaTheoSach/>
+        return <ChiTiettacGiaVaTheoSach />
     }
 
     if (nextListBookByPublicSher) {
@@ -209,13 +210,13 @@ function HomePage() {
 
     if (isNextCart) {
         return (
-            <ManSubmirMuaHangTuGioHang/>
+            <ManSubmirMuaHangTuGioHang />
         )
     }
 
-    if(nextBlog) {
+    if (nextBlog) {
         return (
-            <ListBlogCustomer/>
+            <ListBlogCustomer />
         )
     }
 
@@ -235,28 +236,25 @@ function HomePage() {
                             <FcHome />Trang chủ
                         </li>
                         <li>
-                            {loading ? (
-                                <Spin tip="Loading authors..." />
-                            ) : (
-                                <Dropdown overlay={menu} trigger={['click']}>
-                                    <Button
+
+                            <Dropdown overlay={menu} trigger={['click']}>
+                                <Button
 
 
-                                        style={{
-                                            border: 'none',           // Remove border
-                                            background: 'none',        // Remove background
-                                            boxShadow: 'none',         // Remove any shadow
-                                            padding: 0,                // Optional: adjust padding for button size
-                                            color: '#1890ff',          // Text color (you can customize)
-                                            cursor: 'pointer',          // Pointer for hover effect
-                                            fontSize: '17px',
-                                            color: 'black'
-                                        }}
-                                    >
-                                        Thư viện sách
-                                    </Button>
-                                </Dropdown>
-                            )}
+                                    style={{
+                                        border: 'none',           // Remove border
+                                        background: 'none',        // Remove background
+                                        boxShadow: 'none',         // Remove any shadow
+                                        padding: 0,                // Optional: adjust padding for button size
+                                        color: '#1890ff',          // Text color (you can customize)
+                                        cursor: 'pointer',          // Pointer for hover effect
+                                        fontSize: '17px',
+                                        color: 'black'
+                                    }}
+                                >
+                                    Thư viện sách
+                                </Button>
+                            </Dropdown>
                         </li>
                         <li>
                             {isNextAuthorBook && nameAuthorBook ? (
@@ -268,7 +266,7 @@ function HomePage() {
                                 />
                             )}
                         </li>
-                        <li onClick={()=>setNextBlog(true)}>Blog</li>
+                        <li onClick={() => setNextBlog(true)}>Blog</li>
                         <li>Giới thiệu</li>
                         <li className={styles.searchContainer}>
                             <Input
@@ -343,7 +341,7 @@ function HomePage() {
                 <div className='layout-footer-tac-gia'>
                     <span style={{ fontSize: '300px' }}></span>
                     <h1>
-                    Tác giả
+                        Tác giả
                     </h1>
                     <AuthorBook eventOnClick={() => setNextListBookByAuthor(true)} />
                 </div>

@@ -201,9 +201,6 @@ const DetailBuy = ({ book_id }) => {
         }
     };
     
-    const handlerGoBack = () => {
-        window.location.reload()
-    }
 
     const settings = {
         dots: true,

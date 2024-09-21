@@ -1,75 +1,114 @@
-/* Footer styles */
-.footer-home-page {
-    background-color: #f0f2f5;
-    color: #333;
-    padding-left: 210px;
-}
-
-/* Container for the titles */
-.footer-titles-container {
+.footerHomePage {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    font-family: 'Roboto', Arial, sans-serif;
+    padding: 2rem 0 1rem; /* Giảm padding */
+  }
+  
+  .footerContent {
     display: flex;
-    justify-content: space-between; /* Distribute space evenly between titles */
-    margin-bottom: 20px;
-}
-
-/* Individual title styling */
-.footer-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #1890ff;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #1890ff;
-}
-
-/* List styles */
-.footer-col-home-page ul {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem; /* Giảm padding */
+  }
+  
+  .footerColumn {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 1rem; /* Giảm margin */
+  }
+  
+  .footerColumn h4 {
+    color: #3498db;
+    font-size: 1rem; /* Giảm font size */
+    font-weight: 600;
+    margin-bottom: 0.8rem; /* Giảm margin */
+    position: relative;
+    padding-bottom: 0.3rem; /* Giảm padding */
+  }
+  
+  .footerColumn h4::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 30px; /* Giảm độ rộng của gạch chân */
+    height: 2px; /* Giảm độ dày của gạch chân */
+    background-color: #3498db;
+  }
+  
+  .footerColumn ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
-}
-
-.footer-col-home-page li {
-}
-
-/* Link styles */
-.footer-col-home-page a {
-    color: #333;
+  }
+  
+  .footerColumn ul li {
+    margin-bottom: 0.5rem; /* Giảm margin */
+  }
+  
+  .footerColumn ul li a {
+    color: #bdc3c7;
     text-decoration: none;
-    transition: color 0.3s ease, transform 0.2s ease;
-    display: inline-flex;
+    transition: color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+    font-size: 0.9rem; /* Giảm font size */
+  }
+  
+  .footerColumn ul li a:hover {
+    color: #3498db;
+    transform: translateX(3px); /* Giảm hiệu ứng hover */
+  }
+  
+  .socialMediaLinks li a {
+    display: flex;
     align-items: center;
-    font-size: 14px;
-}
-
-.footer-col-home-page a:hover {
-    color: #1890ff;
-    transform: translateX(5px);
-}
-
-/* Social media links */
-.social-media-links a {
-    font-size: 16px;
-}
-
-.social-media-links svg {
-    margin-right: 10px;
-    font-size: 18px;
-}
-
-/* Contact information */
-.footer-col-home-page:last-child .ant-typography {
-    display: block;
-    margin-bottom: 8px;
-}
-
-/* Footer bottom */
-.footer-bottom-home-page {
-    border-top: 1px solid #ddd;
-    padding-top: 20px;
-    margin-top: 20px;
+  }
+  
+  .socialMediaLinks li a svg {
+    margin-right: 0.3rem; /* Giảm margin */
+    font-size: 1rem; /* Giảm font size */
+    transition: transform 0.3s ease;
+  }
+  
+  .socialMediaLinks li a:hover svg {
+    transform: scale(1.1); /* Giảm hiệu ứng hover */
+  }
+  
+  .footerColumn p {
+    color: #bdc3c7;
+    margin-bottom: 0.3rem; /* Giảm margin */
+    font-size: 0.9rem; /* Giảm font size */
+  }
+  
+  .footerBottom {
+    margin-top: 1rem; /* Giảm margin */
+    padding-top: 1rem; /* Giảm padding */
+    border-top: 1px solid #34495e;
     text-align: center;
-}
-
-.footer-bottom-home-page .ant-typography {
-    color: #666;
-}
+    font-size: 0.8rem; /* Giảm font size */
+    color: #95a5a6;
+  }
+  
+  @media (max-width: 768px) {
+    .footerContent {
+      flex-direction: column;
+    }
+  
+    .footerColumn {
+      width: 100%;
+      margin-bottom: 1rem; /* Giảm margin */
+      text-align: center;
+    }
+  
+    .footerColumn h4::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  
+    .socialMediaLinks li a {
+      justify-content: center;
+    }
+  }

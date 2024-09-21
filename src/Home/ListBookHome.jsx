@@ -9,17 +9,16 @@ import { FcHome } from 'react-icons/fc';
 import { CiLogin, CiSearch } from 'react-icons/ci';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import ListCart from '../user/ListCart';
-import { PiSortAscendingFill } from 'react-icons/pi';
-import CountryFilter from '../common/CountryFilter';
+
 import styles from './index_header.module.css';
 import { CgProfile } from 'react-icons/cg';
 import FooterHeader from '../Utils/FooterHeader';
 import styleCart from './list_book_home.module.css';
 import CardProduct from './CardProduct';
+import ManLayRaListSachTheoLoai from './ManLayRaListSachTheoLoai';
 
-
+//Đanmg sử lý
 function ListBookHome({ nameTypeBook }) {
-    const [books, setBooks] = useState([]); // Initialize as an empty array
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [likedBooks, setLikedBooks] = useState({});
@@ -30,13 +29,11 @@ function ListBookHome({ nameTypeBook }) {
     const [selectedAuthor, setSelectedAuthor] = useState(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [username, setUsername] = useState(null);
-    const [orderDesc, setOrderDesc] = useState('');
-    const [orderAsc, setOrderAsc] = useState('');
-    const [selectedSort, setSelectedSort] = useState(null); // Save the selected sort option
+
     const [isDrawerVisibleCart, setIsDrawerVisibleCart] = useState(false);
     const [isNextProFile, setIsNextProFile] = useState(false);
-    const [minPrice, setMinPrice] = useState('');
-    const [maxPrice, setMaxPrice] = useState('');
+    const [backHome, setbackHome] = useState(false);
+
     const cartRef = useRef(null);
 
     const openDrawerCart = () => {
@@ -50,41 +47,8 @@ function ListBookHome({ nameTypeBook }) {
     const closeDrawerCart = () => {
         setIsDrawerVisibleCart(false);
     };
-    const handleCountryFilterChange = (selectedCountries) => {
-        // Update your book list based on the selected countries
-        // This might involve calling your API with the new filter
-        console.log('Selected countries:', selectedCountries);
-    };
-    // Function to fetch books data
-    const fetchBooks = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            // Construct query params based on the active sort order
-            const params = new URLSearchParams();
-            params.append('name', nameTypeBook);
-            if (orderDesc) {
-                params.append('desc', orderDesc);
-            }
-            if (orderAsc) {
-                params.append('asc', orderAsc);
-            }
-            if (minPrice) params.append('start', minPrice);
-            if (maxPrice) params.append('end', maxPrice);
 
-            const response = await axios.get(`http://127.0.0.1:8080/manager/book/list/type_book?${params.toString()}`);
-            if (response.data.code === 0) {
-                setBooks(response.data.body.book_detail_list || []);
-            } else {
-                message.error('Failed to fetch books');
-            }
-        } catch (err) {
-            setError('Error fetching books');
-            message.error('Error fetching books');
-        } finally {
-            setLoading(false);
-        }
-    };
+
 
     useEffect(() => {
         // Check for the username in local storage
@@ -111,15 +75,13 @@ function ListBookHome({ nameTypeBook }) {
     const handleNextProFile = () => {
         setIsNextProFile(true);
     };
-    
 
-    // Fetch books and load liked books when the component mounts or nameTypeBook changes
+
     useEffect(() => {
-        fetchBooks();
         loadLikedBooks();
     }, [nameTypeBook]);
 
-    
+
     const handleLoginClick = () => {
         setIsModalVisible(true);
     };
@@ -148,30 +110,12 @@ function ListBookHome({ nameTypeBook }) {
     const handleMenuClick = (e) => {
         const selectedAuthor = authors.find(author => author.id === parseInt(e.key, 10));
         if (selectedAuthor) {
-            setSelectedAuthor(selectedAuthor);
+            setSelectedAuthor(selectedAuthor);//Đanmg sử lý
+            localStorage.setItem('typebook', selectedAuthor);
             setIsNext(true);
         }
     };
 
-    const handleOrderDesc = () => {
-        setOrderDesc('1');
-        setOrderAsc('');
-        fetchBooks();
-        setSelectedSort('1')
-
-    }
-    const handleOrderAsc = () => {
-        setOrderAsc('2');
-        setOrderDesc('');
-        fetchBooks();
-        setSelectedSort('2')
-    }
-
-    const handlePriceSearch = () =>{
-        setOrderAsc('');
-        setOrderDesc('');
-        fetchBooks();
-    }
 
     if (loading) {
         return <Spin tip="Loading books..." />;
@@ -183,7 +127,7 @@ function ListBookHome({ nameTypeBook }) {
 
 
     if (isNext && selectedAuthor) {
-        return <ListBookHome nameTypeBook={selectedAuthor.name} />;
+        return <ListBookHome nameTypeBook={selectedAuthor.name} />;//Đanmg sử lý
     }
 
     const menu = (
@@ -195,11 +139,11 @@ function ListBookHome({ nameTypeBook }) {
             ))}
         </Menu>
     );
-    if (books.length === 0) {
-        setOrderAsc('2');
-        setOrderDesc('');
-        fetchBooks();
+
+    if (backHome) {
+        window.location.reload();
     }
+
     if (isNextBuy) {
         return <DetailBuy book_id={selectedBookId} />;
     }
@@ -288,71 +232,8 @@ function ListBookHome({ nameTypeBook }) {
 
 
             <div className={styleCart['col-books']}>
-                <div className={styleCart['list-check-box']}>
-                  
-                </div>
 
-                <div>
-
-                    <div style={{ width: '1000px', justifyContent: 'end' }} className={styleCart['order-monoi']}>
-                        <Space>
-                            <div style={{ width: '220px' }} className={styleCart['sort-text']}>
-                                <PiSortAscendingFill className={styleCart['sort-icon']} />
-                                Sắp xếp theo
-                            </div>
-                            <Button
-                                type={selectedSort === '1' ? 'primary' : 'default'}
-                                onClick={handleOrderDesc}
-                                className={styleCart['sort-button']}
-                            >
-                                Giá thấp đến cao
-                            </Button>
-                            <Button
-                                type={selectedSort === '2' ? 'primary' : 'default'}
-                                onClick={handleOrderAsc}
-                                className={styleCart['sort-button']}
-                            >
-                                Giá cao đến thấp
-                            </Button>
-                            <div>
-                                <Space>
-                                    <Input
-                                        placeholder="Giá thấp nhất"
-                                        value={minPrice}
-                                        onChange={(e) => setMinPrice(e.target.value)}
-                                    />
-                                    <Input
-                                        placeholder="Giá cao nhất"
-                                        value={maxPrice}
-                                        onChange={(e) => setMaxPrice(e.target.value)}
-                                    />
-                                    <Button onClick={handlePriceSearch}>Tìm kiếm</Button>
-                                </Space>
-                            </div>
-                        </Space>
-                    </div>
-
-
-                    <div className={styleCart['books-container']}>
-                        {books.map((item) => (
-                            <div key={item.book.id} className={styleCart['book-card']}>
-                                <CardProduct
-                                    bookId={item.book.id}
-                                    author_name={item.book.author_name}
-                                    discount_price={item.book.discount_price}
-                                    file_desc_first={item.files[0]}
-                                    price={item.book.price}
-                                    publisher={item.book.publisher}
-                                    title={item.book.title}
-                                    typeBook={nameTypeBook}
-                                />
-                            </div>
-                        ))}
-                    </div>
-
-                </div>
-
-
+                <ManLayRaListSachTheoLoai />
 
             </div>
 

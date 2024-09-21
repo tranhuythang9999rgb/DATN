@@ -26,6 +26,8 @@ const Login = () => {
                 // Save entire response body as JSON
                 const userData = response.data.body;
                 localStorage.setItem('userData', JSON.stringify(userData));
+                localStorage.setItem('delivery_address',userData.address_id);
+                localStorage.setItem('status_address', 'ok');
                 window.location.reload();
             } else {
                 alert('Thông tin tài khoản hoặc mật khẩu không chính xác. Vui lòng thử lại.');

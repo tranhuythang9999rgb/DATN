@@ -1,49 +1,45 @@
 import React from 'react';
-import { Row, Col, Typography } from 'antd';
-import { FaFacebookF, FaTwitter, FaInstagram } from 'react-icons/fa'; // Import icons from react-icons
-import Link from 'antd/es/typography/Link';
+import { FaFacebookF, FaTwitter, FaInstagram } from 'react-icons/fa';
 import styles from './index_footer.module.css';
-
-const { Title, Text } = Typography;
 
 const FooterHeader = () => {
   return (
-    <footer className={styles['footer-home-page']}>
-      <Row justify="space-evenly" align="middle">
-        <Col xs={24} sm={12} md={6} className={styles['footer-col-home-page']}>
-          <Title style={{display:'flex',marginTop:'10px', marginLeft:'230px'}} level={4}>Thông tin</Title>
+    <footer className={styles.footerHomePage}>
+      <div className={styles.footerContent}>
+        <div className={styles.footerColumn}>
+          <h4>Thông tin</h4>
           <ul>
-            <li><Link to="/about">Giới thiệu</Link></li>
-            <li><Link to="/contact">Liên hệ</Link></li>
-            <li><Link to="/faq">Câu hỏi thường gặp</Link></li>
-            <li><Link to="/returns">Chính sách đổi trả</Link></li>
+            <li><a href="/about">Giới thiệu</a></li>
+            <li><a href="/contact">Liên hệ</a></li>
+            <li><a href="/faq">Câu hỏi thường gặp</a></li>
+            <li><a href="/returns">Chính sách đổi trả</a></li>
           </ul>
-        </Col>
-        <Col xs={24} sm={12} md={6} className={styles['footer-col-home-page']}>
-          <Title level={4}>Dịch vụ khách hàng</Title>
+        </div>
+        <div className={styles.footerColumn}>
+          <h4>Dịch vụ khách hàng</h4>
           <ul>
-            <li><Link to="/support">Hỗ trợ khách hàng</Link></li>
-            <li><Link to="/shipping">Giao hàng</Link></li>
-            <li><Link to="/payment">Phương thức thanh toán</Link></li>
+            <li><a href="/support">Hỗ trợ khách hàng</a></li>
+            <li><a href="/shipping">Giao hàng</a></li>
+            <li><a href="/payment">Phương thức thanh toán</a></li>
           </ul>
-        </Col>
-        <Col xs={24} sm={12} md={6} className={styles['footer-col-home-page']}>
-          <Title level={4}>Kết nối với chúng tôi</Title>
-          <ul className={styles['social-media-links']}>
+        </div>
+        <div className={styles.footerColumn}>
+          <h4>Kết nối với chúng tôi</h4>
+          <ul className={styles.socialMediaLinks}>
             <li><a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><FaFacebookF /> Facebook</a></li>
             <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><FaTwitter /> Twitter</a></li>
             <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><FaInstagram /> Instagram</a></li>
           </ul>
-        </Col>
-        <Col xs={24} sm={12} md={6} className={styles['footer-col-home-page']}>
-          <Title level={4}>Thông tin liên hệ</Title>
-          <Text>Hưng Hà Thái Bình, Việt Nam</Text><br />
-          <Text>Email: contact@bookstore.vn</Text><br />
-          <Text>Điện thoại: +84 123 456 789</Text>
-        </Col>
-      </Row>
-      <div className={styles['footer-bottom-home-page']}>
-        <Text>© 2024 Sách Việt Nam. Bảo lưu mọi quyền.</Text>
+        </div>
+        <div className={styles.footerColumn}>
+          <h4>Thông tin liên hệ</h4>
+          <p>Hưng Hà Thái Bình, Việt Nam</p>
+          <p>Email: contact@bookstore.vn</p>
+          <p>Điện thoại: +84 123 456 789</p>
+        </div>
+      </div>
+      <div className={styles.footerBottom}>
+        <p>© 2024 Sách Việt Nam. Bảo lưu mọi quyền.</p>
       </div>
     </footer>
   );

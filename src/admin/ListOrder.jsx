@@ -10,11 +10,8 @@ const ListOrder = () => {
     const [filteredData, setFilteredData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [searchText, setSearchText] = useState('');
 
-    // Fetch data when component mounts
     useEffect(() => {
-        // Get username from localStorage
         const userData = localStorage.getItem('userData');
         let username = '';
 
@@ -31,7 +28,6 @@ const ListOrder = () => {
             return;
         }
 
-        // Fetch orders for the user
         axios.get("http://127.0.0.1:8080/manager/order/api/listorder/admin")
             .then(response => {
                 setData(response.data.body);
@@ -44,9 +40,7 @@ const ListOrder = () => {
             });
     }, []);
 
-    // Handle search input
     const handleSearch = (value) => {
-        setSearchText(value);
         const lowercasedValue = value.toLowerCase();
         const numericValue = parseFloat(value);
 
@@ -64,24 +58,22 @@ const ListOrder = () => {
         setFilteredData(filtered);
     };
 
-    // Handle cancellation of an order
     const handleCancel = (id) => {
         axios.patch(`http://127.0.0.1:8080/manager/order/api/update/calcel?id=${id}`)
             .then(response => {
                 if (response.data.code === 0) {
                     message.success('Đơn hàng đã được hủy thành công');
-                    // Update the status of the canceled order
                     setData(prevData => {
                         return prevData.map(order =>
                             order.order_id === id
-                                ? { ...order, status: 11 } // Assuming 11 is the status code for canceled
+                                ? { ...order, status: 11 }
                                 : order
                         );
                     });
                     setFilteredData(prevData => {
                         return prevData.map(order =>
                             order.order_id === id
-                                ? { ...order, status: 11 } // Assuming 11 is the status code for canceled
+                                ? { ...order, status: 11 }
                                 : order
                         );
                     });
@@ -140,6 +132,7 @@ const ListOrder = () => {
             key: 'status',
             render: status => {
                 switch (status) {
+                    case 23: return 'Đã thanh toán online và đang chờ gửi hàng';
                     case 21: return 'Đang Chờ Thanh Toán Online';
                     case 19: return 'Đang Chờ Gửi Hàng';
                     case 23: return 'Đang Giao';
