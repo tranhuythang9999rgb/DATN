@@ -1,15 +1,16 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import moment from 'moment';
 import { Button, DatePicker, Space } from 'antd';
 const { RangePicker } = DatePicker;
 
 function BieuDoThongKe() {
     const [dataByDate, setDataByDate] = useState([]);
-    const [dataByStatus, setDataByStatus] = useState([]); // New state for the second chart
+    const [dataByStatus, setDataByStatus] = useState([]);
     const [bookTypes, setBookTypes] = useState([]);
     const [statusTypes, setStatusTypes] = useState([]);
+    const [statusCounts, setStatusCounts] = useState([]); // New state for pie chart
     const [dateRange, setDateRange] = useState([null, null]);
     const [allOrders, setAllOrders] = useState([]);
 
@@ -76,8 +77,17 @@ function BieuDoThongKe() {
             });
             return dayData;
         });
-        setDataByStatus(statusChartData); // Set data for the second chart
+        setDataByStatus(statusChartData);
 
+        // Calculate total status counts for pie chart
+        const totalStatusCounts = {};
+        Object.values(statusStats).forEach(statusData => {
+            Object.keys(statusData).forEach(status => {
+                totalStatusCounts[status] = (totalStatusCounts[status] || 0) + statusData[status];
+            });
+        });
+        setStatusCounts(Object.entries(totalStatusCounts).map(([name, value]) => ({ name, value })));
+        
         // Collect unique status types
         const statusArray = Object.values(statusStats).flatMap(Object.keys);
         setStatusTypes(Array.from(new Set(statusArray)));
@@ -130,14 +140,14 @@ function BieuDoThongKe() {
     const handleFilter = () => {
         const [startDate, endDate] = dateRange;
 
-        // Ensure valid dates are selected
         if (startDate && endDate) {
             processOrders(allOrders, startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD'));
         } else {
-            setDataByDate([]); // Clear data if no valid range
-            setDataByStatus([]); // Clear second chart data if no valid range
+            setDataByDate([]);
+            setDataByStatus([]);
             setBookTypes([]);
             setStatusTypes([]);
+            setStatusCounts([]); // Clear pie chart data
         }
     };
 
@@ -175,6 +185,26 @@ function BieuDoThongKe() {
                         <Bar key={`status-${index}`} dataKey={status} fill={getColor(index)} name={status} />
                     ))}
                 </BarChart>
+            </ResponsiveContainer>
+            <h2>Biểu đồ tròn trạng thái đơn hàng</h2>
+            <ResponsiveContainer width="100%" height={400}>
+                <PieChart>
+                    <Pie
+                        data={statusCounts}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={200}
+                        fill="#8884d8"
+                        label
+                    >
+                        {statusCounts.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={getColor(index)} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                </PieChart>
             </ResponsiveContainer>
         </div>
     );

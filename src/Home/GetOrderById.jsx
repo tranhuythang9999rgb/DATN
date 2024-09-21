@@ -70,7 +70,6 @@ const GetOrderById = () => {
             const response = await axios.post('http://127.0.0.1:8080/manager/payment/create/payment', paymentData, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Cookie': `order_id=${Math.floor(Math.random() * 10000000)}`
                 }
             });
 

@@ -20,6 +20,7 @@ import ListOrder from './ListOrder';
 import Statistical from './Statistical';
 import ListCustomer from './ListCustomer';
 import LoyPoints from './LoyPoints';
+import BieuDoThongKe from './BieuDoThongKe';
 
 const { Header, Content, Sider } = Layout;
 
@@ -135,7 +136,7 @@ const tabsContent = [
                 <FiPieChart style={{ fontSize: '25px' }} className="icon-quan-ly-khach-hang" /> Thống kê doanh thu
             </span>
         ),
-        content: <div><Statistical /></div>,
+        content: <div><BieuDoThongKe /></div>,
     },
 ];
 
