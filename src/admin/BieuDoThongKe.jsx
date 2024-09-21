@@ -135,7 +135,7 @@ function BieuDoThongKe() {
             <h2>Thống kê số lượng bán từng loại sách và trạng thái đơn hàng theo ngày</h2>
             <Space>
                 <RangePicker onChange={handleDateRangeChange} />
-                <Button onClick={handleFilter}>Thống kê</Button>
+                <Button   picker="month" onClick={handleFilter}>Thống kê</Button>
             </Space>
             <ResponsiveContainer width="100%" height={400}>
                 <BarChart data={dataByDate}>
