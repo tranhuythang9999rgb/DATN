@@ -2,74 +2,75 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer } from 'recharts';
 import moment from 'moment';
+import { Button, DatePicker, Space } from 'antd';
+const { RangePicker } = DatePicker;
 
 function BieuDoThongKe() {
     const [dataByDate, setDataByDate] = useState([]);
     const [bookTypes, setBookTypes] = useState([]);
     const [statusTypes, setStatusTypes] = useState([]);
+    const [dateRange, setDateRange] = useState([null, null]);
+    const [allOrders, setAllOrders] = useState([]);
 
     const fetchDataOrder = async () => {
         try {
             const response = await axios.get('http://127.0.0.1:8080/manager/order/api/listorder/admin');
-            const orders = response.data.body;
-
-            const dateStats = {};
-            const bookTypesSet = new Set();
-            const statusStats = {};
-
-            orders.forEach(order => {
-                const date = moment(order.create_time).format('YYYY-MM-DD');
-                const status = getStatusText(order.status);
-
-                // Initialize stats for the date
-                if (!dateStats[date]) {
-                    dateStats[date] = {};
-                }
-                if (!statusStats[date]) {
-                    statusStats[date] = {};
-                }
-
-                // Process items for book sales
-                order.items.forEach(item => {
-                    bookTypesSet.add(item.name);
-                    if (!dateStats[date][item.name]) {
-                        dateStats[date][item.name] = 0;
-                    }
-                    dateStats[date][item.name] += item.quantity;
-                });
-
-                // Process status counts
-                if (!statusStats[date][status]) {
-                    statusStats[date][status] = 0;
-                }
-                statusStats[date][status] += 1; // Count the order status
-            });
-
-            const bookTypesArray = Array.from(bookTypesSet);
-            setBookTypes(bookTypesArray);
-
-            const chartData = Object.keys(dateStats).map(date => {
-                const dayData = { date };
-                bookTypesArray.forEach(book => {
-                    dayData[book] = dateStats[date][book] || 0;
-                });
-
-                // Add status counts to dayData
-                Object.keys(statusStats[date]).forEach(status => {
-                    dayData[status] = statusStats[date][status] || 0;
-                });
-
-                return dayData;
-            });
-
-            setDataByDate(chartData);
-
-            const statusArray = Object.values(statusStats).flatMap(Object.keys);
-            setStatusTypes(Array.from(new Set(statusArray)));
-
+            setAllOrders(response.data.body);
+            processOrders(response.data.body);
         } catch (error) {
             console.error('Error fetching orders:', error);
         }
+    };
+
+    const processOrders = (orders, startDate = null, endDate = null) => {
+        const dateStats = {};
+        const bookTypesSet = new Set();
+        const statusStats = {};
+
+        orders.forEach(order => {
+            const orderDate = moment(order.create_time).format('YYYY-MM-DD');
+
+            // Check if the order date is within the selected date range
+            if (startDate && moment(orderDate).isBefore(startDate)) return;
+            if (endDate && moment(orderDate).isAfter(endDate)) return;
+
+            const status = getStatusText(order.status);
+
+            // Initialize stats for the date
+            if (!dateStats[orderDate]) dateStats[orderDate] = {};
+            if (!statusStats[orderDate]) statusStats[orderDate] = {};
+
+            // Process items for book sales
+            order.items.forEach(item => {
+                bookTypesSet.add(item.name);
+                if (!dateStats[orderDate][item.name]) dateStats[orderDate][item.name] = 0;
+                dateStats[orderDate][item.name] += item.quantity;
+            });
+
+            // Process status counts
+            if (!statusStats[orderDate][status]) statusStats[orderDate][status] = 0;
+            statusStats[orderDate][status] += 1;
+        });
+
+        const bookTypesArray = Array.from(bookTypesSet);
+        setBookTypes(bookTypesArray);
+
+        const chartData = Object.keys(dateStats).map(date => {
+            const dayData = { date };
+            bookTypesArray.forEach(book => {
+                dayData[book] = dateStats[date][book] || 0;
+            });
+            Object.keys(statusStats[date] || {}).forEach(status => {
+                dayData[status] = statusStats[date][status] || 0;
+            });
+            return dayData;
+        });
+
+        setDataByDate(chartData);
+
+        // Collect unique status types
+        const statusArray = Object.values(statusStats).flatMap(Object.keys);
+        setStatusTypes(Array.from(new Set(statusArray)));
     };
 
     useEffect(() => {
@@ -112,9 +113,30 @@ function BieuDoThongKe() {
         return null;
     };
 
+    const handleDateRangeChange = (dates) => {
+        setDateRange(dates);
+    };
+
+    const handleFilter = () => {
+        const [startDate, endDate] = dateRange;
+
+        // Ensure valid dates are selected
+        if (startDate && endDate) {
+            processOrders(allOrders, startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD'));
+        } else {
+            setDataByDate([]); // Clear data if no valid range
+            setBookTypes([]);
+            setStatusTypes([]);
+        }
+    };
+
     return (
         <div>
             <h2>Thống kê số lượng bán từng loại sách và trạng thái đơn hàng theo ngày</h2>
+            <Space>
+                <RangePicker onChange={handleDateRangeChange} />
+                <Button onClick={handleFilter}>Thống kê</Button>
+            </Space>
             <ResponsiveContainer width="100%" height={400}>
                 <BarChart data={dataByDate}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -125,11 +147,9 @@ function BieuDoThongKe() {
                     {bookTypes.map((book, index) => (
                         <Bar key={`book-${index}`} dataKey={book} fill={getColor(index)} name={book} />
                     ))}
-
                     {statusTypes.map((status, index) => (
                         <Bar key={`status-${index}`} dataKey={status} fill={getColor(bookTypes.length + index)} name={status} />
                     ))}
-
                 </BarChart>
             </ResponsiveContainer>
         </div>
