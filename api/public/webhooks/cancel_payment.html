@@ -12,10 +12,11 @@
 <body>
     <div class="text-center">
         <div class="spinner-border text-primary" role="status">
-            <span class="sr-only">Loading...</span>
+            <span class="sr-only">Đang tải...</span>
         </div>
-        <h3 class="mt-3">Processing your order, please wait...</h3>
+        <h3 class="mt-3">Đang xử lý đơn hàng của bạn, vui lòng chờ...</h3>
     </div>
+    
     <script>
         // Function to update order status using Axios
         async function updateOrderStatus(orderId) {
@@ -23,7 +24,6 @@
                 const response = await axios.patch(`http://127.0.0.1:8080/manager/order/update/success`, null, {
                     params: {
                         order_id: orderId,
-                        status: 23
                     },
                     headers: {
                         'Content-Type': 'application/json'
@@ -35,11 +35,11 @@
                 if (response.data.code === 0) {
                     window.location.href = 'http://127.0.0.1:3000';
                 } else {
-                    alert('Failed to update order status. Please try again.');
+                    alert('lỗi kết nối mạng  vui lòng kiểm tra thiết bị');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('An error occurred while processing your request.');
+                alert('lỗi kết nối mạng  vui lòng kiểm tra thiết bị');
             }
         }
 
@@ -56,9 +56,9 @@
                 // Delay 30s (30000 milliseconds) before updating the order status
                 setTimeout(function () {
                     updateOrderStatus(orderId);
-                }, 5000);
+                }, 1000);
             } else {
-                alert('Order ID is missing. Unable to update order status.');
+                alert('lỗi kết nối mạng  vui lòng kiểm tra thiết bị');
             }
         }
     </script>

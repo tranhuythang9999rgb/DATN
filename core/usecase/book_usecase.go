@@ -11,7 +11,6 @@ import (
 	"shoe_shop_server/common/utils"
 	"shoe_shop_server/core/domain"
 	"shoe_shop_server/core/entities"
-	"sort"
 	"strconv"
 )
 
@@ -262,29 +261,22 @@ func (u *UploadBookUseCase) GetdetailBookByid(ctx context.Context, id string) (*
 	}, nil
 }
 
-func (u *UploadBookUseCase) GetListBookByTypeBook(ctx context.Context, typeBook, desc, asc, startPrice, EndPrice string) (*entities.BookRespDetailList, errors.Error) {
+func (u *UploadBookUseCase) GetListBookByTypeBook(ctx context.Context, typeBook string) (*entities.BookRespDetailList, errors.Error) {
 	var bookDetails []*entities.BookDetailList
 
-	startPriceNum, _ := strconv.ParseFloat(startPrice, 64)
-	endPrice, _ := strconv.ParseFloat(EndPrice, 64)
-	// Lấy danh sách sách theo loại sách
-	respListBook, err := u.books.GetListBookByTypeBook(ctx, typeBook, startPriceNum, endPrice)
+	respListBook, err := u.books.GetListBookByTypeBook(ctx, typeBook)
 	if err != nil {
 		return nil, errors.NewSystemError("system error occurred while fetching books")
 	}
 
-	// Duyệt qua từng cuốn sách
 	for _, book := range respListBook {
-		// Luôn khởi tạo `listFileResp` là một mảng rỗng
 		listFileResp := []string{}
 
-		// Lấy danh sách file theo ID sách
 		listFile, _ := u.fie_lc.GetListFileById(ctx, book.ID)
 		for _, file := range listFile {
 			listFileResp = append(listFileResp, file.URL)
 		}
 
-		// Tạo đối tượng BookRespDetail và thêm vào danh sách kết quả
 		bookDetails = append(bookDetails, &entities.BookDetailList{
 			Book: &domain.Book{
 				ID:            book.ID,
@@ -309,19 +301,7 @@ func (u *UploadBookUseCase) GetListBookByTypeBook(ctx context.Context, typeBook,
 			Files: listFileResp, // `Files` sẽ là một mảng rỗng nếu không có file nào
 		})
 	}
-	switch {
-	case desc != "" && asc == "":
-		// Sort by price in descending order
-		sort.Slice(bookDetails, func(i, j int) bool {
-			return bookDetails[i].Book.Price > bookDetails[j].Book.Price
-		})
-	case asc != "" && desc == "":
-		// Sort by price in ascending order
-		sort.Slice(bookDetails, func(i, j int) bool {
-			return bookDetails[i].Book.Price < bookDetails[j].Book.Price
-		})
-	}
-
+	log.Infof("data book", bookDetails)
 	return &entities.BookRespDetailList{
 		BookDetailList: bookDetails,
 		Count:          len(bookDetails),

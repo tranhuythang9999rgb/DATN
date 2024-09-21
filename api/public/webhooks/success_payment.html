@@ -24,7 +24,6 @@
                 const response = await axios.patch(`http://127.0.0.1:8080/manager/order/update/success`, null, {
                     params: {
                         order_id: orderId,
-                        status: 23
                     },
                     headers: {
                         'Content-Type': 'application/json'
@@ -36,11 +35,11 @@
                 if (response.data.code === 0) {
                     window.location.href = 'http://127.0.0.1:3000';
                 } else {
-                    alert('Failed to update order status. Please try again.');
+                    alert('lỗi kết nối mạng  vui lòng kiểm tra thiết bị');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('An error occurred while processing your request.');
+                alert('lỗi kết nối mạng  vui lòng kiểm tra thiết bị');
             }
         }
 

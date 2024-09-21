@@ -142,20 +142,13 @@ func (u *CollectionBook) UpdateQuantity(ctx context.Context, id int64, quantity 
 	return result.Error
 }
 
-func (u *CollectionBook) GetListBookByTypeBook(ctx context.Context, typeBook string, startPrice, endPrice float64) ([]*domain.Book, error) {
-	// Đặt giá trị mặc định cho startPrice và endPrice nếu chúng bằng 0
-	if startPrice == 0 {
-		startPrice = 0 // Giá trị mặc định nếu không có startPrice
-	}
-	if endPrice == 0 {
-		endPrice = 9999999999999999 // Giá trị tối đa cho endPrice nếu không có
-	}
+func (u *CollectionBook) GetListBookByTypeBook(ctx context.Context, typeBook string) ([]*domain.Book, error) {
 
 	// Tạo mảng chứa kết quả
 	var books = make([]*domain.Book, 0)
 
 	// Thực hiện truy vấn để tìm các sách dựa theo loại sách và khoảng giá
-	result := u.book.Where("genre = ? AND is_active = true AND price BETWEEN ? AND ?", typeBook, startPrice, endPrice).Find(&books)
+	result := u.book.Where("genre = ? AND is_active = true", typeBook).Find(&books)
 
 	// Trả về danh sách sách và lỗi nếu có
 	return books, result.Error
@@ -182,7 +175,7 @@ func (u *CollectionBook) GetBookByName(ctx context.Context, bookName string) ([]
 
 func (u *CollectionBook) GetListFiveLatestBooks(ctx context.Context) ([]*domain.Book, error) {
 	var books = make([]*domain.Book, 0)
-	result := u.book.Order("create_time DESC").Limit(5).Find(&books)
+	result := u.book.Where("is_active = true").Order("create_time DESC").Limit(5).Find(&books)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -191,7 +184,7 @@ func (u *CollectionBook) GetListFiveLatestBooks(ctx context.Context) ([]*domain.
 
 func (u *CollectionBook) GetListBookByAuthor(ctx context.Context, authorname string) ([]*domain.Book, error) {
 	var books = make([]*domain.Book, 0)
-	result := u.book.Where("author_name = ?", authorname).Find(&books)
+	result := u.book.Where("author_name = ? and is_active = true", authorname).Find(&books)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -200,7 +193,7 @@ func (u *CollectionBook) GetListBookByAuthor(ctx context.Context, authorname str
 
 func (u *CollectionBook) GetListBookByPublicSher(ctx context.Context, publciname string) ([]*domain.Book, error) {
 	var books = make([]*domain.Book, 0)
-	result := u.book.Where("publisher = ?", publciname).Find(&books)
+	result := u.book.Where("publisher = ? is_active = true", publciname).Find(&books)
 	if result.Error != nil {
 		return nil, result.Error
 	}

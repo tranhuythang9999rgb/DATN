@@ -117,12 +117,9 @@ func (u *ControllersUploadBooks) GetdetailBookByid(ctx *gin.Context) {
 }
 
 func (u *ControllersUploadBooks) GetListBookByTypeBook(ctx *gin.Context) {
+
 	name := ctx.Query("name")
-	orderDesc := ctx.Query("desc")
-	orderAsc := ctx.Query("asc")
-	start := ctx.Query("start")
-	end := ctx.Query("end")
-	books, err := u.books.GetListBookByTypeBook(ctx, name, orderDesc, orderAsc, start, end)
+	books, err := u.books.GetListBookByTypeBook(ctx, name)
 	if err != nil {
 		u.baseController.ErrorData(ctx, err)
 		return

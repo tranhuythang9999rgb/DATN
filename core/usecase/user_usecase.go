@@ -11,14 +11,16 @@ import (
 )
 
 type UserCaseUse struct {
-	user domain.RepositoryUser
-	loy  domain.RepositoryLoyaltyPoints
+	user    domain.RepositoryUser
+	loy     domain.RepositoryLoyaltyPoints
+	address domain.RepositoryDeliveryAddress
 }
 
-func NewUseCaseUse(user domain.RepositoryUser, loy domain.RepositoryLoyaltyPoints) *UserCaseUse {
+func NewUseCaseUse(user domain.RepositoryUser, loy domain.RepositoryLoyaltyPoints, address domain.RepositoryDeliveryAddress) *UserCaseUse {
 	return &UserCaseUse{
-		user: user,
-		loy:  loy,
+		user:    user,
+		loy:     loy,
+		address: address,
 	}
 }
 func (u *UserCaseUse) AddAcount(ctx context.Context, req *entities.User) errors.Error {
@@ -60,7 +62,7 @@ func (u *UserCaseUse) AddAcount(ctx context.Context, req *entities.User) errors.
 }
 
 func (u *UserCaseUse) Login(ctx context.Context, user_name, password string) (*entities.LoginResp, errors.Error) {
-
+	idAddress := 0
 	isCheck, userId, role, err := u.user.FindUserByUseName(ctx, user_name)
 	if err != nil {
 		return nil, errors.ErrSystem
@@ -68,10 +70,20 @@ func (u *UserCaseUse) Login(ctx context.Context, user_name, password string) (*e
 	if !isCheck {
 		return nil, errors.NewCustomHttpError(200, enums.USER_NOT_EXIST_CODE, enums.USER_EXITS_CODE_MESS)
 	}
+	inforAddrsss, err := u.address.GetAddressByUserName(ctx, user_name)
+	if err != nil {
+		return nil, errors.ErrSystem
+	}
+	if inforAddrsss == nil {
+		idAddress = 0
+	} else {
+		idAddress = int(inforAddrsss.ID)
+	}
 	return &entities.LoginResp{
-		UserName: user_name,
-		Role:     role,
-		Id:       userId,
+		UserName:  user_name,
+		Role:      role,
+		Id:        userId,
+		AddressId: int64(idAddress),
 	}, nil
 }
 

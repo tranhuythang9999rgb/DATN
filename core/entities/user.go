@@ -17,9 +17,10 @@ type LoginRequest struct {
 	Password string `form:"password"`
 }
 type LoginResp struct {
-	UserName string `json:"user_name"`
-	Role     int    `json:"role"`
-	Id       int64  `json:"id"`
+	UserName  string `json:"user_name"`
+	Role      int    `json:"role"`
+	Id        int64  `json:"id"`
+	AddressId int64  `json:"address_id"`
 }
 type UserRespGetList struct {
 	ID          int64  `json:"id"`

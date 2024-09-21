@@ -109,14 +109,13 @@ func (u *CollectionOrder) UpdateStatusOrder(ctx context.Context, id int64, statu
 	return result.Error
 }
 
-// UpdateStatusOrderSucsess updates the status and payment type of an order.
 func (u *CollectionOrder) UpdateStatusOrderSucsess(ctx context.Context, id int64) error {
 
 	if id <= 0 {
 		return errors.New("invalid order ID")
 	}
 
-	newStatus := enums.ORDER_STATUS_SUCESS
+	newStatus := enums.ORDER_WAITING_FOR_SHIPMENT
 	paymentType := enums.TYPE_PAYMENT_ONLINE
 
 	result := u.db.Model(&domain.Order{}).

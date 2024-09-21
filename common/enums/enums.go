@@ -105,11 +105,12 @@ const (
 	ORDER_CANCEL   = 11
 	ROLE_CUSTOMER  = 13
 
-	TICKET_OPEN_SALE           = 15
-	TICKET_CLOSE_SALE          = 17
-	ORDER_PEND                 = 19
-	ORDER_ARE_PAYING           = 21
-	ORDER_WAITING_FOR_SHIPMENT = 23
+	TICKET_OPEN_SALE  = 15
+	TICKET_CLOSE_SALE = 17
+	ORDER_PEND        = 19
+	ORDER_ARE_PAYING  = 21
+
+	ORDER_WAITING_FOR_SHIPMENT = 23 //Đã thanh toán online và đang chờ gửi hàng
 
 	TYPE_PAYMENT_ONLINE = 25
 
@@ -122,6 +123,14 @@ const (
 	ORDER_STATUS_CANCEL_BY_USER = 33
 
 	ORDER_STATUS_SUCESS = 35
+
+	// case 23: return 'Đã thanh toán online và đang chờ gửi hàng';
+	// case 21: return 'Đang Chờ Thanh Toán Online';
+	// case 19: return 'Đang Chờ Gửi Hàng';
+	// case 23: return 'Đang Giao';
+	// case 11: return 'Đơn Hàng Đã Hủy';
+	// case 9: return 'Đã Giao Hàng và Thanh Toán';
+	// default: return 'Trạng Thái Không Xác Định';
 )
 const (
 	NoSignatureErrorMessage         = "No signature."
