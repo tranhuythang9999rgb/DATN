@@ -1,43 +1,50 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer } from 'recharts';
-import moment from 'moment'; // Sử dụng moment.js để xử lý ngày tháng
+import moment from 'moment';
 
 function BieuDoThongKe() {
     const [dataByDate, setDataByDate] = useState([]);
+    const [bookTypes, setBookTypes] = useState([]); // Lưu danh sách các loại sách để hiển thị trong legend của biểu đồ
 
     const fetchDataOrder = async () => {
         try {
             const response = await axios.get('http://127.0.0.1:8080/manager/order/api/listorder/admin');
             const orders = response.data.body;
 
-            // Duyệt qua tất cả các đơn hàng và thống kê số lượng sách và doanh thu theo ngày
+            // Khởi tạo đối tượng để lưu số lượng bán mỗi loại sách theo từng ngày
             const dateStats = {};
+            const bookTypesSet = new Set(); // Dùng Set để lưu các loại sách, loại bỏ trùng lặp
 
             orders.forEach(order => {
-                const date = moment(order.create_time).format('YYYY-MM-DD'); // Lấy ngày tạo đơn hàng (không lấy giờ)
+                const date = moment(order.create_time).format('YYYY-MM-DD'); // Lấy ngày tạo đơn hàng
                 
-                // Nếu ngày chưa tồn tại trong đối tượng dateStats, khởi tạo nó
                 if (!dateStats[date]) {
-                    dateStats[date] = {
-                        booksSold: new Set(), // Để lưu tên các loại sách (sử dụng Set để tránh trùng lặp)
-                        totalRevenue: 0, // Để lưu tổng doanh thu trong ngày
-                    };
+                    dateStats[date] = {}; // Khởi tạo đối tượng cho mỗi ngày
                 }
 
                 // Duyệt qua các sản phẩm trong đơn hàng
                 order.items.forEach(item => {
-                    dateStats[date].booksSold.add(item.name); // Thêm tên sách vào Set (tránh trùng)
-                    dateStats[date].totalRevenue += item.price * item.quantity; // Tính tổng doanh thu
+                    bookTypesSet.add(item.name); // Thêm loại sách vào Set
+                    if (!dateStats[date][item.name]) {
+                        dateStats[date][item.name] = 0; // Khởi tạo số lượng sách nếu chưa có
+                    }
+                    dateStats[date][item.name] += item.quantity; // Cộng dồn số lượng bán được của sách trong ngày
                 });
             });
 
-            // Chuyển đổi dữ liệu thành dạng có thể sử dụng với Recharts
-            const chartData = Object.keys(dateStats).map(key => ({
-                date: key,
-                booksCount: dateStats[key].booksSold.size, // Số lượng loại sách bán được (size của Set)
-                revenue: dateStats[key].totalRevenue, // Tổng doanh thu
-            }));
+            // Chuyển Set bookTypes thành mảng để sử dụng cho biểu đồ
+            const bookTypesArray = Array.from(bookTypesSet);
+            setBookTypes(bookTypesArray);
+
+            // Chuyển đổi dữ liệu thành dạng sử dụng cho Recharts
+            const chartData = Object.keys(dateStats).map(date => {
+                const dayData = { date }; // Tạo một đối tượng cho mỗi ngày
+                bookTypesArray.forEach(book => {
+                    dayData[book] = dateStats[date][book] || 0; // Thêm số lượng sách bán được hoặc 0 nếu không có
+                });
+                return dayData;
+            });
 
             setDataByDate(chartData);
 
@@ -52,21 +59,27 @@ function BieuDoThongKe() {
 
     return (
         <div>
-            <h2>Thống kê số loại sách và doanh thu theo ngày</h2>
+            <h2>Thống kê số lượng bán từng loại sách theo ngày</h2>
             <ResponsiveContainer width="100%" height={400}>
                 <BarChart data={dataByDate}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="date" />
-                    <YAxis yAxisId="left" orientation="left" stroke="#8884d8" />
-                    <YAxis yAxisId="right" orientation="right" stroke="#82ca9d" />
+                    <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar yAxisId="left" dataKey="booksCount" fill="#8884d8" name="Số loại sách" />
-                    <Bar yAxisId="right" dataKey="revenue" fill="#82ca9d" name="Doanh thu (VNĐ)" />
+                    {bookTypes.map((book, index) => (
+                        <Bar key={index} dataKey={book} fill={getColor(index)} name={book} />
+                    ))}
                 </BarChart>
             </ResponsiveContainer>
         </div>
     );
+}
+
+// Hàm để lấy màu sắc khác nhau cho từng loại sách
+function getColor(index) {
+    const colors = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#8dd1e1', '#a4de6c', '#d0ed57', '#ff7300'];
+    return colors[index % colors.length];
 }
 
 export default BieuDoThongKe;
