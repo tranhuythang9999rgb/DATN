@@ -89,10 +89,9 @@ func (u *ControllerOrder) UpdateOrderOffline(ctx *gin.Context) {
 }
 
 func (u *ControllerOrder) GetOrderBuyOneDay(ctx *gin.Context) {
-	dayOne := ctx.Query("dayOne")
-	resp, err := u.order.GetListOrderBuyOneDay(ctx, dayOne)
+	resp, err := u.order.GetListOrderByThongkeHeader(ctx)
 	if err != nil {
-		u.baseController.ErrorData(ctx, err)
+		u.baseController.ErrorData(ctx, errors.ErrBadRequest)
 		return
 	}
 	u.baseController.Success(ctx, resp)

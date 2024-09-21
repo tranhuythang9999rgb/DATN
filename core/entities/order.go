@@ -66,3 +66,7 @@ type OrderDetailsAdmin struct {
 	Status        int                     `json:"status"`
 	PaymentType   int                     `json:"payment_type"`
 }
+type ListOrderDetailsAdminForHeader struct {
+	OrderDetailsAdmin          []*OrderDetailsAdmin `json:"order_details_admin"`
+	CountNewAccountUserInMonth int                  `json:"count_new_account_user_in_month"`
+}

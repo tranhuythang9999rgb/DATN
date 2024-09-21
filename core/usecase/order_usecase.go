@@ -119,36 +119,37 @@ func (u *UseCaseOrder) UpdateOrderCanCel(ctx context.Context, orderId string) er
 	return nil
 }
 
-func (u *UseCaseOrder) GetListOrderBuyOneDay(ctx context.Context, day string) (*entities.GetOrderBuyOneDayResponse, errors.Error) {
+////ko dung
+// func (u *UseCaseOrder) GetListOrderBuyOneDay(ctx context.Context, day string) (*entities.GetOrderBuyOneDayResponse, errors.Error) {
 
-	dayNumber, _ := strconv.ParseInt(day, 10, 64)
-	var amount float64
-	listOrder, err := u.order.GetListOrderByTimeOneDay(ctx, dayNumber)
-	if err != nil {
-		return nil, errors.NewSystemError(fmt.Sprintf("error system . %v", err))
-	}
-	listIdItemm := make([]int64, 0)
-	users, err := u.user.GetNewUsersInMonth()
-	if err != nil {
-		return nil, errors.NewSystemError(fmt.Sprintf("error system . %v", err))
-	}
-	for _, v := range listOrder {
-		amount = v.TotalAmount
-		listItem, err := u.orderItem.GetOrderByOrderId(ctx, v.ID)
-		if err != nil {
-			return nil, errors.NewSystemError(fmt.Sprintf("error system . %v", err))
-		}
-		for _, v := range listItem {
-			listIdItemm = append(listIdItemm, v.ID)
-		}
-	}
-	return &entities.GetOrderBuyOneDayResponse{
-		CountOrder:   len(listIdItemm),
-		CountProduct: len(listOrder),
-		Amount:       amount,
-		NewCustomer:  len(users),
-	}, nil
-}
+// 	dayNumber, _ := strconv.ParseInt(day, 10, 64)
+// 	var amount float64
+// 	listOrder, err := u.order.GetListOrderByTimeOneDay(ctx, dayNumber)
+// 	if err != nil {
+// 		return nil, errors.NewSystemError(fmt.Sprintf("error system . %v", err))
+// 	}
+// 	listIdItemm := make([]int64, 0)
+// 	users, err := u.user.GetNewUsersInMonth()
+// 	if err != nil {
+// 		return nil, errors.NewSystemError(fmt.Sprintf("error system . %v", err))
+// 	}
+// 	for _, v := range listOrder {
+// 		amount = v.TotalAmount
+// 		listItem, err := u.orderItem.GetOrderByOrderId(ctx, v.ID)
+// 		if err != nil {
+// 			return nil, errors.NewSystemError(fmt.Sprintf("error system . %v", err))
+// 		}
+// 		for _, v := range listItem {
+// 			listIdItemm = append(listIdItemm, v.ID)
+// 		}
+// 	}
+// 	return &entities.GetOrderBuyOneDayResponse{
+// 		CountOrder:   len(listIdItemm),
+// 		CountProduct: len(listOrder),
+// 		Amount:       amount,
+// 		NewCustomer:  len(users),
+// 	}, nil
+// }
 
 func (u *UseCaseOrder) CreateOrderWhenBuyCart(ctx context.Context, req *entities.OrderRequestSubmitBuyFromCart) (int64, float64, errors.Error) {
 	var orderItems []*entities.Items
@@ -369,4 +370,71 @@ func (u *UseCaseOrder) GetListOrderAdmin(ctx context.Context) ([]*entities.Order
 	}
 
 	return detailListorder, nil
+}
+
+func (u *UseCaseOrder) GetListOrderByThongkeHeader(ctx context.Context) (*entities.ListOrderDetailsAdminForHeader, error) {
+	users, err := u.user.GetNewUsersInMonth()
+	if err != nil {
+		return nil, errors.NewSystemError(fmt.Sprintf("error system . %v", err))
+	}
+	now := time.Now()
+	estimatedDate := now.Add(3 * 24 * time.Hour)
+	var listItemOrder = make([]entities.Item, 0)
+	var detailListorder = make([]*entities.OrderDetailsAdmin, 0)
+	listOrder, err := u.order.ListOrders(ctx, &domain.OrderForm{})
+	if err != nil {
+		log.Error(err, "Error unmarshalling JSON: %v")
+		return nil, errors.ErrSystem
+	}
+	for _, v := range listOrder {
+
+		orderItem, err := u.orderItem.GetOrderByOrderId(ctx, v.ID)
+		if err != nil {
+			log.Error(err, "Error system: %v")
+			return nil, errors.ErrSystem
+		}
+		getaddress, err := u.address.GetAddressByUserName(ctx, v.CustomerName)
+		if err != nil {
+			log.Error(err, "Error system: %v")
+			return nil, errors.ErrSystem
+		}
+		for _, v := range orderItem {
+			book, _ := u.book.GetBookById(ctx, v.BookID)
+			listItemOrder = append(listItemOrder, entities.Item{
+				Name:     book.Title,
+				Quantity: v.Quantity,
+				Price:    v.Price,
+			})
+		}
+
+		if orderItem != nil {
+			detailListorder = append(detailListorder, &entities.OrderDetailsAdmin{
+				OrderID:    v.ID,
+				CreateTime: v.CreateTime,
+				Address: &domain.DeliveryAddress{
+					ID:          getaddress.ID,
+					OrderID:     getaddress.OrderID,
+					Email:       getaddress.Email,
+					UserName:    v.CustomerName,
+					PhoneNumber: getaddress.PhoneNumber,
+					Province:    getaddress.PhoneNumber,
+					District:    getaddress.District,
+					Commune:     getaddress.Commune,
+					Detailed:    getaddress.Detailed,
+					NickName:    getaddress.NickName,
+				},
+				Amount:        v.TotalAmount,
+				EstimatedDate: estimatedDate,
+				Items:         listItemOrder,
+				Status:        v.Status,
+				PaymentType:   v.TypePayment,
+				UserName:      v.CustomerName,
+			})
+		}
+
+	}
+	return &entities.ListOrderDetailsAdminForHeader{
+		OrderDetailsAdmin:          detailListorder,
+		CountNewAccountUserInMonth: len(users),
+	}, nil
 }
