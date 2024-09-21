@@ -15,7 +15,6 @@ function ManLayRaListSachTheoLoai() {
     const [backHome, setbackHome] = useState(false);
     const [nameTypeBook, setNameTypeBook] = useState(null); // Tạo state để lưu tên loại sách
 
-    // Hàm fetch danh sách sách
     const fetchListBookByTypeBook = async () => {
         try {
             const response = await axios.get(
@@ -36,24 +35,21 @@ function ManLayRaListSachTheoLoai() {
         }
     };
 
-    // Lấy tên loại sách từ localStorage với độ trễ (ví dụ: 1 giây)
     useEffect(() => {
         const timeoutId = setTimeout(() => {
             const typeBookFromLocalStorage = localStorage.getItem('typebook');
             setNameTypeBook(typeBookFromLocalStorage); // Cập nhật state nameTypeBook
-        }, 1000); // Thời gian delay 1 giây
+        }, 1000);
 
-        return () => clearTimeout(timeoutId); // Xóa timeout khi component bị unmount
+        return () => clearTimeout(timeoutId);
     }, []);
 
-    // Gọi hàm fetch danh sách sách khi nameTypeBook có giá trị
     useEffect(() => {
         if (nameTypeBook) {
             fetchListBookByTypeBook();
         }
     }, [nameTypeBook]);
 
-    // Áp dụng bộ lọc
     const applyFilters = () => {
         let updatedBooks = [...books];
 
@@ -66,7 +62,6 @@ function ManLayRaListSachTheoLoai() {
         setFilteredBooks(updatedBooks);
     };
 
-    // Áp dụng sắp xếp
     const applySorting = (booksToSort) => {
         let sortedBooks = [...booksToSort];
 
@@ -121,7 +116,7 @@ function ManLayRaListSachTheoLoai() {
 
     return (
         <div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'center',marginTop:'100px' }}>
                 <Space>
                     <Button onClick={() => handleSort('desc')} style={{ height: '42px' }}>Giá từ cao đến thấp</Button>
                     <Button onClick={() => handleSort('asc')} style={{ height: '42px' }}>Giá từ thấp đến cao</Button>

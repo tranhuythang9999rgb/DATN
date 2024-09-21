@@ -197,14 +197,14 @@ function HomePage() {
     }
 
     if (isNextAuthorBook) {
-        return <DetailAuthorBook authorBooName={nameAuthorBook} />
+        return <ChiTiettacGiaVaTheoSach />
     }
 
     if (nextListBookByAuthor) {
         return <ChiTiettacGiaVaTheoSach />
     }
 
-    if (nextListBookByPublicSher) {
+    if (nextListBookByPublicSher) {                                                                         
         return <ListBookByPublicsher />;
     }
 
