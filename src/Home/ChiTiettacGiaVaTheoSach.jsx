@@ -161,9 +161,17 @@ function ChiTiettacGiaVaTheoSach({ nameTypeBook }) {
                                 <Spin tip="Loading authors..." />
                             ) : (
                                 <Dropdown overlay={menu} trigger={['click']}>
-                                    <Button style={{ border: 'none', marginTop: '-10px' }}>
+                                    <Button
+                                        style={{
+                                            fontSize:'17px',
+                                            border: 'none',
+                                            marginTop: '-10px',
+                                            background: 'linear-gradient(90deg, rgba(255, 255, 255, 0.9) 0%, rgba(230, 230, 255, 1) 35%, rgba(200, 240, 255, 1) 100%)'
+                                        }}
+                                    >
                                         Thư viện sách
                                     </Button>
+
                                 </Dropdown>
                             )}
                         </li>

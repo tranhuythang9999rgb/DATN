@@ -11,7 +11,7 @@ const FooterHeader = () => {
     <footer className={styles['footer-home-page']}>
       <Row justify="space-evenly" align="middle">
         <Col xs={24} sm={12} md={6} className={styles['footer-col-home-page']}>
-          <Title style={{display:'flex',marginTop:'10px'}} level={4}>Thông tin</Title>
+          <Title style={{display:'flex',marginTop:'10px', marginLeft:'230px'}} level={4}>Thông tin</Title>
           <ul>
             <li><Link to="/about">Giới thiệu</Link></li>
             <li><Link to="/contact">Liên hệ</Link></li>
@@ -36,7 +36,7 @@ const FooterHeader = () => {
           </ul>
         </Col>
         <Col xs={24} sm={12} md={6} className={styles['footer-col-home-page']}>
-          <Title level={4}>Thông tin liên hệ  77777</Title>
+          <Title level={4}>Thông tin liên hệ</Title>
           <Text>Hưng Hà Thái Bình, Việt Nam</Text><br />
           <Text>Email: contact@bookstore.vn</Text><br />
           <Text>Điện thoại: +84 123 456 789</Text>

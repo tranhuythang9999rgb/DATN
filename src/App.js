@@ -101,8 +101,8 @@ function App() {
       {/* <ListBookByAuthorName/> */}
       {/* <ListBookByPublicsher/> */}
       {/* <Blog/> */}
-      {/* <CheckLogin/> */}
-      <Dashboard />
+      <CheckLogin/>
+      {/* <Dashboard /> */}
       {/* <ListDetailBookWhenBuy/> */}
       {/* <ChiTiettacGiaVaTheoSach/> */}
     </div>

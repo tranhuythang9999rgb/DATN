@@ -4,6 +4,7 @@
 }
 
 .book-card {
+    padding-left: 50px;
     border-radius: 8px;
     transition: transform 0.2s ease;
 }

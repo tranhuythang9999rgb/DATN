@@ -9,11 +9,12 @@ function DetailAuthorBook({authorBooName}) {
     const [error, setError] = useState(null); // State to track errors
 
     useEffect(() => {
+        const author = "Nam Cao";
         const fetchAuthorDetails = async () => {
             try {
                 const response = await axios.get(
                     'http://127.0.0.1:8080/manager/author_book/details',
-                    { params: { name: authorBooName } }
+                    { params: { name: author } }
                 );
 
                 if (response.data.code === 0) {
