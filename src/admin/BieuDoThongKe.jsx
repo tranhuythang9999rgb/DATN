@@ -7,6 +7,7 @@ const { RangePicker } = DatePicker;
 
 function BieuDoThongKe() {
     const [dataByDate, setDataByDate] = useState([]);
+    const [dataByStatus, setDataByStatus] = useState([]); // New state for the second chart
     const [bookTypes, setBookTypes] = useState([]);
     const [statusTypes, setStatusTypes] = useState([]);
     const [dateRange, setDateRange] = useState([null, null]);
@@ -24,7 +25,6 @@ function BieuDoThongKe() {
 
     const processOrders = (orders, startDate = null, endDate = null) => {
         const dateStats = {};
-        const bookTypesSet = new Set();
         const statusStats = {};
 
         orders.forEach(order => {
@@ -42,17 +42,17 @@ function BieuDoThongKe() {
 
             // Process items for book sales
             order.items.forEach(item => {
-                bookTypesSet.add(item.name);
                 if (!dateStats[orderDate][item.name]) dateStats[orderDate][item.name] = 0;
                 dateStats[orderDate][item.name] += item.quantity;
             });
 
             // Process status counts
+            if (!statusStats[orderDate]) statusStats[orderDate] = {};
             if (!statusStats[orderDate][status]) statusStats[orderDate][status] = 0;
             statusStats[orderDate][status] += 1;
         });
 
-        const bookTypesArray = Array.from(bookTypesSet);
+        const bookTypesArray = Array.from(new Set(orders.flatMap(order => order.items.map(item => item.name))));
         setBookTypes(bookTypesArray);
 
         const chartData = Object.keys(dateStats).map(date => {
@@ -67,6 +67,16 @@ function BieuDoThongKe() {
         });
 
         setDataByDate(chartData);
+
+        // Process status data for the second chart
+        const statusChartData = Object.keys(statusStats).map(date => {
+            const dayData = { date };
+            Object.keys(statusStats[date]).forEach(status => {
+                dayData[status] = statusStats[date][status];
+            });
+            return dayData;
+        });
+        setDataByStatus(statusChartData); // Set data for the second chart
 
         // Collect unique status types
         const statusArray = Object.values(statusStats).flatMap(Object.keys);
@@ -125,6 +135,7 @@ function BieuDoThongKe() {
             processOrders(allOrders, startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD'));
         } else {
             setDataByDate([]); // Clear data if no valid range
+            setDataByStatus([]); // Clear second chart data if no valid range
             setBookTypes([]);
             setStatusTypes([]);
         }
@@ -135,7 +146,7 @@ function BieuDoThongKe() {
             <h2>Thống kê số lượng bán từng loại sách và trạng thái đơn hàng theo ngày</h2>
             <Space>
                 <RangePicker onChange={handleDateRangeChange} />
-                <Button   picker="month" onClick={handleFilter}>Thống kê</Button>
+                <Button onClick={handleFilter}>Thống kê</Button>
             </Space>
             <ResponsiveContainer width="100%" height={400}>
                 <BarChart data={dataByDate}>
@@ -149,6 +160,19 @@ function BieuDoThongKe() {
                     ))}
                     {statusTypes.map((status, index) => (
                         <Bar key={`status-${index}`} dataKey={status} fill={getColor(bookTypes.length + index)} name={status} />
+                    ))}
+                </BarChart>
+            </ResponsiveContainer>
+            <h2>Biểu đồ trạng thái đơn hàng theo ngày</h2>
+            <ResponsiveContainer width="100%" height={400}>
+                <BarChart data={dataByStatus}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" />
+                    <YAxis />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Legend />
+                    {statusTypes.map((status, index) => (
+                        <Bar key={`status-${index}`} dataKey={status} fill={getColor(index)} name={status} />
                     ))}
                 </BarChart>
             </ResponsiveContainer>
