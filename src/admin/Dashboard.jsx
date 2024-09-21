@@ -2,26 +2,27 @@ import React, { useState } from 'react';
 import { Breadcrumb, Layout, Menu, theme, Tabs, Button } from 'antd';
 import { GiAbstract078, GiWantedReward } from 'react-icons/gi';
 import { GrUserAdmin } from 'react-icons/gr';
-
-import './admin_index.css';
 import { IoMdCloudUpload } from 'react-icons/io';
 import { FcBarChart, FcMindMap } from 'react-icons/fc';
 import { LuClipboardList, LuFileBarChart } from 'react-icons/lu';
 import { TbLogout2, TbUsersGroup } from 'react-icons/tb';
+import { FaUserTie } from 'react-icons/fa';
+import { CiLineHeight } from 'react-icons/ci';
+import { FiPieChart } from 'react-icons/fi';
+
+import './admin_index.css';
 import UploadBook from './UploadBook';
 import ListBooks from './ListBooks';
 import AuthorBook from './AuthorBook';
 import Publishers from './Publishers';
 import TypeBook from './TypeBook';
 import ListOrder from './ListOrder';
-import { FaUserTie } from 'react-icons/fa';
-import { CiLineHeight } from 'react-icons/ci';
-import { FiPieChart } from 'react-icons/fi';
 import Statistical from './Statistical';
 import ListCustomer from './ListCustomer';
 import LoyPoints from './LoyPoints';
 
 const { Header, Content, Sider } = Layout;
+
 const clearLocalStorageAndReload = () => {
     localStorage.clear();
     window.location.reload();
@@ -33,14 +34,11 @@ const items1 = [
         icon: (
             <Button
                 onClick={clearLocalStorageAndReload}
-
                 style={{
                     backgroundColor: 'gray'
                 }}
             >
-                <TbLogout2
-
-                />
+                <TbLogout2 />
             </Button>
         ),
     },
@@ -57,7 +55,6 @@ const items1 = [
     },
 ];
 
-
 const tabsContent = [
     {
         key: '1',
@@ -66,9 +63,7 @@ const tabsContent = [
                 <IoMdCloudUpload className="icon" /> Tải thông tin sách
             </span>
         ),
-        content: <div>
-            <UploadBook />
-        </div>,
+        content: <div><UploadBook /></div>,
     },
     {
         key: '2',
@@ -77,9 +72,7 @@ const tabsContent = [
                 <FcBarChart className="icon" /> Quản lý danh mục
             </span>
         ),
-        content: <div>
-            <TypeBook />
-        </div>,
+        content: <div><TypeBook /></div>,
     },
     {
         key: '3',
@@ -88,9 +81,7 @@ const tabsContent = [
                 <FaUserTie style={{ fontSize: '25px' }} className="icon" /> Quản lý tác giả
             </span>
         ),
-        content: <div>
-            <AuthorBook />
-        </div>,
+        content: <div><AuthorBook /></div>,
     },
     {
         key: '4',
@@ -99,9 +90,7 @@ const tabsContent = [
                 <LuClipboardList style={{ fontSize: '40px' }} className="icon-quan-ly-sach9" />Quản lý nhà xuất bản
             </span>
         ),
-        content: <div>
-            <Publishers/>
-        </div>,
+        content: <div><Publishers /></div>,
     },
     {
         key: '5',
@@ -110,9 +99,7 @@ const tabsContent = [
                 <CiLineHeight style={{ fontSize: '25px' }} className="icon-quan-ly-khach-hang" /> Quản lý sách
             </span>
         ),
-        content: <div>
-            <ListBooks />
-        </div>,
+        content: <div><ListBooks /></div>,
     },
     {
         key: '6',
@@ -121,9 +108,7 @@ const tabsContent = [
                 <GiWantedReward style={{ fontSize: '25px' }} className="icon-quan-ly-khach-hang" /> Quản lý điểm
             </span>
         ),
-        content: <div>
-            <LoyPoints/>
-        </div>,
+        content: <div><LoyPoints /></div>,
     },
     {
         key: '7',
@@ -132,9 +117,7 @@ const tabsContent = [
                 <TbUsersGroup style={{ fontSize: '25px' }} className="icon-quan-ly-khach-hang" /> Quản lý khách hàng
             </span>
         ),
-        content: <div>
-            <ListCustomer/>
-        </div>,
+        content: <div><ListCustomer /></div>,
     },
     {
         key: '8',
@@ -143,9 +126,7 @@ const tabsContent = [
                 <LuFileBarChart style={{ fontSize: '25px' }} className="icon-quan-ly-khach-hang" /> Thống kê đơn hàng
             </span>
         ),
-        content: <div>
-            <ListOrder/>
-        </div>,
+        content: <div><ListOrder /></div>,
     },
     {
         key: '9',
@@ -154,23 +135,19 @@ const tabsContent = [
                 <FiPieChart style={{ fontSize: '25px' }} className="icon-quan-ly-khach-hang" /> Thống kê doanh thu
             </span>
         ),
-        content: <div>
-            <Statistical/>
-        </div>,
+        content: <div><Statistical /></div>,
     },
-
 ];
 
 const items2 = [
     {
         key: 'sub1',
         icon: <GrUserAdmin />,
-        label: (<span style={{
-            fontSize: '18px',
-
-        }}>
-            Quản lý
-        </span>),
+        label: (
+            <span style={{ fontSize: '18px' }}>
+                Quản lý
+            </span>
+        ),
         children: tabsContent.map(tab => ({
             key: tab.key,
             label: tab.label,
@@ -191,14 +168,17 @@ function Dashboard() {
     };
 
     return (
-        <div>
-            <Layout>
+        <div style={{ height: 'auto', display: 'flex', flexDirection: 'column' }}>
+            <Layout style={{ height: 'auto' }}>
                 <Header
                     style={{
                         display: 'flex',
                         alignItems: 'center',
-                        background:
-                            'linear-gradient(90deg, rgba(255, 189, 68, 1) 0%, rgba(240, 98, 146, 1) 35%, rgba(0, 122, 166, 1) 100%)',
+                        background: 'linear-gradient(90deg, rgba(255, 189, 68, 1) 0%, rgba(240, 98, 146, 1) 35%, rgba(0, 122, 166, 1) 100%)',
+                        position: 'sticky',
+                        top: 0,
+                        zIndex: 1,
+                        width: '100%',
                     }}
                 >
                     <div className="demo-logo" />
@@ -210,16 +190,19 @@ function Dashboard() {
                         style={{
                             flex: 1,
                             alignItems: 'center',
-                            background:
-                                'linear-gradient(90deg, rgba(255, 189, 68, 1) 0%, rgba(240, 98, 146, 1) 35%, rgba(0, 122, 166, 1) 100%)',
+                            background: 'transparent',
                         }}
                     />
                 </Header>
-                <Layout>
+                <Layout style={{ flex: 1, overflow: 'auto' }}>
                     <Sider
                         width={250}
                         style={{
                             background: colorBgContainer,
+                            overflow: 'auto',
+                            height: '100%',
+                            position: 'fixed',
+                            left: 0,
                         }}
                     >
                         <Menu
@@ -237,6 +220,7 @@ function Dashboard() {
                     <Layout
                         style={{
                             padding: '0 24px 24px',
+                            marginLeft: 250,
                         }}
                     >
                         <Breadcrumb
@@ -251,6 +235,7 @@ function Dashboard() {
                                 minHeight: 280,
                                 background: colorBgContainer,
                                 borderRadius: borderRadiusLG,
+                                overflow: 'auto',
                             }}
                         >
                             <Tabs
