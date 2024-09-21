@@ -42,6 +42,7 @@ import ListBookByPublicsher from "./Home/ListBookByPublicsher";
 import ListDetailBookWhenBuy from "./Home/ListDetailBookWhenBuy";
 import ChiTiettacGiaVaTheoSach from "./Home/ChiTiettacGiaVaTheoSach";
 import ManLayRaListSachTheoLoai from "./Home/ManLayRaListSachTheoLoai";
+import BieuDoThongKe from "./admin/BieuDoThongKe";
 
 
 
@@ -102,11 +103,12 @@ function App() {
       {/* <ListBookByAuthorName/> */}
       {/* <ListBookByPublicsher/> */}
       {/* <Blog/> */}
-      <CheckLogin/>
+      {/* <CheckLogin/> */}
       {/* <Dashboard /> */}
       {/* <ListDetailBookWhenBuy/> */}
       {/* <ChiTiettacGiaVaTheoSach/> */}
       {/* <ManLayRaListSachTheoLoai nameTypeBook={'sách người lớn'}/> */}
+      <BieuDoThongKe/>
     </div>
   );
 }
