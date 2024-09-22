@@ -1,4 +1,4 @@
--- Active: 1724172274110@@127.0.0.1@5432@shoe_shop
+-- Active: 1726675047873@@127.0.0.1@5432@shoe_shop
 create table if not exists users
 (
     id           bigint       not null
@@ -245,3 +245,18 @@ CREATE TABLE loyalty_points (
 
 ALTER TABLE users 
   ADD COLUMN create_time INT;
+
+
+  ALTER TABLE books ADD COLUMN tsvector_content tsvector;
+
+-- Cập nhật giá trị cho cột tsvector_content
+UPDATE books SET tsvector_content = 
+    to_tsvector('english', coalesce(title, '') || ' ' || coalesce(author_name, '') || ' ' || coalesce(description, ''));
+
+-- Tạo trigger để tự động cập nhật khi có sự thay đổi
+CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+ON books FOR EACH ROW EXECUTE FUNCTION 
+tsvector_update_trigger(tsvector_content, 'pg_catalog.english', title, author_name, description);
+
+-- Tạo chỉ mục GIN cho full-text search
+CREATE INDEX tsvector_idx ON books USING GIN(tsvector_content);

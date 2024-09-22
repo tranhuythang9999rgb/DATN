@@ -199,3 +199,11 @@ func (u *CollectionBook) GetListBookByPublicSher(ctx context.Context, publciname
 	}
 	return books, nil
 }
+
+func (u *CollectionBook) GetListBookUseBot(ctx context.Context, nameBook string) ([]*domain.Book, error) {
+	var books = make([]*domain.Book, 0)
+
+	result := u.book.Where("title ILIKE ? AND is_active = true", "%"+nameBook+"%").Find(&books)
+
+	return books, result.Error
+}

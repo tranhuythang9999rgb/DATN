@@ -481,3 +481,12 @@ func (u *UploadBookUseCase) GetListBookByPublicSher(ctx context.Context, name st
 		Books: booksResp,
 	}, nil
 }
+
+func (u *UploadBookUseCase) GetListBookUseBot(ctx context.Context, name string) ([]*domain.Book, errors.Error) {
+	resp, err := u.books.GetListBookUseBot(ctx, name)
+	if err != nil {
+		log.Error(err, "error")
+		return nil, errors.NewCustomHttpErrorWithCode(enums.DB_ERR_CODE, enums.DB_ERR_MESS, "500")
+	}
+	return resp, nil
+}
