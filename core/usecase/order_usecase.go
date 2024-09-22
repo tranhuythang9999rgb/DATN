@@ -114,42 +114,31 @@ func (u *UseCaseOrder) UpdateOrderCanCel(ctx context.Context, orderId string) er
 		Status: enums.ORDER_CANCEL,
 	})
 	if err != nil {
+		log.Error(err, "error")
 		return errors.NewSystemError(fmt.Sprintf("error system . %v", err))
 	}
+	listOrderId, err := u.orderItem.GetOrderByOrderId(ctx, idNumber)
+	if err != nil {
+		log.Error(err, "error")
+		return errors.NewSystemError(fmt.Sprintf("error system . %v", err))
+	}
+	for _, v := range listOrderId {
+		book, err := u.book.GetBookById(ctx, v.BookID)
+		if err != nil {
+			log.Error(err, "error")
+			return errors.NewSystemError(fmt.Sprintf("error system . %v", err))
+		}
+		if book != nil {
+			err = u.book.UpdateQuantity(ctx, v.BookID, book.Quantity+v.Quantity)
+			if err != nil {
+				log.Error(err, "error")
+				return errors.NewSystemError(fmt.Sprintf("error system . %v", err))
+			}
+		}
+	}
+
 	return nil
 }
-
-////ko dung
-// func (u *UseCaseOrder) GetListOrderBuyOneDay(ctx context.Context, day string) (*entities.GetOrderBuyOneDayResponse, errors.Error) {
-
-// 	dayNumber, _ := strconv.ParseInt(day, 10, 64)
-// 	var amount float64
-// 	listOrder, err := u.order.GetListOrderByTimeOneDay(ctx, dayNumber)
-// 	if err != nil {
-// 		return nil, errors.NewSystemError(fmt.Sprintf("error system . %v", err))
-// 	}
-// 	listIdItemm := make([]int64, 0)
-// 	users, err := u.user.GetNewUsersInMonth()
-// 	if err != nil {
-// 		return nil, errors.NewSystemError(fmt.Sprintf("error system . %v", err))
-// 	}
-// 	for _, v := range listOrder {
-// 		amount = v.TotalAmount
-// 		listItem, err := u.orderItem.GetOrderByOrderId(ctx, v.ID)
-// 		if err != nil {
-// 			return nil, errors.NewSystemError(fmt.Sprintf("error system . %v", err))
-// 		}
-// 		for _, v := range listItem {
-// 			listIdItemm = append(listIdItemm, v.ID)
-// 		}
-// 	}
-// 	return &entities.GetOrderBuyOneDayResponse{
-// 		CountOrder:   len(listIdItemm),
-// 		CountProduct: len(listOrder),
-// 		Amount:       amount,
-// 		NewCustomer:  len(users),
-// 	}, nil
-// }
 
 func (u *UseCaseOrder) CreateOrderWhenBuyCart(ctx context.Context, req *entities.OrderRequestSubmitBuyFromCart) (int64, float64, errors.Error) {
 	var orderItems []*entities.Items

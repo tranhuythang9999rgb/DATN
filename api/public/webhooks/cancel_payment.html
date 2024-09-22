@@ -21,9 +21,9 @@
         // Function to update order status using Axios
         async function updateOrderStatus(orderId) {
             try {
-                const response = await axios.patch(`http://127.0.0.1:8080/manager/order/update/success`, null, {
+                const response = await axios.patch(`http://127.0.0.1:8080/manager/order/api/update/calcel`, null, {
                     params: {
-                        order_id: orderId,
+                        id: orderId,
                     },
                     headers: {
                         'Content-Type': 'application/json'
