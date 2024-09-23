@@ -177,7 +177,7 @@ func (u *UploadBookUseCase) GetListBookSellWell(ctx context.Context) (*entities.
 			// Nếu listFile là nil hoặc rỗng, gán URL là chuỗi rỗng
 			fileURL = ""
 		}
-		if v.IsActive {
+		if v.IsActive && v.Quantity > 0 {
 			booksResp = append(booksResp, &entities.BookRespSellWell{
 				ID:            v.ID,
 				Title:         v.Title,

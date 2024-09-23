@@ -28,8 +28,8 @@ func (us *ServiceAddress) GetAllCity(ctx context.Context) (*port.CitiesResp, err
 	if err != nil {
 		return &port.CitiesResp{
 			Result: port.Result{
-				Code:    enums.CACHE_ERR_CODE,
-				Message: enums.CACHE_ERR_MESS,
+				Code:    enums.DB_ERR_CODE,
+				Message: enums.DB_ERR_MESS,
 			},
 		}, nil
 	}
@@ -48,8 +48,8 @@ func (us *ServiceAddress) GetAllCity(ctx context.Context) (*port.CitiesResp, err
 		if err != nil {
 			return &port.CitiesResp{
 				Result: port.Result{
-					Code:    enums.CACHE_ERR_CODE,
-					Message: enums.CACHE_ERR_MESS,
+					Code:    enums.DB_ERR_CODE,
+					Message: enums.DB_ERR_MESS,
 				},
 			}, nil
 		}
@@ -66,8 +66,8 @@ func (us *ServiceAddress) GetAllCity(ctx context.Context) (*port.CitiesResp, err
 	if err != nil {
 		return &port.CitiesResp{
 			Result: port.Result{
-				Code:    enums.CACHE_ERR_CODE,
-				Message: enums.CACHE_ERR_MESS,
+				Code:    enums.DB_ERR_CODE,
+				Message: enums.DB_ERR_MESS,
 			},
 		}, nil
 	}
@@ -96,8 +96,8 @@ func (us *ServiceAddress) GetAllDistrictsByCityName(ctx context.Context, cityNam
 	if err != nil {
 		return &port.DistrictsResp{
 			Result: port.Result{
-				Code:    enums.CACHE_ERR_CODE,
-				Message: enums.CACHE_ERR_MESS,
+				Code:    enums.DB_ERR_CODE,
+				Message: enums.DB_ERR_MESS,
 			},
 		}, nil
 	}
@@ -117,8 +117,8 @@ func (us *ServiceAddress) GetAllDistrictsByCityName(ctx context.Context, cityNam
 		if err != nil {
 			return &port.DistrictsResp{
 				Result: port.Result{
-					Code:    enums.CACHE_ERR_CODE,
-					Message: enums.CACHE_ERR_MESS,
+					Code:    enums.DB_ERR_CODE,
+					Message: enums.DB_ERR_MESS,
 				},
 			}, nil
 		}
@@ -134,8 +134,8 @@ func (us *ServiceAddress) GetAllDistrictsByCityName(ctx context.Context, cityNam
 	if err != nil {
 		return &port.DistrictsResp{
 			Result: port.Result{
-				Code:    enums.CACHE_ERR_CODE,
-				Message: enums.CACHE_ERR_MESS,
+				Code:    enums.DB_ERR_CODE,
+				Message: enums.DB_ERR_MESS,
 			},
 		}, nil
 	}
@@ -164,8 +164,8 @@ func (us *ServiceAddress) GetAllCommunesByDistrictName(ctx context.Context, dist
 	if err != nil {
 		return &port.CommunesResp{
 			Result: port.Result{
-				Code:    enums.CACHE_ERR_CODE,
-				Message: enums.CACHE_ERR_MESS,
+				Code:    enums.DB_ERR_CODE,
+				Message: enums.DB_ERR_MESS,
 			},
 		}, nil
 	}
@@ -183,8 +183,8 @@ func (us *ServiceAddress) GetAllCommunesByDistrictName(ctx context.Context, dist
 		if err != nil {
 			return &port.CommunesResp{
 				Result: port.Result{
-					Code:    enums.CACHE_ERR_CODE,
-					Message: enums.CACHE_ERR_MESS,
+					Code:    enums.DB_ERR_CODE,
+					Message: enums.DB_ERR_MESS,
 				},
 			}, nil
 		}
@@ -200,8 +200,8 @@ func (us *ServiceAddress) GetAllCommunesByDistrictName(ctx context.Context, dist
 	if err != nil {
 		return &port.CommunesResp{
 			Result: port.Result{
-				Code:    enums.CACHE_ERR_CODE,
-				Message: enums.CACHE_ERR_MESS,
+				Code:    enums.DB_ERR_CODE,
+				Message: enums.DB_ERR_MESS,
 			},
 		}, nil
 	}

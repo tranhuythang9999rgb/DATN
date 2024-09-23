@@ -115,13 +115,12 @@ func (u *CollectionOrder) UpdateStatusOrderSucsess(ctx context.Context, id int64
 		return errors.New("invalid order ID")
 	}
 
-	newStatus := enums.ORDER_WAITING_FOR_SHIPMENT
 	paymentType := enums.TYPE_PAYMENT_ONLINE
 
 	result := u.db.Model(&domain.Order{}).
 		Where("id = ?", id).
 		Updates(map[string]interface{}{
-			"status":       newStatus,
+			"status":       enums.AWAITING_CONFIRMATION,
 			"type_payment": paymentType,
 		})
 
@@ -140,8 +139,7 @@ func (u *CollectionOrder) UpdateOrderForSend(ctx context.Context, id int64, stat
 	result := u.db.Model(&domain.Order{}).
 		Where("id = ?", id).
 		Updates(map[string]interface{}{
-			"status":       status,
-			"type_payment": enums.TYPE_PAYMENT_ONLINE,
+			"status": status,
 		})
 	return result.Error
 }

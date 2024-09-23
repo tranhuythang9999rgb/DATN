@@ -58,7 +58,8 @@ func (u *ControllerOrder) GetListOrder(ctx *gin.Context) {
 
 func (u *ControllerOrder) UpdateOrderForSend(ctx *gin.Context) {
 	id := ctx.Query("id")
-	err := u.order.UpdateOrderForSend(ctx, id)
+	status := ctx.Query("status")
+	err := u.order.UpdateOrderForSend(ctx, id, status)
 	if err != nil {
 		u.baseController.ErrorData(ctx, err)
 		return

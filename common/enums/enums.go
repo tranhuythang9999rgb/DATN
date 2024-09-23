@@ -56,45 +56,6 @@ const (
 
 	AES_DECRYPT_AES_CODE = 18
 	AES_DECRYPT_AES_MESS = "error QRcode is invalid"
-
-	DATA_EMPTY_ERR_CODE = 20
-	DATA_EMPTY_ERR_MESS = "data empty"
-
-	OTP_ERR_VERIFY_CODE = 22
-	OTP_ERR_VERIFY_MESS = "error verify otp send email"
-
-	CACHE_ERR_CODE = 24
-	CACHE_ERR_MESS = "error set cache"
-
-	SHOW_TIME_CODE = 26
-	SHOW_TIME_MESS = "error show time existing"
-
-	CLIENT_ERROR_CODE = 28
-	CLIENT_ERROR_MESS = "error client"
-
-	ROOM_EXSTIS_CODE = 30
-	ROOM_EXSTIS_MESS = "room exists"
-
-	ACCOUNT_STAFF_LOCK_CODE = 32
-	ACCOUNT_STAFF_LOCK_MESS = "account locked"
-
-	ORDER_REGISTER_TICKET_CODE = 34
-	ORDER_REGISTER_TICKET_MESS = "Hết vé"
-
-	ORDER_SEND_TICKET_CODE = 36
-	ORDER_SEND_TICKET_MESS = "error payment not"
-
-	ORDER_CHECK_CODE = 38
-	ORDER_CHECK_MESS = "error check status payment"
-
-	MOVIE_EXIST_CODE = 40
-	MOVIE_EXIST_MESS = "movie  exist"
-
-	TICKET_OPEN_SALE_CODE = 42
-	TICKET_OPEN_SALE_MESS = "ticket open sale"
-
-	SHOW_TIME_ORDER_CODE = 44
-	SHOW_TIME_ORDER_MESS = "Ghế này đã được người mua trước vui lòng chọn lại"
 )
 const (
 	ROLE_ADMIN     = 1
@@ -105,13 +66,6 @@ const (
 	ORDER_CANCEL   = 11
 	ROLE_CUSTOMER  = 13
 
-	TICKET_OPEN_SALE  = 15
-	TICKET_CLOSE_SALE = 17
-	ORDER_PEND        = 19
-	ORDER_ARE_PAYING  = 21
-
-	ORDER_WAITING_FOR_SHIPMENT = 23 //Đã thanh toán online và đang chờ gửi hàng
-
 	TYPE_PAYMENT_ONLINE = 25
 
 	TYPE_PAYMENT_OFFLINE = 27
@@ -120,18 +74,20 @@ const (
 
 	ORDER_STATUS_SUBMIT_SEND = 31
 
-	ORDER_STATUS_CANCEL_BY_USER = 33
-
 	ORDER_STATUS_SUCESS = 35
-
-	// case 23: return 'Đã thanh toán online và đang chờ gửi hàng';
-	// case 21: return 'Đang Chờ Thanh Toán Online';
-	// case 19: return 'Đang Chờ Gửi Hàng';
-	// case 23: return 'Đang Giao';
-	// case 11: return 'Đơn Hàng Đã Hủy';
-	// case 9: return 'Đã Giao Hàng và Thanh Toán';
-	// default: return 'Trạng Thái Không Xác Định';
 )
+
+const (
+	AWAITING_CONFIRMATION   = 11 // Đang chờ xác nhận
+	AWAITING_ONLINE_PAYMENT = 13 // Đang chờ thanh toán online
+	ONLINE_PAYMENT_RECEIVED = 15 // Đã nhận thanh toán online
+	PREPARING_ORDER         = 17 // Đang chuẩn bị đơn hàng
+	IN_TRANSIT              = 19 // Đang vận chuyển
+	OUT_FOR_DELIVERY        = 21 // Đang giao hàng
+	DELIVERED               = 23 //  Đơn hàng đã giao và hoàn tất
+	CANCELLED               = 25 // Đơn hàng đã hủy
+)
+
 const (
 	NoSignatureErrorMessage         = "No signature."
 	NoDataErrorMessage              = "No data."

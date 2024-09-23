@@ -108,7 +108,7 @@ func NewApiRouter(
 		orderGroup.GET("/list/order/admin", order.ListOrdersUseTk)
 		orderGroup.PATCH("/api/order/offiline", order.UpdateOrderOffline)
 		orderGroup.GET("/api/admin/day", order.GetOrderBuyOneDay)
-		orderGroup.POST("/api/pend/offline", order.CreateOrderWhenBuyOffLine)
+		orderGroup.POST("/api/pend/offline", order.CreateOrderWhenBuyOffLine) // payment order offline
 		orderGroup.GET("/api/getlist/user", order.GetListOrderForuser)
 		orderGroup.PATCH("/api/update/calcel", order.UpdateOrderWhenCanCel)
 		orderGroup.GET("/api/listorder/admin", order.GetListOrderForAdmin)
@@ -127,7 +127,7 @@ func NewApiRouter(
 		paymentGroup.PATCH("/add", payment.CreatePayment)
 		paymentGroup.GET("/return/create/payment", payment.ReturnUrlAfterPayment)
 		paymentGroup.GET("/return/calcel/payment/", payment.ReturnUrlAftercanCelPayment)
-		paymentGroup.POST("/create/payment", payment.CreatePaymentWhenCart)
+		paymentGroup.POST("/create/payment", payment.CreatePaymentWhenCart) // payment when cart
 	}
 	// address public
 	r.GET("/public/customer/cities", addresPublic.GetAllCity)

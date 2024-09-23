@@ -134,7 +134,7 @@ func (c *CollectionBook) GetListBookSellWell(ctx context.Context) ([]*domain.Boo
 // GetFourBook lấy 4 sản phẩm bán chạy nhất dựa trên bảng orders, nếu bảng orders chưa có dữ liệu thì lấy 4 bản sách đầu tiên
 func (c *CollectionBook) GetBookByIdTopSell(ctx context.Context, id int64) (*domain.Book, error) {
 	var book *domain.Book
-	result := c.book.Where("id = ? and is_active = true", id).First(&book)
+	result := c.book.Where("id = ? AND is_active = true AND quantity > 0", id).First(&book)
 	return book, result.Error
 }
 func (u *CollectionBook) UpdateQuantity(ctx context.Context, id int64, quantity int) error {
@@ -148,7 +148,7 @@ func (u *CollectionBook) GetListBookByTypeBook(ctx context.Context, typeBook str
 	var books = make([]*domain.Book, 0)
 
 	// Thực hiện truy vấn để tìm các sách dựa theo loại sách và khoảng giá
-	result := u.book.Where("genre = ? AND is_active = true", typeBook).Find(&books)
+	result := u.book.Where("genre = ? AND is_active = true AND quantity > 0", typeBook).Find(&books)
 
 	// Trả về danh sách sách và lỗi nếu có
 	return books, result.Error
@@ -158,7 +158,7 @@ func (u *CollectionBook) GetBookByName(ctx context.Context, bookName string) ([]
 	var books []*domain.Book
 
 	// Sử dụng ILIKE để tìm kiếm không phân biệt chữ hoa chữ thường
-	result := u.book.Where("title ILIKE ? AND is_active = true", "%"+bookName+"%").Find(&books)
+	result := u.book.Where("title ILIKE ? AND is_active = true AND quantity > 0", "%"+bookName+"%").Find(&books)
 
 	if result.Error != nil {
 		// Trả về lỗi nếu truy vấn thất bại
@@ -175,7 +175,7 @@ func (u *CollectionBook) GetBookByName(ctx context.Context, bookName string) ([]
 
 func (u *CollectionBook) GetListFiveLatestBooks(ctx context.Context) ([]*domain.Book, error) {
 	var books = make([]*domain.Book, 0)
-	result := u.book.Where("is_active = true").Order("create_time DESC").Limit(5).Find(&books)
+	result := u.book.Where("is_active = true AND quantity > 0").Order("create_time DESC").Limit(5).Find(&books)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -184,7 +184,7 @@ func (u *CollectionBook) GetListFiveLatestBooks(ctx context.Context) ([]*domain.
 
 func (u *CollectionBook) GetListBookByAuthor(ctx context.Context, authorname string) ([]*domain.Book, error) {
 	var books = make([]*domain.Book, 0)
-	result := u.book.Where("author_name = ? and is_active = true", authorname).Find(&books)
+	result := u.book.Where("author_name = ? AND is_active = true AND quantity > 0", authorname).Find(&books)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -193,7 +193,7 @@ func (u *CollectionBook) GetListBookByAuthor(ctx context.Context, authorname str
 
 func (u *CollectionBook) GetListBookByPublicSher(ctx context.Context, publciname string) ([]*domain.Book, error) {
 	var books = make([]*domain.Book, 0)
-	result := u.book.Where("publisher = ? is_active = true", publciname).Find(&books)
+	result := u.book.Where("publisher = ? AND is_active = true AND quantity > 0", publciname).Find(&books)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -203,7 +203,7 @@ func (u *CollectionBook) GetListBookByPublicSher(ctx context.Context, publciname
 func (u *CollectionBook) GetListBookUseBot(ctx context.Context, nameBook string) ([]*domain.Book, error) {
 	var books = make([]*domain.Book, 0)
 
-	result := u.book.Where("title ILIKE ? AND is_active = true", "%"+nameBook+"%").Find(&books)
+	result := u.book.Where("title ILIKE ? AND is_active = true AND quantity > 0", "%"+nameBook+"%").Find(&books)
 
 	return books, result.Error
 }

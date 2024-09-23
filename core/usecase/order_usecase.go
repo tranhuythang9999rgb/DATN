@@ -74,9 +74,10 @@ func (u *UseCaseOrder) ListOrder(ctx context.Context, req *domain.OrderForm) ([]
 	return orders, nil
 }
 
-func (u *UseCaseOrder) UpdateOrderForSend(ctx context.Context, id string) errors.Error {
+func (u *UseCaseOrder) UpdateOrderForSend(ctx context.Context, id string, status string) errors.Error {
 	idNumber, _ := strconv.ParseInt(id, 10, 64)
-	err := u.order.UpdateOrderForSend(ctx, idNumber, enums.ORDER_STATUS_SUBMIT_SEND)
+	statusNumber, _ := strconv.ParseInt(status, 10, 64)
+	err := u.order.UpdateOrderForSend(ctx, idNumber, int(statusNumber))
 	if err != nil {
 		return errors.NewSystemError(fmt.Sprintf("error system . %v", err))
 	}
@@ -99,7 +100,7 @@ func (u *UseCaseOrder) ListOrdersUseTk(ctx context.Context, start, end string) (
 func (u *UseCaseOrder) UpdateOrderOffline(ctx context.Context, orderId string) errors.Error {
 
 	idNumber, _ := strconv.ParseInt(orderId, 10, 64)
-	err := u.order.UpdateStatusPaymentOffline(ctx, idNumber, enums.ORDER_WAITING_FOR_SHIPMENT)
+	err := u.order.UpdateStatusPaymentOffline(ctx, idNumber, enums.AWAITING_CONFIRMATION)
 	if err != nil {
 		return errors.NewSystemError(fmt.Sprintf("error system . %v", err))
 	}
@@ -172,7 +173,7 @@ func (u *UseCaseOrder) CreateOrderWhenBuyCart(ctx context.Context, req *entities
 		OrderDate:    orderDateString,
 		Quantity:     count,
 		TotalAmount:  float64(orderItems[0].TotalAmount),
-		Status:       enums.ORDER_PEND,
+		Status:       enums.AWAITING_CONFIRMATION,
 		TypePayment:  enums.TYPE_PAYMENT_ONLINE,
 		CreateTime:   time.Now(),
 		CreateOrder:  utils.GenerateTimestamp(),
@@ -222,7 +223,7 @@ func (u *UseCaseOrder) CreateOrderWhenBuyOffLine(ctx context.Context, req *entit
 		OrderDate:    orderDateString,
 		Quantity:     count,
 		TotalAmount:  float64(orderItems[0].TotalAmount),
-		Status:       enums.ORDER_PEND,
+		Status:       enums.AWAITING_CONFIRMATION,
 		TypePayment:  enums.TYPE_PAYMENT_OFFLINE,
 		CreateTime:   time.Now(),
 		CreateOrder:  utils.GenerateTimestamp(),
