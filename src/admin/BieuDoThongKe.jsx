@@ -156,7 +156,6 @@ function BieuDoThongKe() {
 
     return (
         <div>
-            <StatisticalFormHeader/>
             <h2>Thống kê số lượng bán từng loại sách và trạng thái đơn hàng theo ngày</h2>
             <Space>
                 <RangePicker onChange={handleDateRangeChange} />

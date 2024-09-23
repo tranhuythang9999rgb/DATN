@@ -26,14 +26,17 @@ class ActionProvider {
         // Chuyển đổi tin nhắn thành không dấu
         const normalizedMessage = removeDiacritics(message.toLowerCase());
         
-        // Biểu thức chính quy để tìm "giá sách" không dấu
-        const regex = /giá\s+sách/i; 
-        const regexOr = /gia\s+sach/i; // Nếu bạn cần một biểu thức không dấu
+        // Biểu thức chính quy để tìm "giá sách" không dấu và lấy tên sách trước chữ "b"
+        const regex = /giá\s+sách\s+(.+?)\s+b/i; 
+        const regexOr = /gia\s+sach\s+(.+?)\s+b/i; // Nếu bạn cần một biểu thức không dấu
     
-        // Kiểm tra với biểu thức chính quy
-        if (normalizedMessage.match(regex) || normalizedMessage.match(regexOr)) {
+        // Kiểm tra với biểu thức chính quy và lấy tên sách
+        const match = normalizedMessage.match(regex) || normalizedMessage.match(regexOr);
+        
+        if (match && match[1]) {
+            const bookName = match[1].trim(); // Lấy tên sách từ kết quả khớp
             const botMessage = this.createChatBotMessage(
-                'Bạn muốn mua sách gì?'
+                `Bạn muốn mua sách "${bookName}" phải không?`
             );
             this.updateChatbotState(botMessage);
         } else {

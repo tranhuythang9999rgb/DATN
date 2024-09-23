@@ -43,6 +43,7 @@ import ChiTiettacGiaVaTheoSach from "./Home/ChiTiettacGiaVaTheoSach";
 import ManLayRaListSachTheoLoai from "./Home/ManLayRaListSachTheoLoai";
 import BieuDoThongKe from "./admin/BieuDoThongKe";
 import ChatBotCustom from "./Utils/ChatBotCusTomer/ChatBotCustomer";
+import BieuDoLineChart from "./admin/BieuDoLineChart";
 
 
 
@@ -111,7 +112,8 @@ function App() {
       {/* <Dashboard /> */}
       {/* <CheckLogin/> */}
       {/* <ChatBot/> */}
-      <ChatBotCustom/>
+      {/* <ChatBotCustom/> */}
+      <BieuDoLineChart/>
     </div>
   );
 }
