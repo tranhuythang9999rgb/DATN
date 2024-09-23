@@ -60,7 +60,7 @@ function GetTheShippingAddress() {
                 params: { name: userName, id }
             });
             if (response.data.code === 0) {
-                localStorage.setItem('delivery_address',id)
+                localStorage.setItem('delivery_address', id)
                 message.success('Địa chỉ mặc định đã được cập nhật thành công');
                 fetchData();
                 fetchAddress();
@@ -95,12 +95,12 @@ function GetTheShippingAddress() {
     };
 
     const columns = [
-        { 
-            title: 'Chọn', 
-            dataIndex: 'id', 
+        {
+            title: 'Chọn',
+            dataIndex: 'id',
             key: 'select',
             render: (id) => (
-                <Radio 
+                <Radio
                     checked={id === selectedAddressId}
                     onChange={() => handleRadioChange(id)}
                 />
@@ -120,7 +120,7 @@ function GetTheShippingAddress() {
     ];
 
     return (
-        <div style={{width:'700px',marginRight:'400px'}}>
+        <div style={{ width: '700px', marginRight: '400px' }}>
             <h1>Thông tin địa chỉ giao hàng mặc định</h1>
             {loading ? (
                 <p>Đang tải dữ liệu...</p>
@@ -147,8 +147,8 @@ function GetTheShippingAddress() {
             )}
 
             <Button onClick={showModal}>Thay đổi địa chỉ</Button>
-            <div style={{color:'green',marginTop:'50px'}}>
-            
+            <div style={{ color: 'green', marginTop: '50px' }}>
+
             </div>
             <Modal
                 title="Quản lý địa chỉ giao hàng"
@@ -158,7 +158,9 @@ function GetTheShippingAddress() {
                 width={800}
             >
                 <Table dataSource={addressData} columns={columns} rowKey="id" />
-                <AddAddress onSuccess={handleAddAddressSuccess} />
+                <div>
+                    <AddAddress onSuccess={handleAddAddressSuccess} />
+                </div>
             </Modal>
         </div>
     );

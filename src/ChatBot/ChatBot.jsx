@@ -9,7 +9,6 @@ import { GoDependabot } from 'react-icons/go';
 import { Tooltip } from 'antd';
 import 'antd/dist/reset.css'; // Import style của Ant Design
 
-// Cấu hình cho ChatBot
 const config = {
   botName: 'Trợ Lý Ảo',
   initialMessages: [
@@ -18,17 +17,14 @@ const config = {
 };
 
 function ChatBot() {
-  // State để quản lý trạng thái hiển thị của ChatBot
   const [isChatBotVisible, setChatBotVisible] = useState(false);
 
-  // Hàm toggle để chuyển đổi trạng thái hiển thị
   const toggleChatBot = () => {
     setChatBotVisible(!isChatBotVisible);
   };
 
   return (
     <div style={{ position: 'relative' }}>
-      {/* Icon để toggle ChatBot với Ant Design Tooltip */}
       <Tooltip title={isChatBotVisible ? 'Ẩn ChatBot' : 'Hiện ChatBot'}>
         <div
           onClick={toggleChatBot}
@@ -38,7 +34,6 @@ function ChatBot() {
         </div>
       </Tooltip>
 
-      {/* Render ChatBot theo điều kiện */}
       {isChatBotVisible && (
         <div className="chatbot-container">
           <Chatbot

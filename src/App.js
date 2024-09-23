@@ -103,14 +103,15 @@ function App() {
       {/* <ListBookByAuthorName/> */}
       {/* <ListBookByPublicsher/> */}
       {/* <Blog/> */}
-      {/* <Dashboard /> */}
       {/* <ListDetailBookWhenBuy/> */}
       {/* <ChiTiettacGiaVaTheoSach/> */}
       {/* <ManLayRaListSachTheoLoai nameTypeBook={'sách người lớn'}/> */}
       {/* <BieuDoThongKe/> */}
       {/* <StatisticalFormHeader/> */}
-      <CheckLogin/>
+      {/* <Dashboard /> */}
 
+      <CheckLogin/>
+      {/* <ChatBot/> */}
     </div>
   );
 }

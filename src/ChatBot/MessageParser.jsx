@@ -6,7 +6,6 @@ class MessageParser {
     parse(message) {
         const lowerCaseMessage = message.toLowerCase();
 
-        // Kiểm tra các từ khóa để chào lại
         if (
             lowerCaseMessage.includes('xin chào') ||
             lowerCaseMessage.includes('chào') ||

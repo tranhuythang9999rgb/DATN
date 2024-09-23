@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import moment from 'moment';
 import { Button, DatePicker, Space } from 'antd';
+import StatisticalFormHeader from './StatisticalFormHeader';
 const { RangePicker } = DatePicker;
 
 function BieuDoThongKe() {
@@ -99,12 +100,14 @@ function BieuDoThongKe() {
 
     const getStatusText = (statusCode) => {
         switch (statusCode) {
-            case 23: return 'Đã thanh toán online và đang chờ gửi hàng';
-            case 21: return 'Đang Chờ Thanh Toán Online';
-            case 19: return 'Đang Chờ Gửi Hàng';
-            case 22: return 'Đang Giao';
-            case 11: return 'Đơn Hàng Đã Hủy';
-            case 9: return 'Đã Giao Hàng và Thanh Toán';
+            case 11: return 'Đang chờ xác nhận';
+            case 13: return 'Đang chờ thanh toán online';
+            case 15: return 'Đã thanh toán online và đang chờ gửi hàng';
+            case 17: return 'Đang chuẩn bị đơn hàng';
+            case 19: return 'Đang vận chuyển';
+            case 21: return 'Đang giao hàng';
+            case 23: return 'Đơn hàng đã giao và hoàn tất';
+            case 25: return 'Đơn hàng đã hủy';
             default: return 'Trạng thái không xác định';
         }
     };
@@ -153,6 +156,7 @@ function BieuDoThongKe() {
 
     return (
         <div>
+            <StatisticalFormHeader/>
             <h2>Thống kê số lượng bán từng loại sách và trạng thái đơn hàng theo ngày</h2>
             <Space>
                 <RangePicker onChange={handleDateRangeChange} />
@@ -173,19 +177,7 @@ function BieuDoThongKe() {
                     ))}
                 </BarChart>
             </ResponsiveContainer>
-            <h2>Biểu đồ trạng thái đơn hàng theo ngày</h2>
-            <ResponsiveContainer width="100%" height={400}>
-                <BarChart data={dataByStatus}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Legend />
-                    {statusTypes.map((status, index) => (
-                        <Bar key={`status-${index}`} dataKey={status} fill={getColor(index)} name={status} />
-                    ))}
-                </BarChart>
-            </ResponsiveContainer>
+            
             <h2>Biểu đồ tròn trạng thái đơn hàng</h2>
             <ResponsiveContainer width="100%" height={400}>
                 <PieChart>
@@ -209,7 +201,7 @@ function BieuDoThongKe() {
         </div>
     );
 }
-
+//rand  nhieu color hon
 function getColor(index) {
     const colors = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#8dd1e1', '#a4de6c', '#d0ed57', '#ff7300'];
     return colors[index % colors.length];
