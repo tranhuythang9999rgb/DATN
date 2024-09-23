@@ -12,6 +12,7 @@ function BieuDoLineChart() {
     const [statusCounts, setStatusCounts] = useState([]);
     const [dateRange, setDateRange] = useState([null, null]);
     const [allOrders, setAllOrders] = useState([]);
+    const [topBook, setTopBook] = useState({ name: '', quantity: 0 });
 
     const fetchDataOrder = async () => {
         try {
@@ -19,29 +20,44 @@ function BieuDoLineChart() {
             setAllOrders(response.data.body);
             processOrders(response.data.body);
         } catch (error) {
-            console.error('Error fetching orders:', error);
+            console.error('Lỗi khi lấy dữ liệu đơn hàng:', error);
         }
     };
 
     const processOrders = (orders, startDate = null, endDate = null) => {
         const dateStats = {};
+        const totalBookQuantities = {};
 
         orders.forEach(order => {
             const orderDate = moment(order.create_time).format('YYYY-MM-DD');
 
-            // Filter by date range
+            // Lọc theo khoảng thời gian
             if (startDate && moment(orderDate).isBefore(startDate)) return;
             if (endDate && moment(orderDate).isAfter(endDate)) return;
 
-            // Only include orders with status 15 or 23
+            // Lọc theo trạng thái 15 hoặc 23 cho biểu đồ
             if (![15, 23].includes(order.status)) return;
 
             order.items.forEach(item => {
+                // Cập nhật thống kê theo ngày cho biểu đồ
                 if (!dateStats[orderDate]) dateStats[orderDate] = {};
                 if (!dateStats[orderDate][item.name]) dateStats[orderDate][item.name] = 0;
                 dateStats[orderDate][item.name] += item.quantity;
+
+                // Cập nhật tổng số lượng sách cho tất cả trạng thái
+                if (!totalBookQuantities[item.name]) totalBookQuantities[item.name] = 0;
+                totalBookQuantities[item.name] += item.quantity;
             });
         });
+
+        // Xác định sách có số lượng cao nhất từ tất cả trạng thái
+        let maxBook = { name: '', quantity: 0 };
+        for (const [name, quantity] of Object.entries(totalBookQuantities)) {
+            if (quantity > maxBook.quantity) {
+                maxBook = { name, quantity };
+            }
+        }
+        setTopBook(maxBook);
 
         const bookTypesArray = Array.from(new Set(orders.flatMap(order => order.items.map(item => item.name))));
         setBookTypes(bookTypesArray);
@@ -56,7 +72,7 @@ function BieuDoLineChart() {
 
         setDataByDate(chartData);
 
-        // Status counts calculation
+        // Tính toán số lượng trạng thái
         const totalStatusCounts = {};
         orders.forEach(order => {
             const status = getStatusText(order.status);
@@ -105,6 +121,7 @@ function BieuDoLineChart() {
         } else {
             setDataByDate([]);
             setBookTypes([]);
+            setTopBook({ name: '', quantity: 0 });
         }
     };
 
@@ -145,7 +162,13 @@ function BieuDoLineChart() {
                     ))}
                 </LineChart>
             </ResponsiveContainer>
-            <h2>Số lượng sách được quan tâm nhiều nhất:</h2>
+            <h2>Sách được quan tâm nhiều nhất:</h2>
+            {topBook.name ? (
+                <p>{`${topBook.name} - Số lượng: ${topBook.quantity}`}</p>
+            ) : (
+                <p>Không có dữ liệu.</p>
+            )}
+            <h2>Danh sách trạng thái các đơn hàng:</h2>
             <ul>
                 {statusCounts.map((status) => (
                     <li key={status.name}>{`${status.name}: ${status.value}`}</li>
