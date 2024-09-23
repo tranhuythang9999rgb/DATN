@@ -1,4 +1,4 @@
-import CustomLinkMessage from "./CustomMessage";
+import { remove as removeDiacritics } from 'diacritics';
 
 class ActionProvider {
     constructor(createChatBotMessage, setStateFunc) {
@@ -20,22 +20,30 @@ class ActionProvider {
         this.updateChatbotState(botMessage);
     }
 
+
+
     handleUserRequestsUseFullText(message) {
-        if (message === '99') {
+        // Chuyển đổi tin nhắn thành không dấu
+        const normalizedMessage = removeDiacritics(message.toLowerCase());
+        
+        // Biểu thức chính quy để tìm "giá sách" không dấu
+        const regex = /giá\s+sách/i; 
+        const regexOr = /gia\s+sach/i; // Nếu bạn cần một biểu thức không dấu
+    
+        // Kiểm tra với biểu thức chính quy
+        if (normalizedMessage.match(regex) || normalizedMessage.match(regexOr)) {
             const botMessage = this.createChatBotMessage(
-                <CustomLinkMessage
-                    url="http://localhost:3000/"
-                    label="Liên kết của bạn"
-                />
+                'Bạn muốn mua sách gì?'
             );
             this.updateChatbotState(botMessage);
         } else {
             const botMessage = this.createChatBotMessage(
-                `Bạn đã nhập: ${message}`
+                'Xin chào bạn!'
             );
             this.updateChatbotState(botMessage);
         }
     }
+
 
     updateChatbotState(message) {
         this.setState((prevState) => ({
