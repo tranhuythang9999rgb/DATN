@@ -7,7 +7,6 @@ import StatisticalFormHeader from "./admin/StatisticalFormHeader";
 import TypeBook from "./admin/TypeBook";
 import UploadBook from "./admin/UploadBook";
 import ChatBot from "./ChatBot/ChatBot";
-import GetListBookUserBook from "./ChatBot/GetListBookUseBot";
 import CheckLogin from "./common/CheckLogin";
 import CheckQrCode from "./common/CheckQrCode";
 import Login from "./common/Login";
@@ -43,6 +42,7 @@ import ListDetailBookWhenBuy from "./Home/ListDetailBookWhenBuy";
 import ChiTiettacGiaVaTheoSach from "./Home/ChiTiettacGiaVaTheoSach";
 import ManLayRaListSachTheoLoai from "./Home/ManLayRaListSachTheoLoai";
 import BieuDoThongKe from "./admin/BieuDoThongKe";
+import ChatBotCustom from "./Utils/ChatBotCusTomer/ChatBotCustomer";
 
 
 
@@ -109,9 +109,9 @@ function App() {
       {/* <BieuDoThongKe/> */}
       {/* <StatisticalFormHeader/> */}
       {/* <Dashboard /> */}
-
-      <CheckLogin/>
+      {/* <CheckLogin/> */}
       {/* <ChatBot/> */}
+      <ChatBotCustom/>
     </div>
   );
 }
