@@ -112,7 +112,7 @@ func (u *UseCaseOrder) UpdateOrderCanCel(ctx context.Context, orderId string) er
 	idNumber, _ := strconv.ParseInt(orderId, 10, 64)
 	err := u.order.UpdateOrder(ctx, &domain.Order{
 		ID:     idNumber,
-		Status: enums.ORDER_CANCEL,
+		Status: enums.CANCELLED,
 	})
 	if err != nil {
 		log.Error(err, "error")
@@ -324,14 +324,13 @@ func (u *UseCaseOrder) GetListOrderAdmin(ctx context.Context) ([]*entities.Order
 			return nil, errors.ErrSystem
 		}
 		for _, v := range orderItem {
-			book, _ := u.book.GetBookById(ctx, v.BookID)
+			book, _ := u.book.GetBookByIdUseOrderTk(ctx, v.BookID)
 			listItemOrder = append(listItemOrder, entities.Item{
 				Name:     book.Title,
 				Quantity: v.Quantity,
 				Price:    v.Price,
 			})
 		}
-
 		if orderItem != nil {
 			detailListorder = append(detailListorder, &entities.OrderDetailsAdmin{
 				OrderID:    v.ID,
@@ -426,5 +425,45 @@ func (u *UseCaseOrder) GetListOrderByThongkeHeader(ctx context.Context) (*entiti
 	return &entities.ListOrderDetailsAdminForHeader{
 		OrderDetailsAdmin:          detailListorder,
 		CountNewAccountUserInMonth: len(users),
+	}, nil
+}
+
+func (u *UseCaseOrder) ExportBill(ctx context.Context, id string) (*entities.Bill, errors.Error) {
+	now := time.Now()
+	estimatedDate := now.Add(3 * 24 * time.Hour)
+	orderIdNumerBer, _ := strconv.ParseInt(id, 10, 64)
+	var items = make([]entities.Item, 0)
+	order, err := u.order.GetOrderByID(ctx, orderIdNumerBer)
+	if err != nil {
+		log.Error(err, "error system")
+		return nil, errors.ErrSystem
+	}
+	listItem, err := u.orderItem.GetOrderByOrderId(ctx, order.ID)
+	if err != nil {
+		log.Error(err, "error system")
+		return nil, errors.ErrSystem
+	}
+	for _, v := range listItem {
+		book, err := u.book.GetBookById(ctx, v.BookID)
+		if err != nil {
+			log.Error(err, "error system")
+			return nil, errors.ErrSystem
+		}
+		if book != nil {
+			items = append(items, entities.Item{
+				Name:     book.Title,
+				Quantity: v.Quantity,
+				Price:    v.Price,
+			})
+		}
+
+	}
+	return &entities.Bill{
+		OrderId:    orderIdNumerBer,
+		Code:       "",
+		Amount:     order.TotalAmount,
+		Items:      items,
+		Address:    &domain.DeliveryAddress{},
+		CreateTime: estimatedDate,
 	}, nil
 }

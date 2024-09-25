@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"shoe_shop_server/api/controllers"
 	"shoe_shop_server/core/configs"
+	socketws "shoe_shop_server/internal/socket_ws"
 
 	"github.com/gin-gonic/gin"
 	cors "github.com/rs/cors/wrapper/gin"
@@ -41,7 +42,7 @@ func NewApiRouter(
 		c.JSON(200, gin.H{"message": "pong"})
 	})
 	r.POST("/upload", controllers.UploadImage)
-
+	r.GET("/ws", socketws.WsHandler)
 	r.StaticFS("/shader/thao", http.Dir("shader"))
 	//user
 	userGroup := r.Group("/user")
@@ -105,7 +106,6 @@ func NewApiRouter(
 		orderGroup.PATCH("/update/success", order.UpdateStatusOrder) // sucess online
 		orderGroup.GET("/list/admin", order.GetListOrder)
 		orderGroup.PATCH("/update/admin/submit", order.UpdateOrderForSend)
-		orderGroup.GET("/list/order/admin", order.ListOrdersUseTk)
 		orderGroup.PATCH("/api/order/offiline", order.UpdateOrderOffline)
 		orderGroup.GET("/api/admin/day", order.GetOrderBuyOneDay)
 		orderGroup.POST("/api/pend/offline", order.CreateOrderWhenBuyOffLine) // payment order offline

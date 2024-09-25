@@ -207,3 +207,12 @@ func (u *CollectionBook) GetListBookUseBot(ctx context.Context, nameBook string)
 
 	return books, result.Error
 }
+
+func (c *CollectionBook) GetBookByIdUseOrderTk(ctx context.Context, id int64) (*domain.Book, error) {
+	var book *domain.Book
+	result := c.book.Where("id = ?", id).First(&book)
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return nil, nil
+	}
+	return book, result.Error
+}

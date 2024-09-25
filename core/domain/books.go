@@ -70,4 +70,6 @@ type RepositoryBook interface {
 	GetListBookByPublicSher(ctx context.Context, authorname string) ([]*Book, error)
 
 	GetListBookUseBot(ctx context.Context, searchTerm string) ([]*Book, error)
+
+	GetBookByIdUseOrderTk(ctx context.Context, id int64) (*Book, error)
 }

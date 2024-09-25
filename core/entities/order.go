@@ -70,3 +70,12 @@ type ListOrderDetailsAdminForHeader struct {
 	OrderDetailsAdmin          []*OrderDetailsAdmin `json:"order_details_admin"`
 	CountNewAccountUserInMonth int                  `json:"count_new_account_user_in_month"`
 }
+
+type Bill struct {
+	OrderId    int64                   `json:"order_id"`
+	Code       string                  `json:"code"` //encode
+	Amount     float64                 `json:"amount"`
+	Items      []Item                  `json:"items"` // Danh sách các item
+	Address    *domain.DeliveryAddress `json:"address"`
+	CreateTime time.Time               `json:"create_time"`
+}
