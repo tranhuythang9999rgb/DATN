@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, Tag, Button, message, Modal, Popconfirm } from 'antd';
+import { EditOutlined, DeleteOutlined, CheckOutlined } from '@ant-design/icons'; // Import icons
 import AddAddress from './AddAddress';
 
 const ListAddress = () => {
@@ -45,7 +46,7 @@ const ListAddress = () => {
             if (response.data.code === 0) {
                 message.success('Địa chỉ mặc định đã được cập nhật thành công');
                 // Refetch data to update the table
-                localStorage.setItem('delivery_address',id)
+                localStorage.setItem('delivery_address', id);
                 fetchData();
             } else {
                 message.error('Lỗi khi cập nhật địa chỉ: ' + response.data.message);
@@ -135,7 +136,9 @@ const ListAddress = () => {
                     {default_address === 29 ? (
                         <Tag color="green">Mặc định</Tag>
                     ) : (
-                        <Button onClick={() => handleUpdateStatusAddress(record.id)}>Đặt làm mặc định</Button>
+                        <Button icon={<CheckOutlined />} onClick={() => handleUpdateStatusAddress(record.id)}>
+                            Đặt làm mặc định
+                        </Button>
                     )}
                 </div>
             ),
@@ -151,7 +154,7 @@ const ListAddress = () => {
                     cancelText="Không"
                     disabled={record.default_address === 29} // Disable delete for default address
                 >
-                    <Button type="primary" danger disabled={record.default_address === 29}>
+                    <Button type="primary" danger disabled={record.default_address === 29} icon={<DeleteOutlined />}>
                         Xóa
                     </Button>
                 </Popconfirm>

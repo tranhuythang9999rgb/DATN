@@ -62,6 +62,17 @@ const ListOrderUser = () => {
     setFilteredData(filtered);
   };
 
+  const confirmCancel = (id) => {
+    Modal.confirm({
+      title: 'Xác Nhận Hủy Đơn Hàng',
+      content: 'Bạn có chắc chắn muốn hủy đơn hàng này?',
+      onOk: () => handleCancel(id),
+      onCancel() {
+        // message.info('Hủy hủy đơn hàng');
+      },
+    });
+  };
+
   const handleCancel = (id) => {
     axios.patch(`http://127.0.0.1:8080/manager/order/api/update/calcel?id=${id}`)
       .then(response => {
@@ -112,14 +123,12 @@ const ListOrderUser = () => {
       key: 'create_time',
       render: text => new Date(text).toLocaleString(),
     },
-   
     {
       title: 'Số Tiền',
       dataIndex: 'amount',
       key: 'amount',
       render: text => `${(text / 100).toFixed(2)}`,
     },
-    
     {
       title: 'Trạng Thái',
       dataIndex: 'status',
@@ -141,7 +150,6 @@ const ListOrderUser = () => {
       key: 'payment_type',
       render: paymentType => paymentType === 25 ? 'Thanh Toán Online' : 'Thanh Toán Khi Nhận Hàng',
     },
-   
     {
       title: ' ',
       key: 'action',
@@ -155,7 +163,7 @@ const ListOrderUser = () => {
               <Button 
                 type="primary" 
                 danger 
-                onClick={() => handleCancel(order_id)}
+                onClick={() => confirmCancel(order_id)} // Call confirmCancel instead of handleCancel
               >
                 Hủy Đơn Hàng
               </Button>
