@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Typography, Spin, Alert, Input, Button, message } from 'antd';
+import { Table, Typography, Spin, Alert, Input, Button, message, Modal } from 'antd';
 import axios from 'axios';
 
 const { Title } = Typography;
@@ -11,10 +11,10 @@ const ListOrderUser = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchText, setSearchText] = useState('');
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  // Fetch data when component mounts
   useEffect(() => {
-    // Get username from localStorage
     const userData = localStorage.getItem('userData');
     let username = '';
 
@@ -31,7 +31,6 @@ const ListOrderUser = () => {
       return;
     }
 
-    // Fetch orders for the user
     axios.get(`http://127.0.0.1:8080/manager/order/api/getlist/user?name=${username}`)
       .then(response => {
         setData(response.data.body);
@@ -44,7 +43,6 @@ const ListOrderUser = () => {
       });
   }, []);
 
-  // Handle search input
   const handleSearch = (value) => {
     setSearchText(value);
     const lowercasedValue = value.toLowerCase();
@@ -64,24 +62,22 @@ const ListOrderUser = () => {
     setFilteredData(filtered);
   };
 
-  // Handle cancellation of an order
   const handleCancel = (id) => {
     axios.patch(`http://127.0.0.1:8080/manager/order/api/update/calcel?id=${id}`)
       .then(response => {
         if (response.data.code === 0) {
           message.success('Đơn hàng đã được hủy thành công');
-          // Update the status of the canceled order
           setData(prevData => {
             return prevData.map(order =>
               order.order_id === id
-                ? { ...order, status: 11 } // Assuming 11 is the status code for canceled
+                ? { ...order, status: 11 }
                 : order
             );
           });
           setFilteredData(prevData => {
             return prevData.map(order =>
               order.order_id === id
-                ? { ...order, status: 11 } // Assuming 11 is the status code for canceled
+                ? { ...order, status: 11 }
                 : order
             );
           });
@@ -92,6 +88,16 @@ const ListOrderUser = () => {
       .catch(err => {
         message.error(`Lỗi: ${err.message}`);
       });
+  };
+
+  const showOrderDetails = (order) => {
+    setSelectedOrder(order);
+    setIsModalVisible(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalVisible(false);
+    setSelectedOrder(null);
   };
 
   const columns = [
@@ -106,29 +112,14 @@ const ListOrderUser = () => {
       key: 'create_time',
       render: text => new Date(text).toLocaleString(),
     },
-    {
-      title: 'Địa Chỉ',
-      key: 'address',
-      render: (text, record) => (
-        <>
-          <div>{record.address.district}</div>
-          <div>{record.address.commune}</div>
-          <div>{record.address.detailed}</div>
-        </>
-      ),
-    },
+   
     {
       title: 'Số Tiền',
       dataIndex: 'amount',
       key: 'amount',
-      render: text => `$${(text / 100).toFixed(2)}`, // Assuming amount is in cents
+      render: text => `${(text / 100).toFixed(2)}`,
     },
-    {
-      title: 'Ngày Dự Đoán',
-      dataIndex: 'estimated_date',
-      key: 'estimated_date',
-      render: text => new Date(text).toLocaleString(),
-    },
+    
     {
       title: 'Trạng Thái',
       dataIndex: 'status',
@@ -150,19 +141,7 @@ const ListOrderUser = () => {
       key: 'payment_type',
       render: paymentType => paymentType === 25 ? 'Thanh Toán Online' : 'Thanh Toán Khi Nhận Hàng',
     },
-    {
-      title: 'Danh Sách Mặt Hàng',
-      key: 'items',
-      render: (text, record) => (
-        <div>
-          {record.items.map(item => (
-            <div key={item.name}>
-              <strong>{item.name}</strong> - Số lượng: {item.quantity} - Giá: ${item.price / 100}
-            </div>
-          ))}
-        </div>
-      ),
-    },
+   
     {
       title: ' ',
       key: 'action',
@@ -170,15 +149,25 @@ const ListOrderUser = () => {
         const { status, order_id } = record;
         const canCancel = [19, 23].includes(status); // Status codes for orders that can be canceled
 
-        return canCancel ? (
-          <Button 
-            type="primary" 
-            danger 
-            onClick={() => handleCancel(order_id)}
-          >
-            Hủy Đơn Hàng
-          </Button>
-        ) : null;
+        return (
+          <>
+            {canCancel && (
+              <Button 
+                type="primary" 
+                danger 
+                onClick={() => handleCancel(order_id)}
+              >
+                Hủy Đơn Hàng
+              </Button>
+            )}
+            <Button 
+              type="link" 
+              onClick={() => showOrderDetails(record)}
+            >
+              Xem Chi Tiết
+            </Button>
+          </>
+        );
       },
     },
   ];
@@ -203,6 +192,34 @@ const ListOrderUser = () => {
         rowKey="order_id"
         pagination={10}
       />
+      {selectedOrder && (
+        <Modal
+          title="Chi Tiết Đơn Hàng"
+          visible={isModalVisible}
+          onCancel={handleModalClose}
+          footer={null}
+          width={800}
+        >
+          <div>
+            <p><strong>Mã Đơn Hàng:</strong> {selectedOrder.order_id}</p>
+            <p><strong>Thời Gian Tạo:</strong> {new Date(selectedOrder.create_time).toLocaleString()}</p>
+            <p><strong>Địa Chỉ:</strong></p>
+            <p>{selectedOrder.address.district}</p>
+            <p>{selectedOrder.address.commune}</p>
+            <p>{selectedOrder.address.detailed}</p>
+            <p><strong>Số Tiền:</strong> ${(selectedOrder.amount / 100).toFixed(2)}</p>
+            <p><strong>Ngày Dự Đoán:</strong> {new Date(selectedOrder.estimated_date).toLocaleString()}</p>
+            <p><strong>Trạng Thái:</strong> {selectedOrder.status}</p>
+            <p><strong>Loại Thanh Toán:</strong> {selectedOrder.payment_type === 25 ? 'Thanh Toán Online' : 'Thanh Toán Khi Nhận Hàng'}</p>
+            <p><strong>Danh Sách Mặt Hàng:</strong></p>
+            {selectedOrder.items.map(item => (
+              <div key={item.name}>
+                <strong>{item.name}</strong> - Số lượng: {item.quantity} - Giá: ${(item.price / 100).toFixed(2)}
+              </div>
+            ))}
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };

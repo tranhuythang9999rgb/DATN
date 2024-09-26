@@ -45,6 +45,7 @@ const ListAddress = () => {
             if (response.data.code === 0) {
                 message.success('Địa chỉ mặc định đã được cập nhật thành công');
                 // Refetch data to update the table
+                localStorage.setItem('delivery_address',id)
                 fetchData();
             } else {
                 message.error('Lỗi khi cập nhật địa chỉ: ' + response.data.message);
@@ -92,8 +93,8 @@ const ListAddress = () => {
     const columns = [
         {
             title: 'Tên người dùng',
-            dataIndex: 'user_name',
-            key: 'user_name',
+            dataIndex: 'nick_name',
+            key: 'nick_name',
         },
         {
             title: 'Email',
