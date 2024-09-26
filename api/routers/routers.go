@@ -29,6 +29,7 @@ func NewApiRouter(
 	cart *controllers.ControllerCart,
 	favorite *controllers.ControllerFavorites,
 	loypoint *controllers.ControllerLoyPoint,
+	transport *controllers.ControllerTransport,
 ) *ApiRouter {
 	engine := gin.New()
 	gin.DisableConsoleColor()
@@ -155,6 +156,12 @@ func NewApiRouter(
 		loypointGroup.GET("/list", loypoint.GetLoyaltyPointsByUserid)
 		loypointGroup.GET("/list/loys", loypoint.GetListPoint)
 	}
+	//transport
+	transportGroup := r.Group("/transport")
+	{
+		transportGroup.POST("/pull", transport.ExportData)
+	}
+
 	return &ApiRouter{
 		Engine: engine,
 	}
