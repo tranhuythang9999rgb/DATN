@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Avatar, Table, Spin } from 'antd';
+import { Avatar, Table, Spin, Input } from 'antd';
+
+const { Search } = Input;
 
 function ListCustomer() {
     const [customers, setCustomers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [pagination, setPagination] = useState({
         current: 1,
-        pageSize: 10,  // Items per page
+        pageSize: 10,
     });
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         fetchData(pagination.current, pagination.pageSize);
@@ -16,14 +19,13 @@ function ListCustomer() {
 
     const fetchData = (page, pageSize) => {
         setLoading(true);
-        // Call the API to fetch customer data with pagination
         axios.get('http://127.0.0.1:8080/manager/user/list/use/admin')
             .then((response) => {
                 if (response.data.code === 0) {
-                    setCustomers(response.data.body); // Save customers to state
+                    setCustomers(response.data.body);
                     setPagination({
                         ...pagination,
-                        total: response.data.body.length, // Set total for pagination
+                        total: response.data.body.length,
                     });
                 }
             })
@@ -31,7 +33,7 @@ function ListCustomer() {
                 console.error('There was an error fetching the customer list:', error);
             })
             .finally(() => {
-                setLoading(false); // Hide loading spinner after request completes
+                setLoading(false);
             });
     };
 
@@ -42,12 +44,26 @@ function ListCustomer() {
         });
     };
 
+    const handleSearch = (value) => {
+        setSearchTerm(value);
+        setPagination({ ...pagination, current: 1 }); // Reset to first page on search
+    };
+
+    const filteredCustomers = customers.filter(customer => {
+        const { username, full_name, email } = customer;
+        return (
+            username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            (full_name && full_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (email && email.toLowerCase().includes(searchTerm.toLowerCase()))
+        );
+    });
+
     const columns = [
         {
             title: 'Ảnh đại diện',
             dataIndex: 'avatar',
             key: 'avatar',
-            render: avatar => <Avatar src={avatar} />,  // Display avatar
+            render: avatar => <Avatar src={avatar} />,
         },
         {
             title: 'Tên đăng nhập',
@@ -58,7 +74,7 @@ function ListCustomer() {
             title: 'Họ và tên',
             dataIndex: 'full_name',
             key: 'full_name',
-            render: (text, record) => record.full_name || record.username,  // Fallback to username if full name is empty
+            render: (text, record) => record.full_name || record.username,
         },
         {
             title: 'Email',
@@ -77,14 +93,29 @@ function ListCustomer() {
     }
 
     return (
-        <Table
-            columns={columns}
-            dataSource={customers}
-            pagination={pagination}
-            loading={loading}
-            rowKey="id"
-            onChange={handleTableChange}
-        />
+        <div>
+            <h1>Quản lý khách hàng</h1>
+            <Search
+                placeholder="Tìm kiếm theo Tên đăng nhập, Họ và tên, Email"
+                allowClear
+                enterButton="Tìm kiếm"
+                size="large"
+                value={searchTerm}
+                onChange={(e) => handleSearch(e.target.value)}
+                style={{ marginBottom: 16 }}
+            />
+            <Table
+                columns={columns}
+                dataSource={filteredCustomers}
+                pagination={{
+                    ...pagination,
+                    total: filteredCustomers.length, // Update pagination total based on filtered results
+                }}
+                loading={loading}
+                rowKey="id"
+                onChange={handleTableChange}
+            />
+        </div>
     );
 }
 

@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input, Button, message, Form, Popconfirm, Avatar, Space, Upload } from 'antd';
+import { Table, Input, Button, message, Form, Popconfirm, Avatar, Space, Upload, Typography } from 'antd';
 import axios from 'axios';
 import './admin_index.css';
 import PublisherUpdateModal from './PublisherUpdateModal'; // Import the modal component
+import { FaCloudUploadAlt } from 'react-icons/fa';
+
+const { Title } = Typography;
+const { Search } = Input;
 
 function Publishers() {
     const [publishers, setPublishers] = useState([]);
+    const [filteredPublishers, setFilteredPublishers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [imageFile, setImageFile] = useState(null);
-    const [searchName, setSearchName] = useState(''); // State for search input
-    const [selectedPublisher, setSelectedPublisher] = useState(null); // Track selected publisher
-    const [isModalVisible, setModalVisible] = useState(false); // Modal visibility
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedPublisher, setSelectedPublisher] = useState(null);
+    const [isModalVisible, setModalVisible] = useState(false);
 
     const fetchPublishers = async () => {
         setLoading(true);
@@ -54,7 +59,7 @@ function Publishers() {
                 message.success('Thêm nhà xuất bản thành công!');
                 fetchPublishers(); // Refresh the list
             } else {
-                message.warning('lỗi máy chủ  vui lòng kiểm tra lại thiết bị và kết nối mạng');
+                message.warning('Lỗi máy chủ, vui lòng kiểm tra lại thiết bị và kết nối mạng');
             }
         } catch (error) {
             console.error('Error adding publisher:', error);
@@ -68,9 +73,7 @@ function Publishers() {
             if (response.data.code === 0) {
                 message.success('Xóa nhà xuất bản thành công!');
                 fetchPublishers();
-            }
-             
-            else {
+            } else {
                 message.error('Không thể xóa nhà xuất bản.');
             }
         } catch (error) {
@@ -84,9 +87,7 @@ function Publishers() {
             title: 'Ảnh Đại Diện',
             dataIndex: 'avatar',
             key: 'avatar',
-            render: (text, record) => (
-                <Avatar src={record.avatar} />
-            ),
+            render: (text, record) => <Avatar src={record.avatar} />
         },
         {
             title: 'Tên',
@@ -107,9 +108,7 @@ function Publishers() {
             title: 'Website',
             dataIndex: 'website',
             key: 'website',
-            render: (text) => (
-                <a href={text} target="_blank" rel="noopener noreferrer">{text}</a>
-            ),
+            render: (text) => <a href={text} target="_blank" rel="noopener noreferrer">{text}</a>,
         },
         {
             title: 'Ngày Tạo',
@@ -144,15 +143,28 @@ function Publishers() {
         },
     ];
 
-    // Filter publishers based on the search input
-    const filteredPublishers = publishers.filter(publisher => 
-        publisher.name.toLowerCase().includes(searchName.toLowerCase())
-    );
+    useEffect(() => {
+        handleSearch(searchTerm);
+    }, [searchTerm, publishers]);
+
+    const handleSearch = (value) => {
+        const lowercasedValue = value.toLowerCase().trim();
+        if (lowercasedValue === '') {
+            setFilteredPublishers(publishers);
+        } else {
+            const filtered = publishers.filter(publisher => 
+                publisher.name.toLowerCase().includes(lowercasedValue) ||
+                publisher.address.toLowerCase().includes(lowercasedValue) ||
+                publisher.contact_number.toLowerCase().includes(lowercasedValue)
+            );
+            setFilteredPublishers(filtered);
+        }
+    };
 
     return (
         <div style={{ padding: 10 }}>
             <h1>Nhà Xuất Bản</h1>
-          
+
             <Form
                 layout="inline"
                 onFinish={addPublisher}
@@ -195,7 +207,7 @@ function Publishers() {
                             setImageFile(null);
                         }}
                     >
-                        +Tải Ảnh
+                        <FaCloudUploadAlt />
                     </Upload>
                     <Form.Item>
                         <Button
@@ -211,14 +223,17 @@ function Publishers() {
                     </Form.Item>
                 </div>
             </Form>
-
-            <Input 
-                placeholder="Tìm kiếm theo tên nhà xuất bản" 
-                style={{ marginBottom: 20, width: 300 }} 
-                value={searchName}
-                onChange={(e) => setSearchName(e.target.value)}
+           
+            <Search
+                placeholder="Tìm kiếm theo Tên nhà xuất bản, Địa chỉ, Số điện thoại liên hệ"
+                allowClear
+                enterButton="Tìm kiếm"
+                size="large"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onSearch={handleSearch}
+                style={{ marginBottom: 16 }}
             />
-
             <Table
                 columns={columns}
                 dataSource={filteredPublishers}

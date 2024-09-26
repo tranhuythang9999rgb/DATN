@@ -113,7 +113,8 @@ function App() {
       {/* <CheckLogin/> */}
       {/* <ChatBot/> */}
       {/* <BieuDoLineChart/> */}
-      <ChatBots/>
+      {/* <ChatBots/> */}
+      <ProFile/>
     </div>
   );
 }

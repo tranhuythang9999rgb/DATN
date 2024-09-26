@@ -96,6 +96,7 @@ function BieuDoLineChart() {
 
     return (
         <div style={{ backgroundColor: '#e6fffb', padding: '20px', borderRadius: '8px' }}>
+            <h1>Thống kê doanh thu</h1>
             <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Doanh số bán hàng</h2>
             <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px' }}>
                 <h3 style={{ textAlign: 'center', marginBottom: '20px' }}>

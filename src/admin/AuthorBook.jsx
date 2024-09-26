@@ -3,6 +3,7 @@ import { Table, Input, Button, message, Form, DatePicker, Upload, Avatar, Space,
 import axios from 'axios';
 import moment from 'moment';
 import UpdateAuthorModal from './UpdateAuthorModal';  // Import modal
+import { FaCloudUploadAlt } from 'react-icons/fa';
 
 function AuthorBook() {
     const [authors, setAuthors] = useState([]);  // List of authors
@@ -185,7 +186,6 @@ function AuthorBook() {
                     <Form.Item>
                         <Upload
                             maxCount={1}
-                            listType='picture-card'
                             accept="image/jpeg,image/png"
                             beforeUpload={(file) => {
                                 setImageFile(file);
@@ -195,7 +195,7 @@ function AuthorBook() {
                                 setImageFile(null);
                             }}
                         >
-                            +Upload
+                            <FaCloudUploadAlt />
                         </Upload>
                     </Form.Item>
                     <Form.Item>
@@ -216,7 +216,7 @@ function AuthorBook() {
             </Form>
             <Input
                 placeholder="Tìm theo Tên Tác Giả"
-                style={{ height: '40px', marginRight: '8px',width:'200px' }}
+                style={{ height: '40px', marginRight: '8px', width: '200px' }}
                 onChange={(e) => setSearchName(e.target.value)}
             />
             <Table

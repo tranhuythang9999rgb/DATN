@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Table, Tag, Button, message, Tooltip, Space, Input } from 'antd';
+import { Table, Tag, Button, message, Tooltip, Input } from 'antd';
 import { TiDocumentDelete } from 'react-icons/ti';
 import DetailBook from './DetailBook';
+
+const { Search } = Input;
 
 function ListBooks() {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [searchTitle, setSearchTitle] = useState('');
-    const [searchAuthor, setSearchAuthor] = useState('');
-    const [searchPublisher, setSearchPublisher] = useState('');
-    const [searchGenre, setSearchGenre] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
 
     // Fetch books data
     const fetchBooks = async () => {
@@ -49,30 +48,20 @@ function ListBooks() {
         }
     };
 
-    // Handle search input changes
-    const handleTitleChange = (event) => {
-        setSearchTitle(event.target.value.trim());
+    // Handle search action
+    const handleSearch = (value) => {
+        setSearchTerm(value);
     };
 
-    const handleAuthorChange = (event) => {
-        setSearchAuthor(event.target.value.trim());
-    };
-
-    const handlePublisherChange = (event) => {
-        setSearchPublisher(event.target.value.trim());
-    };
-
-    const handleGenreChange = (event) => {
-        setSearchGenre(event.target.value.trim());
-    };
-
-    // Filter books based on search criteria
-    const filteredBooks = books.filter(book =>
-        book.title.toLowerCase().includes(searchTitle.toLowerCase()) &&
-        book.author_name.toLowerCase().includes(searchAuthor.toLowerCase()) &&
-        book.publisher.toLowerCase().includes(searchPublisher.toLowerCase()) &&
-        book.genre.toLowerCase().includes(searchGenre.toLowerCase())
-    );
+    // Filtered books based on search term
+    const filteredBooks = books.filter(book => {
+        return (
+            book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            book.author_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            book.publisher.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            book.genre.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    });
 
     // Columns for books table
     const columns = [
@@ -160,10 +149,10 @@ function ListBooks() {
         },
         {
             title: '',
-            key: 'action2', 
+            key: 'action2',
             render: (_, record) => (
                 <div>
-                    <DetailBook book={record}/>
+                    <DetailBook book={record} />
                 </div>
             ),
         }
@@ -171,32 +160,17 @@ function ListBooks() {
 
     return (
         <div>
-            <Space style={{ marginBottom: 16 }}>
-                <Input
-                    placeholder="Tìm kiếm theo tên sách"
-                    onChange={handleTitleChange}
-                />
-                <Input
-                    placeholder="Tìm kiếm theo tác giả"
-                    onChange={handleAuthorChange}
-                />
-                <Input
-                    placeholder="Tìm kiếm theo nhà xuất bản"
-                    onChange={handlePublisherChange}
-                />
-                <Input
-                    placeholder="Tìm kiếm theo thể loại"
-                    onChange={handleGenreChange}
-                />
-                <Button style={{
-                    height:'40px'
-                }} onClick={() => {
-                    setSearchTitle('');
-                    setSearchAuthor('');
-                    setSearchPublisher('');
-                    setSearchGenre('');
-                }}>Xóa tìm kiếm</Button>
-            </Space>
+            <h1>Quản lý sách</h1>
+            <Search
+                placeholder="Tìm kiếm theo Tên sách, Tác giả, Nhà xuất bản, Thể loại"
+                allowClear
+                enterButton="Tìm kiếm"
+                size="large"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onSearch={handleSearch}
+                style={{ marginBottom: 16 }}
+            />
             <Table
                 columns={columns}
                 dataSource={filteredBooks}
