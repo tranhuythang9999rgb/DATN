@@ -42,8 +42,8 @@ import ListDetailBookWhenBuy from "./Home/ListDetailBookWhenBuy";
 import ChiTiettacGiaVaTheoSach from "./Home/ChiTiettacGiaVaTheoSach";
 import ManLayRaListSachTheoLoai from "./Home/ManLayRaListSachTheoLoai";
 import BieuDoThongKe from "./admin/BieuDoThongKe";
-import ChatBotCustom from "./Utils/ChatBotCusTomer/ChatBotCustomer";
 import BieuDoLineChart from "./admin/BieuDoLineChart";
+import ChatBots from "./Utils/ChatBots/ChatBot";
 
 
 
@@ -112,8 +112,8 @@ function App() {
       {/* <Dashboard /> */}
       {/* <CheckLogin/> */}
       {/* <ChatBot/> */}
-      {/* <ChatBotCustom/> */}
-      <BieuDoLineChart/>
+      {/* <BieuDoLineChart/> */}
+      <ChatBots/>
     </div>
   );
 }

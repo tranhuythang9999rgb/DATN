@@ -7,10 +7,9 @@ class MessageParser {
         const lowerCaseMessage = message.toLowerCase();
 
         if (lowerCaseMessage.includes('xin chào')) {
-            this.actionProvider.handleHello();
-        } 
-        else {
-            this.actionProvider.handleUserRequestsUseFullText(message);
+            this.actionProvider.handleDefault();
+        } else {
+            this.actionProvider.handleSearch(message);  // Pass the original message
         }
     }
 }

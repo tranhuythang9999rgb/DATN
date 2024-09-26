@@ -1,0 +1,31 @@
+/* botchat.module.css */
+.chatbot-container {
+    width: 400px;
+    height: 600px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #f5f5f5;
+    padding: 20px;
+    margin-top: 20px;
+  }
+  
+  .chatbot-container h2 {
+    text-align: center;
+    color: #1890ff;
+  }
+  
+  .chatbot-container .react-chatbot-kit-chat-input {
+    border-radius: 4px;
+    background-color: #ffffff;
+  }
+  
+  .chatbot-container .react-chatbot-kit-chat-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+  }
+  
+  .chatbot-container .react-chatbot-kit-chat-input-button {
+    background-color: #1890ff;
+    color: white;
+  }
+  

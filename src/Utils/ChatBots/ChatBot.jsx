@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import Chatbot from 'react-chatbot-kit';
 import 'react-chatbot-kit/build/main.css';
 import { createChatBotMessage } from 'react-chatbot-kit';
-import MessageParser from './MessageParser';
-import ActionProvider from './ActionProvider';
+import MessageParser from './ProcessMess';
+import ActionProvider from './Actions';
 
-import 'antd/dist/reset.css'; // Import style của Ant Design
+
 const config = {
   botName: 'Trợ Lý Ảo',
   initialMessages: [
@@ -13,7 +13,7 @@ const config = {
   ],
 };
 
-function ChatBot() {
+function ChatBots() {
 
   return (
 
@@ -28,4 +28,4 @@ function ChatBot() {
   );
 }
 
-export default ChatBot;
+export default ChatBots;
