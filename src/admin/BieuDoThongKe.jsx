@@ -1,18 +1,15 @@
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import moment from 'moment';
-import { Button, DatePicker, Space } from 'antd';
-import StatisticalFormHeader from './StatisticalFormHeader';
+import { DatePicker, Button, Space, Select } from 'antd';
+
 const { RangePicker } = DatePicker;
 
-function BieuDoThongKe() {
-    const [dataByDate, setDataByDate] = useState([]);
-    const [dataByStatus, setDataByStatus] = useState([]);
-    const [bookTypes, setBookTypes] = useState([]);
-    const [statusTypes, setStatusTypes] = useState([]);
-    const [statusCounts, setStatusCounts] = useState([]); // New state for pie chart
+function BieuDoLineChart() {
+    const [data, setData] = useState([]);
     const [dateRange, setDateRange] = useState([null, null]);
+    const [viewMode, setViewMode] = useState('daily');
     const [allOrders, setAllOrders] = useState([]);
 
     const fetchDataOrder = async () => {
@@ -21,119 +18,47 @@ function BieuDoThongKe() {
             setAllOrders(response.data.body);
             processOrders(response.data.body);
         } catch (error) {
-            console.error('Error fetching orders:', error);
+            console.error('Lỗi khi lấy dữ liệu đơn hàng:', error);
         }
     };
 
-    const processOrders = (orders, startDate = null, endDate = null) => {
-        const dateStats = {};
-        const statusStats = {};
+    const processOrders = (orders) => {
+        const [startDate, endDate] = dateRange;
+        const stats = {};
 
         orders.forEach(order => {
-            const orderDate = moment(order.create_time).format('YYYY-MM-DD');
+            const orderDateTime = moment(order.create_time);
+            
+            if (startDate && orderDateTime.isBefore(startDate)) return;
+            if (endDate && orderDateTime.isAfter(endDate)) return;
 
-            // Check if the order date is within the selected date range
-            if (startDate && moment(orderDate).isBefore(startDate)) return;
-            if (endDate && moment(orderDate).isAfter(endDate)) return;
+            let key;
+            if (viewMode === 'hourly') {
+                key = orderDateTime.format('YYYY-MM-DD HH:00');
+            } else {
+                key = orderDateTime.format('YYYY-MM-DD');
+            }
 
-            const status = getStatusText(order.status);
+            if (!stats[key]) {
+                stats[key] = { hoanthanh: 0, choxuly: 0 };
+            }
 
-            // Initialize stats for the date
-            if (!dateStats[orderDate]) dateStats[orderDate] = {};
-            if (!statusStats[orderDate]) statusStats[orderDate] = {};
+            const totalAmount = order.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-            // Process items for book sales
-            order.items.forEach(item => {
-                if (!dateStats[orderDate][item.name]) dateStats[orderDate][item.name] = 0;
-                dateStats[orderDate][item.name] += item.quantity;
-            });
-
-            // Process status counts
-            if (!statusStats[orderDate]) statusStats[orderDate] = {};
-            if (!statusStats[orderDate][status]) statusStats[orderDate][status] = 0;
-            statusStats[orderDate][status] += 1;
+            if (order.status === 23) {
+                stats[key].hoanthanh += totalAmount;
+            } else {
+                stats[key].choxuly += totalAmount;
+            }
         });
 
-        const bookTypesArray = Array.from(new Set(orders.flatMap(order => order.items.map(item => item.name))));
-        setBookTypes(bookTypesArray);
+        const chartData = Object.keys(stats).map(key => ({
+            time: key,
+            'Hoàn tất giao dịch': stats[key].hoanthanh,
+            'Đang chờ xử lý': stats[key].choxuly
+        })).sort((a, b) => moment(a.time).diff(moment(b.time)));
 
-        const chartData = Object.keys(dateStats).map(date => {
-            const dayData = { date };
-            bookTypesArray.forEach(book => {
-                dayData[book] = dateStats[date][book] || 0;
-            });
-            Object.keys(statusStats[date] || {}).forEach(status => {
-                dayData[status] = statusStats[date][status] || 0;
-            });
-            return dayData;
-        });
-
-        setDataByDate(chartData);
-
-        // Process status data for the second chart
-        const statusChartData = Object.keys(statusStats).map(date => {
-            const dayData = { date };
-            Object.keys(statusStats[date]).forEach(status => {
-                dayData[status] = statusStats[date][status];
-            });
-            return dayData;
-        });
-        setDataByStatus(statusChartData);
-
-        // Calculate total status counts for pie chart
-        const totalStatusCounts = {};
-        Object.values(statusStats).forEach(statusData => {
-            Object.keys(statusData).forEach(status => {
-                totalStatusCounts[status] = (totalStatusCounts[status] || 0) + statusData[status];
-            });
-        });
-        setStatusCounts(Object.entries(totalStatusCounts).map(([name, value]) => ({ name, value })));
-        
-        // Collect unique status types
-        const statusArray = Object.values(statusStats).flatMap(Object.keys);
-        setStatusTypes(Array.from(new Set(statusArray)));
-    };
-
-    useEffect(() => {
-        fetchDataOrder();
-    }, []);
-
-    const getStatusText = (statusCode) => {
-        switch (statusCode) {
-            case 11: return 'Đang chờ xác nhận';
-            case 13: return 'Đang chờ thanh toán online';
-            case 15: return 'Đã thanh toán online và đang chờ gửi hàng';
-            case 17: return 'Đang chuẩn bị đơn hàng';
-            case 19: return 'Đang vận chuyển';
-            case 21: return 'Đang giao hàng';
-            case 23: return 'Đơn hàng đã giao và hoàn tất';
-            case 25: return 'Đơn hàng đã hủy';
-            default: return 'Trạng thái không xác định';
-        }
-    };
-
-    const CustomTooltip = ({ active, payload }) => {
-        if (active && payload && payload.length) {
-            return (
-                <div className="custom-tooltip" style={{
-                    backgroundColor: 'white',
-                    padding: '10px',
-                    border: '1px solid #cccccc',
-                    textAlign: 'center'
-                }}>
-                    <h4 style={{ margin: '0 0 10px 0' }}>{payload[0].payload.date}</h4>
-                    {payload.map((entry, index) => {
-                        const value = entry.value;
-                        return value > 0 ? (
-                            <p key={`item-${index}`} style={{ margin: '5px 0' }}>
-                                {`${entry.name} - Số lượng ${value}`}
-                            </p>
-                        ) : null;
-                    })}
-                </div>
-            );
-        }
-        return null;
+        setData(chartData);
     };
 
     const handleDateRangeChange = (dates) => {
@@ -141,69 +66,78 @@ function BieuDoThongKe() {
     };
 
     const handleFilter = () => {
-        const [startDate, endDate] = dateRange;
+        processOrders(allOrders);
+    };
 
-        if (startDate && endDate) {
-            processOrders(allOrders, startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD'));
-        } else {
-            setDataByDate([]);
-            setDataByStatus([]);
-            setBookTypes([]);
-            setStatusTypes([]);
-            setStatusCounts([]); // Clear pie chart data
+    const handleViewModeChange = (value) => {
+        setViewMode(value);
+        processOrders(allOrders);
+    };
+
+    useEffect(() => {
+        fetchDataOrder();
+    }, []);
+
+    const CustomTooltip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+            return (
+                <div className="custom-tooltip" style={{ backgroundColor: 'white', padding: '10px', border: '1px solid #cccccc' }}>
+                    <p className="label">{`${viewMode === 'hourly' ? 'Giờ' : 'Ngày'}: ${label}`}</p>
+                    {payload.map((entry, index) => (
+                        <p key={`item-${index}`} style={{ color: entry.color }}>
+                            {`${entry.name}: ${entry.value.toLocaleString()} VND`}
+                        </p>
+                    ))}
+                </div>
+            );
         }
+        return null;
     };
 
     return (
-        <div>
-            <h2>Thống kê số lượng bán từng loại sách và trạng thái đơn hàng theo ngày</h2>
-            <Space>
-                <RangePicker onChange={handleDateRangeChange} />
-                <Button onClick={handleFilter}>Thống kê</Button>
-            </Space>
-            <ResponsiveContainer width="100%" height={400}>
-                <BarChart data={dataByDate}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Legend />
-                    {bookTypes.map((book, index) => (
-                        <Bar key={`book-${index}`} dataKey={book} fill={getColor(index)} name={book} />
-                    ))}
-                    {statusTypes.map((status, index) => (
-                        <Bar key={`status-${index}`} dataKey={status} fill={getColor(bookTypes.length + index)} name={status} />
-                    ))}
-                </BarChart>
-            </ResponsiveContainer>
-            
-            <h2>Biểu đồ tròn trạng thái đơn hàng</h2>
-            <ResponsiveContainer width="100%" height={400}>
-                <PieChart>
-                    <Pie
-                        data={statusCounts}
-                        dataKey="value"
-                        nameKey="name"
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={200}
-                        fill="#8884d8"
-                        label
-                    >
-                        {statusCounts.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={getColor(index)} />
-                        ))}
-                    </Pie>
-                    <Tooltip />
-                </PieChart>
-            </ResponsiveContainer>
+        <div style={{ backgroundColor: '#e6fffb', padding: '20px', borderRadius: '8px' }}>
+            <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Doanh số bán hàng</h2>
+            <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px' }}>
+                <h3 style={{ textAlign: 'center', marginBottom: '20px' }}>
+                    {viewMode === 'hourly' ? 'Doanh thu theo giờ' : 'Doanh thu theo ngày'}
+                </h3>
+                <p style={{ textAlign: 'center', color: '#888' }}>
+                    {viewMode === 'hourly' ? 'Doanh thu của từng giờ trong ngày' : 'Doanh thu của từng ngày trong tháng'}
+                </p>
+                <Space style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
+                    <RangePicker 
+                        onChange={handleDateRangeChange}
+                        showTime={{ format: 'HH:mm' }}
+                        format="YYYY-MM-DD HH:mm"
+                    />
+                    <Button onClick={handleFilter}>Thống kê</Button>
+                    <Select
+                        defaultValue="daily"
+                        style={{ width: 120 }}
+                        onChange={handleViewModeChange}
+                        options={[
+                            { value: 'daily', label: 'Theo ngày' },
+                            { value: 'hourly', label: 'Theo giờ' },
+                        ]}
+                    />
+                </Space>
+                <ResponsiveContainer width="100%" height={400}>
+                    <LineChart data={data}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis 
+                            dataKey="time" 
+                            tickFormatter={(time) => viewMode === 'hourly' ? moment(time).format('HH:00') : moment(time).format('DD/MM')}
+                        />
+                        <YAxis />
+                        <Tooltip content={<CustomTooltip />} />
+                        <Legend />
+                        <Line type="monotone" dataKey="Hoàn tất giao dịch" stroke="#00bcd4" activeDot={{ r: 8 }} />
+                        <Line type="monotone" dataKey="Đang chờ xử lý" stroke="#3f51b5" activeDot={{ r: 8 }} />
+                    </LineChart>
+                </ResponsiveContainer>
+            </div>
         </div>
     );
 }
-//rand  nhieu color hon
-function getColor(index) {
-    const colors = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#8dd1e1', '#a4de6c', '#d0ed57', '#ff7300'];
-    return colors[index % colors.length];
-}
 
-export default BieuDoThongKe;
+export default BieuDoLineChart;
